@@ -1,0 +1,326 @@
+# Misty design system
+
+The one source of truth for how Misty looks and behaves, and for everything built with `@misty/ui`: Misty itself,
+its website, and the apps people make for Misty. Two companions go with it:
+
+- [docs/components.md](docs/components.md): every export of `@misty/ui` and what it is for, generated from the
+  code. If a component isn't there, it doesn't exist.
+- Misty's own repository adds `docs/design/rules.md`: the automated UI rules its tests hold Misty's code to,
+  each with what to do instead.
+
+The docs site (`npm run dev`, hosted at https://misty-org.github.io/misty-ui/) gives every component a page:
+a live example, the code that draws it, its props (`docs/props.json`, read from the source) and its rows of
+"Which piece for which job" below. Examples live in `site/examples/<group>/`, one file per component; locally
+each page has a "Don't like" mark for review. `npm run catalog` regenerates the catalog and the props;
+`tests/designCatalog.contract.test.ts` fails when the catalog is out of date.
+
+## Using it
+
+```bash
+npm install @misty/ui lucide-react
+```
+
+```css
+/* Your Tailwind entry */
+@import "tailwindcss";
+@import "@misty/ui/styles.css";
+```
+
+```tsx
+import { Button, TooltipProvider } from "@misty/ui";
+```
+
+- Import everything from `@misty/ui`, never a subfolder. Never a raw `<button>`, `<input>` or `<select>`.
+- Mount `TooltipProvider` once at the root, and `NoticeViewport` if you use `notify`.
+- The theme is dark by default. `data-theme="light"` on `<html>` switches every token to light.
+- What people choose for a collection (its view, its filters) is kept in localStorage. An app with its own
+  settings store hands it in once at startup with `setUiStorage`.
+
+## Before writing any UI
+
+1. **Find the pieces.** Look the job up in the catalog and in "Which piece for which job" below. Use the
+   component that does it, imported from `@misty/ui` only, never a subfolder.
+2. **Read its source** the first time you use it. The props and the doc comment are the contract; don't guess a
+   prop, a variant or a size.
+3. **Missing a look?** Add it to `@misty/ui` first (a variant, a prop, a new component), with a doc comment
+   that says what it is for, then use it, then run `npm run catalog`. Never build the look in the feature.
+4. **Keep the page as it was.** The system governs the pieces, not the pages. A page's layout, hierarchy,
+   sections, cards, icons and color are its own and change only when the person asks for that page to change.
+   Moving a page onto shared components keeps it looking as it did.
+5. **Don't invent.** No new colors, sizes, corners, shadows, fonts, spacing steps or motion. If this file and
+   the catalog don't name it, it isn't part of Misty. Ask instead of improvising.
+
+A feature never picks its own colors, borders, corners, sizes or spacing, and never adds a stylesheet. In
+Misty, `src/tests/architecture/uiRules.ts` enforces this. Its baseline only shrinks: a rule that reaches zero is locked
+there for good with no exceptions, and a new rule starts locked, so debt can't be recorded, only paid.
+`tests/rowHeights.contract.test.tsx` renders the shared rows and checks every control in a row has the row's height.
+
+## Tokens
+
+All defined in `styles/theme.css`. Features reach them through shared components (`Text`, `Surface`,
+`Pressable`), never as raw classes or hex.
+
+### Color
+
+Misty is neutral: charcoal on dark, cream on light, one coherent palette the Themes extension can swap.
+
+| Role | Token | Use |
+| --- | --- | --- |
+| Window | `--misty-theme-workspace` (`window-chrome`) | The window around the pages; the same as the page, so the window reads as one sheet |
+| Page | `--misty-theme-bg` (`pane`) | The pane every page sits on |
+| Sidebar | `--misty-theme-sidebar` | The sidebar |
+| Card | `--misty-theme-card` | Cards and raised surfaces (`Surface tone="card"`) |
+| Edge | `--misty-theme-border` | Hairlines between rows and around cards |
+| Field edge | `--misty-theme-border-strong` | Fields people type into or pick from |
+| Text | `--misty-theme-text` / `-bright` / `-muted` | `Text tone="default" \| "bright" \| "muted"` |
+| Danger | `--misty-theme-danger` | Only what deletes or has failed |
+| Control wash | `--color-control-hover` / `-active` | A control's hover and press |
+| Row wash | `--color-row-hover` / `-active` | A row's hover and the selected row; lighter, so lists stay quiet |
+| Scrim | `--color-scrim` | Behind a dialog, sheet or workspace overlay only |
+
+Color that carries meaning comes from the tones, never a new hex:
+
+- **State** (`--tone-*`, `bg-state-*`): idle, working (blue), waiting on the person (amber), failed (red),
+  done (green). An agent's state, a run, a Git change.
+- **Kind of file** (`--tone-code`, `-style`, `-data`, `-doc`, `-image`) through `itemTones.ts`.
+- **Kind of made thing** (`--tint-*`): audio, video, report, cards… through `Surface`/`Text` `tint`.
+- **Art** (`--color-art-*`): only for full-color art drawn over any theme (Tutor, pets, the desktop overlay).
+- **Avatars** (`--color-avatar-*`): soft pastels assigned per person, behind dark ink.
+
+Everything else in the interface is neutral. No pastel washes, highlighter strokes or colored chips to make a
+page "less monochrome". Selection is the neutral row wash.
+
+### Type
+
+One font everywhere: Inter (bundled), system font only as fallback. Sizes come from roles, never `text-[Npx]`
+and never Tailwind's `text-xs`…`text-3xl`:
+
+| Role | Size | For |
+| --- | --- | --- |
+| `micro` | 11 | Rare: tiny counts |
+| `caption` | 12 | Badges, shortcut text |
+| `meta` | 13 | Times, counts, the path line, descriptions under a label |
+| `control` | 14 | Every button, field, menu row, tab and list row |
+| `body` | 15 | Messages, notes, prose |
+| `page` | 16 | Page text, reading |
+| `title` | 18 | Titles |
+| `display` | 24 | Empty-state and hero titles |
+
+Use `<Text size=… tone=… weight=…>` (`bare` keeps the element's own layout). Weights: regular, medium,
+semibold. Sentence case everywhere; capitals only for real acronyms. Monospace only inside code itself (code
+blocks, the editor, diffs, the terminal), never for URLs, paths, IDs, model names or shortcuts.
+
+### Size and spacing
+
+- **Spacing** is the 4px scale (`gap-1` 4, `gap-2` 8, `gap-3` 12, `p-4` 16…). No one-off pixel values.
+- **Heights:** controls 24 (`sm`), 32 (`md`, the default) and 36 (`lg`, only in dialogs and empty states).
+  A row is 32 (two-line rows grow). The top band is 48 (`--ui-header`); the bottom bar 32 (`--ui-bottom-bar`).
+- **Corners:** 4 (`radius-sm`, marks and chips inside rows), 7 (`radius-md`, controls and rows), 9
+  (`radius-lg`, fields and menus), 12 (`radius-xl`, panels, popups, dialogs, cards). No `rounded-full` on
+  buttons: buttons keep their own shape. Only avatars are round.
+- **Edges:** `var(--hairline)` or the `hairline-outline` utility, never `0.5px`. Popups use `popup-edge`, never
+  ring, border or shadow.
+- **Icons:** every glyph is 16px at one stroke (`styles/glyphs.css`). Icons take no `size`, `strokeWidth` or
+  size class. The only larger icon is `PlaceholderIcon`, for a thumbnail, drop zone or empty state.
+- **Depth** comes from borders and surface steps. **No shadows anywhere.**
+- **Layers:** z-order uses named layer tokens (`layers.css`, `--stack-*`), never a number.
+- **Motion:** keyframes live in `styles/animations.css`, named for the motion. Popups keep the shared
+  open/close motion.
+
+## Which piece for which job
+
+The everyday components, several of which have no doc comment in the catalog yet:
+
+| Job | Use | Not |
+| --- | --- | --- |
+| Any button with a label | `Button` `variant` primary / secondary (default) / quiet / danger, `size` sm / md / lg, `icon`, `iconEnd` | A styled `<button>`, size or padding classes |
+| An icon-only button | `IconButton` with `label` (its tooltip and accessible name), icon as children, size md (sm only for an inline closer) | `Button` with only an icon, `title=` |
+| A clickable surface (a card, a tile) | `Pressable` / `Surface` with `wash` | Hover classes on a div |
+| Text | `Text` (`size`, `tone`, `weight`, `wrap`) | Color or size classes |
+| A background or edge | `Surface` (`tone`, `edge`, `radius`) | `bg-*` / `border-*` classes |
+| Long single-line text | `OverflowFadeText` (built into `Text`, `ListRow`, `Button`) | `truncate`, an ellipsis |
+| A field | `Input`, `Textarea`, `SearchField`, `SecretField`, `ShortcutField`, inside `Field` with `Label` | Raw `<input>` |
+| One choice of a few, always answered | `ChoiceGroup` (segmented) | Hand-built tabs or chips |
+| A short fixed choice in a form | `OptionSelect` / `Select` | A dropdown of buttons |
+| A long, searchable choice | `SearchablePicker` | A custom popover list |
+| On/off | `Switch` (settings), `Checkbox` (lists, multi-select) | A toggle button |
+| Section tabs over a list | `FilterChip`s in a `CollectionFilters` / `ActionBar` | A free-wrapping chip row |
+| Questions or notes that open under their heading (an FAQ, release notes, a docs sidebar group) | `Disclosure` (`kind` section or row) in a `DisclosureList` | An accordion of styled buttons |
+| A tab strip | `TabStrip` | Buttons styled as tabs |
+| A toolbar | `ActionBar` (gives way: labels → icons → fade → ⋯), groups split by `ToolbarDivider` | A flex row that wraps or scrolls |
+| A list of things | `ListRow` (`label`, `description`, `badge`, `state`, `menu`, `trailing`); `TreeRow` for trees | Hand-built rows |
+| A row's own buttons | `RowTools` (`reveal` hover / cover); a row's ⋯ is `RowActions` / `ListRow menu` | Stray icons beside the row |
+| A menu of actions | `DropdownMenu` + `MenuTrigger` with `MenuItem`, `MenuCheckItem`, `MenuRadioItem`, `MenuSubmenu`; right-click is `ContextMenu` with the same items | A `Popover` listing actions, raw menu items |
+| A popover | `Popover` kind `panel` (`PopoverHeader`, `PopoverText`, `PopoverBody`, `PopoverActions`), `list`, or `flush` (`PickerSearch`, `PickerList`, `Command`) | `className` on a popover |
+| A dialog | `Dialog` (`DialogHeader`, `DialogTitle`, `DialogBody`, `DialogFooter`); deletes use `ConfirmDeleteDialog` / `useConfirmDelete`; renames `RenameItemDialog` | A fixed full-screen div |
+| A full-page overlay | `WorkspaceOverlay` or `Sheet` | Custom portals |
+| A tooltip | `Tooltip` (IconButton has one built in) | `title=` |
+| A notice | `notify` (bottom right, at most one action, leaves on its own) | Inline "Saved" text |
+| Nothing here yet / failed | `EmptyState`, `ErrorState` | A custom centered block |
+| First load | A `Skeleton` shaped like the content (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`) | "Loading…" text |
+| Work in progress | `Spinner` or `Progress` where the work happens | A spinner in a button |
+| A page's top band | `PageHeader` (pages), `ViewHeader` (views of a Space), `CollectionHeading` (collections) | A hand-made header |
+| A browsable collection | `CollectionPage`, `CollectionHeading`, `CollectionFilters`, `CollectionSearch`, `CollectionViewToggle`, `CollectionSortMenu`, `CollectionFilterMenu`, `CollectionItems` | Custom bars |
+| A catalog of installables | `CatalogGrid` + `CatalogCard` (`logo`, `title`, `maker`, `description`, `tag`, `detail`, `action`, `menu`); what's already added is a `CatalogTileRow` of `CatalogTile`s | A long full-width list with per-row toggles |
+| A subject's icon | `spaceIcons`, `appIcons`, `officialApps`/`AppLogo`, `EngineMark`, `MistyMark`, `BrandIcon` | A stand-in Lucide glyph or an emoji |
+
+## Rules
+
+### Layout
+
+- The interface is quiet and mostly neutral and looks finished: flat panes on the window's surface that read as
+  one sheet, with no divider lines between them, generous spacing, modelled on OpenChamber.
+- Nothing wraps into ragged rows or spills past its edge. Every bar declares what gives way first: labels turn
+  into icons, then the longest name shortens, then items move into a ⋯ menu. No horizontal page scrolling.
+- Labels never get cut off. When tiles or buttons are too narrow for their labels, the grid drops a column
+  first.
+- On a wide page, panels pair up; one panel never stretches alone across the whole width. A list or grid keeps
+  a readable width or shares the row with a companion panel.
+- Pages have no title bar: the sidebar names the page. A page's top bar holds only its controls.
+- A page's create action (New, Create notebook, New task) is its primary button, filled: white in the dark
+  theme, black in the light one. It lives where the things it makes are listed, not inside one of them.
+- A bar's controls stand bare, never some boxed and some not. Grid and list are two bare icons, the open one
+  pressed (`CollectionViewToggle`); the order is one sort icon (`CollectionSortMenu`) and filtering one filter
+  icon (`CollectionFilterMenu`), never a spelled-out "Most recent". Groups of controls are split by a
+  `ToolbarDivider`.
+- Controls in one row share one height. A container decides its controls' geometry: a bar gives every control
+  the same height and inner padding, and a feature never passes size, height, width or padding classes to a
+  shared button. IconButton `sm` (24px) is only for an inline closer in a row or tab. A row's own buttons go in
+  `RowTools` (`reveal` "hover" or "cover"), which makes them 24px and 2px apart inside the 32px row; ListRow's
+  `trailing` and TreeRow's `end` do the same.
+- The window, and every popup or overlay with a tour, keeps a `BottomBar` along its bottom; the "i" for its tour
+  (`TourInfoButton` / `InfoCorner`) sits last at its end, never floating over content.
+- The window's own bars (the chat's right rail, the bottom bar, the sidebar's places) are `CustomizableBar`s:
+  the person drags items into their order (or moves one with ⌥⇧ and an arrow), and a right-click on the bar
+  shows or hides each item and resets the bar. Each bar keeps its arrangement for the device.
+- Floating cards overlay; they never push the chat aside. Only the terminal and browser side panels take the
+  chat's width. A chat's context panel (session, steps, changes, files, terminal, browser) floats beside the
+  chat as a rounded card with a faint edge; the session card is narrow and only as tall as it needs. Those, and
+  settings, are the only floating panels. The chat page itself is one flat sheet: no line parts its title bar,
+  the chat, the panel and the rail.
+- When one panel opens, animates or stacks over another popup, the others are never dimmed. The scrim is only
+  behind a dialog, sheet or workspace overlay.
+
+### Rows and lists
+
+- Long text (names, models, paths, branches) shortens with a fade-out edge (`OverflowFadeText`), never an
+  ellipsis.
+- A row's state sits at its right end: a spinner while an agent works, an amber dot when it waits on the
+  person, a dot when unread, otherwise the time.
+- A row's actions are one ⋯ at its right end on hover, opening the same menu as right-click. An item's actions
+  live in one place, its action bar or its ⋯ menu, never as a stray icon beside it.
+- No loose status words ("Saved", "Done") in a row. Changes save themselves, and a failure shows next to what
+  failed.
+- A control that doesn't work, or doesn't apply where it is, isn't shown.
+
+### Buttons
+
+- Four roles and three sizes: primary (at most one per surface), secondary, quiet, and danger (only where
+  something is deleted), at 24, 32 and 36px, with 36 only in dialogs and empty states.
+- Buttons keep the system's shape: no `rounded-full` or circular icon buttons.
+- A button never shows loading: while its work runs it is just disabled, and progress shows where the work
+  happens (the row, item or content it changes).
+
+### Popups and menus
+
+- Popups have 12px corners and three widths: sm 256, md 288 (the default) and lg 320 (`trigger` matches a
+  combobox's field). The popup look is locked: never override it.
+- A popover is one of three kinds and takes no `className`: a `panel` (12px in; `PopoverHeader` with its title
+  and close button, `PopoverText`, `PopoverBody`, then `PopoverActions` at the bottom right, quiet buttons before
+  the action), a `list` of menu-like rows, or `flush`, for a picker whose search is its top row
+  (`PickerSearch`, `PickerList`, or `Command`). A list of actions is a `DropdownMenu`.
+- A menu row (dropdowns and right-click) has a 16px icon only when the icon tells it apart. A list of like
+  things (models, efforts, folders, agents, chats, columns) is text alone, never one icon repeated down the
+  list; a choice of a few different things (Build and Plan, sort orders) keeps its own icons. A choice shows no
+  shortcut. The selection is a checkmark. `MenuRadioGroup` drops icons that don't differ.
+- Deleting always asks first in a small dialog: what goes, then Cancel (quiet) and Delete (danger).
+- Tooltips are Misty's own (`Tooltip`), quick, with the shortcut when shortcut hints are on, never the system
+  title.
+- Notices stack at the bottom right, carry at most one action and leave on their own. Errors in a form show
+  next to the field.
+
+### Icons and logos
+
+- An icon is its subject's, the same one everywhere that subject shows: a row, an option, a tab, a tile and the
+  sidebar all wear the icon the thing already has, never a stand-in (a house for a Space, a keyboard on every
+  shortcut category, a generic fallback for a page). Look it up first: `spaceIcons` and `appIcons`
+  (`src/icons/appIcons.ts`), `officialApps` (`AppLogos.tsx`), `EngineMark`, `MistyMark`. A subject with
+  no icon yet gets one added there, not chosen at the call site. When nothing tells the items apart, they go
+  text alone. Never one icon repeated down a list, and never emoji in place of an icon.
+- Icons, logos and engine marks stand bare, never inside a box: no fill, border or rounded tile behind them.
+  Only an avatar has a shape of its own, and one exception: an app's logo is a colored tile with its own white
+  artwork (`AppLogo`, `officialApps`).
+- Every third-party logo is the brand's official artwork in its own colors: a single-color mark follows the
+  theme (black on light, white on dark), and one with no artwork shows its initial. A colored logo that would
+  disappear on one theme uses the brand's own variant; only when none exists does it sit on a small plate
+  (`logoPlates` in `LogoFallbacks.tsx`). Misty's `logoArtwork.contract.test.tsx` checks every logo on both themes.
+- Never the sparkles star, in any form: it reads as AI filler. An icon shows what the thing is.
+
+### Copy
+
+- Say what the thing is, plainly, in sentence case. No explanatory captions or reassurance labels the UI
+  already makes obvious, and no subtext under titles, buttons or forms, except settings rows.
+- Never "Loading…" text. Data loading shows a skeleton shaped like the content; a tool getting ready (an
+  editor, the terminal, a webview, an engine) says so with `SetupState` ("Setting up the video editor"); a
+  tool's lazily loaded code is a `lazyTool` inside `ToolSuspense`. A failed load shows an error, never the
+  empty state, and a stalled setup says so with Try again.
+- User-facing copy calls Claude Code, Codex and the rest *agents*; the engine is the tool underneath.
+- Apps connect through each maker's own sign-in.
+
+### Specific surfaces
+
+- An empty state is centered in its pane: a title, one muted line, one button (`EmptyState`). The page's top
+  bar doesn't repeat that button while it shows.
+- The composer is one bar that never wraps, with nothing under the box: where the chat works (Space, folder,
+  branch) is shown in the chat's context panel. Screen capture lives in the + menu.
+- Every message has the same action bar under it, aligned to its edge, shown only on hover. A toggle that is on
+  (a thumbs up given) fills its icon, never a gray chip. Replies have no avatar beside them.
+- A saved secret is one field the size of the empty one that says it's saved, with Replace and Remove in its ⋯
+  menu.
+- A shortcut is recorded in an ordinary field, one per command, cleared with its ×.
+- Settings keep their sections and rows as they are, and list only what exists today.
+- A Space's name is at most 64 characters and the Space switcher always shows it whole, never faded.
+- The agent browser opens on a blank page and searches with Google, never DuckDuckGo.
+- The Tutor is in full color; Misty itself stays neutral.
+
+### Where stylesheets are allowed
+
+Features have no stylesheets. The only ones are for content, not interface: code views, presented media (a
+Tutor slide or video scene) and the skins of third-party widgets (`contentStylesheets` in
+Misty's `src/tests/architecture/uiRuleDefinitions.ts`). Feature stylesheets never restyle a shared component's parts
+(`[data-slot]`), its button states or its glyph sizes.
+
+## Recipes
+
+### A catalog page (Explore, the apps catalog)
+
+- One `CollectionPage`. Its `CollectionHeading` holds the page's controls; no page title (the sidebar names it).
+- Switching between kinds of thing (Personas, Plugins, Skills…) is one `ChoiceGroup` or `TabStrip`, never two
+  stacked full-width bars.
+- Categories are `FilterChip`s inside `CollectionFilters`, which is an `ActionBar`: it gives way instead of
+  scrolling sideways. Counts go in the chip's label only if they help choosing.
+- Search is `CollectionSearch`; sort and filter are one icon each.
+- Items are a `CatalogGrid` of `CatalogCard`s, each wearing its own logo or subject icon, with one `action` and
+  the rest in its `menu`. What the person already added sits above as a `CatalogTileRow`.
+- First load is `CollectionSkeleton`; nothing found is `EmptyState inline`.
+
+### A list page
+
+`CollectionPage` → `CollectionHeading` (create action as the primary button) → `CollectionFilters` → `ListRow`s
+with `state` at the end and `menu` for the ⋯. No leading icon unless it tells rows apart.
+
+### A form or settings section
+
+`SectionHeading`, then rows of `Field` + `Label` + control. Switches for on/off, `OptionSelect` for short
+choices, `SecretField` for secrets. Changes save themselves; errors show under the field with `FieldError`.
+
+### A dialog
+
+`Dialog` → `DialogHeader`/`DialogTitle` → `DialogBody` → `DialogFooter` with a quiet Cancel then the one primary
+(or danger) action, at `lg` (36px).
+
+## Changing the system
+
+The system changes here, in `src`, `styles` and this file, never in an app or a feature. When you add or change a
+component, give it a doc comment that says what it is for and when not to use it, add its example in
+`site/examples/`, run `npm run catalog`, and update this file if a rule or a "which piece" entry changes.

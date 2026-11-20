@@ -1,0 +1,19 @@
+/* @misty/ui's styles: import once, right after Tailwind.
+
+     @import "tailwindcss";
+     @import "@misty/ui/styles.css";
+
+   It brings the font, the theme (colors, type, corners, breakpoints), popup edges, layers, keyframes
+   and the glyph size, and tells Tailwind to read the components for their classes. */
+
+@import "tw-animate-css";
+@import "@fontsource-variable/inter/opsz.css";
+@import "./scrollbars.css";
+@import "./theme.css";
+@import "./overlays.css";
+@import "./components.css";
+@import "./layers.css";
+@import "./animations.css";
+@import "./glyphs.css";
+
+@source "../src";

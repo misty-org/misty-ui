@@ -1,0 +1,38 @@
+[
+  {
+    "id": "controls",
+    "letter": "C",
+    "title": "Controls",
+    "count": 27
+  },
+  {
+    "id": "overlays",
+    "letter": "O",
+    "title": "Overlays and menus",
+    "count": 19
+  },
+  {
+    "id": "layout",
+    "letter": "L",
+    "title": "Layout",
+    "count": 20
+  },
+  {
+    "id": "display",
+    "letter": "D",
+    "title": "Display and icons",
+    "count": 30
+  },
+  {
+    "id": "feedback",
+    "letter": "F",
+    "title": "Feedback and navigation",
+    "count": 15
+  },
+  {
+    "id": "patterns",
+    "letter": "P",
+    "title": "Patterns",
+    "count": 24
+  }
+]

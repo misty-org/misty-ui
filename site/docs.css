@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "../styles/index.css";
+@source "./";
+
+/* The docs site's own frame: the page scrolls. */
+html,
+body,
+#root {
+  min-height: 100%;
+  overflow: auto;
+}
+body {
+  margin: 0;
+  background: var(--misty-theme-bg);
+  color: var(--misty-theme-text);
+  font-family: var(--font-sans);
+}
