@@ -7,8 +7,10 @@ export type PageHeaderProps = {
   /**
    * The page's name. Text fades when it doesn't fit. A node, such as a Space switcher menu, is
    * drawn as the heading as given and brings its own fading (MenuTrigger, OverflowFadeText).
+   * Leave it out where the sidebar already names the page: the header is then only the page's
+   * controls at its end, with no hairline under it, so it reads as part of the page, not a bar.
    */
-  title: React.ReactNode;
+  title?: React.ReactNode;
   /** The page's actions. They give way like any ActionBar, after the title has faded. */
   actions?: ReadonlyArray<ActionBarItem>;
   /** Accessible name of the actions toolbar. Default "Page actions". */
@@ -22,7 +24,8 @@ export type PageHeaderProps = {
 /**
  * A page's top band: 48px (`--ui-header`) with a hairline under it, the title on the left and the
  * page's actions on the right. The title fades first, down to a short stub, and only then do the
- * actions give way. It never wraps.
+ * actions give way. It never wraps. Without a title it is only the actions, at its end, with no
+ * hairline: the page's controls, not a bar.
  */
 export function PageHeader({
   title,
@@ -32,16 +35,19 @@ export function PageHeader({
   className,
 }: PageHeaderProps) {
   const hasActions = Boolean(actions?.length || end);
+  const untitled = title === undefined || title === null;
+  if (untitled && !hasActions) return null;
   return (
     <header
       data-slot="page-header"
       className={cn(
-        "flex h-(--ui-header) min-w-0 shrink-0 items-center gap-3 border-b border-charcoal-border px-4",
+        "flex h-(--ui-header) min-w-0 shrink-0 items-center gap-3 px-4",
+        untitled ? "justify-end" : "border-b border-charcoal-border",
         className,
       )}
     >
       {/* The title takes what the actions leave; it may not fade below 8rem before they give way. */}
-      {typeof title === "string" || typeof title === "number" ? (
+      {untitled ? null : typeof title === "string" || typeof title === "number" ? (
         <OverflowFadeText
           as="h1"
           full

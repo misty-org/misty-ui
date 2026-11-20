@@ -17,6 +17,8 @@ import { RowActions } from "../overlays/RowActions";
 const tileSize = {
   sm: "size-6 [&>*]:max-h-4.5 [&>*]:max-w-4.5",
   md: "size-8 [&>*]:max-h-6 [&>*]:max-w-6",
+  /** A store shelf's 64px slot (`ShelfItem`): a mark sits inset, a picture fills it with the tile's corners. */
+  tile: "size-16 [&>*]:max-h-10 [&>*]:max-w-10",
 } as const;
 
 /**
@@ -40,7 +42,8 @@ export function LogoTile({
         "inline-flex shrink-0 items-center justify-center",
         tileSize[size],
         cover &&
-          "overflow-hidden rounded-md [&>*]:size-full [&>*]:max-h-none [&>*]:max-w-none [&>img]:object-cover",
+          "overflow-hidden [&>*]:size-full [&>*]:max-h-none [&>*]:max-w-none [&>img]:object-cover",
+        cover && (size === "tile" ? "rounded-[15px]" : "rounded-md"),
       )}
     >
       {children}

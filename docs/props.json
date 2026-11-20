@@ -37,7 +37,114 @@
       "doc": "Layout only: margins or placement."
     }
   ],
-  "AddAppTile": [],
+  "AddAppTile": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "AddReactionButton": [
+    {
+      "name": "type",
+      "type": "\"button\" | \"submit\" | \"reset\"",
+      "optional": true,
+      "doc": "Defaults to \"button\": a form's submit button says `type=\"submit\"`."
+    },
+    {
+      "name": "size",
+      "type": "IconButtonSize",
+      "optional": true,
+      "doc": "Defaults to md (32)."
+    },
+    {
+      "name": "caption",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A short muted second line under the label, for one of a row of choices that says what follows from it (a review grade and when the card comes back). The button stacks the two lines, 48px tall and at least 96px wide; every choice in the row has one."
+    },
+    {
+      "name": "variant",
+      "type": "ButtonLook",
+      "optional": true,
+      "doc": "Defaults to quiet."
+    },
+    {
+      "name": "justify",
+      "type": "ButtonJustify",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "shrink",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Gives way first when its bar runs short: it narrows below its label, which fades out at the cut (an `OverflowFadeText` label), as a breadcrumb's folder does."
+    },
+    {
+      "name": "snug",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
+    },
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Styles its one child instead, such as a router Link."
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "optional": true,
+      "doc": "The tooltip's text when it says more than the label: what a check does, or why a toggle can't change here. The label stays the accessible name."
+    },
+    {
+      "name": "shortcut",
+      "type": "string",
+      "optional": true,
+      "doc": "The command's shortcut as it reads, such as \"⌘N\", shown after the label while hints are on."
+    },
+    {
+      "name": "tooltipSide",
+      "type": "TooltipSide",
+      "optional": true,
+      "doc": "Which side of the button the tooltip opens on. Defaults to top, flipping when there's no room."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "optional": true,
+      "doc": "A count over the icon's corner, such as a view's changed files; nothing at zero."
+    }
+  ],
+  "AgentTile": [
+    {
+      "name": "face",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The agent's own avatar at the launcher size (56px)."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "state",
+      "type": "\"working\" | \"waiting\"",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "AlertDialog": [],
   "AlertDialogAction": [
     {
@@ -79,18 +186,66 @@
   "AlertDialogFooter": [],
   "AlertDialogHeader": [],
   "AlertDialogTitle": [],
-  "AppLogo": [
+  "AppLauncher": [
     {
-      "name": "app",
-      "type": "OfficialAppId",
+      "name": "open",
+      "type": "boolean",
       "optional": false,
       "doc": ""
     },
     {
-      "name": "size",
-      "type": "AppLogoSize",
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "query",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onQueryChange",
+      "type": "(query: string) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onSubmit",
+      "type": "() => void",
+      "optional": true,
+      "doc": "Enter in the search: open the first app that matches."
+    },
+    {
+      "name": "filters",
+      "type": "{ value: string; label: string; }[]",
+      "optional": true,
+      "doc": "The kinds of app to narrow to, the first being all of them."
+    },
+    {
+      "name": "filter",
+      "type": "string",
       "optional": true,
       "doc": ""
+    },
+    {
+      "name": "onFilterChange",
+      "type": "(value: string) => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The tiles: AppTiles, then an AddAppTile for someone who may add apps."
+    },
+    {
+      "name": "empty",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Nothing matches the search or the filter."
     }
   ],
   "AppLogoImage": [
@@ -115,16 +270,10 @@
   ],
   "AppTile": [
     {
-      "name": "app",
-      "type": "OfficialAppId",
-      "optional": true,
-      "doc": "One of Misty's own apps, drawn on its color tile."
-    },
-    {
       "name": "mark",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "The logo of any other app, as it comes from its maker."
+      "doc": "The app's logo, as it comes from its maker (`AppLogoImage`)."
     },
     {
       "name": "label",
@@ -579,10 +728,22 @@
       "doc": ""
     },
     {
+      "name": "actions",
+      "type": "readonly ActionBarItem[]",
+      "optional": true,
+      "doc": "The chat's icon buttons; a toggle that is on is `pressed`."
+    },
+    {
+      "name": "actionsLabel",
+      "type": "string",
+      "optional": true,
+      "doc": "Accessible name of the actions toolbar. Default \"Chat actions\"."
+    },
+    {
       "name": "end",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": ""
+      "doc": "Always shown at the end, after the actions, and never folds: the message search."
     }
   ],
   "ChannelMain": [
@@ -605,7 +766,189 @@
       "doc": ""
     }
   ],
+  "ChannelMessage": [
+    {
+      "name": "color",
+      "type": "string",
+      "optional": true,
+      "doc": "The sender's highest colored role's color."
+    },
+    {
+      "name": "avatar",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The sender's face at 40px (an Avatar lg, or an agent's mark). Unused when grouped."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "badge",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A small mark after the name, such as a Badge saying the sender is an agent."
+    },
+    {
+      "name": "time",
+      "type": "string",
+      "optional": false,
+      "doc": "When it was said, as the header reads it: \"Today at 3:45 PM\"."
+    },
+    {
+      "name": "timeFull",
+      "type": "string",
+      "optional": true,
+      "doc": "The same moment in full, for its tooltip."
+    },
+    {
+      "name": "dateTime",
+      "type": "string",
+      "optional": false,
+      "doc": "The moment as an ISO string, for `<time>`."
+    },
+    {
+      "name": "shortTime",
+      "type": "string",
+      "optional": true,
+      "doc": "The time alone (\"3:45 PM\"), shown in the face's column of a grouped message on hover."
+    },
+    {
+      "name": "grouped",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "reply",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A ChannelReply over the message, when it answers another."
+    },
+    {
+      "name": "tools",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "active",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "mentioned",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "editing",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "pending",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The message's text (ChannelMessageText), or an edit box in its place."
+    },
+    {
+      "name": "after",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "What hangs off the text: files, previews, ChannelReactions, a thread's replies."
+    }
+  ],
+  "ChannelMessageText": [
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "jumbo",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "edited",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "failed",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "ChannelPage": [],
+  "ChannelReactions": [
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "add",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "ChannelReply": [
+    {
+      "name": "avatar",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "text",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "missing",
+      "type": "\"earlier\" | \"deleted\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    }
+  ],
   "ChannelSidebar": [
     {
       "name": "header",
@@ -1018,8 +1361,8 @@
     {
       "name": "title",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": "The page's name, or a node that stands for it, such as a Space switcher menu."
+      "optional": true,
+      "doc": "The page's name, or a node that stands for it, such as a Space switcher menu. Left out, the band is only the page's controls at its end, with no hairline (see PageHeader)."
     },
     {
       "name": "actions",
@@ -1332,6 +1675,8 @@
     }
   ],
   "CommandList": [],
+  "CommandPalette": [],
+  "CommandPaletteGroup": [],
   "CommandPaletteInput": [],
   "CommandPaletteItem": [
     {
@@ -1370,6 +1715,26 @@
     }
   ],
   "CommandSeparator": [],
+  "ComposerAttachment": [
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onRemove",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    }
+  ],
   "ComposerStatusRow": [
     {
       "name": "icon",
@@ -1908,6 +2273,68 @@
     }
   ],
   "DropdownMenuTrigger": [],
+  "EmojiPicker": [
+    {
+      "name": "children",
+      "type": "ReactElement<unknown, string | JSXElementConstructor<any>>",
+      "optional": true,
+      "doc": "The button that opens it. Leave it out to open the picker by `open` over `anchor`."
+    },
+    {
+      "name": "anchor",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Where it opens from when it has no trigger child."
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "sections",
+      "type": "EmojiSection[]",
+      "optional": false,
+      "doc": "Empty while the emoji load: the grid is a skeleton until they arrive."
+    },
+    {
+      "name": "search",
+      "type": "(query: string) => EmojiChoice[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onPick",
+      "type": "(emoji: string, keepOpen: boolean) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "skinTones",
+      "type": "EmojiSkinTones",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "side",
+      "type": "\"top\" | \"right\" | \"bottom\" | \"left\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "align",
+      "type": "\"end\" | \"center\" | \"start\"",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "EmptyState": [
     {
       "name": "title",
@@ -1958,6 +2385,46 @@
       "type": "boolean",
       "optional": true,
       "doc": "Sits in the flow instead of filling the pane: inside a dialog, a list or a section, with its own room above and below. Don't wrap it in a sized box."
+    }
+  ],
+  "FeatureCard": [
+    {
+      "name": "banner",
+      "type": "string",
+      "optional": false,
+      "doc": "The picture that fills it: the app's banner."
+    },
+    {
+      "name": "eyebrow",
+      "type": "string",
+      "optional": true,
+      "doc": "A short label over the title, such as \"App of the week\"."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "FeatureRow": [
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
     }
   ],
   "Field": [
@@ -2579,6 +3046,20 @@
       "doc": "Sizes a password field and its eye together."
     }
   ],
+  "InUseMark": [
+    {
+      "name": "people",
+      "type": "InUsePerson[]",
+      "optional": false,
+      "doc": "Who has the file open, in the order to show them."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only: margins or placement."
+    }
+  ],
   "ItemCard": [
     {
       "name": "cover",
@@ -2942,7 +3423,7 @@
   "LogoTile": [
     {
       "name": "size",
-      "type": "\"sm\" | \"md\"",
+      "type": "\"sm\" | \"md\" | \"tile\"",
       "optional": true,
       "doc": ""
     },
@@ -3997,6 +4478,26 @@
       "doc": ""
     }
   ],
+  "NavTitleButton": [
+    {
+      "name": "name",
+      "type": "string | (string & ReactElement<unknown, string | JSXElementConstructor<any>>) | (strin…",
+      "optional": false,
+      "doc": "The place's name. Its length is capped where it is typed, so it shows whole."
+    },
+    {
+      "name": "mark",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The place's own mark before the name, at the 16px glyph size, such as the Space's avatar."
+    },
+    {
+      "name": "ref",
+      "type": "RefObject<HTMLButtonElement | null> | ((instance: HTMLButtonElement | null) => void | (…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "NumberedList": [
     {
       "name": "items",
@@ -4132,8 +4633,8 @@
     {
       "name": "title",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": "The page's name. Text fades when it doesn't fit. A node, such as a Space switcher menu, is drawn as the heading as given and brings its own fading (MenuTrigger, OverflowFadeText)."
+      "optional": true,
+      "doc": "The page's name. Text fades when it doesn't fit. A node, such as a Space switcher menu, is drawn as the heading as given and brings its own fading (MenuTrigger, OverflowFadeText). Leave it out where the sidebar already names the page: the header is then only the page's controls at its end, with no hairline under it, so it reads as part of the page, not a bar."
     },
     {
       "name": "actions",
@@ -4212,6 +4713,26 @@
       "doc": ""
     }
   ],
+  "PaneLoading": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "What is loading, for screen readers (\"Loading messages\"). It is never shown."
+    },
+    {
+      "name": "inline",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Sits in the flow instead of filling the pane: a section, a list under a loaded heading, a dialog's body. It takes its own room above and below; don't wrap it in a sized box."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    }
+  ],
   "PathLine": [
     {
       "name": "segments",
@@ -4230,6 +4751,26 @@
       "type": "string",
       "optional": true,
       "doc": "Layout only: margins or placement."
+    }
+  ],
+  "PersonaLogo": [
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "optional": true,
+      "doc": "The tile's color, one of `personaTones` (`personaTone(id)` picks one). Left out, the tile is neutral with a muted glyph, for something that has no color of its own (a prompt)."
+    },
+    {
+      "name": "size",
+      "type": "PersonaLogoSize",
+      "optional": true,
+      "doc": ""
     }
   ],
   "PickerList": [],
@@ -4360,6 +4901,26 @@
       "name": "container",
       "type": "HTMLElement",
       "optional": true,
+      "doc": ""
+    }
+  ],
+  "PresenceFace": [
+    {
+      "name": "presence",
+      "type": "MemberPresence",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "ring",
+      "type": "\"sidebar\" | \"pane\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
       "doc": ""
     }
   ],
@@ -4567,6 +5128,38 @@
       "type": "string",
       "optional": true,
       "doc": "Layout only: placement in the rail."
+    }
+  ],
+  "ReactionChip": [
+    {
+      "name": "emoji",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "mine",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onToggle",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
     }
   ],
   "RenameItemDialog": [
@@ -5354,6 +5947,90 @@
   ],
   "SheetDescription": [],
   "SheetTitle": [],
+  "Shelf": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "One control at the heading's end, such as See all."
+    },
+    {
+      "name": "columns",
+      "type": "2 | 1",
+      "optional": true,
+      "doc": "Two columns once the pane is wide (default), or always one, such as an updates list."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "ShelfItem": [
+    {
+      "name": "logo",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": "One line about it, under its name."
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Its one action, under the line."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "MenuItems for the ⋯ that shows on hover and opens on right-click."
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": true,
+      "doc": "Opens its details."
+    }
+  ],
+  "ShelfSkeleton": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "items",
+      "type": "number",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "ShortcutField": [
     {
       "name": "label",
@@ -5748,6 +6425,8 @@
       "doc": "A double-click on the seam, such as evening the two panes out again."
     }
   ],
+  "SplitPane": [],
+  "SplitPanes": [],
   "StarterPrompts": [
     {
       "name": "label",
@@ -5791,7 +6470,7 @@
       "name": "label",
       "type": "string",
       "optional": true,
-      "doc": "The mark's tooltip and accessible name, such as \"Failed: the key was refused\". Defaults to the state's own words (\"Working\", \"Waiting for you\", \"Unread\", \"Done\", \"Failed\")."
+      "doc": "The mark's tooltip and accessible name, such as \"Failed: the key was refused\". Defaults to the state's own words (\"Working\", \"Waiting for you\", \"Unread\", \"Done\", \"Failed\", \"Online only\"…)."
     },
     {
       "name": "className",
@@ -5894,6 +6573,88 @@
       "type": "string",
       "optional": true,
       "doc": "Layout only."
+    }
+  ],
+  "StoreDetail": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "banner",
+      "type": "string",
+      "optional": true,
+      "doc": "The banner the item exports, if it has one."
+    },
+    {
+      "name": "logo",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Its one action, under its name: `get-filled` to get it, or `CatalogDone` once it's in."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Everything else it can do (Turn off, Open its page, Remove), as MenuItems in a ⋯ beside the action, so the one action stays alone."
+    },
+    {
+      "name": "facts",
+      "type": "readonly StoreFact[]",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "previews",
+      "type": "readonly StorePreview[]",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "StoreDetailSection": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
     }
   ],
   "SuggestionItem": [
@@ -6189,6 +6950,20 @@
       "type": "\"code\" | \"default\" | \"composer\"",
       "optional": true,
       "doc": "default for prose, code for config and command editors, composer inside a composer."
+    }
+  ],
+  "ThreadRepliesButton": [
+    {
+      "name": "count",
+      "type": "number",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
     }
   ],
   "ToolbarDivider": [

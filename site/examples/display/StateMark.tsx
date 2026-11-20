@@ -7,7 +7,20 @@ const row = "flex flex-wrap items-center gap-3";
 export default function Example() {
   return (
     <div className={row}>
-      {(["working", "waiting", "unread", "done", "failed", "online"] as const).map((kind) => (
+      {(
+        [
+          "working",
+          "waiting",
+          "unread",
+          "done",
+          "failed",
+          "online",
+          "online-only",
+          "downloading",
+          "uploading",
+          "not-synced",
+        ] as const
+      ).map((kind) => (
         <div key={kind} className="flex items-center gap-1.5">
           <StateMark kind={kind} />
           <Text size="meta" tone="muted">

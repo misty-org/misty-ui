@@ -24,11 +24,14 @@ export type ButtonSize = "sm" | "md" | "lg";
  * Only media viewers and the Studio use it, usually through IconButton.
  */
 /**
- * Two looks past the four roles: `overlay` for controls over images and video, and `soft`, a
- * solid square in a soft wash, for a button that stands in another's place in a slot (Stop in
- * Send's place while a reply runs).
+ * Looks past the four roles: `overlay` for controls over images and video; `soft`, a solid square
+ * in a soft wash, for a button that stands in another's place in a slot (Stop in Send's place
+ * while a reply runs); and the store's own two for getting something (Get, Install, Make agent,
+ * Update): `get` on every item of a shelf and `get-filled` as the one action of an item's details,
+ * both the filled primary look (white in the dark theme, black in the light one).
  */
-export type ButtonLook = ButtonVariant | "overlay" | "soft";
+export type ButtonLook =
+  ButtonVariant | "overlay" | "soft" | "get" | "get-filled";
 
 export type ButtonJustify = "center" | "start" | "end" | "between" | "none";
 
@@ -81,20 +84,22 @@ const baseClass = cn(
 );
 
 // Focus rings are off app-wide (base.css), so keyboard focus shows as the hover fill.
+// Its fill reaches under the border, so it is as big as a bordered button beside it.
+const primaryClass = cn(
+  "bg-cream-bright bg-clip-border text-charcoal-bg",
+  "hover:bg-cream-action-hover focus-visible:bg-cream-action-hover",
+  "aria-expanded:bg-cream-action-hover data-[state=open]:bg-cream-action-hover",
+);
+
 const variantClass: Record<ButtonLook, string> = {
-  // Its fill reaches under the border, so it is as big as a bordered button beside it.
-  primary: cn(
-    "bg-cream-bright bg-clip-border text-charcoal-bg",
-    "hover:bg-cream-action-hover focus-visible:bg-cream-action-hover",
-    "aria-expanded:bg-cream-action-hover data-[state=open]:bg-cream-action-hover",
-  ),
+  primary: primaryClass,
+  // A soft fill with no outline: the control wash at rest, a step brighter under the pointer or
+  // while open. Its fill reaches under its unseen border, so it is as big as the buttons beside it.
   secondary: cn(
-    "border-charcoal-border-strong bg-transparent text-cream",
-    "hover:border-charcoal-active hover:bg-charcoal-hover hover:text-cream-bright",
-    "focus-visible:bg-charcoal-hover focus-visible:text-cream-bright",
-    "aria-expanded:bg-charcoal-hover aria-expanded:text-cream-bright",
-    "aria-pressed:bg-charcoal-hover aria-pressed:text-cream-bright",
-    "data-[state=open]:bg-charcoal-hover data-[state=open]:text-cream-bright",
+    "bg-control-hover bg-clip-border text-cream-bright",
+    "hover:bg-control-active focus-visible:bg-control-active",
+    "aria-expanded:bg-control-active aria-pressed:bg-control-active",
+    "data-[state=open]:bg-control-active",
   ),
   // Washing with the text color keeps it right on light themes too. Its fill reaches under its
   // unseen border too, so a hovered or open quiet button is as big as the buttons beside it.
@@ -117,6 +122,9 @@ const variantClass: Record<ButtonLook, string> = {
     "bg-control-hover bg-clip-border text-cream hover:bg-control-active hover:text-cream-bright",
     "focus-visible:bg-control-active aria-pressed:text-cream-bright",
   ),
+  // Getting something from the store: the filled primary, white in the dark theme and black in the light one.
+  get: primaryClass,
+  "get-filled": primaryClass,
   // Controls drawn over images and video: a dark translucent disc that reads on any media.
   overlay: cn(
     "border-cream/10 bg-charcoal-bg/75 text-cream backdrop-blur-sm",
@@ -165,27 +173,40 @@ function buttonClassName(
   justify: ButtonJustify,
   className?: string,
 ) {
-  return cn(baseClass, variantClass[variant], sizeClass[size], justifyClass[justify], className);
+  return cn(
+    baseClass,
+    variantClass[variant],
+    sizeClass[size],
+    justifyClass[justify],
+    className,
+  );
 }
 
 // forwardRef and memo components (every Lucide icon) are objects, not functions.
 function isIconComponent(icon: ButtonIcon): icon is IconComponent {
   if (typeof icon === "function") return true;
   return (
-    typeof icon === "object" && icon !== null && !React.isValidElement(icon) && "$$typeof" in icon
+    typeof icon === "object" &&
+    icon !== null &&
+    !React.isValidElement(icon) &&
+    "$$typeof" in icon
   );
 }
 
 function renderIcon(icon: ButtonIcon, side: "inline-start" | "inline-end") {
-  if (icon === null || icon === undefined || typeof icon === "boolean") return null;
+  if (icon === null || icon === undefined || typeof icon === "boolean")
+    return null;
   if (isIconComponent(icon)) {
     const Icon = icon;
     return <Icon data-icon={side} aria-hidden="true" />;
   }
   if (React.isValidElement(icon))
-    return React.cloneElement(icon as React.ReactElement<Record<string, unknown>>, {
-      "data-icon": side,
-    });
+    return React.cloneElement(
+      icon as React.ReactElement<Record<string, unknown>>,
+      {
+        "data-icon": side,
+      },
+    );
   return icon;
 }
 
@@ -239,7 +260,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {renderIcon(icon, "inline-start")}
         <Slottable>{children}</Slottable>
-        {caption != null ? <span className="text-caption text-cream-muted">{caption}</span> : null}
+        {caption != null ? (
+          <span className="text-caption text-cream-muted">{caption}</span>
+        ) : null}
         {renderIcon(iconEnd, "inline-end")}
       </Comp>
     );

@@ -78,9 +78,21 @@ export const screenMarkClass = {
   modelLabel:
     "pointer-events-none absolute top-0 left-0 rounded-md bg-art-ink/70 px-1.5 py-0.5 " +
     "text-caption font-medium whitespace-nowrap text-art-paper data-[current]:bg-art-ink",
-  /** Keyboard focus on something drawn over the desktop: a gray ring that reads on any background. */
-  focusRing:
-    "outline-none focus-visible:rounded-2xl focus-visible:shadow-[0_0_0_0.125rem_rgb(160_160_160/0.7)]",
+  /**
+   * Misty herself beside the pointer (Tutor's cloud, in its own full color), with a dark halo so
+   * it reads on any page. It drifts at rest and moves with what Tutor is doing, read from its
+   * `data-phase`: it leans in while listening and holds still while it talks, so the caller can
+   * bob it with each word it says. `data-wave` waves hello. Its picture is the caller's; this is
+   * only the motion and the halo.
+   */
+  companion:
+    "pointer-events-none origin-bottom select-none drop-shadow-[0_1px_0.375rem_rgb(0_0_0/0.55)] " +
+    "animate-[misty-drift_3.2s_ease-in-out_infinite] " +
+    "data-[phase=listening]:animate-[misty-lean_1.4s_ease-in-out_infinite] " +
+    "data-[phase=responding]:animate-none " +
+    "data-[wave]:animate-[misty-wave_0.6s_ease-in-out_3] motion-reduce:animate-none",
+  /** Something drawn over the desktop that takes keyboard focus: no ring or outline, ever. */
+  focusRing: "outline-none",
 } as const;
 
 /**

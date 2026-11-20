@@ -17,7 +17,8 @@
   min-height: 0;
   margin: 0.5rem 0.25rem 0.5rem 0.5rem;
   border-radius: var(--radius-xl);
-  background: var(--color-charcoal-sidebar);
+  /* The page's own color: its faint edge sets it apart, never a fill. */
+  background: var(--color-pane);
   color: var(--color-cream);
   outline: var(--hairline) solid color-mix(in srgb, var(--misty-theme-text) 9%, transparent);
   outline-offset: calc(-1 * var(--hairline));
@@ -40,7 +41,7 @@
 }
 .misty-side-panel:has([data-page-stage="inset"] [data-browser-page-presented])
   > .misty-side-panel-head {
-  background: var(--color-charcoal-sidebar);
+  background: var(--color-pane);
 }
 
 /* The resize edge: the whole 8px gap on the panel's leading side. Nothing paints at rest; a
@@ -160,7 +161,8 @@
   max-height: calc(100% - 1rem);
   margin: 0.5rem 0.25rem 0.5rem 0.5rem;
   border-radius: var(--radius-xl);
-  background: var(--color-charcoal-sidebar);
+  /* The page's own color: its faint edge sets it apart, never a fill. */
+  background: var(--color-pane);
   color: var(--color-cream);
   outline: var(--hairline) solid color-mix(in srgb, var(--misty-theme-text) 9%, transparent);
   outline-offset: calc(-1 * var(--hairline));

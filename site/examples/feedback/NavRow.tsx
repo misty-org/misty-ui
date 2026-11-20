@@ -1,9 +1,23 @@
 import React from "react";
-import { Folder, Home, MessageSquare, Search, Settings } from "lucide-react";
-import { NavGroupHeading, NavList, NavRow, NavRowLabel, Surface } from "../../../src";
+import { Folder, Home, MessageSquare, Search, Settings, UserPlus } from "lucide-react";
+import {
+  Avatar,
+  AvatarFallback,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  MenuCheckItem,
+  MenuItem,
+  NavGroupHeading,
+  NavList,
+  NavRow,
+  NavRowLabel,
+  NavTitleButton,
+  Surface,
+} from "../../../src";
 
 export const meta = {
-  name: "NavRow · NavRowLabel · NavList · NavGroupHeading",
+  name: "NavRow · NavTitleButton · NavRowLabel · NavList · NavGroupHeading",
   file: "navigation/NavRow.tsx",
   about: "",
   wide: false,
@@ -21,6 +35,23 @@ function NavDemo() {
   ];
   return (
     <Surface tone="sidebar" radius="lg" className="grid w-64 gap-2 p-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <NavTitleButton
+            aria-label="Moku, switch Space"
+            mark={
+              <Avatar size="xs" shape="tile">
+                <AvatarFallback>M</AvatarFallback>
+              </Avatar>
+            }
+            name="Moku"
+          />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="bottom" align="start">
+          <MenuCheckItem checked label="Moku" />
+          <MenuItem icon={<UserPlus />} label="Invite people" />
+        </DropdownMenuContent>
+      </DropdownMenu>
       <NavList>
         {places.map(({ id, label, icon: Icon }) => (
           <NavRow key={id} current={current === id} onClick={() => setCurrent(id)}>

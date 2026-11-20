@@ -30,8 +30,11 @@ import {
 } from "./CollectionColumns";
 
 type CollectionHeadingProps = {
-  /** The page's name, or a node that stands for it, such as a Space switcher menu. */
-  title: ReactNode;
+  /**
+   * The page's name, or a node that stands for it, such as a Space switcher menu. Left out, the
+   * band is only the page's controls at its end, with no hairline (see PageHeader).
+   */
+  title?: ReactNode;
   /** The page's actions. They give way like any ActionBar once the title has faded. */
   actions?: ReadonlyArray<ActionBarItem>;
   /** Accessible name of the actions toolbar. Default "Page actions". */
@@ -45,7 +48,8 @@ type CollectionHeadingProps = {
  * same hairline. Inside a CollectionPage it draws in the band above the page's scroller, so it
  * spans the pane like every other page's bar and a scrollbar never narrows it. The title fades
  * first, then the actions give way; it never wraps. The title may be a node, such as a Space
- * switcher, with the same bar items beside it.
+ * switcher, with the same bar items beside it. Without a title it is only the page's controls at
+ * its end, with no hairline, for a page the sidebar already names.
  *
  * ```tsx
  * <CollectionHeading title="Library" end={<CollectionSearch … />}

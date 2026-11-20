@@ -1,14 +1,7 @@
 import {
   Brain,
-  CalendarDays,
-  Clapperboard,
-  FileText,
   FlaskConical,
   Galaxy,
-  ChartColumn,
-  Presentation,
-  Shapes,
-  KanbanSquare,
   Package,
   CalendarClock,
   ListTodo,
@@ -47,22 +40,17 @@ export const appIcons = {
 export const appIconStrokeWidth = 2;
 
 /**
- * A Space and its pages, one icon each wherever they show: the sidebar's Space row, a Space's
- * tabs, the Space's own Pages, and the shortcuts for them. A tab never wears a stand-in such as a
+ * A Space and its places, one icon each wherever they show: the sidebar's rows, a Space's tabs
+ * and the shortcuts for them. A tab never wears a stand-in such as a
  * house for the Space itself.
  */
 export const spaceIcons = {
   space: Galaxy,
   explore: Compass,
   chat: MessagesSquare,
-  docs: FileText,
-  slides: Presentation,
-  data: ChartColumn,
-  whiteboards: Shapes,
+  files: FolderOpen,
   lab: FlaskConical,
-  planner: KanbanSquare,
-  calendar: CalendarDays,
-  media: Clapperboard,
+  code: Code2,
 } satisfies Record<string, LucideIcon>;
 
 /** A Space tab's tool (`spaceWorkspaceToolFromRoute`) as `spaceIcons` names it. */
@@ -72,16 +60,11 @@ const spaceTools: Record<string, keyof typeof spaceIcons> = {
   explore: "explore",
   social: "chat",
   chat: "chat",
-  journal: "docs",
-  slides: "slides",
-  data: "data",
-  whiteboards: "whiteboards",
   lab: "lab",
-  planner: "planner",
-  calendar: "calendar",
-  // The Library became Media; a tab saved under the old name wears the new icon.
-  library: "media",
-  media: "media",
+  files: "files",
+  // The Library became Media, then Files; a tab saved under an old name wears the new icon.
+  library: "files",
+  media: "files",
 };
 
 /** Catalog IDs retain `chat`; workspace routes and navigation use `social`. */

@@ -38,8 +38,9 @@ const message = (error: string | Error) => (typeof error === "string" ? error : 
  * A tool getting itself ready, said in words: "Setting up the video editor". It is for the time a
  * tool, runtime or connection takes to start (its code and engine loading, a terminal's shell or a
  * webview starting, a live room joining, a native check), never for data, which shows a skeleton
- * shaped like the content (`Skeleton`). When the setup fails it says so with Try again, and when it
- * runs past `stallAfterMs` it says it is taking a while, so it never hangs without a word.
+ * shaped like the content (`Skeleton`) or, when its shape isn't known, `PaneLoading`. When the
+ * setup fails it says so with Try again, and when it runs past `stallAfterMs` it says it is taking
+ * a while, so it never hangs without a word.
  *
  * ```tsx
  * <ToolSuspense tool="code editor"><EditorPane … /></ToolSuspense> // a lazyTool's code arriving

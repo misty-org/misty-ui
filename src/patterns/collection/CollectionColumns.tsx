@@ -54,7 +54,8 @@ export function CollectionPage({ className, children, ...props }: ComponentProps
           {...props}
         >
           <div ref={setSlot} className="shrink-0 empty:hidden" />
-          <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pt-4 pb-5">
+          {/* A flat sheet with no rounded corner to clear, so the thumb runs to both ends. */}
+          <div className="misty-scrollbar-flush flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pt-4 pb-5">
             {children}
           </div>
         </div>

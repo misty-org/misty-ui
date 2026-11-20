@@ -8,9 +8,28 @@ import { Pressable } from "../controls/Pressable";
  * The parts of a full command palette in a dialog (⌘K), larger than a picker's Command: a wide
  * search box with no icon or frame, a row of type tabs, muted group headings and rows of 40px
  * (two lines with an excerpt). They keep the dialog's body line height, so a heading or a
- * two-line row is as tall as the dialog's own text. Layout inside a row is the caller's; cmdk's
- * own `Command` and `Command.Group` hold them.
+ * two-line row is as tall as the dialog's own text. Layout inside a row is the caller's;
+ * `CommandPalette` and `CommandPaletteGroup` hold them.
  */
+
+/**
+ * The palette itself, holding its input, list and rows: a column with no look of its own, since
+ * the dialog around it is the panel. It takes cmdk's props (`shouldFilter`, `loop`, `value`).
+ */
+const CommandPalette = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive>
+>(({ className, ...props }, ref) => (
+  <CommandPrimitive
+    ref={ref}
+    className={cn("flex min-h-0 flex-col", className)}
+    {...props}
+  />
+));
+CommandPalette.displayName = "CommandPalette";
+
+/** A group of the palette's rows under its `heading`, drawn as the list's muted caption. */
+const CommandPaletteGroup = CommandPrimitive.Group;
 
 /** The palette's search box: the body role in the bright text, a muted placeholder, no frame. */
 const CommandPaletteInput = React.forwardRef<
@@ -35,7 +54,9 @@ CommandPaletteInput.displayName = "CommandPaletteInput";
 function CommandPaletteTab({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<typeof Pressable> & { ref?: React.Ref<HTMLButtonElement> }) {
+}: React.ComponentPropsWithoutRef<typeof Pressable> & {
+  ref?: React.Ref<HTMLButtonElement>;
+}) {
   return (
     <Pressable
       type="button"
@@ -69,7 +90,9 @@ const CommandPaletteList = React.forwardRef<
 ));
 CommandPaletteList.displayName = "CommandPaletteList";
 
-type CommandPaletteItemProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> & {
+type CommandPaletteItemProps = React.ComponentPropsWithoutRef<
+  typeof CommandPrimitive.Item
+> & {
   /** A row with the words around its match under its title: it grows to fit both lines. */
   twoLines?: boolean;
   ref?: React.Ref<HTMLDivElement>;
@@ -79,7 +102,12 @@ type CommandPaletteItemProps = React.ComponentPropsWithoutRef<typeof CommandPrim
  * One row of the palette: 40px, the meta role, with large corners; the row cmdk has picked takes
  * the control wash and the bright text.
  */
-function CommandPaletteItem({ className, twoLines, ref, ...props }: CommandPaletteItemProps) {
+function CommandPaletteItem({
+  className,
+  twoLines,
+  ref,
+  ...props
+}: CommandPaletteItemProps) {
   return (
     <CommandPrimitive.Item
       ref={ref}
@@ -96,7 +124,10 @@ function CommandPaletteItem({ className, twoLines, ref, ...props }: CommandPalet
 }
 
 /** The part of a row's text that matches what was typed: a faint wash in the bright text. */
-function CommandPaletteMatch({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
+function CommandPaletteMatch({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLElement>) {
   return (
     <mark
       className={cn(
@@ -112,6 +143,8 @@ export {
   CommandPaletteInput,
   CommandPaletteItem,
   CommandPaletteList,
+  CommandPalette,
+  CommandPaletteGroup,
   CommandPaletteMatch,
   CommandPaletteTab,
 };

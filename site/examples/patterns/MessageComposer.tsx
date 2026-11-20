@@ -1,7 +1,16 @@
 import React from "react";
-import { AtSign, BookOpen, FileText, Mic, Paperclip, RefreshCw, Trash2 } from "lucide-react";
+import {
+  AtSign,
+  BookOpen,
+  FileText,
+  Mic,
+  Paperclip,
+  RefreshCw,
+  Trash2,
+} from "lucide-react";
 import {
   Button,
+  ComposerAttachment,
   ComposerStatusRow,
   IconButton,
   MessageComposer,
@@ -11,7 +20,7 @@ import {
 } from "../../../src";
 
 export const meta = {
-  name: "MessageComposer · MessageComposerSend · MessageComposerAction · ComposerStatusRow",
+  name: "MessageComposer · MessageComposerSend · MessageComposerAction · ComposerStatusRow · ComposerAttachment",
   file: "patterns/MessageComposer.tsx",
   about: "",
   wide: true,
@@ -74,7 +83,17 @@ function ComposerDemo() {
       />
       <MessageComposer
         variant="card"
-        inputProps={{ placeholder: "While a reply runs", "aria-label": "Message (card)" }}
+        inputProps={{
+          placeholder: "While a reply runs",
+          "aria-label": "Message (card)",
+        }}
+        context={
+          <ComposerAttachment
+            icon={FileText}
+            name="Quarterly plan.pdf"
+            onRemove={() => undefined}
+          />
+        }
         status={
           <ComposerStatusRow
             icon={RefreshCw}

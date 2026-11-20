@@ -91,6 +91,7 @@ export * from "./display/Card";
 export * from "./display/CodeBlock";
 export * from "./display/CodeDiff";
 export * from "./display/IndicatorDot";
+export * from "./display/InUseMark";
 export * from "./display/Kbd";
 export * from "./display/ListCard";
 export * from "./display/ListRow";
@@ -112,6 +113,7 @@ export * from "./display/TreeRow";
 export * from "./feedback/FlyingMisty";
 export * from "./feedback/QuietPane";
 export * from "./feedback/LoadingScreen";
+export * from "./feedback/PaneLoading";
 export * from "./feedback/Progress";
 export * from "./feedback/RingMeter";
 export * from "./feedback/SetupState";
@@ -141,12 +143,15 @@ export * from "./icons/MistyMark";
 export * from "./icons/PlaceholderIcon";
 export * from "./icons/appIcons";
 export * from "./icons/AppLogos";
+export * from "./icons/PersonaLogo";
 export * from "./icons/brandIcons";
 export * from "./icons/itemTones";
-export * from "./icons/spaceKinds";
 
 // patterns
 export * from "./patterns/CatalogCard";
+export * from "./patterns/Shelf";
+export * from "./patterns/FeatureCard";
+export * from "./patterns/StoreDetail";
 export * from "./patterns/CustomizableBar";
 export * from "./patterns/CollectionWorkspace";
 export * from "./patterns/CollectionFilterMenu";
@@ -154,6 +159,8 @@ export * from "./patterns/RenameItemDialog";
 export * from "./patterns/MessageActions";
 export * from "./patterns/channel/ChannelLayout";
 export * from "./patterns/channel/MemberList";
+export * from "./patterns/channel/ChannelMessage";
+export * from "./patterns/EmojiPicker";
 export * from "./patterns/QuestionPanel";
 export * from "./patterns/FindBar";
 export * from "./patterns/ImageCropFrame";
@@ -167,6 +174,7 @@ export * from "./patterns/ModelPicker";
 export * from "./patterns/StepPage";
 export * from "./patterns/HeroPage";
 export * from "./patterns/home/AppTile";
+export * from "./patterns/home/AppLauncher";
 export * from "./patterns/home/HomeSection";
 export * from "./patterns/home/homeLayout";
 export * from "./patterns/home/ItemCard";
@@ -174,6 +182,7 @@ export * from "./patterns/home/ItemCard";
 export * from "./classNames";
 
 export {
+  ComposerAttachment,
   ComposerStatusRow,
   MessageComposer,
   MessageComposerAction,

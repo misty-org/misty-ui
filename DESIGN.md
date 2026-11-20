@@ -122,7 +122,9 @@ blocks, the editor, diffs, the terminal), never for URLs, paths, IDs, model name
   ring, border or shadow.
 - **Icons:** every glyph is 16px at one stroke (`styles/glyphs.css`). Icons take no `size`, `strokeWidth` or
   size class. The only larger icon is `PlaceholderIcon`, for a thumbnail, drop zone or empty state.
-- **Depth** comes from borders and surface steps. **No shadows anywhere.**
+- **Depth** comes from faint edges and hairlines, never from a fill. The page, the window's tab row and
+  bottom bar, a chat and its floating panels (side panels, side cards) are all the page's one color;
+  only the sidebar is a color of its own. **No shadows anywhere.**
 - **Layers:** z-order uses named layer tokens (`layers.css`, `--stack-*`), never a number.
 - **Motion:** keyframes live in `styles/animations.css`, named for the motion. Popups keep the shared
   open/close motion.
@@ -151,32 +153,47 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A list of things | `ListRow` (`label`, `description`, `badge`, `state`, `menu`, `trailing`); `TreeRow` for trees | Hand-built rows |
 | A row's own buttons | `RowTools` (`reveal` hover / cover); a row's ⋯ is `RowActions` / `ListRow menu` | Stray icons beside the row |
 | A menu of actions | `DropdownMenu` + `MenuTrigger` with `MenuItem`, `MenuCheckItem`, `MenuRadioItem`, `MenuSubmenu`; right-click is `ContextMenu` with the same items | A `Popover` listing actions, raw menu items |
+| The place a sidebar lists (the Space's selector), opening its menu | `NavTitleButton` (`mark`, `name`) in a `DropdownMenuTrigger asChild`: avatar, name and chevron as one compact button, alone in its row; the place's actions (Invite people) live in its menu | A name button beside a separate boxed chevron |
 | A popover | `Popover` kind `panel` (`PopoverHeader`, `PopoverText`, `PopoverBody`, `PopoverActions`), `list`, or `flush` (`PickerSearch`, `PickerList`, `Command`) | `className` on a popover |
 | A dialog | `Dialog` (`DialogHeader`, `DialogTitle`, `DialogBody`, `DialogFooter`); deletes use `ConfirmDeleteDialog` / `useConfirmDelete`; renames `RenameItemDialog` | A fixed full-screen div |
 | A full-page overlay | `WorkspaceOverlay` or `Sheet` | Custom portals |
 | A tooltip | `Tooltip` (IconButton has one built in) | `title=` |
 | A notice | `notify` (bottom right, at most one action, leaves on its own) | Inline "Saved" text |
+| A file's sync state in a Space's drive | `StateMark` kinds `online-only` (cloud), `downloading` and `uploading` (the spinner), `not-synced` (crossed-out cloud), all muted; a grid card takes `sync` on its `CollectionItem`. A file in step shows no mark; a conflicting copy has no color of its own | A colored chip, a status word, the `online` (connected) kind |
+| Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, offline; `working` and `waiting` for their agent) | A colored chip, a status word in the row |
+| Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` with two `iconOnly` options: the person's own `Avatar` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
+| Who has a file open | `InUseMark` (`people`: at most three faces, then "+N", each named in its tooltip), at the row's end where its state goes | A list of names, a lock icon |
 | Nothing here yet / failed | `EmptyState`, `ErrorState` | A custom centered block |
-| First load | A `Skeleton` shaped like the content (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`) | "Loading…" text |
+| First load of content you can draw before it arrives (rows, cards, settings rows, shelves, a tree) | A `Skeleton` shaped like it (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`, `ShelfSkeleton`) | "Loading…" text |
+| First load whose layout depends on the data (a chat's messages, a thread, a document or file preview, a diff, an item's details) | `PaneLoading`, one spinner in the pane's middle; `inline` for one part of a loaded page | A skeleton guessing the shape, "Loading…" text |
 | Work in progress | `Spinner` or `Progress` where the work happens | A spinner in a button |
 | A page's top band | `PageHeader` (pages), `ViewHeader` (views of a Space), `CollectionHeading` (collections) | A hand-made header |
 | A browsable collection | `CollectionPage`, `CollectionHeading`, `CollectionFilters`, `CollectionSearch`, `CollectionViewToggle`, `CollectionSortMenu`, `CollectionFilterMenu`, `CollectionItems` | Custom bars |
 | A catalog of installables | `CatalogGrid` + `CatalogCard` (`logo`, `title`, `maker`, `description`, `tag`, `detail`, `action`, `menu`); what's already added is a `CatalogTileRow` of `CatalogTile`s | A long full-width list with per-row toggles |
-| A subject's icon | `spaceIcons`, `appIcons`, `officialApps`/`AppLogo`, `EngineMark`, `MistyMark`, `BrandIcon` | A stand-in Lucide glyph or an emoji |
+| A store page's shelves (Explore) | `Shelf` + `ShelfItem` (`logo` at `tile`, `title`, `line`, one `action`, `menu`); featured picks are `FeatureCard`s in a `FeatureRow`, shown only with a banner; picking one opens `StoreDetail` | A grid of cards per section, a list with per-row toggles |
+| A persona's logo | `PersonaLogo` (`icon` for what it does, `color` from `personaTone(id)`) | The catalog's emoji, a bare initial |
+| A channel's messages (Space chat) | `ChannelMessage` with `ChannelMessageText`, `ChannelReply` over a reply, `ChannelReactions` of `ReactionChip`s, `ThreadRepliesButton`; days and unread with `ChannelDivider` | Hand-built message rows |
+| Picking an emoji | `EmojiPicker`, handed the caller's emoji (`sections`, `search`) | A grid of styled buttons in a popover |
+| A file waiting to go with a message | `ComposerAttachment` in the composer's `context` | A hand-made chip |
+| Panes the person resizes | `SplitPanes` of `SplitPane`s with a `SplitHandle` between | react-resizable-panels directly |
+| A command palette (⌘K) | `CommandPalette` holding `CommandPaletteInput`, `CommandPaletteList`, `CommandPaletteGroup`, `CommandPaletteItem` | cmdk directly |
+| A subject's icon | `spaceIcons`, `appIcons`, `AppLogoImage` (an app's own icon), `EngineMark`, `MistyMark`, `BrandIcon` | A stand-in Lucide glyph or an emoji |
 
 ## Rules
 
 ### Layout
 
 - The interface is quiet and mostly neutral and looks finished: flat panes on the window's surface that read as
-  one sheet, with no divider lines between them, generous spacing, modelled on OpenChamber.
+  one sheet, with no divider lines between them, generous spacing, modelled on OpenChamber. The one exception
+  is the window's sidebar: while open, a hairline (`Separator`) runs down its edge with the page.
 - Nothing wraps into ragged rows or spills past its edge. Every bar declares what gives way first: labels turn
   into icons, then the longest name shortens, then items move into a ⋯ menu. No horizontal page scrolling.
 - Labels never get cut off. When tiles or buttons are too narrow for their labels, the grid drops a column
   first.
 - On a wide page, panels pair up; one panel never stretches alone across the whole width. A list or grid keeps
   a readable width or shares the row with a companion panel.
-- Pages have no title bar: the sidebar names the page. A page's top bar holds only its controls.
+- Pages have no title bar: the sidebar names the page. A page's top bar holds only its controls: a
+  `PageHeader` or `CollectionHeading` with no `title`, which draws them at its end with no hairline.
 - A page's create action (New, Create notebook, New task) is its primary button, filled: white in the dark
   theme, black in the light one. It lives where the things it makes are listed, not inside one of them.
 - A bar's controls stand bare, never some boxed and some not. Grid and list are two bare icons, the open one
@@ -215,9 +232,16 @@ The everyday components, several of which have no doc comment in the catalog yet
 
 ### Buttons
 
-- Four roles and three sizes: primary (at most one per surface), secondary, quiet, and danger (only where
-  something is deleted), at 24, 32 and 36px, with 36 only in dialogs and empty states.
+- Four roles and three sizes: primary (at most one per surface), secondary (a soft fill, never an outlined
+  box), quiet, and danger (only where something is deleted), at 24, 32 and 36px, with 36 only in dialogs and
+  empty states.
 - Buttons keep the system's shape: no `rounded-full` or circular icon buttons.
+- Focus never draws a ring, an outline or a glow, on anything: a focused control shows its hover wash, a
+  field its edge. `styles/focus.css` takes the browser's own away, and `tests/noFocusRing.contract.test.ts`
+  fails on any focus ring added back.
+- Getting something from a store (Get, Install, Make agent, Update) is the filled primary look, white in the
+  dark theme and black in the light one: `variant="get"` on shelf items, `variant="get-filled"` as the one action
+  of an item's details. Buttons are never blue.
 - A button never shows loading: while its work runs it is just disabled, and progress shows where the work
   happens (the row, item or content it changes).
 
@@ -244,12 +268,12 @@ The everyday components, several of which have no doc comment in the catalog yet
 - An icon is its subject's, the same one everywhere that subject shows: a row, an option, a tab, a tile and the
   sidebar all wear the icon the thing already has, never a stand-in (a house for a Space, a keyboard on every
   shortcut category, a generic fallback for a page). Look it up first: `spaceIcons` and `appIcons`
-  (`src/icons/appIcons.ts`), `officialApps` (`AppLogos.tsx`), `EngineMark`, `MistyMark`. A subject with
+  (`src/icons/appIcons.ts`), `AppLogoImage` (`AppLogos.tsx`), `EngineMark`, `MistyMark`. A subject with
   no icon yet gets one added there, not chosen at the call site. When nothing tells the items apart, they go
   text alone. Never one icon repeated down a list, and never emoji in place of an icon.
 - Icons, logos and engine marks stand bare, never inside a box: no fill, border or rounded tile behind them.
-  Only an avatar has a shape of its own, and one exception: an app's logo is a colored tile with its own white
-  artwork (`AppLogo`, `officialApps`).
+  Only an avatar has a shape of its own, and one exception: an app's logo is its maker's own icon, already on
+  its own tile (`AppLogoImage`).
 - Every third-party logo is the brand's official artwork in its own colors: a single-color mark follows the
   theme (black on light, white on dark), and one with no artwork shows its initial. A colored logo that would
   disappear on one theme uses the brand's own variant; only when none exists does it sit on a small plate
@@ -260,12 +284,35 @@ The everyday components, several of which have no doc comment in the catalog yet
 
 - Say what the thing is, plainly, in sentence case. No explanatory captions or reassurance labels the UI
   already makes obvious, and no subtext under titles, buttons or forms, except settings rows.
-- Never "Loading…" text. Data loading shows a skeleton shaped like the content; a tool getting ready (an
-  editor, the terminal, a webview, an engine) says so with `SetupState` ("Setting up the video editor"); a
-  tool's lazily loaded code is a `lazyTool` inside `ToolSuspense`. A failed load shows an error, never the
-  empty state, and a stalled setup says so with Try again.
-- User-facing copy calls Claude Code, Codex and the rest *agents*; the engine is the tool underneath.
+- Never "Loading…" text. A tool getting ready (an editor, the terminal, a webview, an engine) says so with
+  `SetupState` ("Setting up the video editor"); a tool's lazily loaded code is a `lazyTool` inside
+  `ToolSuspense`. A failed load shows an error, never the empty state, and a stalled setup says so with Try
+  again. Data loading follows "Waiting for data" below.
+- An *agent* is what a person makes in Misty. Claude Code, Codex, Grok CLI and the rest are *engines*: an agent
+  runs on one, and plugins, skills and connectors belong to the engine. Ready-made instructions to start an agent
+  from are *templates*. Copy never calls an engine an agent.
 - Apps connect through each maker's own sign-in.
+
+### Waiting for data
+
+One question picks the loader: can the content be drawn before the data arrives?
+
+- **Yes: a skeleton.** The shape is known and repeats (rows, cards, settings rows, shelves, a tree), so the
+  frame stays put and the data fills it: `ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`,
+  `ShelfSkeleton`. The sidebar's lists, settings sections, Files, Explore, the member list, search results,
+  an agent's Memory.
+- **No: `PaneLoading`.** The layout depends on the data, so a skeleton would only guess: a chat's messages, a
+  thread, a document or file preview, a diff, a store item's or a skill's details, a pane where unrelated
+  things load at once.
+
+Both hold to the same rules:
+
+- Nothing shows for the first 300ms, so a quick load shows nothing at all. Both build this in.
+- One loader per pane: never a spinner inside a skeleton or beside another. A part of a loaded page that still
+  waits takes its own loader at its own size (`PaneLoading inline`, or a skeleton of that part).
+- First load only. Once something has been shown, a refresh happens behind it (`useCachedResource`).
+- Neither is for a tool getting ready: that is `SetupState`.
+- A failed or stalled load gives way to `ErrorState` with Try again; neither stays up forever.
 
 ### Specific surfaces
 
@@ -292,7 +339,16 @@ Misty's `src/tests/architecture/uiRuleDefinitions.ts`). Feature stylesheets neve
 
 ## Recipes
 
-### A catalog page (Explore, the apps catalog)
+### Explore
+
+- A rail on the page's left (search, then All, Apps, Agents, Plugins, Skills, Prompts, Connectors, a
+  hairline, then Updates), flat on the page like every pane, rows as `NavRow tone="page"`.
+- All opens with a `FeatureRow` of picks that have banners, then `Shelf`s: open-source apps first, then
+  agents. Each section is the same shelves, with `FilterChip`s for its groups.
+- Get, a name or a logo opens `StoreDetail`: banner, logo, name, line, the one action, facts, previews,
+  about.
+
+### A catalog page (the apps catalog)
 
 - One `CollectionPage`. Its `CollectionHeading` holds the page's controls; no page title (the sidebar names it).
 - Switching between kinds of thing (Personas, Plugins, Skills…) is one `ChoiceGroup` or `TabStrip`, never two

@@ -12,6 +12,17 @@
   }
 }
 
+/* Something that shows only once a wait runs long: clear through its delay, then fading in. Played
+   with a delay (`.misty-appear-late`), so a quick load is over before anything shows. */
+@keyframes misty-appear-late {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* A mark's dark halo breathing stronger and back (screenMarkClass.targetPulse). */
 @keyframes misty-halo-pulse {
   50% {
@@ -85,4 +96,39 @@
     opacity: 0;
     transform: translateY(-2.5rem);
   }
+}
+
+/* Something resting in the air, floating up a little and back (Misty beside the pointer). */
+@keyframes misty-drift {
+  50% {
+    transform: translateY(-0.1875rem);
+  }
+}
+
+/* Leaning in to listen: tipping forward and back, slowly (Misty while the person talks). */
+@keyframes misty-lean {
+  50% {
+    transform: rotate(-8deg) translateY(-0.125rem);
+  }
+}
+
+/* A wave hello, rocking side to side (Misty starting the tour). */
+@keyframes misty-wave {
+  25% {
+    transform: rotate(-12deg);
+  }
+  75% {
+    transform: rotate(12deg);
+  }
+}
+
+/* Reduce motion, chosen in Misty's Settings › Interface › Accessibility (`data-reduce-motion` on
+   <html>): transitions and smooth scrolling end at once. Spinners and other loops keep running,
+   since they show that work is happening. */
+:root[data-reduce-motion="true"] *,
+:root[data-reduce-motion="true"] *::before,
+:root[data-reduce-motion="true"] *::after {
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
 }

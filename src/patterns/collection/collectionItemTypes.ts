@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { DriveSyncState } from "../../display/StateMark";
 import { itemToneClass, type ItemTone } from "../../icons/itemTones";
 
 export type CollectionItem = {
@@ -32,6 +33,12 @@ export type CollectionItem = {
   /** Called as either menu opens, before its rows are used, e.g. to point a selection at it. */
   onMenuOpen?: () => void;
   marker?: ReactNode;
+  /**
+   * Where a file in a synced drive is, drawn as its StateMark: a grid card wears it bare at its
+   * top right corner, where its ⋯ takes its place on hover, and a list row after its title. Leave
+   * it out for a file that is downloaded and in step, and for anything that isn't a drive file.
+   */
+  sync?: DriveSyncState;
 };
 
 /** The icon slot's glyph color: the item's tone, or the muted default. */

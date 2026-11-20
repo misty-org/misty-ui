@@ -1,4 +1,4 @@
-import { PanelResizeHandle } from "react-resizable-panels";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { cn } from "../classNames";
 
 /**
@@ -31,3 +31,15 @@ export function SplitHandle(props: {
     />
   );
 }
+
+/**
+ * Panes the person resizes, side by side or stacked (`direction`), with a SplitHandle between
+ * each two. It has no look of its own; it takes react-resizable-panels' PanelGroup props, such
+ * as `autoSaveId` and `onLayout`, and its ref.
+ */
+export const SplitPanes = PanelGroup;
+
+/** One pane of SplitPanes, with its default, least and most size in percent. */
+export const SplitPane = Panel;
+
+export type { ImperativePanelGroupHandle as SplitPanesHandle } from "react-resizable-panels";

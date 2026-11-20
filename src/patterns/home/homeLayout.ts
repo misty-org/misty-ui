@@ -7,31 +7,44 @@
 import { cn } from "../../classNames";
 import { rowShapeTwoLine } from "../../display/rowShape";
 
-/** The home itself: its blocks down one column. */
-export const spaceHomeClass = "@container grid gap-7 pt-3";
+/**
+ * The home itself: its blocks down one column. It adds no room above the first block: the page's
+ * scroller already keeps it as far from the top as from the sides.
+ */
+export const spaceHomeClass = "@container grid gap-7";
 
 /** The wrap the items' grid measures when the home shows items instead of its overview. */
 export const homeItemsWrapClass = "@container";
 
 /** A block: its heading, then whatever it holds, the holder taking the rest of the height. */
-export const homeSectionClass = "grid min-w-0 grid-rows-[auto_1fr] content-start gap-2.5";
+export const homeSectionClass =
+  "grid min-w-0 grid-rows-[auto_1fr] content-start gap-2.5";
 
 /** A block set in a panel: room inside its edge, its heading a little tighter at the top. */
 export const homePanelClass = "px-4 pt-2.5 pb-3";
 
-/** A block that starts a new part of the page: a hairline above it, with the home's gap past it. */
-export const homeDividedClass = "border-t border-charcoal-border pt-7";
+/**
+ * A block that starts a new part of the page: a hairline above it, the home's gap before the line
+ * and a shorter step after it, so the heading sits with what it heads.
+ */
+export const homeDividedClass = "border-t border-charcoal-border pt-4";
 
 /** The Space's pages: two, three, then six across. */
 export const homePlacesClass =
   "grid grid-cols-2 gap-3 @min-[32.5rem]:grid-cols-3 @min-[50rem]:grid-cols-6";
 
 /**
- * Panels in pairs on a wide home; an odd block out takes the whole row instead of leaving a hole
+ * Blocks in pairs on a wide home, flat on the page like the rest of it: a hairline above each row
+ * and one between the two blocks of a pair, so the overview reads as one sheet ruled into places
+ * rather than a stack of cards. An odd block out takes the whole row instead of leaving a hole
  * beside it.
  */
 export const homePairClass =
-  "grid grid-cols-1 items-stretch gap-x-3 gap-y-7 @min-[50rem]:grid-cols-2 " +
+  "grid grid-cols-1 items-stretch gap-y-7 @min-[50rem]:grid-cols-2 " +
+  "[&>*]:border-t [&>*]:border-charcoal-border [&>*]:pt-4 " +
+  "@min-[50rem]:[&>:nth-child(odd):not(:last-child)]:border-r " +
+  "@min-[50rem]:[&>:nth-child(odd):not(:last-child)]:pr-6 " +
+  "@min-[50rem]:[&>:nth-child(even)]:pl-6 " +
   "@min-[50rem]:[&>:last-child:nth-child(odd)]:col-span-full";
 
 /** Items (and agents): one, two, three, then four across. */

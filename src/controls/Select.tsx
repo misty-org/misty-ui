@@ -44,7 +44,7 @@ const SelectTrigger = React.forwardRef<
       "flex w-full min-w-0 items-center justify-between gap-2 whitespace-nowrap border",
       "border-charcoal-border-strong bg-charcoal-card text-left text-control text-cream",
       "transition-colors outline-none hover:border-charcoal-active",
-      "focus-visible:ring-3 focus-visible:ring-charcoal-active/50",
+      "focus-visible:border-charcoal-active",
       "data-[placeholder]:text-cream-muted disabled:cursor-not-allowed disabled:opacity-50",
       "aria-invalid:border-danger",
       // The picked value: its icon and its label, which fades when the field is narrow.

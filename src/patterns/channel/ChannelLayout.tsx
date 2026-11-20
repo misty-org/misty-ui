@@ -3,14 +3,16 @@ import type { LucideIcon } from "lucide-react";
 import { ChevronDown } from "lucide-react";
 
 import { cn } from "../../classNames";
+import { IconButton } from "../../controls/IconButton";
 import { Pressable } from "../../controls/Pressable";
+import { ActionBar, renderIcon, type ActionBarItem } from "../../layout/ActionBar";
 import { Separator } from "../../layout/Separator";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { Text } from "../../display/Text";
 
 /*
  * A place where people talk, laid out as Discord lays it out: a column of channels on the
- * sidebar's fill, then the open channel on the card's fill, its header over the messages and,
+ * sidebar's fill, then the open channel on the page's own color, its header over the messages and,
  * beside them, the member list. Discord's lines too: one under both headers, one before the
  * member list. Sizes are Discord's, in design pixels a tenth under its CSS pixels, since the main
  * window's root is 110%: a 44px header, 32px channel rows, a 52px composer.
@@ -70,12 +72,12 @@ export function ChannelSidebarHeader({
 }
 
 /**
- * The open channel on the card's fill: its header across the top, the chat, then `side` (the
+ * The open channel on the page's own color, as the tab row and bottom bar are: its header across the top, the chat, then `side` (the
  * member list, a thread, search results) after a line, on the same fill.
  */
 export function ChannelMain(props: { header: ReactNode; side?: ReactNode; children: ReactNode }) {
   return (
-    <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col bg-charcoal-card">
+    <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col bg-pane">
       {props.header}
       <div className="flex min-h-0 flex-1">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">{props.children}</div>
@@ -87,13 +89,46 @@ export function ChannelMain(props: { header: ReactNode; side?: ReactNode; childr
   );
 }
 
-/** The channel's bar: its icon and name, an optional topic, and its controls at the end. */
+/** A header action drawn as its icon alone, muted until it is a toggle that is on. */
+function iconOnly(item: ActionBarItem): ActionBarItem {
+  if (item.render) return item;
+  return {
+    ...item,
+    render: () => (
+      <IconButton
+        label={item.label}
+        shortcut={item.shortcut}
+        variant="quiet"
+        disabled={item.disabled}
+        aria-pressed={item.pressed}
+        className={item.pressed ? "text-cream-bright" : "text-cream-muted"}
+        onClick={item.onSelect}
+      >
+        {renderIcon(item.icon)}
+      </IconButton>
+    ),
+  };
+}
+
+/**
+ * The open chat's own bar, under the window's tabs, as Discord draws a channel's or a direct
+ * message's: its icon (or the person's face) and name, an optional topic, then its controls. Each
+ * pane draws its own, so a split never loses a chat's controls. `actions` are its icon buttons
+ * (calls, Threads, Pinned, Members, a ⋯ of the rest), icons only with the label as the tooltip;
+ * `end` is what stays last and never folds, such as the message search. The name fades first; then
+ * the actions give way into a ⋯ menu, lowest priority first. It never wraps.
+ */
 export function ChannelHeader(props: {
   icon?: LucideIcon;
   /** A person's face for a direct message, in place of an icon. */
   leading?: ReactNode;
   name: string;
   topic?: string;
+  /** The chat's icon buttons; a toggle that is on is `pressed`. */
+  actions?: ReadonlyArray<ActionBarItem>;
+  /** Accessible name of the actions toolbar. Default "Chat actions". */
+  actionsLabel?: string;
+  /** Always shown at the end, after the actions, and never folds: the message search. */
   end?: ReactNode;
 }) {
   const Icon = props.icon;
@@ -101,11 +136,18 @@ export function ChannelHeader(props: {
     <header className={cn(headerBar, "gap-2 px-4")}>
       {props.leading ??
         (Icon ? (
-          <Text bare tone="muted">
-            <Icon aria-hidden="true" className="size-5" />
+          <Text bare tone="muted" className="flex shrink-0">
+            <Icon aria-hidden="true" />
           </Text>
         ) : null)}
-      <Text as="h1" size="body" weight="semibold" tone="bright" className="min-w-0 shrink-0">
+      <Text
+        as="h1"
+        size="body"
+        weight="semibold"
+        tone="bright"
+        full
+        className={props.topic ? "min-w-32 shrink" : "min-w-32 flex-1"}
+      >
         {props.name}
       </Text>
       {props.topic ? (
@@ -115,10 +157,17 @@ export function ChannelHeader(props: {
             {props.topic}
           </OverflowFadeText>
         </>
-      ) : (
-        <span className="flex-1" />
-      )}
-      {props.end ? <div className="flex shrink-0 items-center gap-2">{props.end}</div> : null}
+      ) : null}
+      {props.actions?.length ? (
+        <ActionBar
+          label={props.actionsLabel ?? "Chat actions"}
+          width="content"
+          items={props.actions.map(iconOnly)}
+          end={props.end}
+        />
+      ) : props.end ? (
+        <div className="flex shrink-0 items-center gap-2">{props.end}</div>
+      ) : null}
     </header>
   );
 }

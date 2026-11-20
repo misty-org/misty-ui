@@ -7,17 +7,23 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import { ArrowUp, type LucideIcon } from "lucide-react";
+import { ArrowUp, X, type LucideIcon } from "lucide-react";
 import { Textarea } from "../controls/Textarea";
 import { IconButton, type IconButtonProps } from "../controls/IconButton";
 import { CompactControls } from "../controls/RowContext";
-import { ActionBar, type ActionBarItem, type ActionBarSize } from "../layout/ActionBar";
+import {
+  ActionBar,
+  type ActionBarItem,
+  type ActionBarSize,
+} from "../layout/ActionBar";
 import { PathLine, type PathLineSegment } from "../layout/PathLine";
 import { cn } from "../classNames";
+import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { uiPx } from "../lib/uiScale";
 
 /** The text box without its inset and type; the box grows to 160px, then scrolls. */
-const textBaseClass = "block w-full max-h-40 min-w-0 resize-none whitespace-pre-wrap break-words";
+const textBaseClass =
+  "block w-full max-h-40 min-w-0 resize-none whitespace-pre-wrap break-words";
 
 /**
  * Shared by the plain composer's input and a mention overlay drawn over it, so their text wraps
@@ -63,7 +69,9 @@ const cardTextClass = {
 } as const;
 
 export type MessageComposerProps = Omit<ComponentProps<"div">, "children"> & {
-  inputProps: ComponentProps<typeof Textarea> & { [key: `data-${string}`]: unknown };
+  inputProps: ComponentProps<typeof Textarea> & {
+    [key: `data-${string}`]: unknown;
+  };
   inputRef?: RefObject<HTMLTextAreaElement | null>;
   /** plain (default) or card; see MessageComposerVariant. */
   variant?: MessageComposerVariant;
@@ -218,7 +226,13 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
           data-slot="message-composer-text"
           className={cn(
             "flex min-w-0 items-end gap-1",
-            card ? (hasBar ? "px-3 pt-2.5" : "px-3 py-2.5") : hasBar ? "px-2 pt-1.5" : "p-1.5",
+            card
+              ? hasBar
+                ? "px-3 pt-2.5"
+                : "px-3 py-2.5"
+              : hasBar
+                ? "px-2 pt-1.5"
+                : "p-1.5",
           )}
         >
           <div className="relative min-w-0 flex-1">
@@ -240,9 +254,17 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
         {hasBar && (
           <div
             data-slot="message-composer-bar"
-            className={cn("flex min-w-0", card ? "px-2 pt-1 pb-2" : "px-1.5 pb-1.5")}
+            className={cn(
+              "flex min-w-0",
+              card ? "px-2 pt-1 pb-2" : "px-1.5 pb-1.5",
+            )}
           >
-            <ActionBar label={barLabel} size={barSize} items={items ?? []} end={end} />
+            <ActionBar
+              label={barLabel}
+              size={barSize}
+              items={items ?? []}
+              end={end}
+            />
           </div>
         )}
       </div>
@@ -325,6 +347,35 @@ export function ComposerStatusRow(props: {
           <CompactControls>{props.actions}</CompactControls>
         </span>
       ) : null}
+    </div>
+  );
+}
+
+/**
+ * A file waiting to go with the message, in the composer's `context` row: its kind's glyph, its
+ * name (fading when long) and a × that takes it off. For pictures shown as thumbnails, a chat
+ * draws its own tile.
+ */
+export function ComposerAttachment(props: {
+  icon: LucideIcon;
+  name: string;
+  onRemove(): void;
+}) {
+  const Icon = props.icon;
+  return (
+    <div
+      data-slot="composer-attachment"
+      className="flex h-8 max-w-56 min-w-0 shrink-0 items-center gap-1.5 rounded-md bg-control-hover pr-0.5 pl-2 text-control text-cream"
+    >
+      <Icon aria-hidden className="shrink-0 text-cream-muted" />
+      <OverflowFadeText className="min-w-0">{props.name}</OverflowFadeText>
+      <IconButton
+        size="sm"
+        label={`Remove ${props.name}`}
+        onClick={props.onRemove}
+      >
+        <X />
+      </IconButton>
     </div>
   );
 }

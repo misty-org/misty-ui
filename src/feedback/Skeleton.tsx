@@ -12,6 +12,11 @@ import { controlFrame } from "../controls/controlFrame";
  * A skeleton stands in for data on its very first load only: once something has been shown, it
  * comes back from the cache (`useCachedResource`) and refreshes behind what is on screen. Every
  * skeleton takes the exact shape of what replaces it, so nothing moves when the data arrives.
+ *
+ * It is for content that can be drawn before the data arrives: rows, cards, settings rows,
+ * shelves, a tree. When the layout depends on the data (a chat's messages, a document, a diff, an
+ * item's details) the first load is `PaneLoading` instead. Like it, a skeleton shows only once the
+ * wait passes 300ms, so a quick load shows nothing.
  */
 function Skeleton({
   as: Tag = "div",

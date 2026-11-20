@@ -1,6 +1,7 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import type { MouseEvent } from "react";
 import { Pressable } from "../../controls/Pressable";
+import { StateMark } from "../../display/StateMark";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../display/Table";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { cn } from "../../classNames";
@@ -169,6 +170,7 @@ export function CollectionItemsTable({
                       {item.title}
                     </OverflowFadeText>
                     {item.marker}
+                    {item.sync ? <StateMark kind={item.sync} /> : null}
                   </Pressable>
                 </TableCell>
                 {metadataColumns.map((column) => (

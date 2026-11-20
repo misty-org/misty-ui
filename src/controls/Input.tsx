@@ -52,7 +52,7 @@ const inputVariants = {
     fieldInset.md,
     "w-full min-w-0 border border-white/18 bg-white/6",
     "text-art-white outline-none placeholder:text-cream-muted",
-    "focus:outline focus:outline-white/55",
+    "focus:border-white/55",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
   // A 24px field in a row of 24px chips or buttons, such as renaming a speaker in place.

@@ -29,15 +29,61 @@ export function MemberGroupHeading(props: { title: string; count: number }) {
   );
 }
 
-/** `working`: their agent is at work; `waiting`: it waits on them; `offline` dims the row. */
-export type MemberPresence = "online" | "working" | "waiting" | "offline";
+/**
+ * How someone shows: `online`, `idle` (no input for a while), `dnd` (do not disturb) and
+ * `offline` are the person's own status; `working` and `waiting` say their agent is at work or
+ * waits on them. `offline` draws no dot and dims a member row.
+ */
+export type MemberPresence = "online" | "idle" | "dnd" | "working" | "waiting" | "offline";
 
 const dotClass: Record<MemberPresence, string> = {
   online: "bg-[var(--tone-done)]",
+  idle: "bg-[var(--tone-waiting)]",
+  dnd: "bg-[var(--tone-failed)]",
   working: "bg-[var(--tone-working)]",
   waiting: "bg-[var(--tone-waiting)]",
   offline: "hidden",
 };
+
+const presenceNames: Record<MemberPresence, string> = {
+  online: "Online",
+  idle: "Idle",
+  dnd: "Do not disturb",
+  working: "Working",
+  waiting: "Needs them",
+  offline: "Offline",
+};
+
+/**
+ * Someone's status as a small dot on the corner of their face, wherever a face shows (a member
+ * row, a DM, a friend): green online, amber idle, red do not disturb, nothing offline. The face
+ * and the dot sit in this box; the dot's ring is the surface's own color (`ring` is the sidebar
+ * where the face sits on the sidebar).
+ */
+export function PresenceFace({
+  presence,
+  ring = "pane",
+  children,
+}: {
+  presence: MemberPresence;
+  ring?: "pane" | "sidebar";
+  children: ReactNode;
+}) {
+  return (
+    <span className="relative inline-flex shrink-0">
+      {children}
+      <span
+        role="img"
+        aria-label={presenceNames[presence]}
+        className={cn(
+          "absolute -right-0.5 -bottom-0.5 size-3 rounded-full border-2",
+          ring === "sidebar" ? "border-sidebar" : "border-pane",
+          dotClass[presence],
+        )}
+      />
+    </span>
+  );
+}
 
 /**
  * One person: their face with a presence dot, their name in their role's color with a crown
@@ -78,16 +124,7 @@ export function MemberRow({
         className,
       )}
     >
-      <span className="relative shrink-0">
-        {props.avatar}
-        <span
-          aria-hidden="true"
-          className={cn(
-            "absolute -right-0.5 -bottom-0.5 size-3 rounded-full border-2 border-charcoal-card",
-            dotClass[props.presence],
-          )}
-        />
-      </span>
+      <PresenceFace presence={props.presence}>{props.avatar}</PresenceFace>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="flex min-w-0 items-center gap-1 text-body">
           <OverflowFadeText className="min-w-0">

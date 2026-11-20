@@ -48,7 +48,7 @@ const Slider = React.forwardRef<
         className={cn(
           "relative block size-4 shrink-0 rounded-full bg-cream-bright shadow-sm outline-none",
           "transition-[box-shadow] duration-150 after:absolute after:-inset-2 after:content-['']",
-          "hover:ring-4 hover:ring-cream/15 focus-visible:ring-4 focus-visible:ring-cream/25",
+          "hover:ring-4 hover:ring-cream/15",
           "data-[disabled]:pointer-events-none data-[disabled]:bg-cream-muted",
         )}
       />

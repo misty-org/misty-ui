@@ -12,4 +12,4 @@ export { CollectionCardTitle, CollectionCardMetadata } from "./collection/Collec
 export { CollectionItems } from "./collection/CollectionItems";
 export { CollectionSkeleton } from "./collection/CollectionSkeleton";
 export { useCollectionView } from "./collection/collectionMemory";
-export type { CollectionItem } from "./collection/collectionItemTypes";
+export type { CollectionColumn, CollectionItem } from "./collection/collectionItemTypes";

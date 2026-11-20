@@ -1,6 +1,7 @@
 import type { MouseEvent, ReactNode } from "react";
 import { Pressable } from "../../controls/Pressable";
 import { Card } from "../../display/Card";
+import { StateMark } from "../../display/StateMark";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { Tooltip } from "../../overlays/Tooltip";
 import { cn } from "../../classNames";
@@ -138,7 +139,12 @@ export function CollectionItemsGrid({
                 className="flex w-full flex-1 flex-col p-4"
                 onClick={open}
               >
-                <span className={cn("flex min-h-10 min-w-0 items-center gap-3", actions && "pr-8")}>
+                <span
+                  className={cn(
+                    "flex min-h-10 min-w-0 items-center gap-3",
+                    (actions || item.sync) && "pr-8",
+                  )}
+                >
                   {item.icon ? (
                     <span
                       aria-hidden="true"
@@ -162,7 +168,12 @@ export function CollectionItemsGrid({
                 className="flex h-64 w-full flex-col p-4"
                 onClick={open}
               >
-                <span className={cn("flex h-8 min-w-0 items-center gap-2", actions && "pr-8")}>
+                <span
+                  className={cn(
+                    "flex h-8 min-w-0 items-center gap-2",
+                    (actions || item.sync) && "pr-8",
+                  )}
+                >
                   <CollectionCardTitle title={item.title} />
                   {item.marker}
                 </span>
@@ -181,14 +192,30 @@ export function CollectionItemsGrid({
                 {metadata}
               </Pressable>
             )}
-            {actions ? (
-              // Level with the title line, inside the card's padding.
+            {actions || item.sync ? (
+              // Level with the title line, inside the card's padding. The sync mark and the ⋯
+              // share the corner: the ⋯ takes the mark's place while it shows, as in a list row.
               <div
                 className={cn(
-                  "absolute right-3 top-4 flex items-center",
+                  "absolute right-3 top-4 grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1",
                   layout === "compact" ? "h-10" : "h-8",
                 )}
               >
+                {item.sync ? (
+                  <span
+                    data-slot="collection-card-sync"
+                    className={cn(
+                      "flex items-center",
+                      // The ⋯ shows on exactly these conditions (RowActions), so the two never overlap.
+                      actions && [
+                        "group-hover/row:invisible group-focus-within/row:invisible",
+                        "group-has-[[data-state=open]]/row:invisible group-has-[[data-context-open]]/row:invisible",
+                      ],
+                    )}
+                  >
+                    <StateMark kind={item.sync} />
+                  </span>
+                ) : null}
                 <CollectionItemActions item={item} />
               </div>
             ) : null}

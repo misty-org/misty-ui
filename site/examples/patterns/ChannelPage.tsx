@@ -1,4 +1,4 @@
-import { Hash } from "lucide-react";
+import { Hash, MessagesSquare, Pin, Users } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
@@ -15,6 +15,7 @@ import {
   MentionMark,
   NavRow,
   NavRowLabel,
+  SearchField,
   Text,
   TypingLine,
 } from "../../../src";
@@ -42,7 +43,19 @@ function ChannelDemo() {
           </div>
         </ChannelSidebar>
         <ChannelMain
-          header={<ChannelHeader icon={Hash} name="general" topic="Anything about the project" />}
+          header={
+            <ChannelHeader
+              icon={Hash}
+              name="general"
+              topic="Anything about the project"
+              actions={[
+                { id: "threads", icon: MessagesSquare, label: "Threads", priority: 2 },
+                { id: "pinned", icon: Pin, label: "Pinned", priority: 1 },
+                { id: "members", icon: Users, label: "Members", priority: 3, pressed: true },
+              ]}
+              end={<SearchField containerClassName="w-56" aria-label="Search" placeholder="Search" />}
+            />
+          }
           side={
             <MemberList label="Members">
               <MemberGroupHeading title="Online" count={2} />

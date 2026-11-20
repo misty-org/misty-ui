@@ -12,6 +12,7 @@
 @import "./theme.css";
 @import "./overlays.css";
 @import "./components.css";
+@import "./focus.css";
 @import "./layers.css";
 @import "./animations.css";
 @import "./glyphs.css";

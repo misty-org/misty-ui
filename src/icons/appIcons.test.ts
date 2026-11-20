@@ -6,15 +6,11 @@ describe("a Space's tabs wear the Space's own icons", () => {
     ["home", spaceIcons.space],
     ["space", spaceIcons.space],
     ["social", spaceIcons.chat],
-    ["journal", spaceIcons.docs],
-    ["slides", spaceIcons.slides],
-    ["data", spaceIcons.data],
-    ["whiteboards", spaceIcons.whiteboards],
-    ["planner", spaceIcons.planner],
-    ["calendar", spaceIcons.calendar],
-    ["media", spaceIcons.media],
-    // A tab saved before the Library became Media.
-    ["library", spaceIcons.media],
+    ["lab", spaceIcons.lab],
+    ["files", spaceIcons.files],
+    // Tabs saved before Media became Files.
+    ["media", spaceIcons.files],
+    ["library", spaceIcons.files],
   ])("%s", (tool, icon) => {
     expect(appIcon(tool, "space")).toBe(icon);
   });

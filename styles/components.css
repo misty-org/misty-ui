@@ -22,8 +22,16 @@
     }
   }
 
-  /* Monochrome loading placeholder: a soft highlight sweeps across the block. */
+  /* A first load's placeholder shows only once the wait passes 300ms, so a quick load shows
+     nothing. Skeletons and PaneLoading share it; blocks mounted together appear together. */
+  .misty-appear-late {
+    animation: misty-appear-late 150ms ease-out 300ms both;
+  }
+
+  /* Monochrome loading placeholder: a soft highlight sweeps across the block. It appears late,
+     like PaneLoading. */
   .misty-skeleton {
+    animation: misty-appear-late 150ms ease-out 300ms both;
     position: relative;
     isolation: isolate;
     overflow: hidden;

@@ -25,8 +25,14 @@ function ResizableBox(props: { children: React.ReactNode; height?: string }) {
 
 export default function Example() {
   return (
-    <ResizableBox>
-      <PageHeader title="Notes" actions={actions.slice(0, 3)} />
-    </ResizableBox>
+    <div className="flex flex-col gap-4">
+      <ResizableBox>
+        <PageHeader title="Notes" actions={actions.slice(0, 3)} />
+      </ResizableBox>
+      {/* Untitled: only the page's controls, at its end, with no hairline. */}
+      <ResizableBox>
+        <PageHeader actions={actions.slice(0, 2)} />
+      </ResizableBox>
+    </div>
   );
 }

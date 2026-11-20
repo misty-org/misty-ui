@@ -89,7 +89,7 @@ export function RoleMention(props: { color?: string; label: string }) {
           : "bg-mention-bg/35 text-cream-bright",
       )}
     >
-      @{props.label}
+      {`@${props.label}`}
     </span>
   );
 }
