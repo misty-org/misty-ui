@@ -49,7 +49,7 @@ const tints = [
 export default function Example() {
   return (
     <div className="grid gap-4">
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-2">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(--spacing(28),1fr))] gap-2">
         {surfaceTones.map((tone) => (
           <Surface
             key={tone}
@@ -62,7 +62,7 @@ export default function Example() {
           </Surface>
         ))}
       </div>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-2">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(--spacing(28),1fr))] gap-2">
         {surfaceEdges.map((edge) => (
           <Surface key={edge} tone="card" edge={edge} radius="lg" className="grid h-14 place-items-center">
             <Text size="caption">edge {edge}</Text>
@@ -93,7 +93,7 @@ export default function Example() {
           <Text size="caption">state waiting</Text>
         </Surface>
       </div>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-2">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(--spacing(28),1fr))] gap-2">
         {tints.map((tint) => (
           <Surface key={tint} tint={tint} radius="lg" className="grid h-14 place-items-center">
             <Text size="caption" tint={tint}>

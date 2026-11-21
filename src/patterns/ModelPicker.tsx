@@ -36,7 +36,7 @@ export interface ModelPickerModel {
 export interface ModelPickerProps {
   /** What is picked, such as "Model": the trigger's name and the list's name. */
   label: string;
-  /** The 16px mark before the name, such as the engine's. */
+  /** The 18px mark before the name, such as the engine's. */
   icon?: ButtonIcon;
   /** Undefined while the models are read: the list shows skeleton rows. */
   models: readonly ModelPickerModel[] | undefined;

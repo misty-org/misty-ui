@@ -15,7 +15,7 @@ type MenuTriggerProps = Omit<
 > & {
   /** Accessible name and tooltip; also the visible text unless `value` is given. */
   label: string;
-  /** A 16px glyph: a Lucide icon (`icon={Settings}`) or an element. */
+  /** An 18px glyph: a Lucide icon (`icon={Settings}`) or an element. */
   icon?: ButtonIcon;
   /** Current selection shown in place of the label, e.g. a picked model. It fades when long. */
   value?: React.ReactNode;
@@ -32,7 +32,7 @@ type MenuTriggerProps = Omit<
   kind?: "menu" | "popover";
   /** Defaults to quiet. */
   variant?: IconButtonProps["variant"];
-  /** sm 24 or md 32 (the default), so a trigger matches the row it sits in. */
+  /** sm 27 or md 36 (the default), so a trigger matches the row it sits in. */
   size?: IconButtonProps["size"];
   /**
    * Quiet text instead of a button, for a value at the end of a row that opens its menu (the

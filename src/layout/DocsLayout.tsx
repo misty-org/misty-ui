@@ -57,9 +57,9 @@ export function DocsLayout({
       {header}
       <div
         className={cn(
-          "mx-auto grid max-w-(--docs-max,90rem) px-(--docs-gutter,0px) min-[52rem]:grid-cols-[16rem_minmax(0,1fr)]",
+          "mx-auto grid max-w-(--docs-max,90rem) px-(--docs-gutter,0px) min-[52rem]:grid-cols-[--spacing(64)_minmax(0,1fr)]",
           // The third column exists only for a page that has a contents list.
-          toc && "min-[62rem]:grid-cols-[16rem_minmax(0,1fr)_13rem]",
+          toc && "min-[62rem]:grid-cols-[--spacing(64)_minmax(0,1fr)_--spacing(52)]",
         )}
       >
         <aside
@@ -198,7 +198,7 @@ export function DocsHero({
   aside?: ReactNode;
 }) {
   return (
-    <section className="grid items-start gap-10 pb-12 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
+    <section className="grid items-start gap-10 pb-12 xl:grid-cols-[minmax(0,1fr)_minmax(0,--spacing(104))]">
       <div className="grid gap-6">
         <h1 className="m-0 text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.02] font-semibold tracking-[-0.05em] text-cream-bright">
           {title}
@@ -410,7 +410,7 @@ export function DocsSearch({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent placement="top" hideClose className="max-w-170 gap-0 overflow-hidden p-0" aria-describedby={undefined}>
           <DialogTitle className="sr-only">{placeholder}</DialogTitle>
-          <CommandPalette loop className="max-h-[min(35rem,calc(100dvh_-_8rem))]">
+          <CommandPalette loop className="max-h-[min(--spacing(140),calc(100dvh_-_var(--spacing)*32))]">
             <CommandPaletteInput autoFocus placeholder={placeholder} className="pt-5 pr-14 pb-4 pl-5" />
             <Separator />
             <CommandPaletteList className="min-h-0 flex-auto px-2 pt-1.5 pb-2">

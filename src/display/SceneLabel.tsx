@@ -266,7 +266,7 @@ export function SceneMeter({
  * One slot of a game's hotbar over the scene: a square holding a glyph in its tint and a short
  * word under it, with its number key in the corner, as players expect of a bar along the bottom of
  * a game. `selected` keeps it lit for what is in force now (the order the team is under): the
- * neutral pressed wash. `compact` folds the word away and the slot down to 40px, for a hotbar
+ * neutral pressed wash. `compact` folds the word away and the slot down to 45px, for a hotbar
  * resting small. The word is its accessible name unless `aria-label` says more.
  */
 export function SceneSlot({
@@ -284,7 +284,7 @@ export function SceneSlot({
   keyName?: string;
   tint?: SceneTint;
   selected?: boolean;
-  /** Just the glyph and its key, 40px tall; the word folds away. */
+  /** Just the glyph and its key, 45px tall; the word folds away. */
   compact?: boolean;
 }) {
   return (

@@ -6,8 +6,8 @@
  * Controls take their frame from here and nowhere else (the control-frame architecture test), and
  * features never set a control's height or corners (the field-restyle and button-restyle UI rules).
  *
- * sm 24 for inline controls inside rows and chips, md 32 for every bar and form (the default),
- * lg 36 for a page's one call to action.
+ * sm 27 for inline controls inside rows and chips, md 36 for every bar and form (the default),
+ * lg 40.5 for a page's one call to action.
  */
 export const controlFrame = {
   sm: "h-6 rounded-md",

@@ -3,11 +3,11 @@ import { OutOfRow } from "../controls/RowContext";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 const settingsOverlayLayerClass = [
-  "fixed inset-0 layer-workspace-overlay grid place-items-center bg-scrim px-6 pb-6 pt-[max(1.5rem,var(--misty-modal-inset-top,0px))]",
+  "fixed inset-0 layer-workspace-overlay grid place-items-center bg-scrim px-6 pb-6 pt-[max(var(--spacing)*6,var(--misty-modal-inset-top,0px))]",
   "animate-in fade-in-0 duration-200",
 ].join(" ");
 const settingsOverlayPanelClass = [
-  "h-[min(56.25rem,calc(100dvh-1.5rem-max(1.5rem,var(--misty-modal-inset-top,0px))))] w-[min(75rem,calc(100dvw-6rem))]",
+  "h-[min(--spacing(225),calc(100dvh-var(--spacing)*6-max(var(--spacing)*6,var(--misty-modal-inset-top,0px))))] w-[min(--spacing(300),calc(100dvw-var(--spacing)*24))]",
   "min-w-0 overflow-hidden rounded-xl bg-charcoal-card",
   "misty-dialog-motion",
 ].join(" ");

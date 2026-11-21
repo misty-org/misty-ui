@@ -5,7 +5,7 @@ export type StepDotState = "pending" | "working" | "done" | "failed";
 
 export type StepDotProps = {
   state: StepDotState;
-  /** `sm` (6px) beside a line of text, `md` (10px, the default) leading a row in a list of steps. */
+  /** `sm` (6.75px) beside a line of text, `md` (11.25px, the default) leading a row in a list of steps. */
   size?: "sm" | "md";
   /** Layout only: margins or placement. */
   className?: string;

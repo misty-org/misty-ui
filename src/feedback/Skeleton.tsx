@@ -110,7 +110,7 @@ const rowVariants = {
   },
 } as const;
 
-/** Leading shapes: a 16px icon, a 24px avatar, a 40px avatar, and a 32px tile. */
+/** Leading shapes: an 18px icon, a 27px avatar, a 45px avatar, and a 36px tile. */
 const leadingShapes = {
   icon: "size-4 rounded-sm",
   avatar: "size-6 rounded-full",
@@ -218,7 +218,7 @@ function SkeletonDocument({
 
 /**
  * Lines of code with their number gutter, for an editor or a diff: monospace lines at the code
- * view's 20px line height.
+ * view's 22.5px line height.
  */
 function SkeletonCode({
   label,

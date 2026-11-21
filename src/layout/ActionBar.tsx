@@ -5,8 +5,10 @@ import { Button } from "../controls/Button";
 import { IconButton } from "../controls/IconButton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../overlays/DropdownMenu";
 import { MenuCheckItem, MenuItem, MenuSubmenu } from "../overlays/MenuItem";
+import { uiPx } from "../lib/uiScale";
 import { OverflowFadeText } from "./OverflowFadeText";
 import {
+  defaultMinWidth,
   gapPx,
   planActionBar,
   samePlan,
@@ -57,7 +59,7 @@ export type ActionBarItem = {
    * shrink item counts.
    */
   shrink?: boolean;
-  /** How narrow the shrink item may get, in pixels. Default 80. */
+  /** How narrow the shrink item may get, in design pixels on the 4px grid. Default 80 (90px). */
   minWidth?: number;
   /** Rows shown as a submenu when the item has folded into ⋯, e.g. a picker's choices. */
   menu?: React.ReactNode;
@@ -251,6 +253,7 @@ export function ActionBar({
     }
     const current = itemsRef.current;
     const endWidth = widthOf(endRef.current);
+    const gap = uiPx(gapPx);
     const measured = new Map<string, number>();
     for (const child of Array.from(layer.children)) {
       const key = child.getAttribute("data-measure");
@@ -260,7 +263,7 @@ export function ActionBar({
       id: item.id,
       priority: item.priority,
       shrink: item.shrink,
-      minWidth: item.minWidth,
+      minWidth: uiPx(item.minWidth ?? defaultMinWidth),
       full: measured.get(`${item.id}:full`) ?? 0,
       icon: measured.get(`${item.id}:icon`) ?? control,
     }));
@@ -268,7 +271,7 @@ export function ActionBar({
     const natural =
       measures.reduce((sum, item) => sum + item.full, 0) +
       endWidth +
-      Math.max(0, current.length + (endRef.current ? 1 : 0) - 1) * gapPx;
+      Math.max(0, current.length + (endRef.current ? 1 : 0) - 1) * gap;
     const rounded = Math.ceil(natural);
     let changed = false;
     if (shownNatural.current !== rounded) {
@@ -285,6 +288,7 @@ export function ActionBar({
         items: measures.map((item) => (item.id === shrinkId ? item : { ...item, shrink: false })),
         more: control,
         end: endWidth,
+        gap,
       });
       if (!samePlan(shownPlan.current, next)) {
         shownPlan.current = next;
@@ -333,7 +337,7 @@ export function ActionBar({
       data-size={size}
       className={cn(
         "relative flex min-w-0 shrink items-center gap-1",
-        // Every control's content sits 8px in from both its edges, as an icon button's glyph does,
+        // Every control's content sits 9px in from both its edges, as an icon button's glyph does,
         // so the space between any two controls in the bar is the same.
         "[&_button[data-slot=button]]:px-2",
         heightClass,

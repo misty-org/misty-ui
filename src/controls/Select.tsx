@@ -21,7 +21,7 @@ import { cn } from "../classNames";
 import { controlFrame, fieldInset } from "./controlFrame";
 
 /*
- * A field that picks one value from a list. The rows follow the menu rules: a 16px icon, the
+ * A field that picks one value from a list. The rows follow the menu rules: an 18px icon, the
  * label, and a checkmark at the right edge for the one picked. The trigger shows the picked
  * row's icon and label. OptionSelect builds the whole thing from a list of options.
  */
@@ -38,7 +38,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     data-slot="select-trigger"
     className={cn(
-      // The field frame: 32px with a field's corners and inset, like every control in its row.
+      // The field frame: 36px with a field's corners and inset, like every control in its row.
       controlFrame.md,
       fieldInset.md,
       "flex w-full min-w-0 items-center justify-between gap-2 whitespace-nowrap border",
@@ -100,10 +100,10 @@ const SelectContent = React.forwardRef<
       ref={ref}
       data-slot="select-content"
       className={cn(
-        "relative layer-popover max-h-[min(24rem,calc(100dvh-2rem))] min-w-32 overflow-x-hidden overflow-y-auto",
+        "relative layer-popover max-h-[min(--spacing(96),calc(100dvh-var(--spacing)*8))] min-w-32 overflow-x-hidden overflow-y-auto",
         popupSurfaceClass,
         popupMotionClass,
-        position === "popper" && "max-h-[min(24rem,var(--radix-select-content-available-height))]",
+        position === "popper" && "max-h-[min(--spacing(96),var(--radix-select-content-available-height))]",
         position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1",
         position === "popper" && "data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className,
@@ -137,7 +137,7 @@ type RadixSelectItemProps = Omit<
 };
 
 type SelectItemProps = RadixSelectItemProps & {
-  /** The 16px icon, only when it tells the row apart (never one icon repeated down the list);
+  /** The 18px icon, only when it tells the row apart (never one icon repeated down the list);
    * the trigger shows it too once picked. */
   icon?: MenuIcon;
   /** The row's text, which fades at its end when the list is narrow. */

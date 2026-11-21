@@ -38,7 +38,7 @@ export interface MediaPlayerCardProps {
   onSeek?(seconds: number): void;
   onToggleMute?(): void;
   /**
-   * Just the track, 36px tall (48 in a card padded 6px): the position bar and the transport fold away, and open again
+   * Just the track, 40.5px tall (54 in a card padded 6.75px): the position bar and the transport fold away, and open again
    * when this goes false (the holder opens them on hover or focus).
    */
   compact?: boolean;
@@ -101,7 +101,7 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
               {props.title}
             </Text>
             {props.detail ? (
-              // A 16px line, so the title and it stand as tall as the 36px artwork at rest.
+              // An 18px line, so the title and it stand as tall as the 40.5px artwork at rest.
               <Text size="meta" tone="muted" className="leading-4">
                 {props.detail}
               </Text>
@@ -191,7 +191,7 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
             ) : null}
             {/* The source at the start, mute at the end, and the transport exactly in the middle. */}
             <div className="grid grid-cols-[1fr_auto_1fr] items-center">
-              {/* In a button's 32px square, so its inset matches the mute button's at the other end. */}
+              {/* In a button's 36px square, so its inset matches the mute button's at the other end. */}
               <span className="grid size-8 place-items-center justify-self-start">
                 {props.source}
               </span>

@@ -28,7 +28,7 @@ export const popupMotionClass = "misty-popup-motion";
 export const menuListClass = "grid grid-cols-[minmax(0,1fr)] gap-1 p-1";
 
 export const menuContentClass = cn(
-  "relative layer-menu max-h-[min(24rem,calc(100dvh-2rem))] w-auto min-w-32",
+  "relative layer-menu max-h-[min(--spacing(96),calc(100dvh-var(--spacing)*8))] w-auto min-w-32",
   "overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden",
   menuListClass,
   popupSurfaceClass,
@@ -51,16 +51,16 @@ export const popoverSizeClass: Record<PopoverSize, string> = {
 
 /**
  * What a popover holds, which sets its padding and rhythm:
- * - `panel`: a header (title and close), a line or a few controls, actions at the end. 12px in.
- * - `list`: menu-like rows, 4px in, scrolling past the menu height.
+ * - `panel`: a header (title and close), a line or a few controls, actions at the end. 13.5px in.
+ * - `list`: menu-like rows, 4.5px in, scrolling past the menu height.
  * - `flush`: edge to edge, for a picker (its search is the top row) or content that draws its own
  *   rows, such as an upload list.
  */
 export type PopoverKind = "panel" | "list" | "flush";
 export const popoverKindClass: Record<PopoverKind, string> = {
-  panel: "grid max-h-[min(36rem,calc(100dvh-2rem))] gap-1 overflow-y-auto p-3",
-  list: cn(menuListClass, "max-h-[min(24rem,calc(100dvh-2rem))] overflow-y-auto"),
-  flush: "flex max-h-[min(28rem,calc(100dvh-2rem))] flex-col overflow-hidden p-0",
+  panel: "grid max-h-[min(--spacing(144),calc(100dvh-var(--spacing)*8))] gap-1 overflow-y-auto p-3",
+  list: cn(menuListClass, "max-h-[min(--spacing(96),calc(100dvh-var(--spacing)*8))] overflow-y-auto"),
+  flush: "flex max-h-[min(--spacing(112),calc(100dvh-var(--spacing)*8))] flex-col overflow-hidden p-0",
 };
 
 /** A picker's search, the popover's top row with a line under it (CommandInput, PickerSearch). */
@@ -75,7 +75,7 @@ export const pickerSearchInputClass = cn(
 );
 
 /**
- * A menu row's shape and type, without its states: 32px, a 16px icon, the label at the control
+ * A menu row's shape and type, without its states: 36px, an 18px icon, the label at the control
  * size. Radix menus and cmdk mark state with different attributes, so each adds its own.
  */
 export const menuRowClass = cn(
@@ -108,7 +108,7 @@ export const menuIndicatorItemClass = `${menuItemClass} pr-8`;
 export const menuIndicatorClass =
   "pointer-events-none absolute right-2 flex size-4 items-center justify-center";
 
-/** The leading 16px icon of every row. */
+/** The leading 18px icon of every row. */
 export const menuIconClass = "size-4 shrink-0";
 /** A row's label (an OverflowFadeText): it takes the row's free width and fades at its end. */
 export const menuLabelTextClass = "min-w-0 flex-1";

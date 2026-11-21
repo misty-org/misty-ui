@@ -15,7 +15,7 @@ import {
 
 export type CollectionSort = { key: string; descending: boolean };
 
-// 32px rows like every other list row. The wash is a gradient laid over each cell's own
+// 36px rows like every other list row. The wash is a gradient laid over each cell's own
 // background, so a sticky actions cell keeps its opaque fill under the highlight while the table
 // scrolls beneath it.
 const rowClass = cn(

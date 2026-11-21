@@ -93,11 +93,12 @@ function boxOf(
 function rectOf(element: HTMLElement | null): Rect | null {
   const box = element ? boxOf(element) : null;
   if (!box) return null;
+  const halo = uiPx(HALO);
   return {
-    top: box.top - HALO,
-    left: box.left - HALO,
-    width: box.right - box.left + HALO * 2,
-    height: box.bottom - box.top + HALO * 2,
+    top: box.top - halo,
+    left: box.left - halo,
+    width: box.right - box.left + halo * 2,
+    height: box.bottom - box.top + halo * 2,
   };
 }
 

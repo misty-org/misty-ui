@@ -54,7 +54,7 @@ const AlertDialogContent = React.forwardRef<
           data-size={size}
           className={cn(
             "pointer-events-auto relative grid",
-            "max-h-[calc(100dvh-4rem-var(--misty-modal-inset-top,0px))] w-[calc(100%-2rem)]",
+            "max-h-[calc(100dvh-var(--spacing)*16-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*8)]",
             alertDialogSizeClass[size],
             "gap-4 overflow-y-auto rounded-xl bg-charcoal-card p-6",
             "text-body text-cream misty-dialog-motion",

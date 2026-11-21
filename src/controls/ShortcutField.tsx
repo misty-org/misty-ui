@@ -45,7 +45,7 @@ type ShortcutFieldProps = {
 };
 
 /**
- * One command's shortcut, recorded in an ordinary 32px field. Clicking it or pressing Enter starts
+ * One command's shortcut, recorded in an ordinary 36px field. Clicking it or pressing Enter starts
  * recording ("Press keys", with a red dot); the next chord becomes the binding, Escape cancels, and
  * Tab or a click elsewhere leaves it as it was. The chord reads in the sans font (⇧⌘K), and the ×
  * clears it. A conflict or a reserved chord shows under the field. One field per command.

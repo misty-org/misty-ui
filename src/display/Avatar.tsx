@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "../classNames";
 import type { ItemTone } from "../icons/itemTones";
 
-/** xs 16 (inline beside text), sm 24, default 32, lg 40, xl 64 (a profile or a Space's page). */
+/** xs 18 (inline beside text), sm 27, default 36, lg 45, xl 72 (a profile or a Space's page). */
 export type AvatarSize = "xs" | "sm" | "default" | "lg" | "xl";
 
 /**

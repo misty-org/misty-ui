@@ -178,6 +178,12 @@ export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
   /** How much of the tint the fill takes: `faint` (the default) or `strong`. */
   tintLevel?: "faint" | "strong";
   /**
+   * The color of the place the surface belongs to (a Space's own color, the one its picture
+   * tile wears), washed faintly into the sidebar's fill so each Space's sidebar reads as its own
+   * room. Only for `tone="sidebar"`; rows, selections and text on it stay neutral.
+   */
+  place?: PlaceColor;
+  /**
    * A solid fill from the full-color art palette in place of `tone`, for a dot or a mark drawn
    * over art (the Studio's room).
    */
@@ -191,6 +197,23 @@ export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
   artWash?: ArtColor;
   ref?: Ref<HTMLElement>;
 }
+
+/** The colors a place (a Space) can have, from the theme's tones, for `Surface`'s `place`. */
+export type PlaceColor = "blue" | "teal" | "violet" | "orange" | "pink" | "green" | "amber" | "red";
+
+// Literal class names so Tailwind picks them up.
+const placeVarClass: Record<PlaceColor, string> = {
+  blue: "[--surface-place:var(--color-tone-blue)]",
+  teal: "[--surface-place:var(--color-tone-teal)]",
+  violet: "[--surface-place:var(--color-tone-violet)]",
+  orange: "[--surface-place:var(--color-tone-orange)]",
+  pink: "[--surface-place:var(--color-tone-pink)]",
+  green: "[--surface-place:var(--color-tone-green)]",
+  amber: "[--surface-place:var(--color-tone-amber)]",
+  red: "[--surface-place:var(--color-tone-red)]",
+};
+const placeSidebarFill =
+  "bg-[color:color-mix(in_srgb,var(--surface-place)_7%,var(--color-charcoal-sidebar))]";
 
 /** What a card's work is doing, for `Surface`'s `state`. */
 export type SurfaceState = "working" | "waiting";
@@ -266,6 +289,7 @@ export function Surface({
   state,
   tint,
   tintLevel = "faint",
+  place,
   art,
   artRing,
   artWash,
@@ -285,7 +309,13 @@ export function Surface({
           : artWash
             ? artTintClass[artWash]
             : cn(
-                art ? artFillClass[art] : state === "working" ? stateFill : toneClass[tone],
+                art
+                  ? artFillClass[art]
+                  : state === "working"
+                    ? stateFill
+                    : place && tone === "sidebar"
+                      ? cn(placeVarClass[place], placeSidebarFill)
+                      : toneClass[tone],
                 edgeClass[edge],
               ),
         state === "waiting" && edge !== "none" && stateEdge,

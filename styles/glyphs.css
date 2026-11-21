@@ -4,8 +4,8 @@
    icon-sizing UI rule); a shared component that needs another size sets it with a class, which
    wins over this zero-specificity default. A size prop's width and height attributes never do. */
 :where(svg.lucide) {
-  width: 1rem;
-  height: 1rem;
+  width: 1.125rem;
+  height: 1.125rem;
   flex-shrink: 0;
   stroke-width: 2;
 }

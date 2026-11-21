@@ -10,7 +10,7 @@ import { CollapsibleContent } from "./Collapsible";
 /**
  * `section`: a question or heading in page text with room around it, such as a frequently asked
  * question or a release's notes, split from its neighbours by a DisclosureList's hairlines.
- * `row`: a 32px row in a list of links, such as a group in a docs sidebar, washing on hover.
+ * `row`: a 36px row in a list of links, such as a group in a docs sidebar, washing on hover.
  */
 export type DisclosureKind = "section" | "row";
 

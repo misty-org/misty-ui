@@ -39,7 +39,7 @@ import {
 import { Tooltip } from "./Tooltip";
 
 /*
- * Every menu row, in dropdowns and right-click menus alike: a 16px icon when it tells the row
+ * Every menu row, in dropdowns and right-click menus alike: an 18px icon when it tells the row
  * apart, the label, an optional shortcut on an action, and a checkmark at the right edge when the
  * row is a selection. A list of like things (models, efforts, folders, agents, chats) is text
  * alone: the same icon on every row says nothing. A choice (MenuRadioItem) never shows a
@@ -50,7 +50,7 @@ import { Tooltip } from "./Tooltip";
  */
 
 /**
- * A row's leading 16px icon. Pass the icon itself (`icon={Pencil}`); an element such as a brand
+ * A row's leading 18px icon. Pass the icon itself (`icon={Pencil}`); an element such as a brand
  * mark (`icon={<EngineMark engine={id} />}`) works too.
  */
 type MenuIcon = LucideIcon | React.ComponentType<{ className?: string }> | React.ReactElement;
@@ -108,7 +108,7 @@ type RadixItemProps = Omit<
 >;
 
 type MenuItemProps = RadixItemProps & {
-  /** The 16px icon an action starts with, when it tells the row apart. Rows listing like things
+  /** The 18px icon an action starts with, when it tells the row apart. Rows listing like things
    * (agents, chats, folders) leave it out. */
   icon?: MenuIcon;
   /** The row's text. It fades at the end when the menu is too narrow. */
@@ -338,7 +338,7 @@ function MenuRadioItem({
 }
 
 type MenuSubmenuProps = {
-  /** The 16px icon, when it tells the row apart. */
+  /** The 18px icon, when it tells the row apart. */
   icon?: MenuIcon;
   label: React.ReactNode;
   children: React.ReactNode;

@@ -5,7 +5,7 @@ const nameWidths = ["w-2/3", "w-1/2", "w-3/5", "w-2/5", "w-3/4"];
 
 /**
  * Fills the collection pane while its first set of items loads, shaped like what arrives: the
- * table's rows under its header (32px text rows, or 48px rows with a leading icon when the table
+ * table's rows under its header (36px text rows, or 54px rows with a leading icon when the table
  * shows `icons`), or the grid's cards (preview cards, or `compact` icon cards). It draws more than
  * fit and clips, so it fills any pane without measuring it.
  */
@@ -19,7 +19,7 @@ export function CollectionSkeleton({
   label?: string;
   /** `list` is the table with its header; `rows` the same rows without one; `grid` the cards. */
   view?: "list" | "grid" | "rows";
-  /** The table's rows start with an icon (`listIcons`): 48px rows with a 32px icon box. */
+  /** The table's rows start with an icon (`listIcons`): 54px rows with a 36px icon box. */
   icons?: boolean;
   /** The grid's card layout: `preview` cards with a picture, or `compact` icon-and-title cards. */
   cards?: "preview" | "compact";
@@ -38,7 +38,7 @@ export function CollectionSkeleton({
       <span className="sr-only">{label}</span>
       <div aria-hidden="true" className="absolute inset-0">
         {view === "grid" ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(11.25rem,100%),1fr))] gap-3">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(--spacing(45),100%),1fr))] gap-3">
             {Array.from({ length: 24 }, (_, index) =>
               cards === "compact" ? (
                 <div

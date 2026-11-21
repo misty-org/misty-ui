@@ -116,7 +116,7 @@ export function CodeBlock({
   );
 }
 
-/** The code sizes: micro 11, caption 12, meta 13. */
+/** The code sizes: micro 12, caption 13, meta 14. */
 export type CodeTextSize = "micro" | "caption" | "meta";
 
 const codeSizeClass: Record<CodeTextSize, string> = {

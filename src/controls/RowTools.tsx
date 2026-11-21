@@ -22,8 +22,8 @@ const revealClass: Record<Exclude<RowToolsReveal, "cover">, string> = {
 };
 
 /**
- * A row's own buttons, at its end, as one tight group: IconButtons 24px, 2px apart, so the row's
- * 4px inset shows around them and no gap opens between icons. The row is a `group/row`.
+ * A row's own buttons, at its end, as one tight group: IconButtons 27px, 2.25px apart, so the row's
+ * 4.5px inset shows around them and no gap opens between icons. The row is a `group/row`.
  *
  * ```tsx
  * <RowTools reveal="hover">

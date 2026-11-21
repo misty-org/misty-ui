@@ -24,15 +24,15 @@ export function personaTone(id: string): string {
   return personaTones[hash % personaTones.length];
 }
 
-/** `AppLogoImage`'s sizes, plus `avatar` (40px), an agent's picture in a list. */
+/** `AppLogoImage`'s sizes, plus `avatar` (45px), an agent's picture in a list. */
 export type PersonaLogoSize = AppLogoSize | "avatar";
 
 const tile: Record<PersonaLogoSize, string> = {
-  avatar: "size-10 rounded-[10px] [&>svg]:size-5",
-  row: "size-5 rounded-[5px] [&>svg]:size-3",
-  launcher: "size-14 rounded-[13px] [&>svg]:size-7",
-  card: "size-12 rounded-[11px] [&>svg]:size-6",
-  tile: "size-16 rounded-[15px] [&>svg]:size-8",
+  avatar: "size-10 rounded-[calc(var(--spacing)*2.5)] [&>svg]:size-5",
+  row: "size-5 rounded-[calc(var(--spacing)*1.25)] [&>svg]:size-3",
+  launcher: "size-14 rounded-[calc(var(--spacing)*3.25)] [&>svg]:size-7",
+  card: "size-12 rounded-[calc(var(--spacing)*2.75)] [&>svg]:size-6",
+  tile: "size-16 rounded-[calc(var(--spacing)*3.75)] [&>svg]:size-8",
 };
 
 /**

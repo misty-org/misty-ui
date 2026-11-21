@@ -8,7 +8,7 @@ export type DragHandleButtonProps = Omit<IconButtonProps, "aria-label" | "asChil
 /**
  * An icon button that lives inside an HTML5-draggable surface (editor block handles, pinned rows).
  * WebKit will not start a drag from a `user-select: none` element, so this gives back the text
- * selection Button turns off; otherwise it is the quiet 24px IconButton.
+ * selection Button turns off; otherwise it is the quiet 27px IconButton.
  */
 const DragHandleButton = React.forwardRef<HTMLButtonElement, DragHandleButtonProps>(
   ({ className, size = "sm", ...props }, ref) => (

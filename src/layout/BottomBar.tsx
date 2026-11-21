@@ -6,9 +6,9 @@ import { SidewaysScroll } from "./SidewaysScroll";
 /**
  * The bar along the bottom of the window, a popup or an overlay, which keeps room there so nothing
  * floats over the content. A hairline along its top sets it off from the content, the way a top
- * bar's closes it. It is lighter than a top bar: compact by default (32px, its buttons 24px), or
- * `standard` (40px, its buttons 32px) where the person chose that for the window's bar.
- * Its controls are centered in it, 12px in from the right, the "i" for the surface's tour last.
+ * bar's closes it. It is lighter than a top bar: compact by default (36px, its buttons 27px), or
+ * `standard` (45px, its buttons 36px) where the person chose that for the window's bar.
+ * Its controls are centered in it, 13.5px in from the right, the "i" for the surface's tour last.
  * `start` holds anything that belongs at its other end. When the two ends don't fit side by side,
  * the bar scrolls sideways (SidewaysScroll) rather than shrink its items or let one end slide
  * over the other.

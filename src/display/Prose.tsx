@@ -108,7 +108,7 @@ export const ProseCode = React.forwardRef<
   {
     /** Shown in the header; defaults to "Code". */
     language?: string;
-    /** 24px IconButtons at the header's right end, such as Copy code. */
+    /** 27px IconButtons at the header's right end, such as Copy code. */
     actions?: React.ReactNode;
     children?: React.ReactNode;
   }

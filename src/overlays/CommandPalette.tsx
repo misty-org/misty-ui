@@ -6,7 +6,7 @@ import { Pressable } from "../controls/Pressable";
 
 /*
  * The parts of a full command palette in a dialog (⌘K), larger than a picker's Command: a wide
- * search box with no icon or frame, a row of type tabs, muted group headings and rows of 40px
+ * search box with no icon or frame, a row of type tabs, muted group headings and rows of 45px
  * (two lines with an excerpt). They keep the dialog's body line height, so a heading or a
  * two-line row is as tall as the dialog's own text. Layout inside a row is the caller's;
  * `CommandPalette` and `CommandPaletteGroup` hold them.
@@ -48,7 +48,7 @@ const CommandPaletteInput = React.forwardRef<
 CommandPaletteInput.displayName = "CommandPaletteInput";
 
 /**
- * One of the palette's type tabs (All, Chats, Docs…): 28px, the meta role, muted until hovered;
+ * One of the palette's type tabs (All, Chats, Docs…): 31.5px, the meta role, muted until hovered;
  * the picked one (`aria-selected`) takes the control wash and the bright text.
  */
 function CommandPaletteTab({
@@ -99,7 +99,7 @@ type CommandPaletteItemProps = React.ComponentPropsWithoutRef<
 };
 
 /**
- * One row of the palette: 40px, the meta role, with large corners; the row cmdk has picked takes
+ * One row of the palette: 45px, the meta role, with large corners; the row cmdk has picked takes
  * the control wash and the bright text.
  */
 function CommandPaletteItem({

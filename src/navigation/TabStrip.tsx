@@ -16,7 +16,7 @@ import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../overlays
 export interface TabStripTab {
   id: string;
   label: string;
-  /** A 16px mark before the label: a file's icon, a site's, a spinner while it loads. */
+  /** An 18px mark before the label: a file's icon, a site's, a spinner while it loads. */
   icon?: ReactNode;
   /** The whole name, shown in a tooltip when the label is cut. Defaults to the label. */
   full?: string;
@@ -41,9 +41,9 @@ export interface TabStripProps {
   /** Controls at the row's far end that never scroll away. */
   end?: ReactNode;
   /**
-   * The window's own tab row ends 12px in, like the sidebar's rows at the window's other side, so
+   * The window's own tab row ends 13.5px in, like the sidebar's rows at the window's other side, so
    * the window has one margin on both edges and the end button lines up with the chat's panel
-   * rail under it. A page's tab row keeps the page header's 16px.
+   * rail under it. A page's tab row keeps the page header's 18px.
    */
   windowEdge?: boolean;
   /**
@@ -62,10 +62,10 @@ export interface TabStripProps {
 /** The scope a drag from outside a tab row carries to open tabs it pauses over. */
 export const tabSwitchScope = "workspace-tab-switch";
 
-// Tabs are a sidebar row's height, padding, type and washes. The row is the shared 48px header band, so they
-// have 8px above and below; the first tab's icon lines up with a page header's title, 16px in,
-// and the end controls keep the page header's 16px from the edge. Every tab starts at the same
-// 144px and all shrink alike when they don't fit, down to 96px (still wide enough for the
+// Tabs are a sidebar row's height, padding, type and washes. The row is the shared 54px header band, so they
+// have 9px above and below; the first tab's icon lines up with a page header's title, 18px in,
+// and the end controls keep the page header's 18px from the edge. Every tab starts at the same
+// 162px and all shrink alike when they don't fit, down to 108px (still wide enough for the
 // closer); past that the row scrolls sideways.
 const tabClass = cn(
   // An explicit width, not just a flex basis: the tab is a size container (for its closer), so
@@ -84,7 +84,7 @@ function nextTabIndex(key: string, index: number, count: number): number {
 }
 
 /**
- * A row of tabs over a pane: 32px tabs with an icon and a label that fades when long, a closer
+ * A row of tabs over a pane: 36px tabs with an icon and a label that fades when long, a closer
  * that shows on hover and on the open tab, arrows and Home/End to move between them, a middle
  * click or the closer to close, dragging (or Alt+Shift and an arrow) to reorder, and the tab's menu on a right-click. Tabs share
  * one width and shrink together when they don't fit, never wrapping; once they reach their least
@@ -179,7 +179,7 @@ export function TabStrip(props: TabStripProps) {
           className="flex min-w-0 flex-[0_1_auto] items-center gap-1"
           // The tabs' least widths and the gaps between them: below this the row scrolls.
           style={{
-            minWidth: `calc(${props.tabs.length} * 6rem + ${Math.max(0, props.tabs.length - 1)} * 0.25rem)`,
+            minWidth: `calc(${props.tabs.length} * var(--spacing) * 24 + ${Math.max(0, props.tabs.length - 1)} * var(--spacing))`,
           }}
         >
           {props.tabs.map((tab, index) => {

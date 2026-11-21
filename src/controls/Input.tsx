@@ -5,7 +5,7 @@ import { cn } from "../classNames";
 import { controlFrame, fieldInset } from "./controlFrame";
 import { IconButton } from "./IconButton";
 
-/** Every framed field is 32px tall, the height of the buttons beside it, with 14px text. */
+/** Every framed field is 36px tall, the height of the buttons beside it, with 15px text. */
 const inputVariants = {
   default: [
     controlFrame.md,
@@ -39,7 +39,7 @@ const inputVariants = {
   // header around it while the frame's padding is invisible.
   title: [
     controlFrame.md,
-    "-mx-2 w-[calc(100%+1rem)] min-w-0 border border-transparent bg-transparent px-2",
+    "-mx-2 w-[calc(100%+var(--spacing)*4)] min-w-0 border border-transparent bg-transparent px-2",
     "text-page font-semibold text-cream-bright outline-none transition-colors",
     "placeholder:text-cream-muted hover:border-charcoal-border",
     "focus:border-charcoal-border-strong focus:bg-charcoal-card",
@@ -55,7 +55,7 @@ const inputVariants = {
     "focus:border-white/55",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
-  // A 24px field in a row of 24px chips or buttons, such as renaming a speaker in place.
+  // A 27px field in a row of 27px chips or buttons, such as renaming a speaker in place.
   compact: [
     controlFrame.sm,
     fieldInset.sm,
@@ -73,7 +73,7 @@ const inputVariants = {
 
 type InputProps = React.ComponentProps<"input"> & {
   /**
-   * default is the framed 32px field; compact is the 24px one for a row of small controls. Its
+   * default is the framed 36px field; compact is the 27px one for a row of small controls. Its
    * height and corners are fixed: never set them with className. title renames something in place in a header:
    * `<Input variant="title" aria-label="Space name" value={name} onChange={…} />`.
    */

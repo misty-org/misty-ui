@@ -27,7 +27,7 @@ type SuggestionItemBaseProps = Omit<React.ComponentPropsWithoutRef<"div">, "role
 };
 
 type SuggestionItemProps = SuggestionItemBaseProps & {
-  /** The 16px icon (or an avatar) the row starts with. */
+  /** The 18px icon (or an avatar) the row starts with. */
   icon: MenuIcon;
   /** The row's text, which fades at its end when the list is narrow. */
   label: React.ReactNode;

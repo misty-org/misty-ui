@@ -53,7 +53,7 @@ const defaultLabel: Record<StateMarkKind, string> = {
  * done, a red cross when it failed, and a green dot while a connection is up. A file in a synced
  * drive has muted kinds of its own: a cloud while it is only on the server, the spinner while it
  * downloads or uploads, and a crossed-out cloud while it stays on this computer alone. Each names
- * itself in Misty's tooltip. It sits in a 16px box, so marks line up in a column of rows.
+ * itself in Misty's tooltip. It sits in an 18px box, so marks line up in a column of rows.
  *
  * The drive kinds name themselves "Online only", "Downloading", "Uploading" and "Not synced". A
  * file that is downloaded and in step shows no mark, and a conflicting copy is an ordinary file with

@@ -15,7 +15,7 @@ import { useCompactControls } from "./RowContext";
  */
 export type ButtonVariant = "primary" | "secondary" | "quiet" | "danger";
 
-/** The three heights: sm 24, md 32 (the default), lg 36, which belongs to dialogs and empty states. */
+/** The three heights: sm 27, md 36 (the default), lg 40.5, which belongs to dialogs and empty states. */
 export type ButtonSize = "sm" | "md" | "lg";
 
 /**
@@ -46,17 +46,17 @@ export type ButtonIcon = IconComponent | React.ReactNode;
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Defaults to secondary. */
   variant?: ButtonLook | null;
-  /** Defaults to md (32). */
+  /** Defaults to md (36). */
   size?: ButtonSize | null;
   justify?: ButtonJustify | null;
-  /** The 16px glyph before the label. */
+  /** The 18px glyph before the label. */
   icon?: ButtonIcon;
-  /** The 16px glyph after the label, such as a chevron or an arrow. */
+  /** The 18px glyph after the label, such as a chevron or an arrow. */
   iconEnd?: ButtonIcon;
   /**
    * A short muted second line under the label, for one of a row of choices that says what
    * follows from it (a review grade and when the card comes back). The button stacks the two
-   * lines, 48px tall and at least 96px wide; every choice in the row has one.
+   * lines, 54px tall and at least 108px wide; every choice in the row has one.
    */
   caption?: React.ReactNode;
   /**
@@ -231,7 +231,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const Comp = asChild ? Slot : "button";
     const resolvedVariant = variant ?? "secondary";
-    // A compact bar (the bottom bar) makes its buttons 24px, whatever the feature passed.
+    // A compact bar (the bottom bar) makes its buttons 27px, whatever the feature passed.
     const compact = useCompactControls();
     const resolvedSize = compact ? "sm" : (size ?? "md");
     const resolvedJustify = justify ?? "center";

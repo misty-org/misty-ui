@@ -48,7 +48,7 @@ function failureText(failure: unknown, fallback: string) {
 }
 
 /**
- * A secret such as an API key, in one control the size of an empty 32px Input. Empty, it is a
+ * A secret such as an API key, in one control the size of an empty 36px Input. Empty, it is a
  * password field that saves on Enter or when it loses focus. Saved, it reads "Saved in keychain"
  * beside a lock, with a ⋯ inside its right edge that offers Replace key and Remove key (which asks
  * first). The saved value is never shown or read back. Errors show under the field.

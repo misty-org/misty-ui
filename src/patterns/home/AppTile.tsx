@@ -7,7 +7,7 @@ import { OverflowFadeText } from "../../layout/OverflowFadeText";
 
 /** The apps of a Space home: tiles that fill the row, as many as fit, each at least this wide. */
 export const homeAppsClass =
-  "grid grid-cols-[repeat(auto-fill,minmax(5.75rem,1fr))] gap-2";
+  "grid grid-cols-[repeat(auto-fill,minmax(--spacing(23),1fr))] gap-2";
 
 const tileClass =
   "relative grid min-w-0 justify-items-center gap-2 rounded-xl px-1 py-3 text-center text-meta";
@@ -32,7 +32,7 @@ export function AppTile({
       {badge ? (
         <span
           className={cn(
-            "absolute top-1.5 right-3.5 grid h-[1.125rem] min-w-[1.125rem] place-items-center",
+            "absolute top-1.5 right-3.5 grid h-4.5 min-w-4.5 place-items-center",
             "rounded-full bg-[var(--misty-theme-danger)] px-1.5 text-micro font-semibold text-white",
           )}
         >
@@ -55,7 +55,7 @@ export function AddAppTile({
 }: Omit<ComponentPropsWithoutRef<"button">, "children"> & { label?: string }) {
   return (
     <Pressable wash="row" className={cn(tileClass, className)} {...props}>
-      <span className="grid size-14 place-items-center rounded-[0.875rem] border border-dashed border-charcoal-border-strong">
+      <span className="grid size-14 place-items-center rounded-[calc(var(--spacing)*3.5)] border border-dashed border-charcoal-border-strong">
         <Text bare tone="muted" className="inline-flex">
           <Plus aria-hidden="true" className="size-4" />
         </Text>
@@ -80,7 +80,7 @@ export function AgentTile({
   className,
   ...props
 }: Omit<ComponentPropsWithoutRef<"button">, "children"> & {
-  /** The agent's own avatar at the launcher size (56px). */
+  /** The agent's own avatar at the launcher size (63px). */
   face: ReactNode;
   label: string;
   line?: string;

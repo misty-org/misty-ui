@@ -3,9 +3,9 @@
  * arithmetic, so it needs no layout to run.
  */
 
-/** gap-1 between controls. */
+/** gap-1 between controls, in design pixels (the bar scales it with `uiPx`). */
 export const gapPx = 4;
-const defaultMinWidth = 80;
+export const defaultMinWidth = 80;
 
 export type ActionBarPlacement = "full" | "icon" | "folded";
 

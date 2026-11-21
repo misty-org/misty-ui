@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { cn } from "../classNames";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
+import { uiPx } from "../lib/uiScale";
 
 /** The four corners a picture-in-picture rests in. */
 export type PipCorner = "top-left" | "top-right" | "bottom-left" | "bottom-right";
@@ -85,11 +86,12 @@ export function FloatingPip({
       ? Math.max(0, above.getBoundingClientRect().bottom - box.getBoundingClientRect().top)
       : 0;
     setTopInset(inset);
-    const right = box.clientWidth - element.offsetWidth - MARGIN;
-    const bottom = box.clientHeight - element.offsetHeight - MARGIN;
+    const margin = uiPx(MARGIN);
+    const right = box.clientWidth - element.offsetWidth - margin;
+    const bottom = box.clientHeight - element.offsetHeight - margin;
     setResting({
-      x: corner.endsWith("left") ? MARGIN : Math.max(MARGIN, right),
-      y: corner.startsWith("top") ? MARGIN + inset : Math.max(MARGIN + inset, bottom),
+      x: corner.endsWith("left") ? margin : Math.max(margin, right),
+      y: corner.startsWith("top") ? margin + inset : Math.max(margin + inset, bottom),
     });
   }, [corner, clearOf]);
 
@@ -161,7 +163,7 @@ export function FloatingPip({
       return;
     }
     const box = (element.offsetParent as HTMLElement).getBoundingClientRect();
-    if (onDock && event.clientX > box.right - MARGIN) {
+    if (onDock && event.clientX > box.right - uiPx(MARGIN)) {
       setDragged(null);
       onDock();
       return;
@@ -182,7 +184,7 @@ export function FloatingPip({
       data-slot="floating-pip"
       data-dragging={dragged ? "" : undefined}
       className={cn(
-        "group/pip absolute top-0 left-0 z-[var(--stack-raised)] w-72 max-w-[calc(100%-1.5rem)]",
+        "group/pip absolute top-0 left-0 z-[var(--stack-raised)] w-72 max-w-[calc(100%-var(--spacing)*6)]",
         "cursor-grab touch-none select-none overflow-hidden rounded-xl bg-charcoal-card",
         "shadow-[0_0.5rem_1.75rem_rgb(0_0_0/0.45),0_0_0_var(--hairline)_rgb(255_255_255/0.08)]",
         "data-[dragging]:cursor-grabbing data-[dragging]:shadow-[0_0.875rem_2.5rem_rgb(0_0_0/0.55),0_0_0_var(--hairline)_rgb(255_255_255/0.12)]",

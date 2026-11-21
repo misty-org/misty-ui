@@ -26,7 +26,7 @@ export type ListRowProps = {
   /** The row's text. It fades at the edge when it is too long. */
   label: string;
   /**
-   * What the item is, before the label: a 16px icon (`leading={FileText}`), or an element such as
+   * What the item is, before the label: an 18px icon (`leading={FileText}`), or an element such as
    * an engine mark or an avatar (`<Avatar size="xs">`, up to `sm`), drawn as given.
    */
   leading?: IconSource;
@@ -120,7 +120,7 @@ function RowStateMark({ state }: { state: RowState }) {
 }
 
 /**
- * The one list row for chats, pages, pins, files and catalog entries: 32px with its state at the
+ * The one list row for chats, pages, pins, files and catalog entries: 36px with its state at the
  * right end, or two lines with a `description`. It may start with what the item is (`leading`)
  * and keep controls in view at its end (`trailing`). With a `menu`, a ⋯ takes the state's place
  * on hover or focus and the same menu opens on right-click.
@@ -309,7 +309,7 @@ function ListRowSkeleton({
   rows?: number;
   /** Draws a short mark at the right end, for lists whose rows show a time. */
   state?: boolean;
-  /** Draws the 16px leading block, for rows that start with an icon. */
+  /** Draws the 18px leading block, for rows that start with an icon. */
   leading?: boolean;
   /** 2 for rows with a description line. */
   lines?: 1 | 2;

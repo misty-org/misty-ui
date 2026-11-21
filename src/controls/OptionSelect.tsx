@@ -3,7 +3,7 @@ import { cn } from "../classNames";
 import type { MenuIcon } from "../overlays/MenuItem";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./Select";
 
-/** One option: its label, the value it stands for, and its 16px icon when it has one. */
+/** One option: its label, the value it stands for, and its 18px icon when it has one. */
 type SelectOption = {
   value: string;
   /**

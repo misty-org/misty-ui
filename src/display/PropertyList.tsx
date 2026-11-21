@@ -22,7 +22,7 @@ export type PropertyListItem = {
 export type PropertyListProps = {
   items: ReadonlyArray<PropertyListItem>;
   /**
-   * `side` (default): the key on the left, the value on the right of a 32px row. `stacked`: the
+   * `side` (default): the key on the left, the value on the right of a 36px row. `stacked`: the
    * value under its key, for narrow panes or long values such as paths.
    */
   layout?: "side" | "stacked";

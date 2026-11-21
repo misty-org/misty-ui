@@ -185,8 +185,8 @@ export function FindBar(props: FindBarProps) {
         edge="hairline"
         radius="xl"
         className={
-          "absolute top-[calc(var(--find-bar-inset,0px)+0.75rem)] right-4 z-[var(--stack-float)] " +
-          "flex w-96 max-w-[calc(100%-2rem)] flex-col gap-1 p-2"
+          "absolute top-[calc(var(--find-bar-inset,0px)+var(--spacing)*3)] right-4 z-[var(--stack-float)] " +
+          "flex w-96 max-w-[calc(100%-var(--spacing)*8)] flex-col gap-1 p-2"
         }
       >
         <FindBarRows {...props} items={items} end={end} />

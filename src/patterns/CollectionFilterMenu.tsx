@@ -28,7 +28,7 @@ import { collectionMemory } from "./collection/collectionMemory";
 export type CollectionFilterOption = {
   value: string;
   label: string;
-  /** The row's 16px icon; the group's icon when left out. */
+  /** The row's 18px icon; the group's icon when left out. */
   icon?: MenuIcon;
 };
 

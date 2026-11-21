@@ -27,13 +27,13 @@ export interface TreeRowProps {
   label: string;
   /** The whole text for the name's tooltip when it fades, such as the path. */
   full?: string;
-  /** How deep the item sits: each level indents the row by 16px. */
+  /** How deep the item sits: each level indents the row by 18px. */
   depth?: number;
   /** Set for an item that opens and closes, such as a folder: its `aria-expanded`. */
   expanded?: boolean;
   /** Draws a chevron before the name that turns as `expanded` changes. */
   chevron?: boolean;
-  /** The 16px mark before the name, such as the file's icon. */
+  /** The 18px mark before the name, such as the file's icon. */
   icon?: ReactNode;
   /** A control before the row's opener, such as a checkbox for the commit. */
   leading?: ReactNode;
@@ -66,7 +66,7 @@ const baseIndent = 8;
 const levelIndent = 16;
 
 /**
- * One row of a tree (files, changes): 32px, indented by depth, an optional chevron and icon, the
+ * One row of a tree (files, changes): 36px, indented by depth, an optional chevron and icon, the
  * name first, the state at the end, and one ⋯ that opens the same menu as a right-click.
  *
  * ```tsx

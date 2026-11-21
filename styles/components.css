@@ -229,7 +229,7 @@
 [data-file-drop-area][data-file-dragging]::after {
   content: "";
   position: absolute;
-  inset: 0.25rem;
+  inset: var(--spacing);
   z-index: 40;
   border: 1px dashed var(--color-cream-muted);
   border-radius: var(--radius-xl);

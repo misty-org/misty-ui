@@ -10,18 +10,18 @@ export type FloatingPanelAnchor =
 export type FloatingPanelProps = {
   title?: string;
   /**
-   * The panel's own controls in its header, before the close button: a few 24px quiet
+   * The panel's own controls in its header, before the close button: a few 27px quiet
    * IconButtons or one MenuTrigger (`size="sm"`), such as a filter or a ⋯ menu.
    */
   actions?: React.ReactNode;
   /**
-   * The corner of the scene it floats in, 12px from the edges. `free` leaves placement to the
+   * The corner of the scene it floats in, 13.5px from the edges. `free` leaves placement to the
    * parent, e.g. a stack of panels in one corner.
    */
   anchor: FloatingPanelAnchor;
   /** Shows a close button, and Escape inside the panel closes it. */
   onClose?: () => void;
-  /** sm 256, md 320 (default), lg 384. */
+  /** sm 288, md 360 (default), lg 432. */
   width?: "sm" | "md" | "lg";
   children: React.ReactNode;
   /** Layout only: margins or placement. */
@@ -62,7 +62,7 @@ export function FloatingPanel({
       className={cn(
         anchorClass[anchor],
         widthClass[width],
-        "flex max-h-[calc(100%-1.5rem)] max-w-[calc(100%-1.5rem)] flex-col",
+        "flex max-h-[calc(100%-var(--spacing)*6)] max-w-[calc(100%-var(--spacing)*6)] flex-col",
         "rounded-xl bg-charcoal-card/72 text-cream shadow-lg backdrop-blur-md",
         className,
       )}

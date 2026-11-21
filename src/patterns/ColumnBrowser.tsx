@@ -50,7 +50,7 @@ function deepestPicked(columns: ReadonlyArray<ColumnBrowserColumn>) {
 }
 
 /**
- * Finder's column view: each open folder a 240px column of 32px rows, a chevron at the end of
+ * Finder's column view: each open folder a 270px column of 36px rows, a chevron at the end of
  * each folder, the folder picked in one column listed in the next, and a picked file's `preview`
  * last. The picked rows take the row wash, stronger in the column the keyboard is in. The strip
  * scrolls sideways and keeps its last column in view; each column scrolls on its own. A loading

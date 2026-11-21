@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "../classNames";
 
 const textareaVariants = {
-  // Framed like Input, with the same 14px text; it starts two lines tall and grows with its text.
+  // Framed like Input, with the same 15px text; it starts two lines tall and grows with its text.
   default: [
     "flex field-sizing-content min-h-16 w-full rounded-lg border border-charcoal-border-strong",
     "bg-charcoal-card px-2.5 py-1.5 text-control text-cream transition-colors outline-none",

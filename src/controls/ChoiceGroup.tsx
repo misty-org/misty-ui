@@ -28,14 +28,14 @@ export type ChoiceGroupProps<T extends string> = {
   value: T;
   options: ReadonlyArray<ChoiceGroupOption<T>>;
   onChange: (value: T) => void;
-  /** sm 24, md 32 (default). The track is inside that height. */
+  /** sm 27, md 36 (default). The track is inside that height. */
   size?: "sm" | "md";
   disabled?: boolean;
   /** Stretch the options to fill the row in equal parts; long labels then fade. */
   fill?: boolean;
   /**
    * The track's look: `outline` (default) is a hairline around the sidebar's fill, the options
-   * inset in it. `well` is a faint wash with no edge or inset and 2px between the options, the
+   * inset in it. `well` is a faint wash with no edge or inset and 2.25px between the options, the
    * chosen option a stronger wash
    * filling its whole height with the track's own corners, and every icon in the text color: the
    * sidebar's Personal/Spaces switch.
@@ -52,7 +52,7 @@ const itemSize = {
   md: "rounded-md px-2.5",
 } as const;
 
-// About square inside the track: 18px tall at sm, 26px at md.
+// About square inside the track: 20.25px tall at sm, 29.25px at md.
 const iconOnlySize = { sm: "w-5 px-0", md: "w-7 px-0" } as const;
 
 // In a well the options fill the track edge to edge, a little wider than tall.

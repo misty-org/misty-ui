@@ -82,6 +82,9 @@ Color that carries meaning comes from the tones, never a new hex:
 
 - **State** (`--tone-*`, `bg-state-*`): idle, working (blue), waiting on the person (amber), failed (red),
   done (green). An agent's state, a run, a Git change.
+- **A Space's own color** (the tone its picture tile wears), washed faintly into its sidebar through
+  `Surface tone="sidebar" place=…`. Only the sidebar's fill takes it: its rows, selection and text stay neutral,
+  and Personal stays neutral.
 - **Kind of file** (`--tone-code`, `-style`, `-data`, `-doc`, `-image`) through `itemTones.ts`.
 - **Kind of made thing** (`--tint-*`): audio, video, report, cards… through `Surface`/`Text` `tint`.
 - **Art** (`--color-art-*`): only for full-color art drawn over any theme (Tutor, pets, the desktop overlay).
@@ -99,18 +102,19 @@ and never Tailwind's `text-xs`…`text-3xl`:
 
 | Role | Size | For |
 | --- | --- | --- |
-| `micro` | 11 | Rare: tiny counts |
-| `caption` | 12 | Badges, shortcut text |
-| `meta` | 13 | Times, counts, the path line, descriptions under a label |
-| `control` | 14 | Every button, field, menu row, tab and list row |
-| `body` | 15 | Messages, notes, prose |
-| `page` | 16 | Page text, reading |
-| `title` | 18 | Titles |
-| `display` | 24 | Empty-state and hero titles |
+| `micro` | 12 | Rare: tiny counts |
+| `caption` | 13 | Badges, shortcut text |
+| `meta` | 14 | Times, counts, the path line, descriptions under a label |
+| `control` | 15 | Every button, field, menu row, tab and list row |
+| `body` | 16 | Messages, notes, prose |
+| `page` | 17 | Page text, reading |
+| `title` | 20 | Titles |
+| `display` | 26 | Empty-state and hero titles |
 
 The root font size is always 100% (16px), in every app, window and site: never set `html { font-size }` to a
 percentage, and never scale the page to make the UI bigger or smaller. A size in rem is the size it says, and
-the person's own page zoom is the only thing that scales Misty.
+the person's own page zoom is the only thing that scales Misty. To make the whole interface bigger or smaller,
+change the type roles and the spacing step (`--spacing`) in `styles/theme.css`, never the root.
 
 Use `<Text size=… tone=… weight=…>` (`bare` keeps the element's own layout). Weights: regular, medium,
 semibold. Sentence case everywhere; capitals only for real acronyms. Monospace only inside code itself (code
@@ -118,15 +122,17 @@ blocks, the editor, diffs, the terminal), never for URLs, paths, IDs, model name
 
 ### Size and spacing
 
-- **Spacing** is the 4px scale (`gap-1` 4, `gap-2` 8, `gap-3` 12, `p-4` 16…). No one-off pixel values.
-- **Heights:** controls 24 (`sm`), 32 (`md`, the default) and 36 (`lg`, only in dialogs and empty states).
-  A row is 32 (two-line rows grow). The top band is 48 (`--ui-header`); the bottom bar 32 (`--ui-bottom-bar`).
-- **Corners:** 4 (`radius-sm`, marks and chips inside rows), 7 (`radius-md`, controls and rows), 9
-  (`radius-lg`, fields and menus), 12 (`radius-xl`, panels, popups, dialogs, cards). No `rounded-full` on
+- **Spacing** is one step, 4.5px (`--spacing`), and every size is a multiple of it (`gap-1` 4.5, `gap-2` 9,
+  `p-4` 18…). No one-off pixel values.
+- **Heights:** controls 27 (`sm`, `h-6`), 36 (`md`, `h-8`, the default) and 40.5 (`lg`, `h-9`, only in dialogs
+  and empty states). A row is 36 (two-line rows grow). The top band is 54 (`--ui-header`, 12 steps); the bottom
+  bar 36 (`--ui-bottom-bar`).
+- **Corners:** 4 (`radius-sm`, marks and chips inside rows), 8 (`radius-md`, controls and rows), 10
+  (`radius-lg`, fields and menus), 14 (`radius-xl`, panels, popups, dialogs, cards). No `rounded-full` on
   buttons: buttons keep their own shape. Only avatars are round.
 - **Edges:** `var(--hairline)` or the `hairline-outline` utility, never `0.5px`. Popups use `popup-edge`, never
   ring, border or shadow.
-- **Icons:** every glyph is 16px at one stroke (`styles/glyphs.css`). Icons take no `size`, `strokeWidth` or
+- **Icons:** every glyph is 18px at one stroke (`styles/glyphs.css`). Icons take no `size`, `strokeWidth` or
   size class. The only larger icon is `PlaceholderIcon`, for a thumbnail, drop zone or empty state.
 - **Depth** comes from faint edges and hairlines, never from a fill. The page, the window's tab row and
   bottom bar, a chat and its floating panels (side panels, side cards) are all the page's one color;
@@ -169,6 +175,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 | Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, offline; `working` and `waiting` for their agent) | A colored chip, a status word in the row |
 | Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` (`track="well"`) with two `iconOnly` options: `spaceIcons.personal` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
 | Who is in a voice channel, under its row in the sidebar | `VoicePerson` (`avatar` at xs, `name`, `speaking` rings the face in the done tone, `muted`) | A list of names, a colored chip |
+| A call in full (a voice channel's page, a DM's call, full screen) | `CallStage` of `CallTile`s (`picture`, else `face`; `speaking`, `muted`; a shared screen as `focus`, `fit="contain"`), then a `CallBar` of IconButtons ending in a danger Leave; away from the call, `FloatingPip` | A grid of hand-made video boxes, a floating card of buttons |
 | Who has a file open | `InUseMark` (`people`: at most three faces, then "+N", each named in its tooltip), at the row's end where its state goes | A list of names, a lock icon |
 | Nothing here yet / failed | `EmptyState`, `ErrorState` | A custom centered block |
 | First load of content you can draw before it arrives (rows, cards, settings rows, shelves, a tree) | A `Skeleton` shaped like it (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`, `ShelfSkeleton`) | "Loading…" text |
@@ -240,6 +247,9 @@ The everyday components, several of which have no doc comment in the catalog yet
   person, a dot when unread, otherwise the time.
 - A row's actions are one ⋯ at its right end on hover, opening the same menu as right-click. An item's actions
   live in one place, its action bar or its ⋯ menu, never as a stray icon beside it.
+- No middle dot between facts ("Sam made Harbor · just now", "3 replies · Ana"). A time or state takes its own
+  place at the row's end; otherwise say it in plain words ("3 replies from Ana"), split it into a label and a
+  description, or use a comma. Never another separator glyph.
 - No loose status words ("Saved", "Done") in a row. Changes save themselves, and a failure shows next to what
   failed.
 - A control that doesn't work, or doesn't apply where it is, isn't shown.
@@ -247,7 +257,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 ### Buttons
 
 - Four roles and three sizes: primary (at most one per surface), secondary (a soft fill, never an outlined
-  box), quiet, and danger (only where something is deleted), at 24, 32 and 36px, with 36 only in dialogs and
+  box), quiet, and danger (only where something is deleted), at 27, 36 and 40.5px, with 40.5 only in dialogs and
   empty states.
 - Buttons keep the system's shape: no `rounded-full` or circular icon buttons.
 - Focus never draws a ring, an outline or a glow, on anything: a focused control shows its hover wash, a
@@ -261,7 +271,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 
 ### Popups and menus
 
-- Popups have 12px corners and three widths: sm 256, md 288 (the default) and lg 320 (`trigger` matches a
+- Popups have 14px corners and three widths: sm 288, md 324 (the default) and lg 360 (`trigger` matches a
   combobox's field). The popup look is locked: never override it.
 - A popover is one of three kinds and takes no `className`: a `panel` (12px in; `PopoverHeader` with its title
   and close button, `PopoverText`, `PopoverBody`, then `PopoverActions` at the bottom right, quiet buttons before

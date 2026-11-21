@@ -6,7 +6,7 @@ import { Badge } from "../display/Badge";
 import { Tooltip, type TooltipSide } from "../overlays/Tooltip";
 import { Button, type ButtonLook, type ButtonProps } from "./Button";
 
-/** sm 24 for inline closers in tabs and every button on a row (RowTools sets it), md 32 (the
+/** sm 27 for inline closers in tabs and every button on a row (RowTools sets it), md 36 (the
  * default) for toolbars. */
 export type IconButtonSize = "sm" | "md";
 
@@ -23,7 +23,7 @@ const sizeClass: Record<IconButtonSize, string> = {
 /**
  * The one icon-only button. Its label is its accessible name and its Tooltip, with the shortcut
  * after it while shortcut hints are on; it never uses the system title. The icon is its child and
- * draws at 16px. With `asChild` it styles its child, such as a router Link.
+ * draws at 18px. With `asChild` it styles its child, such as a router Link.
  */
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (
@@ -45,7 +45,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ) => {
     // Kept to two digits so the bubble stays a corner mark and never covers the icon.
     const shownCount = count && count > 0 ? (count > 99 ? "99+" : String(count)) : null;
-    // On a row or in a compact bar every IconButton is 24px, whatever the feature passed.
+    // On a row or in a compact bar every IconButton is 27px, whatever the feature passed.
     const onRow = useOnRow();
     const compact = useCompactControls();
     const resolvedSize = onRow || compact ? "sm" : (size ?? "md");
@@ -92,7 +92,7 @@ export type IconButtonProps = Omit<
   ButtonProps,
   "size" | "variant" | "icon" | "iconEnd" | "title"
 > & {
-  /** The icon, at 16px. */
+  /** The icon, at 18px. */
   children: React.ReactNode;
   /** What it does, in sentence case: its accessible name and its tooltip. */
   label: string;
@@ -107,7 +107,7 @@ export type IconButtonProps = Omit<
   tooltipSide?: TooltipSide;
   /** Defaults to quiet. */
   variant?: IconButtonVariant | null;
-  /** Defaults to md (32). */
+  /** Defaults to md (36). */
   size?: IconButtonSize | null;
   /** A count over the icon's corner, such as a view's changed files; nothing at zero. */
   count?: number;

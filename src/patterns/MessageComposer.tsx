@@ -21,7 +21,7 @@ import { cn } from "../classNames";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { uiPx } from "../lib/uiScale";
 
-/** The text box without its inset and type; the box grows to 160px, then scrolls. */
+/** The text box without its inset and type; the box grows to 180px, then scrolls. */
 const textBaseClass =
   "block w-full max-h-40 min-w-0 resize-none whitespace-pre-wrap break-words";
 
@@ -62,7 +62,7 @@ const draggingClass = {
   channel: "bg-charcoal-active shadow-[0_0_0_1px_var(--color-cream-muted)]",
 } as const;
 
-/** The card's text: 14px in a 22px line, or body type in a taller box when roomy. */
+/** The card's text: 15px in a 24.75px line, or body type in a taller box when roomy. */
 const cardTextClass = {
   compact: "min-h-11 px-0.5 py-1 text-control leading-5.5",
   roomy: "min-h-16 px-0.5 py-1.5 text-body",
@@ -102,7 +102,7 @@ export type MessageComposerProps = Omit<ComponentProps<"div">, "children"> & {
   end?: ReactNode;
   /** The bar's accessible name. Default "Message options". */
   barLabel?: string;
-  /** The bar's control height: md 32 (default) or sm 24. */
+  /** The bar's control height: md 36 (default) or sm 27. */
   barSize?: ActionBarSize;
   /** Where the chat works, as one quiet line under the box: Space › folder › branch. */
   path?: ReadonlyArray<PathLineSegment>;
@@ -317,8 +317,8 @@ export function MessageComposerAction({
 
 /**
  * One row at the top of a card composer, about the chat's state: a muted glyph, what it says
- * (fading at the edge), and its actions at the end. 32px, with a hairline under all but the last;
- * the row makes its actions 24px, buttons and icon buttons alike.
+ * (fading at the edge), and its actions at the end. 36px, with a hairline under all but the last;
+ * the row makes its actions 27px, buttons and icon buttons alike.
  */
 export function ComposerStatusRow(props: {
   icon: LucideIcon;

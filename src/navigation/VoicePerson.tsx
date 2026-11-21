@@ -4,7 +4,7 @@ import { cn } from "../classNames";
 import { NavRow, NavRowLabel, type NavRowTone } from "./NavRow";
 
 export type VoicePersonProps = {
-  /** Their face, at the 16px glyph size (an `Avatar size="xs"`). */
+  /** Their face, at the 18px glyph size (an `Avatar size="xs"`). */
   avatar: ReactNode;
   name: string;
   /** Talking now: a ring in the done tone circles their face. */

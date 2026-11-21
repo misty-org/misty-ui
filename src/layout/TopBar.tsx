@@ -6,7 +6,7 @@ import { cn } from "../classNames";
  * (`--ui-header`) on the surface's own background, so its controls (a close button, last) have a
  * band of their own and the content scrolls beneath it instead of under them. `start` holds
  * anything that belongs at its other end, such as a title. `divider` draws a page header's
- * hairline under it, so a bar the content scrolls beneath reads as staying put, and adds 4px
+ * hairline under it, so a bar the content scrolls beneath reads as staying put, and adds 4.5px
  * above and below so what it holds centers between the edge and that line.
  *
  * ```tsx

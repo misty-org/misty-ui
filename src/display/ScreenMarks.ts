@@ -56,7 +56,7 @@ export const screenMarkClass = {
    * (`data-tip`, a little brighter). Hidden while empty.
    */
   caption:
-    "pointer-events-none absolute inset-x-0 bottom-[8%] mx-auto w-max max-w-[min(48rem,80%)] " +
+    "pointer-events-none absolute inset-x-0 bottom-[8%] mx-auto w-max max-w-[min(--spacing(192),80%)] " +
     "rounded-xl bg-art-ink/85 px-4 py-2 text-center text-body text-art-paper " +
     "transition-opacity duration-200 data-[tip]:bg-art-ink data-[tip]:font-medium " +
     "data-[hidden]:opacity-0 motion-reduce:transition-none",

@@ -80,7 +80,7 @@ function MessageActionButton({ action }: { action: MessageAction }) {
 }
 
 /**
- * The one action bar under every message: a row of 24px quiet icon buttons with tooltips, aligned
+ * The one action bar under every message: a row of 27px quiet icon buttons with tooltips, aligned
  * to the message's edge. It shows while the message (the nearest `[data-message]` around it) is
  * hovered or holds focus (or always, with `alwaysVisible`). A pressed toggle fills its icon. Copy
  * confirms by swapping its icon for a check for 1.5s.

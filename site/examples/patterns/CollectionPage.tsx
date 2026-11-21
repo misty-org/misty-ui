@@ -68,7 +68,7 @@ function CollectionDemo() {
   const [kind, setKind] = React.useState("any");
   const [query, setQuery] = React.useState("");
   return (
-    <ResizableBox className="h-[30rem]">
+    <ResizableBox className="h-120">
       <CollectionPage>
         <CollectionHeading
           title="Library"

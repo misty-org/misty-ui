@@ -24,7 +24,7 @@ import { cn } from "../classNames";
  */
 
 const dropdownViewportClass =
-  "max-h-[min(24rem,var(--radix-dropdown-menu-content-available-height))] max-w-[var(--radix-dropdown-menu-content-available-width)]";
+  "max-h-[min(--spacing(96),var(--radix-dropdown-menu-content-available-height))] max-w-[var(--radix-dropdown-menu-content-available-width)]";
 
 /** `danger` paints the row red, for deleting. */
 type MenuItemVariant = "default" | "danger";

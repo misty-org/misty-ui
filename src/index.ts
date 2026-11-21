@@ -164,6 +164,7 @@ export * from "./patterns/MessageActions";
 export * from "./patterns/channel/ChannelLayout";
 export * from "./patterns/channel/MemberList";
 export * from "./patterns/channel/ChannelMessage";
+export * from "./patterns/call/CallStage";
 export * from "./patterns/EmojiPicker";
 export * from "./patterns/QuestionPanel";
 export * from "./patterns/FindBar";

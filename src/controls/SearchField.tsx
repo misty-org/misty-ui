@@ -23,7 +23,7 @@ function typeInto(input: HTMLInputElement, text: string) {
 }
 
 /**
- * Misty's one search box: a filled field with no hairline, in the same 32px frame as the selects,
+ * Misty's one search box: a filled field with no hairline, in the same 36px frame as the selects,
  * buttons and chips beside it, so a bar of them lines up. It brightens under the pointer and takes
  * a soft neutral edge while typing in it. A clear button shows once there is text, and Escape
  * clears it too.

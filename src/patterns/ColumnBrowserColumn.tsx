@@ -37,7 +37,7 @@ export function columnRowDomId(base: string, column: number, row: number) {
   return `${base}-c${column}-r${row}`;
 }
 
-/** One row: the 32px row, its icon, its name and marks, and a chevron at the end of a folder. */
+/** One row: the 36px row, its icon, its name and marks, and a chevron at the end of a folder. */
 function Row({
   row,
   domId,
@@ -103,7 +103,7 @@ function Row({
 }
 
 /**
- * One column of a ColumnBrowser: a listbox of its rows that scrolls on its own, 240px wide. While
+ * One column of a ColumnBrowser: a listbox of its rows that scrolls on its own, 270px wide. While
  * its rows load it shows ListRowSkeletons; a failure is one muted line.
  */
 export function ColumnBrowserList({

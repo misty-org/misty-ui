@@ -8,8 +8,8 @@ import { MenuTrigger } from "../overlays/MenuTrigger";
 import { OverflowFadeText } from "./OverflowFadeText";
 
 /**
- * A section heading's one action. With `icon` and no `showLabel` it is a 24px quiet IconButton
- * whose label is its tooltip; with `showLabel` (or no icon) a 24px quiet Button. With `menu` it
+ * A section heading's one action. With `icon` and no `showLabel` it is a 27px quiet IconButton
+ * whose label is its tooltip; with `showLabel` (or no icon) a 27px quiet Button. With `menu` it
  * opens those MenuItem rows instead of calling `onSelect`.
  */
 export type SectionHeadingAction = {
@@ -45,7 +45,7 @@ export type SectionHeadingProps = {
 
 /**
  * The heading over a group of rows: a Space home section, the sidebar's chat sections, a chat's
- * Channels and Direct messages. Plain muted text, not a chip, 32px tall and aligned with the rows
+ * Channels and Direct messages. Plain muted text, not a chip, 36px tall and aligned with the rows
  * under it, with an optional count, one action at the right end and an optional fold. Only the
  * fold button washes on hover.
  *

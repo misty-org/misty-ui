@@ -22,7 +22,7 @@ export type PageHeaderProps = {
 };
 
 /**
- * A page's top band: 48px (`--ui-header`) with a hairline under it, the title on the left and the
+ * A page's top band: 54px (`--ui-header`) with a hairline under it, the title on the left and the
  * page's actions on the right. The title fades first, down to a short stub, and only then do the
  * actions give way. It never wraps. Without a title it is only the actions, at its end, with no
  * hairline: the page's controls, not a bar.
@@ -46,7 +46,7 @@ export function PageHeader({
         className,
       )}
     >
-      {/* The title takes what the actions leave; it may not fade below 8rem before they give way. */}
+      {/* The title takes what the actions leave; it may not fade below 144px before they give way. */}
       {untitled ? null : typeof title === "string" || typeof title === "number" ? (
         <OverflowFadeText
           as="h1"

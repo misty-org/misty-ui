@@ -14,8 +14,8 @@ import { Text } from "../../display/Text";
  * A place where people talk, laid out as Discord lays it out: a column of channels on the
  * sidebar's fill, then the open channel on the page's own color, its header over the messages and,
  * beside them, the member list. Discord's lines too: one under both headers, one before the
- * member list. Sizes are Discord's, in design pixels a tenth under its CSS pixels: a 44px header,
- * 32px channel rows, a 52px composer.
+ * member list. Sizes follow Discord's: a 49.5px header,
+ * 36px channel rows, a 58.5px composer.
  */
 
 /** The whole page: the channel column, then the open channel. */

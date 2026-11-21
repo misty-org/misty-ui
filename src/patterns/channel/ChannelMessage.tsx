@@ -12,7 +12,7 @@ import { Tooltip } from "../../overlays/Tooltip";
 import { MentionMark } from "./ChannelLayout";
 
 /*
- * One message in a channel, as Discord lays it out: the sender's face in a 40px column, their name
+ * One message in a channel, as Discord lays it out: the sender's face in a 45px column, their name
  * and the time over the text, and a run of messages from the same sender folded under the first,
  * each showing its time in the face's column only under the pointer. Whatever hangs off a message
  * (files, link previews, reactions, a thread's replies) follows the text in the same column.
@@ -21,7 +21,7 @@ import { MentionMark } from "./ChannelLayout";
 /**
  * One message in a channel. `grouped` folds it under the sender's previous message: no face or
  * name, its short time in the face's column on hover. `tools` are the message's own buttons
- * (reactions, reply, edit, its ⋯), drawn 24px in a small bar at its top right while it is hovered,
+ * (reactions, reply, edit, its ⋯), drawn 27px in a small bar at its top right while it is hovered,
  * holds focus or has a menu open (`active`). `mentioned` marks a message that names the reader;
  * `editing` washes the one being edited; `pending` dims one still being sent.
  */
@@ -46,7 +46,7 @@ export function ChannelMessage({
   className,
   ...props
 }: Omit<ComponentProps<"div">, "children"> & {
-  /** The sender's face at 40px (an Avatar lg, or an agent's mark). Unused when grouped. */
+  /** The sender's face at 45px (an Avatar lg, or an agent's mark). Unused when grouped. */
   avatar?: ReactNode;
   name: string;
   /** The sender's highest colored role's color. */
@@ -82,7 +82,7 @@ export function ChannelMessage({
       tabIndex={-1}
       aria-label={`Message from ${name}`}
       className={cn(
-        "group/message relative grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 px-4 py-0.5 outline-none",
+        "group/message relative grid grid-cols-[--spacing(10)_minmax(0,1fr)] gap-x-4 px-4 py-0.5 outline-none",
         !grouped && "mt-4 first:mt-0",
         "hover:bg-row-hover focus-within:bg-row-hover data-[active]:bg-row-hover",
         mentioned &&
@@ -197,7 +197,7 @@ export function ChannelMessageText(props: {
 
 /**
  * The line over a message that answers another: a bent arrow from the face's column, the
- * original's sender (a 16px face and their name) and one line of what they said, the whole line
+ * original's sender (an 18px face and their name) and one line of what they said, the whole line
  * a button that brings the original into view. `missing` says the original isn't drawn: still
  * further back (`earlier`) or deleted.
  */

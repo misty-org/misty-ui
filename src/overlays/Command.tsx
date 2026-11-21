@@ -19,7 +19,7 @@ import {
 import { Tooltip } from "./Tooltip";
 
 /*
- * A searchable list (cmdk) for pickers and palettes. Its rows are menu rows: a 16px icon, the
+ * A searchable list (cmdk) for pickers and palettes. Its rows are menu rows: an 18px icon, the
  * label, an optional shortcut, and a checkmark at the right edge for the current pick.
  */
 
@@ -121,7 +121,7 @@ type RadixCommandItemProps = Omit<
 };
 
 type CommandItemProps = RadixCommandItemProps & {
-  /** The 16px icon, only when it tells the row apart from the others. */
+  /** The 18px icon, only when it tells the row apart from the others. */
   icon?: MenuIcon;
   /** The row's text. It is also what the search matches unless `value` is given. */
   label: React.ReactNode;

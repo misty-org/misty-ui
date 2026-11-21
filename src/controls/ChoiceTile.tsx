@@ -18,7 +18,7 @@ export type ChoiceTileProps = Omit<
   caption?: string;
   /** `outline` draws the tile's edge, for tiles that sit on a bare surface. Default `plain`. */
   look?: "plain" | "outline";
-  /** A taller tile, 12px above and below the picture, for a grid of named choices (topics). */
+  /** A taller tile, 13.5px above and below the picture, for a grid of named choices (topics). */
   roomy?: boolean;
   /**
    * A radio in a `radiogroup` instead of a toggle: the picked tile is `aria-checked` rather than

@@ -21,7 +21,7 @@ export interface SearchablePickerOption {
   /** What `onPick` gets; the option whose value is the picker's `value` is checked. */
   value: string;
   label: string;
-  /** The 16px icon, only when it tells options apart, e.g. a cloud for a remote branch. */
+  /** The 18px icon, only when it tells options apart, e.g. a cloud for a remote branch. */
   icon?: MenuIcon;
   /** More words the search matches besides the label. */
   keywords?: ReadonlyArray<string>;
@@ -40,7 +40,7 @@ export interface SearchablePickerAction {
 export interface SearchablePickerProps {
   /** What is picked, e.g. "Branch": the trigger's name and tooltip and the list's name. */
   label: string;
-  /** The trigger's 16px icon. */
+  /** The trigger's 18px icon. */
   icon?: ButtonIcon;
   /** Undefined while the options are read: the list shows skeleton rows. */
   options: ReadonlyArray<SearchablePickerOption> | undefined;

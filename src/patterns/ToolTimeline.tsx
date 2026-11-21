@@ -69,7 +69,7 @@ export function ToolList(props: { label: string; children: ReactNode; id?: strin
 }
 
 /**
- * One step on one 32px line: its icon, what it did (muted), what it acted on (full color, fading
+ * One step on one 36px line: its icon, what it did (muted), what it acted on (full color, fading
  * at the edge), and its end (a duration, a count, line changes). It has no fill or border. A row
  * that opens swaps its icon for a chevron on hover; a running step is dimmed, a failed one red.
  * Render it inside a ToolList `li`, with its ToolBody after it.

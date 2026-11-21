@@ -17,7 +17,7 @@ import { RowActions } from "../overlays/RowActions";
 const tileSize = {
   sm: "size-6 [&>*]:max-h-4.5 [&>*]:max-w-4.5",
   md: "size-8 [&>*]:max-h-6 [&>*]:max-w-6",
-  /** A store shelf's 64px slot (`ShelfItem`): a mark sits inset, a picture fills it with the tile's corners. */
+  /** A store shelf's 72px slot (`ShelfItem`): a mark sits inset, a picture fills it with the tile's corners. */
   tile: "size-16 [&>*]:max-h-10 [&>*]:max-w-10",
 } as const;
 
@@ -43,7 +43,7 @@ export function LogoTile({
         tileSize[size],
         cover &&
           "overflow-hidden [&>*]:size-full [&>*]:max-h-none [&>*]:max-w-none [&>img]:object-cover",
-        cover && (size === "tile" ? "rounded-[15px]" : "rounded-md"),
+        cover && (size === "tile" ? "rounded-[calc(var(--spacing)*3.75)]" : "rounded-md"),
       )}
     >
       {children}
@@ -51,12 +51,12 @@ export function LogoTile({
   );
 }
 
-/** A card grid that fits as many columns as the width allows, each at least 16rem wide. */
+/** A card grid that fits as many columns as the width allows, each at least 288px wide. */
 export function CatalogGrid({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <ul
       aria-label={label}
-      className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-2.5 p-0"
+      className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(--spacing(64),1fr))] gap-2.5 p-0"
     >
       {children}
     </ul>
@@ -304,7 +304,7 @@ export function CatalogTileRow({ label, children }: { label: string; children: R
   return (
     <ul
       aria-label={label}
-      className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-2 p-0"
+      className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(--spacing(56),1fr))] gap-2 p-0"
     >
       {children}
     </ul>

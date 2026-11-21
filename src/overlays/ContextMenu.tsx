@@ -27,7 +27,7 @@ import { cn } from "../classNames";
  */
 
 const contextViewportClass =
-  "max-h-[min(24rem,var(--radix-context-menu-content-available-height))] max-w-[var(--radix-context-menu-content-available-width)]";
+  "max-h-[min(--spacing(96),var(--radix-context-menu-content-available-height))] max-w-[var(--radix-context-menu-content-available-width)]";
 
 const ContextMenu = ContextMenuPrimitive.Root;
 

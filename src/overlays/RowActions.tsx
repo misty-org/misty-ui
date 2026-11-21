@@ -28,7 +28,7 @@ type RowActionsProps = {
 };
 
 /**
- * A row's one place for its actions: a 24px ⋯ at its right end, shown while the row is hovered,
+ * A row's one place for its actions: a 27px ⋯ at its right end, shown while the row is hovered,
  * holds focus, or has a menu open, and the same menu on a right-click anywhere on the row.
  * Put it last inside the row; the row is its nearest ancestor with the `group/row` class, which
  * is how ListRow and tiles are built.

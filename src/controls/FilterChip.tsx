@@ -13,7 +13,7 @@ export type FilterChipProps = Omit<
   label: string;
   onPressedChange: (pressed: boolean) => void;
   icon?: IconSource;
-  /** sm 24, md 32 (default). */
+  /** sm 27, md 36 (default). */
   size?: "sm" | "md";
 };
 

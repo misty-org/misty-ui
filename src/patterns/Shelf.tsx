@@ -104,7 +104,7 @@ export function ShelfItem({
           type="button"
           onClick={onOpen}
           aria-label={`${title}, details`}
-          className="flex min-w-0 shrink-0 rounded-[15px] outline-none"
+          className="flex min-w-0 shrink-0 rounded-[calc(var(--spacing)*3.75)] outline-none"
         >
           {logo}
         </button>
@@ -151,7 +151,7 @@ export function ShelfSkeleton({ label, items = 4 }: { label: string; items?: num
       <div className="grid min-w-0 lg:grid-cols-2 lg:gap-x-8" aria-hidden="true">
         {Array.from({ length: items }, (_, index) => (
           <div key={index} className="flex min-w-0 gap-4 pt-4 pb-4">
-            <Skeleton className="size-16 shrink-0 rounded-[15px]" />
+            <Skeleton className="size-16 shrink-0 rounded-[calc(var(--spacing)*3.75)]" />
             <div className="grid min-w-0 flex-1 content-start gap-2 pt-1">
               <Skeleton className="h-3.5 w-36" />
               <Skeleton className="h-3 w-52 max-w-full" />

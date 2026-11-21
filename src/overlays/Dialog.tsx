@@ -111,7 +111,7 @@ const dialogSizeClass: Record<DialogSize, string> = {
   md: "max-w-lg",
   lg: "max-w-2xl",
   xl: "max-w-4xl",
-  media: "h-[calc(100dvh-4rem-var(--misty-modal-inset-top,0px))] w-[calc(100%-4rem)] max-w-6xl",
+  media: "h-[calc(100dvh-var(--spacing)*16-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*16)] max-w-6xl",
 };
 
 const DialogContent = React.forwardRef<
@@ -193,7 +193,7 @@ const DialogContent = React.forwardRef<
             className={cn(
               "group/dialog pointer-events-auto relative",
               scrolls ? "flex flex-col overflow-hidden" : "grid overflow-y-auto",
-              "max-h-[calc(100dvh-4rem-var(--misty-modal-inset-top,0px))] w-[calc(100%-2rem)]",
+              "max-h-[calc(100dvh-var(--spacing)*16-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*8)]",
               dialogSizeClass[size],
               "gap-4 rounded-xl p-6",
               tone === "page" ? "bg-charcoal-bg" : "bg-charcoal-card",

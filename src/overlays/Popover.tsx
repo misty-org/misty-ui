@@ -24,7 +24,7 @@ import { Text } from "../display/Text";
  * parts come from here, so no call site picks a width, padding, radius or type size:
  *
  * ```tsx
- * <PopoverContent size="sm">                      // a panel, 12px in
+ * <PopoverContent size="sm">                      // a panel, 13.5px in
  *   <PopoverHeader title="Welcome tour" />        // the title and a close button
  *   <PopoverText>A short walk through what's here.</PopoverText>
  *   <PopoverActions><Button variant="secondary">Replay tour</Button></PopoverActions>
@@ -49,7 +49,7 @@ type PopoverContentProps = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
   "className"
 > & {
-  /** sm 256, md 288 (the default), lg 320, or the trigger's own width. */
+  /** sm 288, md 324 (the default), lg 360, or the trigger's own width. */
   size?: PopoverSize;
   /** What it holds: a `panel` (the default), menu-like rows (`list`), or edge to edge (`flush`). */
   kind?: PopoverKind;
@@ -85,7 +85,7 @@ const PopoverContent = React.forwardRef<
           sideOffset={sideOffset}
           className={cn(
             popoverContentClass,
-            "max-w-[calc(100vw-1rem)]",
+            "max-w-[calc(100vw-var(--spacing)*4)]",
             popoverSizeClass[size],
             popoverKindClass[kind],
           )}
@@ -178,7 +178,7 @@ const PickerSearch = React.forwardRef<
 ));
 PickerSearch.displayName = "PickerSearch";
 
-/** A picker's rows under its search, or a flush popover's list: 4px in, scrolling. */
+/** A picker's rows under its search, or a flush popover's list: 4.5px in, scrolling. */
 const PickerList = React.forwardRef<
   HTMLDivElement,
   Omit<React.ComponentPropsWithoutRef<"div">, "className">

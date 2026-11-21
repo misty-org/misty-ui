@@ -47,7 +47,7 @@ const toneText: Record<NavRowTone, { bright: string; quiet: string }> = {
 
 /**
  * One row of a navigation list: the window's sidebar, a Settings or Agents window's menu, a rail of
- * engines. 32px, a 16px mark, its label, and what sits at its end, in quiet text (the chrome's,
+ * engines. 36px, an 18px mark, its label, and what sits at its end, in quiet text (the chrome's,
  * or with `tone="page"` the page's). The open row takes the active fill.
  *
  * ```tsx
@@ -101,7 +101,7 @@ export function NavRow({
 export type NavTitleButtonProps = Omit<ComponentPropsWithoutRef<"button">, "ref" | "children"> & {
   /** The place's name. Its length is capped where it is typed, so it shows whole. */
   name: ReactNode;
-  /** The place's own mark before the name, at the 16px glyph size, such as the Space's avatar. */
+  /** The place's own mark before the name, at the 18px glyph size, such as the Space's avatar. */
   mark?: ReactNode;
   ref?: Ref<HTMLButtonElement>;
 };
@@ -171,7 +171,7 @@ export function NavRowLabel({
 }
 
 /**
- * The rows of one navigation list, with the same 6px between them everywhere, so a hovered row
+ * The rows of one navigation list, with the same 6.75px between them everywhere, so a hovered row
  * never runs into the open one.
  */
 export function NavList({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
@@ -188,7 +188,7 @@ export interface NavGroupHeadingProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * The heading over a group of sidebar rows (Pinned, a section, Archived): 28px, the caption role
+ * The heading over a group of sidebar rows (Pinned, a section, Archived): 31.5px, the caption role
  * at medium weight, in the chrome's quiet text, brightening under the pointer.
  */
 export function NavGroupHeading({

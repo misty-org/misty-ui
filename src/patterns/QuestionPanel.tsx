@@ -9,11 +9,11 @@ export type QuestionPanelProps = {
   title: ReactNode;
   /** Quiet words at the right of the title row, such as "2 of 3". */
   aside?: ReactNode;
-  /** A control at the end of the title row, such as a 24px hide IconButton. */
+  /** A control at the end of the title row, such as a 27px hide IconButton. */
   end?: ReactNode;
   /** The answers: a ChoiceList, an Input for one's own words, or both. */
   children?: ReactNode;
-  /** The buttons in one 32px row: a BackButton, then the one primary action, then a quiet one. */
+  /** The buttons in one 36px row: a BackButton, then the one primary action, then a quiet one. */
   actions?: ReactNode;
   /** Why answering failed, shown under the answers. */
   error?: string;

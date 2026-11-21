@@ -21,7 +21,7 @@ export type ViewHeaderProps = {
 };
 
 /**
- * The band at the top of every view of a Space: 48px (`--ui-header`), the title on the left and the
+ * The band at the top of every view of a Space: 54px (`--ui-header`), the title on the left and the
  * view's icon buttons on the right, with no line under it, since the panes read as one sheet. It
  * holds no search box and no create button. The title fades first, and only then do the buttons give
  * way. It never wraps.

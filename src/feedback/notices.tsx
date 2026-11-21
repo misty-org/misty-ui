@@ -257,7 +257,7 @@ function NoticeViewportInner({ fallback }: { fallback: boolean }) {
       data-misty-window-drag-block="true"
       className={cn(
         "pointer-events-none fixed bottom-4 right-4 layer-notification flex w-90",
-        "max-w-[calc(100vw-2rem)] flex-col gap-2",
+        "max-w-[calc(100vw-var(--spacing)*8)] flex-col gap-2",
       )}
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}

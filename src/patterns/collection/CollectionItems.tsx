@@ -54,7 +54,7 @@ export function CollectionItems({
   gridLayout?: "preview" | "compact";
   /**
    * List rows start with the item's icon in a framed tile, in its tone, and the title may take
-   * two lines. Off, rows are 32px and start with their text.
+   * two lines. Off, rows are 36px and start with their text.
    */
   listIcons?: boolean;
   /** How many lines a compact card's title may take before it fades. */
