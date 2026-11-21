@@ -71,7 +71,7 @@ function Inline({ text }: { text: string }) {
     <>
       {parts.map((part, index) =>
         part.startsWith("`") ? (
-          <code key={index} className="rounded-sm bg-control-hover px-1 font-mono text-[0.9em]">
+          <code key={index} className="rounded-sm bg-control-hover px-1 font-mono text-[0.9em] text-tone-teal">
             {part.slice(1, -1)}
           </code>
         ) : part.startsWith("**") ? (
@@ -237,15 +237,16 @@ function HomePage() {
         </Text>
       </div>
       <Section title="Install">
-        <CodeBlock code="npm install @misty/ui lucide-react" />
+        <CodeBlock language="bash" code="npm install @misty/ui lucide-react" />
         <Text size="body" tone="muted" wrap>
           Add the styles to your Tailwind entry, right after Tailwind itself:
         </Text>
-        <CodeBlock code={'@import "tailwindcss";\n@import "@misty/ui/styles.css";'} />
+        <CodeBlock language="css" code={'@import "tailwindcss";\n@import "@misty/ui/styles.css";'} />
         <Text size="body" tone="muted" wrap>
           Then import components from the package, never a subfolder:
         </Text>
         <CodeBlock
+          language="tsx"
           code={
             'import { Button, TooltipProvider } from "@misty/ui";\n\n' +
             "export function App() {\n" +
@@ -394,13 +395,13 @@ function PropsTable({ name }: { name: string }) {
           {rows.map((row) => (
             <TableRow key={row.name}>
               <TableCell className="align-top">
-                <code className="font-mono text-meta">
+                <code className="font-mono text-meta text-tone-teal">
                   {row.name}
                   {row.optional ? "?" : ""}
                 </code>
               </TableCell>
               <TableCell className="align-top">
-                <code className="font-mono text-meta text-cream-muted">{row.type}</code>
+                <code className="font-mono text-meta text-tone-violet">{row.type}</code>
               </TableCell>
               <TableCell className="align-top">
                 <Text size="meta" tone="muted" wrap>
@@ -491,7 +492,7 @@ function ComponentPage(props: { example: Example; mark: Mark; onMark(mark: Mark)
         </Section>
       ) : null}
       <Section title="Code">
-        <CodeBlock code={example.code} />
+        <CodeBlock language="tsx" code={example.code} />
       </Section>
       {withProps.length ? (
         <Section title="Props">

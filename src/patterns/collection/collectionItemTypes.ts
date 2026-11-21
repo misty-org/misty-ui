@@ -34,6 +34,16 @@ export type CollectionItem = {
   onMenuOpen?: () => void;
   marker?: ReactNode;
   /**
+   * Small marks about the item right after its name, in the list and on a card, such as its
+   * Finder tags (`TagDots`). Its state still goes at the end (`sync`, or a row's state).
+   */
+  marks?: ReactNode;
+  /**
+   * A folder: with CollectionItems' `drag`, dragged items may be dropped on it. Leave it out for
+   * anything that can't hold other items.
+   */
+  dropTarget?: boolean;
+  /**
    * Where a file in a synced drive is, drawn as its StateMark: a grid card wears it bare at its
    * top right corner, where its ⋯ takes its place on hover, and a list row after its title. Leave
    * it out for a file that is downloaded and in step, and for anything that isn't a drive file.

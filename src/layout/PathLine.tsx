@@ -18,6 +18,11 @@ export type PathLineSegment = {
    * branches to switch to.
    */
   picker?: PathLinePicker;
+  /**
+   * Runs when the segment is pressed, for a path whose folders open: the segment is a quiet button
+   * with no chevron of its own. Ignored when the segment has a `menu` or a `picker`.
+   */
+  onSelect?: () => void;
 };
 
 /** A SearchablePicker opened from a path line segment, which is its trigger. */
@@ -75,7 +80,9 @@ const openerClass = cn(
 /**
  * Where something works, as one quiet line: "Space › folder › branch" under the composer. Each
  * segment fades instead of wrapping, and the longest name shortens first. Segments with a menu
- * or a picker open it, like a branch switcher. The line is sans; paths are never set in monospace here.
+ * or a picker open it, like a branch switcher; a segment with `onSelect` is a quiet button that
+ * runs it, like a folder in a file's path. The line is sans; paths are never set in monospace here.
+ * It is not a breadcrumb bar of buttons across a page's top: it stays one quiet line.
  */
 export function PathLine({ segments, label, className }: PathLineProps) {
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -166,6 +173,10 @@ export function PathLine({ segments, label, className }: PathLineProps) {
                   {segment.menu}
                 </DropdownMenuContent>
               </DropdownMenu>
+            ) : segment.onSelect ? (
+              <button type="button" className={openerClass} onClick={segment.onSelect}>
+                {body}
+              </button>
             ) : (
               <span className={segmentClass}>{body}</span>
             )}

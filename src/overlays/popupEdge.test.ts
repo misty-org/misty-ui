@@ -32,8 +32,8 @@ describe("popup edges", () => {
       "outline: 1px solid color-mix(in srgb, currentColor 24%, transparent) !important;",
       "outline-offset: -1px !important;",
     ];
-    const overlays = read("src/styles/overlays.css");
-    const utility = read("src/styles/components.css").match(/@utility popup-edge \{[^}]*\}/)?.[0];
+    const overlays = read("styles/overlays.css");
+    const utility = read("styles/components.css").match(/@utility popup-edge \{[^}]*\}/)?.[0];
     expect(utility).toBeTruthy();
     for (const line of edge) {
       expect(overlays).toContain(line);
@@ -49,7 +49,7 @@ describe("popup edges", () => {
   it("every Radix popup that sets an inline outline is covered by the edge rule", () => {
     // The Radix packages that write `outline: none` into a popup's inline style, and the slots
     // Misty's primitives give those popups. A new one needs its slot in overlays.css.
-    const overlays = read("src/styles/overlays.css");
+    const overlays = read("styles/overlays.css");
     for (const slot of [
       "dropdown-menu-content",
       "dropdown-menu-sub-content",
@@ -61,12 +61,12 @@ describe("popup edges", () => {
   });
 
   it("no shared popup or dialog surface adds a shadow or a ring edge of its own", () => {
-    const dir = resolve(root, "src/shared/ui/overlays");
+    const dir = resolve(root, "src/overlays");
     // The tour's spotlight and the floating picture-in-picture are not popup panels.
     const skip = new Set(["Tour.tsx", "FloatingPip.tsx"]);
     const offenders = readdirSync(dir)
       .filter((name) => name.endsWith(".tsx") && !name.includes(".test.") && !skip.has(name))
-      .filter((name) => shadowOrRing.test(read(`src/shared/ui/overlays/${name}`)));
+      .filter((name) => shadowOrRing.test(read(`src/overlays/${name}`)));
     expect(offenders).toEqual([]);
   });
 });

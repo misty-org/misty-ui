@@ -10,6 +10,8 @@ export type RenameItemDialogProps = {
   initialName: string;
   /** The primary button's label. Default "Save". */
   confirmLabel?: string;
+  /** The field's label. Default "Name"; a dialog that asks for a folder's path says "Folder". */
+  fieldLabel?: string;
   /** Saves the name. If it throws, its message shows under the field and the dialog stays. */
   onConfirm: (name: string) => Promise<unknown>;
   onClose: () => void;
@@ -35,6 +37,7 @@ export function RenameItemDialog({
   title,
   initialName,
   confirmLabel = "Save",
+  fieldLabel = "Name",
   onConfirm,
   onClose,
 }: RenameItemDialogProps) {
@@ -69,7 +72,7 @@ export function RenameItemDialog({
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
-          <Field label="Name" error={error}>
+          <Field label={fieldLabel} error={error}>
             <Input
               autoFocus
               value={name}

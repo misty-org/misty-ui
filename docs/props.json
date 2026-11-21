@@ -1186,6 +1186,18 @@
       "doc": "Long lines wrap onto the next line instead of scrolling sideways. Off by default, since code reads by its lines; turn it on for a command or a path a person should see whole."
     },
     {
+      "name": "language",
+      "type": "CodeLanguage",
+      "optional": true,
+      "doc": "Colors the code by what each part is (keywords, strings, calls, properties), in the theme's tones. Leave it out for output and plain text, which stay one color."
+    },
+    {
+      "name": "header",
+      "type": "string | boolean",
+      "optional": true,
+      "doc": "A title bar over the code, as a docs page shows a terminal or a file: the label at the start (`true` names the language) and the copy button at the end, always visible. For code a page is about; a command in a sentence stays bare."
+    },
+    {
       "name": "copy",
       "type": "boolean",
       "optional": true,
@@ -1479,6 +1491,12 @@
       "type": "string",
       "optional": true,
       "doc": "Keeps the header sort and the hidden columns in `misty.db` under this key; without it they last for the page."
+    },
+    {
+      "name": "drag",
+      "type": "CollectionDrag",
+      "optional": true,
+      "doc": "Moves items by dragging them with the pointer (never the native drag loop). The picked items go together when one of them is dragged, and they dim while they move. Items with `dropTarget` and the background take the drop: `onDrop(target, ids, copy)`, with `target` null for the background and `copy` true while ⌥ is held. `canDrop` refuses a folder."
     }
   ],
   "CollectionPage": [],
@@ -1568,6 +1586,12 @@
       "doc": ""
     },
     {
+      "name": "columns",
+      "type": "{ active: boolean; onSelect(): void; }",
+      "optional": true,
+      "doc": "Column view (ColumnBrowser), kept by the caller beside its grid or list choice: `active` while it shows, `onSelect` to switch to it. Picking grid or list calls `onChange` as before."
+    },
+    {
       "name": "disabled",
       "type": "boolean",
       "optional": true,
@@ -1618,6 +1642,56 @@
       "type": "boolean",
       "optional": true,
       "doc": "A radio in a `radiogroup` instead of a toggle: the picked swatch is `aria-checked` rather than `aria-pressed`, with the same mark."
+    }
+  ],
+  "ColumnBrowser": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "The browser's accessible name, such as \"Columns\"."
+    },
+    {
+      "name": "columns",
+      "type": "readonly ColumnBrowserColumn[]",
+      "optional": false,
+      "doc": "The folders open from left to right, each with what's picked in it."
+    },
+    {
+      "name": "onSelect",
+      "type": "(column: number, id: string, event: MouseEvent<Element, MouseEvent> | KeyboardEvent<Ele…",
+      "optional": false,
+      "doc": "A row was picked, by a click or a key: the caller decides what that does to the selection (⇧ and ⌘ on the event extend it) and which columns follow."
+    },
+    {
+      "name": "onOpen",
+      "type": "(column: number, id: string) => void",
+      "optional": false,
+      "doc": "Double-click, Enter or ⌘↓ on a row."
+    },
+    {
+      "name": "menu",
+      "type": "(column: number, id: string) => ReactNode",
+      "optional": true,
+      "doc": "A row's actions as menu rows (MenuItem…), opened by a right-click on it."
+    },
+    {
+      "name": "preview",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Shown as the last column, for a picked file: its preview and facts."
+    },
+    {
+      "name": "drag",
+      "type": "CollectionDrag",
+      "optional": true,
+      "doc": "Moves rows by dragging them onto a folder row or a column, as CollectionItems' `drag`."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
     }
   ],
   "Command": [],
@@ -2159,6 +2233,234 @@
     }
   ],
   "DisclosureList": [],
+  "DocsCard": [
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onSelect",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "DocsHeader": [
+    {
+      "name": "brand",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "sections",
+      "type": "DocsHeaderSection[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "current",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "DocsHero": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "lead",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "actions",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "aside",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "DocsLayout": [
+    {
+      "name": "header",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "nav",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "toc",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "DocsPager": [
+    {
+      "name": "previous",
+      "type": "DocsPagerLink",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "next",
+      "type": "DocsPagerLink",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "DocsSearch": [
+    {
+      "name": "items",
+      "type": "DocsSearchItem[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "DocsSwitcher": [
+    {
+      "name": "sections",
+      "type": "DocsHeaderSection[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "current",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "slash",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The slash before it, which follows a name in a bar; leave it off where the menu stands first."
+    }
+  ],
+  "DocsTitle": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "eyebrow",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "lead",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "DocsToc": [
+    {
+      "name": "items",
+      "type": "DocsTocItem[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "active",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "DragHandleButton": [
     {
       "name": "type",
@@ -3933,6 +4235,12 @@
       "type": "boolean",
       "optional": true,
       "doc": "Shows the whole value, never fading it, for a title whose length is capped where it is typed (a Space's name). Its neighbours give way instead."
+    },
+    {
+      "name": "heading",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Set as a bar's name, not a control: the control size, semibold and bright, as the logo and page name beside it in a navbar are, with the same hover wash and chevron."
     }
   ],
   "MessageActions": [
@@ -4448,6 +4756,12 @@
       "doc": "The element to render. Defaults to `span`, laid out as a block so it can clip."
     },
     {
+      "name": "dateTime",
+      "type": "string",
+      "optional": true,
+      "doc": "With `as=\"time\"`: the machine-readable moment it shows."
+    },
+    {
       "name": "full",
       "type": "string | boolean",
       "optional": true,
@@ -4586,6 +4900,12 @@
       "type": "OverflowFadeElement",
       "optional": true,
       "doc": "The element to render. Defaults to `span`, laid out as a block so it can clip."
+    },
+    {
+      "name": "dateTime",
+      "type": "string",
+      "optional": true,
+      "doc": "With `as=\"time\"`: the machine-readable moment it shows."
     },
     {
       "name": "full",
@@ -5180,6 +5500,12 @@
       "type": "string",
       "optional": true,
       "doc": "The primary button's label. Default \"Save\"."
+    },
+    {
+      "name": "fieldLabel",
+      "type": "string",
+      "optional": true,
+      "doc": "The field's label. Default \"Name\"; a dialog that asks for a folder's path says \"Folder\"."
     },
     {
       "name": "onConfirm",
@@ -6870,6 +7196,40 @@
       "doc": "A drag paused over a tab for a moment, while still held: the window opens that tab, so the dragged page can be dropped into its panes. Drags from outside the row (a sidebar chat) that carry `workspace-tab-switch` pause the same way."
     }
   ],
+  "TagDot": [
+    {
+      "name": "color",
+      "type": "number",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "TagDots": [
+    {
+      "name": "tags",
+      "type": "readonly FinderTagMark[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "Text": [
     {
       "name": "size",
@@ -6918,6 +7278,12 @@
       "type": "OverflowFadeElement",
       "optional": true,
       "doc": "The element to render. Defaults to `span`, laid out as a block so it can clip."
+    },
+    {
+      "name": "dateTime",
+      "type": "string",
+      "optional": true,
+      "doc": "With `as=\"time\"`: the machine-readable moment it shows."
     },
     {
       "name": "full",
@@ -7460,6 +7826,44 @@
       "type": "boolean",
       "optional": true,
       "doc": "Click-through: only children that opt back in with pointer-events-auto receive input."
+    }
+  ],
+  "VoicePerson": [
+    {
+      "name": "avatar",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "Their face, at the 16px glyph size (an `Avatar size=\"xs\"`)."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "speaking",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Talking now: a ring in the done tone circles their face."
+    },
+    {
+      "name": "muted",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Muted by themself: their name stays quiet."
+    },
+    {
+      "name": "tone",
+      "type": "NavRowTone",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
     }
   ],
   "WorkspaceOverlay": [

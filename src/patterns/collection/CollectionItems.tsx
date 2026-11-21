@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState, type MouseEvent } from "react";
+import { useContext, useEffect, useState, type MouseEvent, type ReactNode } from "react";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { CollectionCreator, CollectionItemsGrid } from "./CollectionCards";
 import { CollectionColumnsContext, useHiddenColumns } from "./CollectionColumns";
 import { collectionMemory, rememberCollection } from "./collectionMemory";
 import { CollectionItemsTable, type CollectionSort } from "./CollectionItemsTable";
+import { useCollectionDrag, type CollectionDrag } from "./collectionDrag";
 import {
   compareCollectionValues,
   hasItemActions,
@@ -11,6 +12,12 @@ import {
   type CollectionItem,
 } from "./collectionItemTypes";
 
+/**
+ * A collection's items as a sortable table (`view="list"`) or a grid of cards, each opening on a
+ * press, with its actions in one ⋯ and on a right-click. With `drag` they move by dragging: onto
+ * an item marked `dropTarget` (a folder) or onto the background (the open folder), ⌥ making it a
+ * copy. For Finder's column view use ColumnBrowser; for a tree, TreeRow.
+ */
 export function CollectionItems({
   items,
   categoryLabel = "Area",
@@ -28,6 +35,7 @@ export function CollectionItems({
   selectedIds = [],
   onSelect,
   remember,
+  drag,
 }: {
   items: CollectionItem[];
   categoryLabel?: string;
@@ -58,7 +66,17 @@ export function CollectionItems({
    * last for the page.
    */
   remember?: string;
+  /**
+   * Moves items by dragging them with the pointer (never the native drag loop). The picked items
+   * go together when one of them is dragged, and they dim while they move. Items with
+   * `dropTarget` and the background take the drop: `onDrop(target, ids, copy)`, with `target`
+   * null for the background and `copy` true while ⌥ is held. `canDrop` refuses a folder.
+   */
+  drag?: CollectionDrag;
 }) {
+  const titles = new Map(items.map((item) => [item.id, item.title]));
+  const { listProps, itemProps } = useCollectionDrag(drag, selectedIds, (id) => titles.get(id) ?? id);
+  const dragItem = drag ? (item: CollectionItem) => itemProps(item.id, item.dropTarget === true) : undefined;
   const hasActions = items.some(hasItemActions);
   const hasCreators = items.some((item) => item.creator !== undefined);
   const scope = [
@@ -154,8 +172,17 @@ export function CollectionItems({
           ),
         )
       : items;
+  // With dragging, the items sit in a region that fills the pane, so its empty part takes a drop too.
+  const region = (content: ReactNode) =>
+    drag ? (
+      <div {...listProps} className="flex min-h-full min-w-0 flex-1 flex-col">
+        {content}
+      </div>
+    ) : (
+      content
+    );
   if (view === "grid")
-    return (
+    return region(
       <CollectionItemsGrid
         items={orderedItems}
         hasCreators={hasCreators}
@@ -164,9 +191,10 @@ export function CollectionItems({
         titleLines={cardTitleLines}
         selectedIds={selectedIds}
         onSelect={onSelect}
-      />
+        dragItem={dragItem}
+      />,
     );
-  return (
+  return region(
     <CollectionItemsTable
       items={orderedItems}
       columns={visibleColumns}
@@ -178,6 +206,7 @@ export function CollectionItems({
       onSort={(next: CollectionSort | null) => setSort(next && { ...next, scope })}
       selectedIds={selectedIds}
       onSelect={onSelect}
-    />
+      dragItem={dragItem}
+    />,
   );
 }

@@ -13,3 +13,4 @@ export { CollectionItems } from "./collection/CollectionItems";
 export { CollectionSkeleton } from "./collection/CollectionSkeleton";
 export { useCollectionView } from "./collection/collectionMemory";
 export type { CollectionColumn, CollectionItem } from "./collection/collectionItemTypes";
+export type { CollectionDrag } from "./collection/collectionDrag";

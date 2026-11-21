@@ -45,6 +45,11 @@ type MenuTriggerProps = Omit<
    * (a Space's name). Its neighbours give way instead.
    */
   fit?: boolean;
+  /**
+   * Set as a bar's name, not a control: the control size, semibold and bright, as the logo and page
+   * name beside it in a navbar are, with the same hover wash and chevron.
+   */
+  heading?: boolean;
 };
 
 /**
@@ -73,6 +78,7 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
       size,
       plain = false,
       fit = false,
+      heading = false,
       ...props
     },
     ref,
@@ -129,7 +135,11 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
           size={size ?? "md"}
           icon={icon}
           aria-label={value === undefined ? undefined : label}
-          className={cn(fit ? "shrink-0 gap-1.5" : "min-w-0 gap-1.5", className)}
+          className={cn(
+            fit ? "shrink-0 gap-1.5" : "min-w-0 gap-1.5",
+            heading && "px-1.5 text-control font-semibold tracking-[-0.01em] text-cream-bright",
+            className,
+          )}
           {...props}
         >
           {fit ? (

@@ -2,7 +2,23 @@ import * as React from "react";
 
 import { cn } from "../classNames";
 import { CopyButton } from "../controls/CopyButton";
+import { highlightCode, type CodeLanguage, type CodeTokenKind } from "./highlightCode";
 import { Text, type TextTone } from "./Text";
+
+export type { CodeLanguage } from "./highlightCode";
+
+/** Each kind of token wears a tone the theme already has: nothing here is a new color. */
+const tokenClass: Partial<Record<CodeTokenKind, string>> = {
+  comment: "text-cream-muted italic",
+  string: "text-tone-green",
+  number: "text-tone-orange",
+  keyword: "text-tone-violet",
+  function: "text-tone-blue",
+  type: "text-tone-amber",
+  property: "text-tone-teal",
+  tag: "text-tone-pink",
+  punctuation: "text-cream-muted",
+};
 
 export interface CodeBlockProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   /** The code, exactly as it should be copied. */
@@ -12,6 +28,17 @@ export interface CodeBlockProps extends Omit<React.HTMLAttributes<HTMLDivElement
    * reads by its lines; turn it on for a command or a path a person should see whole.
    */
   wrap?: boolean;
+  /**
+   * Colors the code by what each part is (keywords, strings, calls, properties), in the theme's
+   * tones. Leave it out for output and plain text, which stay one color.
+   */
+  language?: CodeLanguage;
+  /**
+   * A title bar over the code, as a docs page shows a terminal or a file: the label at the start
+   * (`true` names the language) and the copy button at the end, always visible. For code a page
+   * is about; a command in a sentence stays bare.
+   */
+  header?: boolean | string;
   /** Shows the copy button. On by default. */
   copy?: boolean;
   /** The copy button's name and tooltip. Defaults to "Copy". */
@@ -21,14 +48,17 @@ export interface CodeBlockProps extends Omit<React.HTMLAttributes<HTMLDivElement
 /**
  * Code to read and copy: a framed block in the code font at the meta size, scrolling sideways
  * (or wrapping with `wrap`), with a copy button in its corner that shows while the block is
- * hovered or holds focus and always on touch screens. `className` is for layout only.
+ * hovered or holds focus and always on touch screens. With `language` it colors keywords, strings,
+ * calls and properties in the theme's tones. `className` is for layout only.
  *
  * ```tsx
- * <CodeBlock code={`claude mcp add misty -- ${command}`} wrap />
+ * <CodeBlock language="bash" code={`claude mcp add misty -- ${command}`} wrap />
  * ```
  */
 export function CodeBlock({
   code,
+  language,
+  header,
   wrap = false,
   copy = true,
   copyLabel = "Copy",
@@ -45,16 +75,32 @@ export function CodeBlock({
         className,
       )}
     >
+      {header ? (
+        <div className="flex h-10 items-center gap-2 border-b border-charcoal-border pr-2 pl-3">
+          <Text size="meta" tone="muted" className="min-w-0 flex-1">
+            {typeof header === "string" ? header : (language ?? "code")}
+          </Text>
+          {copy ? <CopyButton value={code} label={copyLabel} size="sm" /> : null}
+        </div>
+      ) : null}
       <pre
         className={cn(
           "m-0 min-w-0 px-3 py-2 font-mono text-meta text-cream [tab-size:2]",
           wrap ? "whitespace-pre-wrap [overflow-wrap:anywhere]" : "overflow-x-auto whitespace-pre",
-          copy && "pr-10",
+          copy && !header && "pr-10",
         )}
       >
-        <code>{code}</code>
+        <code>
+          {language
+            ? highlightCode(code, language).map((token, index) => (
+                <span key={index} className={tokenClass[token.kind]}>
+                  {token.text}
+                </span>
+              ))
+            : code}
+        </code>
       </pre>
-      {copy ? (
+      {copy && !header ? (
         <CopyButton
           value={code}
           label={copyLabel}

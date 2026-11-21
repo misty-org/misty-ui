@@ -99,9 +99,9 @@
   --radius-lg: 0.5625rem;
   --radius-xl: 0.75rem;
 
-  /* Window-width breakpoints, a step up from Tailwind's (40, 48, 64, 80, 96rem): media queries
-     ignore the main window's 110% root, so these keep layouts switching at the window widths
-     they did when the step up was a page zoom. Container queries (@sm, @lg) follow the root. */
+  /* Window-width breakpoints, a step up from Tailwind's (40, 48, 64, 80, 96rem), so layouts switch
+     at these window widths. Media queries read rem at the browser's 16px; the root font size is
+     never scaled, so container queries (@sm, @lg) agree. */
   --breakpoint-sm: 44rem;
   --breakpoint-md: 52.8rem;
   --breakpoint-lg: 70.4rem;
@@ -210,6 +210,15 @@
   --tone-data: var(--color-tone-teal);
   --tone-doc: var(--color-tone-blue);
   --tone-image: var(--color-tone-orange);
+  /* Finder's tag colors, by its numbers: 1 gray, 2 green, 3 purple, 4 blue, 5 yellow, 6 red,
+     7 orange. Made from the same tones, so a tag follows the theme like everything else (TagDot). */
+  --tone-tag-gray: var(--misty-theme-text-muted);
+  --tone-tag-green: var(--color-tone-green);
+  --tone-tag-purple: var(--color-tone-violet);
+  --tone-tag-blue: var(--color-tone-blue);
+  --tone-tag-yellow: var(--color-tone-amber);
+  --tone-tag-red: var(--color-tone-red);
+  --tone-tag-orange: var(--color-tone-orange);
 }
 
 /* What a made thing is, by color: an audio overview, a mind map, a report, flashcards and the
@@ -236,6 +245,14 @@
   --color-state-waiting: var(--tone-waiting);
   --color-state-failed: var(--tone-failed);
   --color-state-done: var(--tone-done);
+  /* Finder's tag colors as utilities (`bg-tag-red`), for TagDot. */
+  --color-tag-gray: var(--tone-tag-gray);
+  --color-tag-green: var(--tone-tag-green);
+  --color-tag-purple: var(--tone-tag-purple);
+  --color-tag-blue: var(--tone-tag-blue);
+  --color-tag-yellow: var(--tone-tag-yellow);
+  --color-tag-red: var(--tone-tag-red);
+  --color-tag-orange: var(--tone-tag-orange);
 }
 
 /* What a pointer drag draws over everything, at the layers.css stack: the shield that holds the

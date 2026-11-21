@@ -76,11 +76,14 @@ export function createUiMemory<T>(options: {
   limit?: number;
 }) {
   const limit = options.limit ?? 200;
-  let cache: { raw: unknown; entries: Entries<T> } | undefined;
+  let cache: { text: string; entries: Entries<T> } | undefined;
 
   const entries = (): Entries<T> => {
     const raw = storage.read(options.scope);
-    if (cache && cache.raw === raw) return cache.entries;
+    // A storage may hand back a fresh copy on every read: the same contents must read as the same
+    // entries, or a component reading them (useSyncExternalStore) would never settle.
+    const text = JSON.stringify(raw ?? null);
+    if (cache && cache.text === text) return cache.entries;
     const next: Entries<T> = {};
     if (raw && typeof raw === "object" && !Array.isArray(raw)) {
       for (const [key, value] of Object.entries(raw)) {
@@ -88,7 +91,7 @@ export function createUiMemory<T>(options: {
         if (entry !== undefined) next[key] = entry;
       }
     }
-    cache = { raw, entries: next };
+    cache = { text, entries: next };
     return next;
   };
 

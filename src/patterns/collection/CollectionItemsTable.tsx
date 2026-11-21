@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { cn } from "../../classNames";
 import { CollectionItemActions } from "./CollectionItemActions";
+import type { CollectionDragItemProps } from "./collectionDrag";
 import {
   collectionIconTone,
   type CollectionColumn,
@@ -94,6 +95,7 @@ export function CollectionItemsTable({
   onSort,
   selectedIds = [],
   onSelect,
+  dragItem,
 }: {
   items: CollectionItem[];
   /** Visible columns, including the name column. */
@@ -108,6 +110,8 @@ export function CollectionItemsTable({
   onSort: (sort: CollectionSort | null) => void;
   selectedIds?: string[];
   onSelect?: (event: MouseEvent, id: string, onOpen: () => void) => void;
+  /** What each row carries to be dragged (CollectionItems' `drag`). */
+  dragItem?: (item: CollectionItem) => CollectionDragItemProps | undefined;
 }) {
   return (
     <div className="min-w-0 shrink-0 overflow-x-auto">
@@ -137,6 +141,7 @@ export function CollectionItemsTable({
             };
             return (
               <TableRow
+                {...dragItem?.(item)}
                 key={item.id}
                 data-selected={selectedIds.includes(item.id) || undefined}
                 className={cn(rowClass, icons && iconRowClass)}
@@ -166,9 +171,19 @@ export function CollectionItemsTable({
                         {item.icon}
                       </span>
                     ) : null}
-                    <OverflowFadeText full lines={icons ? 2 : 1} className="flex-1">
+                    <OverflowFadeText
+                      full
+                      lines={icons ? 2 : 1}
+                      className={item.marks ? "min-w-0 shrink" : "flex-1"}
+                    >
                       {item.title}
                     </OverflowFadeText>
+                    {item.marks ? (
+                      <>
+                        <span className="flex shrink-0 items-center">{item.marks}</span>
+                        <span aria-hidden="true" className="flex-1" />
+                      </>
+                    ) : null}
                     {item.marker}
                     {item.sync ? <StateMark kind={item.sync} /> : null}
                   </Pressable>

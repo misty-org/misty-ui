@@ -104,7 +104,7 @@ export function ShelfItem({
           type="button"
           onClick={onOpen}
           aria-label={`${title}, details`}
-          className="flex min-w-0 shrink-0 rounded-[15px] outline-none focus-visible:outline-1 focus-visible:outline-cream-muted"
+          className="flex min-w-0 shrink-0 rounded-[15px] outline-none"
         >
           {logo}
         </button>

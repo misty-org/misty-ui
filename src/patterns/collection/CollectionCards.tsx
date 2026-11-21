@@ -6,6 +6,7 @@ import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { Tooltip } from "../../overlays/Tooltip";
 import { cn } from "../../classNames";
 import { CollectionItemActions } from "./CollectionItemActions";
+import type { CollectionDragItemProps } from "./collectionDrag";
 import { collectionIconTone, hasItemActions, type CollectionItem } from "./collectionItemTypes";
 
 function CollectionGrid({ children }: { children: ReactNode }) {
@@ -100,6 +101,7 @@ export function CollectionItemsGrid({
   titleLines = 1,
   selectedIds = [],
   onSelect,
+  dragItem,
 }: {
   items: CollectionItem[];
   hasCreators: boolean;
@@ -109,6 +111,8 @@ export function CollectionItemsGrid({
   titleLines?: 1 | 2;
   selectedIds?: string[];
   onSelect?: (event: MouseEvent, id: string, onOpen: () => void) => void;
+  /** What each card carries to be dragged (CollectionItems' `drag`). */
+  dragItem?: (item: CollectionItem) => CollectionDragItemProps | undefined;
 }) {
   return (
     <CollectionGrid>
@@ -129,6 +133,7 @@ export function CollectionItemsGrid({
         );
         return (
           <Card
+            {...dragItem?.(item)}
             key={item.id}
             data-selected={selectedIds.includes(item.id) || undefined}
             className={cardClass}
@@ -158,6 +163,7 @@ export function CollectionItemsGrid({
                     </span>
                   ) : null}
                   <CollectionCardTitle title={item.title} lines={titleLines} />
+                  {item.marks ? <span className="flex shrink-0 items-center">{item.marks}</span> : null}
                   {item.marker}
                 </span>
                 {metadata}
@@ -175,6 +181,7 @@ export function CollectionItemsGrid({
                   )}
                 >
                   <CollectionCardTitle title={item.title} />
+                  {item.marks ? <span className="flex shrink-0 items-center">{item.marks}</span> : null}
                   {item.marker}
                 </span>
                 <span

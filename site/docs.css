@@ -2,12 +2,18 @@
 @import "../styles/index.css";
 @source "./";
 
-/* The docs site's own frame: the page scrolls. */
+/* The docs site's own frame: the page scrolls. Nothing inside it may be a scroll container
+   (overflow other than visible), or the sidebar and top bar's sticky would stick to that
+   instead of the window. */
 html,
 body,
 #root {
   min-height: 100%;
-  overflow: auto;
+}
+/* No rubber-band overscroll: scrolling past either end of the page shows no gap. */
+html,
+body {
+  overscroll-behavior: none;
 }
 body {
   margin: 0;

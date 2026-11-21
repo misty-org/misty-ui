@@ -86,6 +86,8 @@ Color that carries meaning comes from the tones, never a new hex:
 - **Kind of made thing** (`--tint-*`): audio, video, report, cards… through `Surface`/`Text` `tint`.
 - **Art** (`--color-art-*`): only for full-color art drawn over any theme (Tutor, pets, the desktop overlay).
 - **Avatars** (`--color-avatar-*`): soft pastels assigned per person, behind dark ink.
+- **Finder tags** (`--tone-tag-gray`, `-green`, `-purple`, `-blue`, `-yellow`, `-red`, `-orange`, Finder's 1 to 7):
+  only through `TagDot` and `TagDots`.
 
 Everything else in the interface is neutral. No pastel washes, highlighter strokes or colored chips to make a
 page "less monochrome". Selection is the neutral row wash.
@@ -105,6 +107,10 @@ and never Tailwind's `text-xs`…`text-3xl`:
 | `page` | 16 | Page text, reading |
 | `title` | 18 | Titles |
 | `display` | 24 | Empty-state and hero titles |
+
+The root font size is always 100% (16px), in every app, window and site: never set `html { font-size }` to a
+percentage, and never scale the page to make the UI bigger or smaller. A size in rem is the size it says, and
+the person's own page zoom is the only thing that scales Misty.
 
 Use `<Text size=… tone=… weight=…>` (`bare` keeps the element's own layout). Weights: regular, medium,
 semibold. Sentence case everywhere; capitals only for real acronyms. Monospace only inside code itself (code
@@ -162,13 +168,19 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A file's sync state in a Space's drive | `StateMark` kinds `online-only` (cloud), `downloading` and `uploading` (the spinner), `not-synced` (crossed-out cloud), all muted; a grid card takes `sync` on its `CollectionItem`. A file in step shows no mark; a conflicting copy has no color of its own | A colored chip, a status word, the `online` (connected) kind |
 | Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, offline; `working` and `waiting` for their agent) | A colored chip, a status word in the row |
 | Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` with two `iconOnly` options: the person's own `Avatar` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
+| Who is in a voice channel, under its row in the sidebar | `VoicePerson` (`avatar` at xs, `name`, `speaking` rings the face in the done tone, `muted`) | A list of names, a colored chip |
 | Who has a file open | `InUseMark` (`people`: at most three faces, then "+N", each named in its tooltip), at the row's end where its state goes | A list of names, a lock icon |
 | Nothing here yet / failed | `EmptyState`, `ErrorState` | A custom centered block |
 | First load of content you can draw before it arrives (rows, cards, settings rows, shelves, a tree) | A `Skeleton` shaped like it (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`, `ShelfSkeleton`) | "Loading…" text |
 | First load whose layout depends on the data (a chat's messages, a thread, a document or file preview, a diff, an item's details) | `PaneLoading`, one spinner in the pane's middle; `inline` for one part of a loaded page | A skeleton guessing the shape, "Loading…" text |
 | Work in progress | `Spinner` or `Progress` where the work happens | A spinner in a button |
+| A documentation site (guides, SDK, design system) | `DocsLayout` in three panels: `DocsHeader` (sections as chips), the section's `NavList`, the article, `DocsToc` ("On this page") and a sticky `DocsPager`; only for a docs site | The app's page layouts, a hand-built sidebar and rail |
 | A page's top band | `PageHeader` (pages), `ViewHeader` (views of a Space), `CollectionHeading` (collections) | A hand-made header |
 | A browsable collection | `CollectionPage`, `CollectionHeading`, `CollectionFilters`, `CollectionSearch`, `CollectionViewToggle`, `CollectionSortMenu`, `CollectionFilterMenu`, `CollectionItems` | Custom bars |
+| Finder's column view (Files) | `ColumnBrowser` (`columns` of `rows`, `selected`, `onSelect`, `onOpen`, `menu`, `preview` as the last column), switched to by `CollectionViewToggle`'s `columns` | Side-by-side lists, a tree squeezed into columns |
+| Moving items by dragging them (files into folders) | `drag` on `CollectionItems` (items marked `dropTarget`) or `ColumnBrowser`: pointer dragging, ⌥ copies, the dragged items dim | HTML5 `draggable`, the native drag loop |
+| An item's Finder tags | `TagDots` after its name (`CollectionItem` `marks`, `ColumnBrowserRow` `marks`); one tag's color in a menu is `TagDot`, named by `tagToneName` | Colored chips, a list of tag names in the row |
+| A file's path whose folders open | `PathLine` with `onSelect` on each folder's segment | A row of buttons, a breadcrumb bar |
 | A catalog of installables | `CatalogGrid` + `CatalogCard` (`logo`, `title`, `maker`, `description`, `tag`, `detail`, `action`, `menu`); what's already added is a `CatalogTileRow` of `CatalogTile`s | A long full-width list with per-row toggles |
 | A store page's shelves (Explore) | `Shelf` + `ShelfItem` (`logo` at `tile`, `title`, `line`, one `action`, `menu`); featured picks are `FeatureCard`s in a `FeatureRow`, shown only with a banner; picking one opens `StoreDetail` | A grid of cards per section, a list with per-row toggles |
 | A persona's logo | `PersonaLogo` (`icon` for what it does, `color` from `personaTone(id)`) | The catalog's emoji, a bare initial |
@@ -197,7 +209,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 - A page's create action (New, Create notebook, New task) is its primary button, filled: white in the dark
   theme, black in the light one. It lives where the things it makes are listed, not inside one of them.
 - A bar's controls stand bare, never some boxed and some not. Grid and list are two bare icons, the open one
-  pressed (`CollectionViewToggle`); the order is one sort icon (`CollectionSortMenu`) and filtering one filter
+  pressed (`CollectionViewToggle`, with a third for column view where a collection has one); the order is one sort icon (`CollectionSortMenu`) and filtering one filter
   icon (`CollectionFilterMenu`), never a spelled-out "Most recent". Groups of controls are split by a
   `ToolbarDivider`.
 - Controls in one row share one height. A container decides its controls' geometry: a bar gives every control
@@ -205,6 +217,8 @@ The everyday components, several of which have no doc comment in the catalog yet
   shared button. IconButton `sm` (24px) is only for an inline closer in a row or tab. A row's own buttons go in
   `RowTools` (`reveal` "hover" or "cover"), which makes them 24px and 2px apart inside the 32px row; ListRow's
   `trailing` and TreeRow's `end` do the same.
+- A site's navbar keeps one width, the site's content width, and never resizes, shrinks or animates as the
+  page scrolls: its padding lines up with the page below it at every scroll position.
 - The window, and every popup or overlay with a tour, keeps a `BottomBar` along its bottom; the "i" for its tour
   (`TourInfoButton` / `InfoCorner`) sits last at its end, never floating over content.
 - The window's own bars (the chat's right rail, the bottom bar, the sidebar's places) are `CustomizableBar`s:
@@ -329,6 +343,21 @@ Both hold to the same rules:
 - A Space's name is at most 64 characters and the Space switcher always shows it whole, never faded.
 - The agent browser opens on a blank page and searches with Google, never DuckDuckGo.
 - The Tutor is in full color; Misty itself stays neutral.
+
+### Docs sites
+
+A docs site (`DocsLayout`) is the one place with three panels. Its rules, so a docs page is never tuned by eye:
+
+- Panels: the section's pages on the left, the article, "On this page" on the right. They have no divider
+  lines between them; the page's only lines are the footer's top edge, the contents column's trail (a
+  hairline with the section being read marked bright) and the fields' own edges.
+- All three panels start at the same height: they share one top padding, so the search field, the article's
+  eyebrow and the contents heading begin on the same line, and the site's navbar above them is the only band.
+- Lists breathe: a sidebar group's pages sit a step below its heading, groups are 8px apart, and a contents
+  entry is 32px tall with its trail beside it, never packed tighter than a row.
+- The page is as wide as the site around it and has its side padding (`--docs-max`, `--docs-gutter`); things
+  that stay in view sit below the site's bar (`--docs-top`).
+- The docs' own sizes (the large title, the hero) exist only here.
 
 ### Where stylesheets are allowed
 

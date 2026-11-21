@@ -1,12 +1,23 @@
 import type { Ref } from "react";
 
 import { cn } from "../classNames";
-import { OverflowFadeText, type OverflowFadeTextProps } from "../layout/OverflowFadeText";
+import {
+  OverflowFadeText,
+  type OverflowFadeTextProps,
+} from "../layout/OverflowFadeText";
 import { artTextClass, type ArtColor } from "./artPalette";
 import type { Tint } from "./Surface";
 
 /** The type roles a label can take (theme.css). Leave it out to keep the surrounding size. */
-export type TextSize = "caption" | "meta" | "control" | "body" | "page" | "title" | "display";
+export type TextSize =
+  | "micro"
+  | "caption"
+  | "meta"
+  | "control"
+  | "body"
+  | "page"
+  | "title"
+  | "display";
 /** Leave it out to keep the surrounding color, as a label inside a button should. */
 export type TextTone =
   | "default"
@@ -58,6 +69,7 @@ export interface TextProps extends OverflowFadeTextProps {
 }
 
 const sizeClass: Record<TextSize, string> = {
+  micro: "text-micro",
   caption: "text-caption",
   meta: "text-meta",
   control: "text-control",
@@ -133,8 +145,21 @@ export function Text({
     className,
   );
   if (bare) {
-    const { as: Tag = "span", full: _full, lines: _lines, ref, ...rest } = props;
-    return <Tag {...rest} ref={ref as Ref<never>} data-slot="text" className={classes} />;
+    const {
+      as: Tag = "span",
+      full: _full,
+      lines: _lines,
+      ref,
+      ...rest
+    } = props;
+    return (
+      <Tag
+        {...rest}
+        ref={ref as Ref<never>}
+        data-slot="text"
+        className={classes}
+      />
+    );
   }
   if (wrap) {
     const { as: Tag = "p", full: _full, lines: _lines, ref, ...rest } = props;
@@ -144,7 +169,10 @@ export function Text({
         ref={ref as Ref<never>}
         data-slot="text"
         data-wrap="true"
-        className={cn("block min-w-0 whitespace-normal [overflow-wrap:anywhere]", classes)}
+        className={cn(
+          "block min-w-0 whitespace-normal [overflow-wrap:anywhere]",
+          classes,
+        )}
       />
     );
   }

@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { ArrowUpDown, Columns3, LayoutGrid, List, ListFilter } from "lucide-react";
+import { ArrowUpDown, Columns2, Columns3, LayoutGrid, List, ListFilter } from "lucide-react";
 import { usePointerReorder, reorderIds } from "../../hooks/usePointerReorder";
 import { FilterChip } from "../../controls/FilterChip";
 import { IconButton } from "../../controls/IconButton";
@@ -204,37 +204,56 @@ export function CollectionFilters({
 
 /**
  * Grid or list, as two bare icon buttons, the open one pressed: no box around them. A bar puts a
- * ToolbarDivider between them and its other controls. The board is another page rather than a
- * third way to draw this one, so it is a separate button beside them.
+ * ToolbarDivider between them and its other controls. A collection that can also be browsed in
+ * columns (Files, as Finder's column view) passes `columns`: a third bare icon, pressed while
+ * active, and then neither grid nor list is. The board is another page rather than a way to draw
+ * this one, so it is a separate button beside them.
  */
 export function CollectionViewToggle({
   value,
   onChange,
   onBoardView,
+  columns,
   disabled = false,
 }: {
   value: "list" | "grid";
   onChange: (value: "list" | "grid") => void;
   onBoardView?: () => void;
+  /**
+   * Column view (ColumnBrowser), kept by the caller beside its grid or list choice: `active` while
+   * it shows, `onSelect` to switch to it. Picking grid or list calls `onChange` as before.
+   */
+  columns?: { active: boolean; onSelect(): void };
   disabled?: boolean;
 }) {
   const views = [
     { value: "grid", label: "Grid view", icon: LayoutGrid },
     { value: "list", label: "List view", icon: List },
   ] as const;
+  const inColumns = columns?.active === true;
   return (
     <div role="group" aria-label="View layout" className="flex items-center gap-1">
       {views.map(({ value: view, label, icon: Icon }) => (
         <IconButton
           key={view}
           label={label}
-          aria-pressed={value === view}
+          aria-pressed={!inColumns && value === view}
           disabled={disabled}
           onClick={() => onChange(view)}
         >
           <Icon />
         </IconButton>
       ))}
+      {columns && (
+        <IconButton
+          label="Column view"
+          aria-pressed={inColumns}
+          disabled={disabled}
+          onClick={() => columns.onSelect()}
+        >
+          <Columns2 />
+        </IconButton>
+      )}
       {onBoardView && (
         <IconButton label="Board view" disabled={disabled} onClick={onBoardView}>
           <Columns3 />

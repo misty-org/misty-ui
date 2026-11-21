@@ -42,6 +42,8 @@ export type OverflowFadeElement =
 export interface OverflowFadeTextProps extends HTMLAttributes<HTMLElement> {
   /** The element to render. Defaults to `span`, laid out as a block so it can clip. */
   as?: OverflowFadeElement;
+  /** With `as="time"`: the machine-readable moment it shows. */
+  dateTime?: string;
   /**
    * Shows the whole text in a tooltip, only while it doesn't fit. `true` uses the label's own
    * text; a string is shown instead, for a label whose children aren't plain text.
@@ -107,8 +109,14 @@ export function OverflowFadeText({
     const stopResize = watchSize(element, measure);
     // Text that changes inside a child component never changes this one's children.
     const mutations =
-      typeof MutationObserver === "undefined" ? null : new MutationObserver(measure);
-    mutations?.observe(element, { characterData: true, childList: true, subtree: true });
+      typeof MutationObserver === "undefined"
+        ? null
+        : new MutationObserver(measure);
+    mutations?.observe(element, {
+      characterData: true,
+      childList: true,
+      subtree: true,
+    });
     return () => {
       stopResize();
       mutations?.disconnect();
@@ -122,8 +130,14 @@ export function OverflowFadeText({
     <Tag
       {...props}
       ref={attach}
-      className={cn(layoutClass(lines), className, overflowing && fadeClass(lines))}
-      style={lines > 2 ? { maxHeight: `${lines}lh`, ...props.style } : props.style}
+      className={cn(
+        layoutClass(lines),
+        className,
+        overflowing && fadeClass(lines),
+      )}
+      style={
+        lines > 2 ? { maxHeight: `${lines}lh`, ...props.style } : props.style
+      }
       data-text-overflowing={overflowing ? "true" : "false"}
     >
       {children}

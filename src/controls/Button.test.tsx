@@ -25,7 +25,9 @@ describe("Button", () => {
     expect(button.dataset.size).toBe("md");
     expect(button.className).toContain("h-8");
     expect(button.className).toContain("text-control");
-    expect(button.className).toContain("border-charcoal-border-strong");
+    // A soft fill, never an outlined box.
+    expect(button.className).toContain("bg-control-hover");
+    expect(button.className).not.toContain("border-charcoal-border-strong");
   });
 
   it("draws each role and size", () => {

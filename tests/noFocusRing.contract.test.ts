@@ -31,7 +31,7 @@ const focusClass =
 const cssRule = /([^{}]*:focus(?:-visible|-within)?[^{}]*)\{([^{}]*)\}/g;
 /** A declaration in it that draws a ring: an outline or a shadow that isn't none. */
 const ringDeclaration =
-  /(?:^|;)\s*(outline(?:-width|-style|-color)?|box-shadow|--tw-ring-[\w-]+)\s*:\s*(?!none\b|0\b|transparent\b)[^;]+/;
+  /(?:^|;)\s*(outline(?:-width|-style|-color)?|box-shadow|--tw-ring-[\w-]+)\s*:(?!\s*(?:none|0|transparent)\b)[^;]+/;
 
 describe("no focus rings", () => {
   it("draws no ring, outline or shadow on focus in any component", () => {

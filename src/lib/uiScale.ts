@@ -1,7 +1,7 @@
 /**
  * The UI's sizes are written in design pixels (a 32px row, a 280px sidebar) and drawn in rem, so
- * they grow with the root: 110% in the main window (src/styles/App.css), 100% in the overlay
- * windows. Lengths kept in JS go through these so they stay in step with the CSS beside them.
+ * they grow with the root, which is always 100% (never scaled), so one design pixel is one CSS
+ * pixel. Lengths kept in JS still go through these so they stay in step with the CSS beside them.
  */
 
 /** A design length as CSS, in rem, for a style or a custom property. */

@@ -26,6 +26,15 @@ export default function Example() {
           { label: "design-system-gallery", icon: GitBranch },
         ]}
       />
+      <PathLine
+        label="Where this file is"
+        segments={[
+          { label: "Home", onSelect: () => undefined },
+          { label: "Documents", icon: Folder, onSelect: () => undefined },
+          { label: "Plans", icon: Folder, onSelect: () => undefined },
+          { label: "Launch.md" },
+        ]}
+      />
     </ResizableBox>
   );
 }

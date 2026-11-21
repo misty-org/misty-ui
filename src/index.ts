@@ -70,6 +70,7 @@ export * from "./layout/PageHeader";
 export * from "./layout/ViewHeader";
 export * from "./layout/BottomBar";
 export * from "./layout/TopBar";
+export * from "./layout/DocsLayout";
 export * from "./layout/PathLine";
 export * from "./layout/SectionHeading";
 export * from "./layout/SidePanel";
@@ -101,6 +102,7 @@ export * from "./display/Prose";
 export * from "./display/RailTick";
 export * from "./display/StateMark";
 export * from "./display/StepDot";
+export * from "./display/TagDot";
 export * from "./display/Table";
 export * from "./display/ScreenMarks";
 export * from "./display/SceneLabel";
@@ -134,6 +136,7 @@ export {
 // navigation
 export * from "./navigation/TabStrip";
 export * from "./navigation/NavRow";
+export * from "./navigation/VoicePerson";
 export { rowShape, rowShapeTwoLine, rowShapeWrap } from "./display/rowShape";
 
 // icons
@@ -155,6 +158,7 @@ export * from "./patterns/StoreDetail";
 export * from "./patterns/CustomizableBar";
 export * from "./patterns/CollectionWorkspace";
 export * from "./patterns/CollectionFilterMenu";
+export * from "./patterns/ColumnBrowser";
 export * from "./patterns/RenameItemDialog";
 export * from "./patterns/MessageActions";
 export * from "./patterns/channel/ChannelLayout";
