@@ -33,6 +33,14 @@ export type ChoiceGroupProps<T extends string> = {
   disabled?: boolean;
   /** Stretch the options to fill the row in equal parts; long labels then fade. */
   fill?: boolean;
+  /**
+   * The track's look: `outline` (default) is a hairline around the sidebar's fill, the options
+   * inset in it. `well` is a faint wash with no edge or inset and 2px between the options, the
+   * chosen option a stronger wash
+   * filling its whole height with the track's own corners, and every icon in the text color: the
+   * sidebar's Personal/Spaces switch.
+   */
+  track?: "outline" | "well";
   /** Layout only: margins or alignment. */
   className?: string;
 };
@@ -46,6 +54,10 @@ const itemSize = {
 
 // About square inside the track: 18px tall at sm, 26px at md.
 const iconOnlySize = { sm: "w-5 px-0", md: "w-7 px-0" } as const;
+
+// In a well the options fill the track edge to edge, a little wider than tall.
+const wellItemSize = { sm: "rounded-md px-2", md: "rounded-lg px-3" } as const;
+const wellIconOnlySize = { sm: "w-8 px-0", md: "w-10 px-0" } as const;
 
 /**
  * The one segmented control: mutually exclusive choices on a track, such as a view mode or
@@ -66,6 +78,7 @@ export function ChoiceGroup<T extends string>({
   size = "md",
   disabled,
   fill = false,
+  track = "outline",
   className,
 }: ChoiceGroupProps<T>) {
   return (
@@ -77,7 +90,10 @@ export function ChoiceGroup<T extends string>({
       data-slot="choice-group"
       data-size={size}
       className={cn(
-        "flex min-w-0 shrink-0 items-stretch gap-0.5 border border-charcoal-border bg-charcoal-sidebar p-0.5",
+        "flex min-w-0 shrink-0 items-stretch",
+        track === "well"
+          ? "gap-0.5 bg-row-hover"
+          : "gap-0.5 border border-charcoal-border bg-charcoal-sidebar p-0.5",
         trackSize[size],
         fill ? "w-full" : "w-fit",
         disabled && "opacity-50",
@@ -102,15 +118,20 @@ export function ChoiceGroup<T extends string>({
             aria-label={iconOnly ? option.label : undefined}
             className={cn(
               "inline-flex min-w-0 items-center justify-center gap-1.5 leading-none whitespace-nowrap",
-              "text-control font-medium text-cream-muted outline-none select-none",
+              "text-control font-medium outline-none select-none",
+              track === "well" ? "text-cream" : "text-cream-muted",
               "hover:bg-control-hover hover:text-cream",
               // Focus rings are off app-wide, so keyboard focus shows as the hover wash.
               "focus-visible:bg-control-hover focus-visible:text-cream",
-              "data-[state=checked]:bg-charcoal-active data-[state=checked]:text-cream-bright",
+              // The chosen option takes the pressed control wash, so it reads on any track. It keys
+              // off aria-checked: a Tooltip around an icon-only option writes its own data-state
+              // onto the same button, so data-state never says "checked" there.
+              "aria-checked:bg-control-active aria-checked:text-cream-bright",
+              "aria-checked:hover:bg-control-active",
               "disabled:pointer-events-none disabled:opacity-50",
               "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-              itemSize[size],
-              iconOnly && iconOnlySize[size],
+              track === "well" ? wellItemSize[size] : itemSize[size],
+              iconOnly && (track === "well" ? wellIconOnlySize[size] : iconOnlySize[size]),
               // Filling, the options split the track evenly, whatever their labels' length.
               fill && !iconOnly && "flex-1 basis-0",
             )}

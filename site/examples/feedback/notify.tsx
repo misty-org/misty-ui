@@ -21,7 +21,17 @@ export default function Example() {
       >
         With action
       </Button>
-      <Button onClick={() => notify({ message: "Couldn't save the note", tone: "danger" })}>Danger</Button>
+      <Button
+        onClick={() =>
+          notify({
+            message: "You've been signed out. Sign in to get your Spaces and sync back.",
+            action: { label: "Sign in", onSelect: () => undefined },
+          })
+        }
+      >
+        Long with action
+      </Button>
+      <Button onClick={() => notify({ message: "Couldn't save the note", tone: "error" })}>Error</Button>
     </div>
   );
 }

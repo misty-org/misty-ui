@@ -5,6 +5,8 @@ import { createRoot } from "react-dom/client";
 import { cn } from "../classNames";
 import { Button } from "../controls/Button";
 import { IconButton } from "../controls/IconButton";
+import { Text } from "../display/Text";
+import { popupSurfaceClass } from "../overlays/popupStyles";
 import { TooltipProvider } from "../overlays/Tooltip";
 
 type NoticeTone = "neutral" | "error";
@@ -299,39 +301,46 @@ function NoticeCard({ notice, paused }: { notice: NoticeRecord; paused: boolean 
       data-slot="notice"
       data-misty-notification="true"
       data-tone={notice.tone}
+      // The popup's own card and edge, so a notice reads like the menus and popovers around it.
+      // Its controls center on the message, however many lines that takes.
       className={cn(
-        "pointer-events-auto flex items-start gap-2 rounded-lg border border-charcoal-border",
-        "bg-charcoal-card py-2 pl-3 pr-2 text-body text-cream",
+        "pointer-events-auto flex min-h-12 items-center gap-3 py-2 pr-2 pl-4",
+        popupSurfaceClass,
         "animate-in fade-in-0 slide-in-from-bottom-2 duration-150",
       )}
     >
-      {error ? (
-        <TriangleAlert aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-danger" />
-      ) : null}
-      <div className="min-w-0 flex-1 py-px [overflow-wrap:anywhere]">{notice.message}</div>
-      {notice.action ? (
-        <Button
-          type="button"
+      {error ? <TriangleAlert aria-hidden="true" className="shrink-0 text-danger" /> : null}
+      <Text
+        size="control"
+        tone="bright"
+        wrap
+        className="min-w-0 flex-1 [overflow-wrap:anywhere]"
+      >
+        {notice.message}
+      </Text>
+      <div className="flex shrink-0 items-center gap-1">
+        {notice.action ? (
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onClick={() => {
+              notice.action?.onSelect();
+              remove(notice.id, "dismissed");
+            }}
+          >
+            {notice.action.label}
+          </Button>
+        ) : null}
+        <IconButton
+          label="Dismiss"
           variant="quiet"
           size="sm"
-          className="shrink-0"
-          onClick={() => {
-            notice.action?.onSelect();
-            remove(notice.id, "dismissed");
-          }}
+          onClick={() => remove(notice.id, "dismissed")}
         >
-          {notice.action.label}
-        </Button>
-      ) : null}
-      <IconButton
-        label="Dismiss"
-        variant="quiet"
-        size="sm"
-        className="shrink-0"
-        onClick={() => remove(notice.id, "dismissed")}
-      >
-        <X />
-      </IconButton>
+          <X />
+        </IconButton>
+      </div>
     </div>
   );
 }

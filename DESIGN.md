@@ -167,7 +167,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A notice | `notify` (bottom right, at most one action, leaves on its own) | Inline "Saved" text |
 | A file's sync state in a Space's drive | `StateMark` kinds `online-only` (cloud), `downloading` and `uploading` (the spinner), `not-synced` (crossed-out cloud), all muted; a grid card takes `sync` on its `CollectionItem`. A file in step shows no mark; a conflicting copy has no color of its own | A colored chip, a status word, the `online` (connected) kind |
 | Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, offline; `working` and `waiting` for their agent) | A colored chip, a status word in the row |
-| Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` with two `iconOnly` options: the person's own `Avatar` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
+| Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` (`track="well"`) with two `iconOnly` options: `spaceIcons.personal` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
 | Who is in a voice channel, under its row in the sidebar | `VoicePerson` (`avatar` at xs, `name`, `speaking` rings the face in the done tone, `muted`) | A list of names, a colored chip |
 | Who has a file open | `InUseMark` (`people`: at most three faces, then "+N", each named in its tooltip), at the row's end where its state goes | A list of names, a lock icon |
 | Nothing here yet / failed | `EmptyState`, `ErrorState` | A custom centered block |

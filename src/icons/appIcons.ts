@@ -1,5 +1,6 @@
 import {
   Brain,
+  CircleUserRound,
   FlaskConical,
   Galaxy,
   Package,
@@ -45,6 +46,8 @@ export const appIconStrokeWidth = 2;
  * house for the Space itself.
  */
 export const spaceIcons = {
+  /** The person's own side of the sidebar (Personal), opposite the Spaces. */
+  personal: CircleUserRound,
   space: Galaxy,
   explore: Compass,
   chat: MessagesSquare,
