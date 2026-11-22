@@ -1,16 +1,11 @@
 import {
   forwardRef,
-  useCallback,
   useContext,
-  useId,
-  useState,
   type ComponentProps,
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { ArrowUpDown, Columns2, Columns3, LayoutGrid, List, ListFilter } from "lucide-react";
-import { usePointerReorder, reorderIds } from "../../hooks/usePointerReorder";
-import { FilterChip } from "../../controls/FilterChip";
+import { ArrowUpDown, Columns2, Columns3, LayoutGrid, List } from "lucide-react";
 import { IconButton } from "../../controls/IconButton";
 import { SearchField } from "../../controls/SearchField";
 import { ActionBar, type ActionBarItem, type IconSource } from "../../layout/ActionBar";
@@ -73,131 +68,43 @@ export const CollectionSearch = forwardRef<HTMLInputElement, ComponentProps<type
 );
 CollectionSearch.displayName = "CollectionSearch";
 
-type CollectionFilterTab = {
-  value: string;
-  label: string;
-  /** Shown beside the label once the tab has folded into the bar's ⋯ menu. */
-  icon?: IconSource;
-};
-
 /**
- * One section tab. The ActionBar also draws every item out of sight to measure it; only the
- * copy in the bar itself may be a reorder target, or a drag would land on the hidden one.
+ * A collection's control row: its utilities (filter menu, column chooser, sort, refresh) and
+ * actions (view toggle) at the end. It holds no section tabs: a collection's groups are stacked
+ * shelves or headed groups on the page, and a page's sections are rows in its rail or sidebar,
+ * never a row of chips. It is one ActionBar, so it never wraps.
  */
-function SectionChip({
-  option,
-  pressed,
-  reorderable,
-  onChange,
-}: {
-  option: CollectionFilterTab;
-  pressed: boolean;
-  reorderable: boolean;
-  onChange: (value: string) => void;
-}) {
-  const [inBar, setInBar] = useState(false);
-  const attach = useCallback((node: HTMLButtonElement | null) => {
-    if (node) setInBar(Boolean(node.closest("[data-action-bar-item]")));
-  }, []);
-  return (
-    <FilterChip
-      ref={attach}
-      label={option.label}
-      pressed={pressed}
-      // Pressing the open section again keeps it open: there is always one.
-      onPressedChange={() => onChange(option.value)}
-      data-reorder-item={inBar ? option.value : undefined}
-      data-reorder-handle={inBar && reorderable ? "" : undefined}
-      aria-keyshortcuts={reorderable ? "Alt+Shift+ArrowLeft Alt+Shift+ArrowRight" : undefined}
-    />
-  );
-}
-
-/**
- * A collection's control row: its section tabs as filter chips, then its utilities (filter menu,
- * column chooser) and actions (view toggle) at the end. It is one ActionBar, so it never wraps:
- * when it runs out of room the tabs fold into a ⋯ menu, the open one last, while the utilities
- * and actions stay.
- */
-export function CollectionFilters({
-  options,
-  value,
-  onChange,
+export function CollectionControls({
   actions,
   filterControl,
   utilities,
-  onReorder,
 }: {
-  options: CollectionFilterTab[];
-  value: string;
-  onChange: (value: string) => void;
   /** Controls at the far end, after a divider, such as CollectionViewToggle. */
   actions?: ReactNode;
   /** The collection's filter menu, such as `useCollectionRefinement().control`. */
   filterControl?: ReactNode;
   /** More utilities beside the filter menu and column chooser. */
   utilities?: ReactNode;
-  /** Makes the tabs reorderable by drag and with Alt+Shift+Left/Right. */
-  onReorder?: (ids: string[]) => void;
 }) {
-  const scope = useId();
-  const ids = options.map((option) => option.value);
-  const [announcement, announce] = useState("");
-  const reorder = usePointerReorder({
-    scope,
-    axis: "x",
-    getDrag: (id) =>
-      onReorder ? { id, label: options.find((option) => option.value === id)?.label ?? id } : null,
-    onDrop: (drag, target, after) => onReorder?.(reorderIds(ids, [drag.id], target, after)),
-    onKeyboardMove: (id, direction) => {
-      const index = ids.indexOf(id);
-      const target = ids[index + direction];
-      if (!onReorder || !target) return;
-      onReorder(reorderIds(ids, [id], target, direction === 1));
-      announce(
-        `${options[index].label} moved to position ${index + direction + 1} of ${ids.length}.`,
-      );
-    },
-  });
   const columnContext = useContext(CollectionColumnsContext);
   const hasUtilities = Boolean(filterControl || utilities || columnContext?.schema);
-  const items: ActionBarItem[] = options.map((option) => ({
-    id: option.value,
-    icon: option.icon ?? ListFilter,
-    label: option.label,
-    // The open section folds last.
-    priority: option.value === value ? 2 : 1,
-    pressed: option.value === value,
-    onSelect: () => onChange(option.value),
-    render: () => (
-      <SectionChip
-        option={option}
-        pressed={option.value === value}
-        reorderable={Boolean(onReorder)}
-        onChange={onChange}
-      />
-    ),
-  }));
-  const end =
-    hasUtilities || actions ? (
-      <>
-        {hasUtilities && (
-          <div className="flex items-center gap-1">
-            {filterControl}
-            <CollectionColumnChooser />
-            {utilities}
-          </div>
-        )}
-        {hasUtilities && actions && <ToolbarDivider />}
-        {actions}
-      </>
-    ) : undefined;
+  if (!hasUtilities && !actions) return null;
+  const end = (
+    <>
+      {hasUtilities && (
+        <div className="flex items-center gap-1">
+          {filterControl}
+          <CollectionColumnChooser />
+          {utilities}
+        </div>
+      )}
+      {hasUtilities && actions && <ToolbarDivider />}
+      {actions}
+    </>
+  );
   return (
-    <div {...reorder} className="min-w-0 shrink-0">
-      <ActionBar label="Collection controls" items={items} end={end} />
-      <span className="sr-only" role="status">
-        {announcement}
-      </span>
+    <div className="min-w-0 shrink-0">
+      <ActionBar label="Collection controls" items={[]} end={end} />
     </div>
   );
 }

@@ -63,7 +63,7 @@ export function FloatingPanel({
         anchorClass[anchor],
         widthClass[width],
         "flex max-h-[calc(100%-var(--spacing)*6)] max-w-[calc(100%-var(--spacing)*6)] flex-col",
-        "rounded-xl bg-charcoal-card/72 text-cream shadow-lg backdrop-blur-md",
+        "misty-scrollbar-rounded rounded-xl bg-charcoal-card/72 text-cream shadow-lg backdrop-blur-md",
         className,
       )}
       onKeyDown={(event) => {

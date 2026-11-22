@@ -62,7 +62,8 @@ export function Shelf({
  * One item on a Shelf: its logo (an `AppLogoImage`, `PersonaLogo` or a maker's
  * picture, at the `tile` size), its name and one line, and its one action under them (Get, Make
  * agent, or `CatalogDone` once it's done). Pressing the logo or the name opens its details; the
- * rest of its actions sit in its ⋯ menu.
+ * rest of its actions sit in its ⋯ menu. Leave `logo` off where the items would all wear the same
+ * one (a shelf of one maker's skills under the maker's heading): they start with their name.
  */
 export function ShelfItem({
   logo,
@@ -73,7 +74,8 @@ export function ShelfItem({
   menuLabel,
   onOpen,
 }: {
-  logo: React.ReactNode;
+  /** Its own logo; left off when it would only repeat its neighbours'. */
+  logo?: React.ReactNode;
   title: string;
   /** One line about it, under its name. */
   line?: string;
@@ -99,7 +101,7 @@ export function ShelfItem({
   );
   return (
     <li className="group/row relative flex min-w-0 gap-4 pt-4">
-      {onOpen ? (
+      {logo == null ? null : onOpen ? (
         <button
           type="button"
           onClick={onOpen}
@@ -140,8 +142,17 @@ export function ShelfItem({
 /**
  * A Shelf's first load, in its shape: the heading, then items with the logo tile, two lines and
  * the action under them, in the same two columns, so nothing moves when the real ones arrive.
+ * `logos={false}` leaves the tile out, for a shelf whose items have no logo.
  */
-export function ShelfSkeleton({ label, items = 4 }: { label: string; items?: number }) {
+export function ShelfSkeleton({
+  label,
+  items = 4,
+  logos = true,
+}: {
+  label: string;
+  items?: number;
+  logos?: boolean;
+}) {
   return (
     <section role="status" aria-label={label} aria-busy="true" className="grid min-w-0 gap-1">
       <span className="sr-only">{label}</span>
@@ -151,7 +162,9 @@ export function ShelfSkeleton({ label, items = 4 }: { label: string; items?: num
       <div className="grid min-w-0 lg:grid-cols-2 lg:gap-x-8" aria-hidden="true">
         {Array.from({ length: items }, (_, index) => (
           <div key={index} className="flex min-w-0 gap-4 pt-4 pb-4">
-            <Skeleton className="size-16 shrink-0 rounded-[calc(var(--spacing)*3.75)]" />
+            {logos ? (
+              <Skeleton className="size-16 shrink-0 rounded-[calc(var(--spacing)*3.75)]" />
+            ) : null}
             <div className="grid min-w-0 flex-1 content-start gap-2 pt-1">
               <Skeleton className="h-3.5 w-36" />
               <Skeleton className="h-3 w-52 max-w-full" />

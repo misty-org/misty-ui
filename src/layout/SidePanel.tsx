@@ -21,12 +21,11 @@ import { designPx, remCss, uiPx } from "../lib/uiScale";
 const KEY_STEP = 16;
 
 /**
- * The card a page docks beside its main column, such as a chat's files, changes, terminal or
- * browser. It floats on the window's surface a step off the column and the edge, rounded, with a
- * faint edge, no shadow and no line between it and the page. It takes width from the
- * column before it (its previous sibling), never below `keep` for that column; the person drags
- * the gap on its leading side to resize it. The header's expand button makes it cover that
- * column entirely, until it is restored.
+ * The side column a page docks beside its work, such as a chat's files, changes, terminal or
+ * browser: flush beside it on the frame's color (the sidebar's), parted by a hairline seam down its
+ * leading edge, as a FramedPage's columns are. It takes width from the column before it (its
+ * previous sibling), never below `keep` for that column; the person drags the seam to resize it.
+ * The header's expand button makes it cover that column entirely, until it is restored.
  *
  * The header row belongs to what is open: a view renders its controls in `SidePanelHeader` and
  * they take the row's start (a branch picker, an address, terminal tabs). With nothing there the
@@ -177,7 +176,7 @@ export function SidePanel(props: {
           </IconButton>
         </div>
       </div>
-      <div className="misty-side-panel-body">
+      <div className="misty-side-panel-body misty-scrollbar-rounded">
         <InPanel.Provider value>
           <HeaderSlot.Provider value={slot}>{children}</HeaderSlot.Provider>
         </InPanel.Provider>
@@ -227,10 +226,10 @@ export function SidePanelLead({ children }: { children: ReactNode }) {
 const TUCK_DELAY = 300;
 
 /**
- * A narrow glance card: as wide as a phone's sidebar, only as tall as what it holds, and scrolling
- * past the window. Docked beside a page's column, or `floating` over the column's top right
- * corner (clear of its scrollbar) without taking any of its width; a floating card's parent is
- * the positioned column it floats in.
+ * A narrow glance column, as wide as a phone's sidebar. Docked, it is a side column on the frame's
+ * color parted by a seam; `floating`, it is the one card left over the work: at the column's top
+ * right corner (clear of its scrollbar), only as tall as what it holds, scrolling past the window,
+ * taking none of the column's width. A floating card's parent is the positioned column it floats in.
  *
  * A floating card can be `tucked`: slid off the column's right edge, it peeks back while the
  * pointer rests on that edge beside where it sits, and slides away again once the pointer leaves.

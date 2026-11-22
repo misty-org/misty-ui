@@ -71,7 +71,7 @@ export function CodeBlock({
       data-slot="code-block"
       data-wrap={wrap || undefined}
       className={cn(
-        "group/code relative min-w-0 rounded-lg border border-charcoal-border bg-charcoal-card",
+        "group/code misty-scrollbar-rounded relative min-w-0 rounded-lg border border-charcoal-border bg-charcoal-card",
         className,
       )}
     >

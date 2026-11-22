@@ -23,9 +23,11 @@ export type PropertyListProps = {
   items: ReadonlyArray<PropertyListItem>;
   /**
    * `side` (default): the key on the left, the value on the right of a 36px row. `stacked`: the
-   * value under its key, for narrow panes or long values such as paths.
+   * value under its key, for narrow panes or long values such as paths. `info`: Finder's and Kura's
+   * Get Info, the key right-aligned in a narrow muted column and the value beside it in the meta
+   * role, wrapping onto more lines (a long path shows whole).
    */
-  layout?: "side" | "stacked";
+  layout?: "side" | "stacked" | "info";
   /** What the list describes, for screen readers, such as "Run details". */
   label?: string;
   /** Layout only: margins or placement. */
@@ -50,31 +52,44 @@ export function PropertyList({ items, layout = "side", label, className }: Prope
       aria-label={label}
       data-slot="property-list"
       data-layout={layout}
-      className={cn("m-0 grid min-w-0 text-control", layout === "stacked" && "gap-2", className)}
+      className={cn(
+        "m-0 grid min-w-0",
+        layout === "info" ? "gap-1.5 text-meta" : "text-control",
+        layout === "stacked" && "gap-2",
+        className,
+      )}
     >
       {items.map((item) => (
         <div
           key={item.id ?? item.label}
           className={cn(
             "min-w-0",
-            layout === "side" ? "flex h-8 items-center gap-4" : "grid gap-0.5",
+            layout === "side"
+              ? "flex h-8 items-center gap-4"
+              : layout === "info"
+                ? "grid grid-cols-[--spacing(18)_minmax(0,1fr)] items-baseline gap-3"
+                : "grid gap-0.5",
           )}
         >
           <dt
             className={cn(
               "m-0 min-w-0 text-cream-muted",
               layout === "side" ? "max-w-[50%] shrink-0" : "text-meta",
+              layout === "info" && "text-right",
             )}
           >
-            <OverflowFadeText full>{item.label}</OverflowFadeText>
+            {layout === "info" ? item.label : <OverflowFadeText full>{item.label}</OverflowFadeText>}
           </dt>
           <dd
             className={cn(
               "m-0 flex min-w-0 items-center text-cream",
               layout === "side" && "flex-1 justify-end text-right",
+              layout === "info" && "block [overflow-wrap:anywhere]",
             )}
           >
-            {typeof item.value === "string" || typeof item.value === "number" ? (
+            {layout === "info" && (typeof item.value === "string" || typeof item.value === "number") ? (
+              item.value
+            ) : typeof item.value === "string" || typeof item.value === "number" ? (
               <OverflowFadeText full>{item.value}</OverflowFadeText>
             ) : item.full ? (
               <OverflowFadeText full={item.full}>{item.value}</OverflowFadeText>

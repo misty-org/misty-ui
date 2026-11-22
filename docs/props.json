@@ -218,24 +218,6 @@
       "doc": "Enter in the search: open the first app that matches."
     },
     {
-      "name": "filters",
-      "type": "{ value: string; label: string; }[]",
-      "optional": true,
-      "doc": "The kinds of app to narrow to, the first being all of them."
-    },
-    {
-      "name": "filter",
-      "type": "string",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "onFilterChange",
-      "type": "(value: string) => void",
-      "optional": true,
-      "doc": ""
-    },
-    {
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
@@ -245,7 +227,7 @@
       "name": "empty",
       "type": "boolean",
       "optional": true,
-      "doc": "Nothing matches the search or the filter."
+      "doc": "Nothing matches the search."
     }
   ],
   "AppLogoImage": [
@@ -600,6 +582,12 @@
       "type": "boolean",
       "optional": true,
       "doc": "Their microphone is off: a crossed-out microphone by the name."
+    },
+    {
+      "name": "deafened",
+      "type": "boolean",
+      "optional": true,
+      "doc": "They hear nothing of the call (an agent away doing what it was asked): crossed-out headphones by the name."
     },
     {
       "name": "actions",
@@ -1115,6 +1103,12 @@
       "type": "string",
       "optional": false,
       "doc": ""
+    },
+    {
+      "name": "actions",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A few secondary or quiet Buttons under the line, at the default size."
     }
   ],
   "Checkbox": [],
@@ -1401,6 +1395,26 @@
       "doc": ""
     }
   ],
+  "CollectionControls": [
+    {
+      "name": "actions",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Controls at the far end, after a divider, such as CollectionViewToggle."
+    },
+    {
+      "name": "filterControl",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The collection's filter menu, such as `useCollectionRefinement().control`."
+    },
+    {
+      "name": "utilities",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "More utilities beside the filter menu and column chooser."
+    }
+  ],
   "CollectionFilterMenu": [
     {
       "name": "label",
@@ -1425,50 +1439,6 @@
       "type": "() => void",
       "optional": false,
       "doc": ""
-    }
-  ],
-  "CollectionFilters": [
-    {
-      "name": "options",
-      "type": "CollectionFilterTab[]",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "value",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "onChange",
-      "type": "(value: string) => void",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "actions",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "Controls at the far end, after a divider, such as CollectionViewToggle."
-    },
-    {
-      "name": "filterControl",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "The collection's filter menu, such as `useCollectionRefinement().control`."
-    },
-    {
-      "name": "utilities",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "More utilities beside the filter menu and column chooser."
-    },
-    {
-      "name": "onReorder",
-      "type": "(ids: string[]) => void",
-      "optional": true,
-      "doc": "Makes the tabs reorderable by drag and with Alt+Shift+Left/Right."
     }
   ],
   "CollectionHeading": [
@@ -1560,21 +1530,27 @@
     },
     {
       "name": "gridLayout",
-      "type": "\"compact\" | \"preview\"",
+      "type": "\"compact\" | \"preview\" | \"icons\"",
       "optional": true,
-      "doc": "Compact cards suit icon-based catalogs; preview cards emphasize artwork."
+      "doc": "Compact cards suit icon-based catalogs; preview cards emphasize artwork; `icons` is a file manager's icon view, each item a large icon over its name with no card (CollectionIconGrid)."
     },
     {
       "name": "listIcons",
-      "type": "boolean",
+      "type": "boolean | \"inline\"",
       "optional": true,
-      "doc": "List rows start with the item's icon in a framed tile, in its tone, and the title may take two lines. Off, rows are 36px and start with their text."
+      "doc": "List rows start with the item's icon in a framed tile, in its tone, and the title may take two lines. `inline` keeps 36px rows with the icon at the glyph size before the name, as a file manager's list (Files). Off, rows are 36px and start with their text."
     },
     {
       "name": "cardTitleLines",
       "type": "2 | 1",
       "optional": true,
       "doc": "How many lines a compact card's title may take before it fades."
+    },
+    {
+      "name": "zoom",
+      "type": "CollectionZoom",
+      "optional": true,
+      "doc": "How big the `icons` grid draws its tiles: 0 small, 1 the default, 2 large."
     },
     {
       "name": "selectedIds",
@@ -1592,13 +1568,25 @@
       "name": "remember",
       "type": "string",
       "optional": true,
-      "doc": "Keeps the header sort and the hidden columns in `misty.db` under this key; without it they last for the page."
+      "doc": "Keeps the header sort, the hidden columns and the widths the columns were dragged to in `misty.db` under this key; without it they last for the page."
     },
     {
       "name": "drag",
       "type": "CollectionDrag",
       "optional": true,
       "doc": "Moves items by dragging them with the pointer (never the native drag loop). The picked items go together when one of them is dragged, and they dim while they move. Items with `dropTarget` and the background take the drop: `onDrop(target, ids, copy)`, with `target` null for the background and `copy` true while ⌥ is held. `canDrop` refuses a folder."
+    },
+    {
+      "name": "sort",
+      "type": "{ key: string; descending: boolean; }",
+      "optional": true,
+      "doc": "The order, held by the caller instead of here, for a page that also sorts from a menu (Kura's ⋯ › Sort): the header sorts through `onSortChange` too. Null keeps the items' own order."
+    },
+    {
+      "name": "onSortChange",
+      "type": "(sort: { key: string; descending: boolean; } | null) => void",
+      "optional": true,
+      "doc": ""
     }
   ],
   "CollectionPage": [],
@@ -1614,6 +1602,12 @@
       "type": "() => void",
       "optional": true,
       "doc": "Clears the search. Without it, clearing empties the box through its own `onChange`."
+    },
+    {
+      "name": "framed",
+      "type": "boolean",
+      "optional": true,
+      "doc": "A field's frame instead of the fill: a hairline around the card's color, as Kura's search beside its path bar (PathField `framed`). The edge turns strong under the pointer and while typing."
     }
   ],
   "CollectionSkeleton": [
@@ -2743,8 +2737,14 @@
     {
       "name": "title",
       "type": "string",
-      "optional": false,
-      "doc": ""
+      "optional": true,
+      "doc": "What the pane is waiting for, in a few words. A side pane's quiet note (Kura's inspector with nothing picked) may leave it out and say it in `line` under an `icon` instead."
+    },
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": true,
+      "doc": "A glyph over the words, in a round well, for a side pane's quiet note."
     },
     {
       "name": "line",
@@ -2769,8 +2769,14 @@
     {
       "name": "title",
       "type": "string",
-      "optional": false,
-      "doc": ""
+      "optional": true,
+      "doc": "What the pane is waiting for, in a few words. A side pane's quiet note (Kura's inspector with nothing picked) may leave it out and say it in `line` under an `icon` instead."
+    },
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": true,
+      "doc": "A glyph over the words, in a round well, for a side pane's quiet note."
     },
     {
       "name": "line",
@@ -2884,38 +2890,6 @@
     }
   ],
   "FileInput": [],
-  "FilterChip": [
-    {
-      "name": "pressed",
-      "type": "boolean",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "label",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "onPressedChange",
-      "type": "(pressed: boolean) => void",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "icon",
-      "type": "IconSource",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "size",
-      "type": "\"sm\" | \"md\"",
-      "optional": true,
-      "doc": "sm 27, md 36 (default)."
-    }
-  ],
   "FindBar": [
     {
       "name": "label",
@@ -3148,6 +3122,50 @@
       "type": "string",
       "optional": true,
       "doc": "A selector for something in the container it keeps clear of at the top, such as a header floating over the container's top edge."
+    }
+  ],
+  "FramedPage": [
+    {
+      "name": "toolbar",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The toolbar rows across the top, on the frame's color, each closed by a hairline: a tab row, a navigation row, a row of tools. Empty rows are left out."
+    },
+    {
+      "name": "start",
+      "type": "FramedPageColumn",
+      "optional": true,
+      "doc": "The column at the start: the page's own sidebar or rail."
+    },
+    {
+      "name": "end",
+      "type": "FramedPageColumn",
+      "optional": true,
+      "doc": "The column at the end: a side panel, a preview."
+    },
+    {
+      "name": "footer",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "What runs along the bottom, such as a BottomBar."
+    },
+    {
+      "name": "autoSaveId",
+      "type": "string",
+      "optional": true,
+      "doc": "Keeps the columns' widths for the device under this key."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The work the page is about: a chat, a list, an editor, settings rows."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only: size and placement."
     }
   ],
   "HeroPage": [
@@ -4844,6 +4862,18 @@
       "doc": "Not pressed as a whole: a placeholder while the list loads, or the row while it holds a field. It is a `div` that stands still under the pointer."
     },
     {
+      "name": "nested",
+      "type": "boolean",
+      "optional": true,
+      "doc": "A part of the row above it, such as a section of the open Settings page: no mark of its own, its label set in to line up with the label of the row it belongs to. Never a row of chips."
+    },
+    {
+      "name": "tall",
+      "type": "boolean",
+      "optional": true,
+      "doc": "At least 54px, for a row whose label has more under it, such as a file manager's drive with its capacity and a Meter (Kura's Devices). The caller stacks the lines beside the mark."
+    },
+    {
       "name": "ref",
       "type": "RefObject<HTMLButtonElement | null> | ((instance: HTMLButtonElement | null) => void | (…",
       "optional": true,
@@ -5155,6 +5185,56 @@
       "doc": "Layout only."
     }
   ],
+  "PathField": [
+    {
+      "name": "segments",
+      "type": "readonly PathFieldSegment[]",
+      "optional": false,
+      "doc": "The open folder's path, one segment per folder from the top."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "Accessible name, e.g. \"Path\"."
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "optional": true,
+      "doc": "The path as text, put in the box when the person starts typing one."
+    },
+    {
+      "name": "onSubmit",
+      "type": "(text: string) => void",
+      "optional": true,
+      "doc": "Goes to a typed path. Without it the path can't be typed."
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "editRequest",
+      "type": "number",
+      "optional": true,
+      "doc": "Starts typing when this changes to a new value, such as a Go to folder shortcut."
+    },
+    {
+      "name": "framed",
+      "type": "boolean",
+      "optional": true,
+      "doc": "A field's frame instead of the fill: a hairline around the card's color, as Kura's path bar. Pair it with a `framed` SearchField beside it."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only: width, flex or margins. Its height and corners are the shared field frame's."
+    }
+  ],
   "PathLine": [
     {
       "name": "segments",
@@ -5192,6 +5272,52 @@
       "name": "size",
       "type": "PersonaLogoSize",
       "optional": true,
+      "doc": ""
+    }
+  ],
+  "PersonProfile": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "Accessible name of the panel, such as \"Profile\"."
+    },
+    {
+      "name": "face",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": "What the person says about themselves right now: their custom status."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "`PersonProfileSection`s."
+    }
+  ],
+  "PersonProfileSection": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
       "doc": ""
     }
   ],
@@ -5340,6 +5466,12 @@
       "doc": ""
     },
     {
+      "name": "size",
+      "type": "\"default\" | \"lg\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
@@ -5377,9 +5509,9 @@
     },
     {
       "name": "layout",
-      "type": "\"stacked\" | \"side\"",
+      "type": "\"stacked\" | \"side\" | \"info\"",
       "optional": true,
-      "doc": "`side` (default): the key on the left, the value on the right of a 36px row. `stacked`: the value under its key, for narrow panes or long values such as paths."
+      "doc": "`side` (default): the key on the left, the value on the right of a 36px row. `stacked`: the value under its key, for narrow panes or long values such as paths. `info`: Finder's and Kura's Get Info, the key right-aligned in a narrow muted column and the value beside it in the meta role, wrapping onto more lines (a long path shows whole)."
     },
     {
       "name": "label",
@@ -6061,6 +6193,12 @@
       "type": "() => void",
       "optional": true,
       "doc": "Clears the search. Without it, clearing empties the box through its own `onChange`."
+    },
+    {
+      "name": "framed",
+      "type": "boolean",
+      "optional": true,
+      "doc": "A field's frame instead of the fill: a hairline around the card's color, as Kura's search beside its path bar (PathField `framed`). The edge turns strong under the pointer and while typing."
     }
   ],
   "SecretField": [
@@ -6185,6 +6323,12 @@
       "type": "\"h2\" | \"h3\"",
       "optional": true,
       "doc": "The heading level. Defaults to h2."
+    },
+    {
+      "name": "strong",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The title bright and semibold instead of muted, as a file manager's sidebar sections (Kura's Quick access, Tags, Devices), where the heading leads its rows rather than sitting back."
     },
     {
       "name": "id",
@@ -6405,8 +6549,8 @@
     {
       "name": "logo",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
+      "optional": true,
+      "doc": "Its own logo; left off when it would only repeat its neighbours'."
     },
     {
       "name": "title",
@@ -6455,6 +6599,12 @@
     {
       "name": "items",
       "type": "number",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "logos",
+      "type": "boolean",
       "optional": true,
       "doc": ""
     }
@@ -7214,6 +7364,12 @@
       "type": "ArtColor",
       "optional": true,
       "doc": "A faint wash of an art color with an edge of it, in place of `tone` and `edge`, for something in full color that asks for a look (a question in the Studio)."
+    },
+    {
+      "name": "dimmed",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Set back, for the panes of a split that aren't the one in use (Kura's split panes): faded, coming most of the way back under the pointer. The pane in use stays as it is."
     },
     {
       "name": "ref",

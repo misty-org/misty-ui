@@ -3,9 +3,9 @@
      inset by --misty-scrollbar-inset inside this track, so no scrollbar touches an edge. */
   --misty-scrollbar-size: 0.75rem;
   --misty-scrollbar-inset: 0.1875rem;
-  /* Room kept clear at each end of the track, so the thumb runs nearly to the top and bottom of
-     its scroller. WebKit doesn't clip a scrollbar to rounded corners; with this and the thumb's
-     own inset its round end starts 7px in, which still clears a 16px corner's curve. */
+  /* Room kept clear at each end of the track inside a rounded surface (misty-scrollbar-rounded).
+     WebKit doesn't clip a scrollbar to rounded corners; with this and the thumb's own inset its
+     round end starts 7px in, which still clears a 16px corner's curve. */
   --misty-scrollbar-end: 0.25rem;
 }
 
@@ -36,16 +36,6 @@
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-corner {
     background: transparent;
-  }
-
-  /* Along the track's own length only: the ends of a vertical one, the sides of a level one. */
-  ::-webkit-scrollbar-track:vertical {
-    margin-top: var(--misty-scrollbar-end);
-    margin-bottom: var(--misty-scrollbar-end);
-  }
-  ::-webkit-scrollbar-track:horizontal {
-    margin-left: var(--misty-scrollbar-end);
-    margin-right: var(--misty-scrollbar-end);
   }
 
   ::-webkit-scrollbar-thumb {
@@ -79,10 +69,26 @@
     background-color: var(--misty-theme-active, #737373);
   }
 
-  /* A scroller on a flat sheet with no rounded corner to clear, such as the chat: the track runs
-     to both ends, so the thumb reaches the top and bottom with only its own inset. */
-  .misty-scrollbar-flush::-webkit-scrollbar-track:vertical {
-    margin-top: 0;
-    margin-bottom: 0;
+  /* A rounded surface (a popup, a dialog, a floating or side panel, a code block): its scrollers,
+     and its own, keep room clear at each end of the track so a corner never clips the thumb.
+     Everywhere else the track runs to both ends, so the thumb reaches the top and bottom of its
+     scroller with only its own inset. Along the track's length only: the ends of a vertical one,
+     the sides of a level one. */
+  .misty-scrollbar-rounded::-webkit-scrollbar-track:vertical,
+  .misty-scrollbar-rounded *::-webkit-scrollbar-track:vertical {
+    margin-top: var(--misty-scrollbar-end);
+    margin-bottom: var(--misty-scrollbar-end);
+  }
+  .misty-scrollbar-rounded::-webkit-scrollbar-track:horizontal,
+  .misty-scrollbar-rounded *::-webkit-scrollbar-track:horizontal {
+    margin-left: var(--misty-scrollbar-end);
+    margin-right: var(--misty-scrollbar-end);
+  }
+
+  /* A scroller inside a rounded surface that doesn't reach its corners (a list between a popup's
+     header and footer): the track runs to both ends again. */
+  .misty-scrollbar-flush::-webkit-scrollbar-track:vertical,
+  .misty-scrollbar-flush::-webkit-scrollbar-track:horizontal {
+    margin: 0;
   }
 }

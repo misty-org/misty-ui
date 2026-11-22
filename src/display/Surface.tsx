@@ -195,6 +195,11 @@ export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
    * in full color that asks for a look (a question in the Studio).
    */
   artWash?: ArtColor;
+  /**
+   * Set back, for the panes of a split that aren't the one in use (Kura's split panes): faded,
+   * coming most of the way back under the pointer. The pane in use stays as it is.
+   */
+  dimmed?: boolean;
   ref?: Ref<HTMLElement>;
 }
 
@@ -293,6 +298,7 @@ export function Surface({
   art,
   artRing,
   artWash,
+  dimmed,
   className,
   ...props
 }: SurfaceProps) {
@@ -322,6 +328,7 @@ export function Surface({
         artRing && artRingClass[artRing],
         raised && raisedClass,
         floating && floatingClass,
+        dimmed && "opacity-65 transition-opacity hover:opacity-85",
         radiusClass[radius],
         "data-[flash=true]:bg-charcoal-hover",
         className,

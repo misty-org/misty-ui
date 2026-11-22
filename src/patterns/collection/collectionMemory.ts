@@ -5,7 +5,8 @@ type View = "grid" | "list";
 
 /**
  * What a person chose for a collection whose caller passed a `remember` key: its view, its
- * filter menu, its hidden columns and its header sort. Kept for this device (see setUiStorage).
+ * filter menu, its hidden columns, its header sort and its column widths. Kept for this device
+ * (see setUiStorage).
  */
 export type CollectionMemory = {
   view?: View;
@@ -13,6 +14,8 @@ export type CollectionMemory = {
   hidden?: string[];
   /** `scope` is the table's shape and menu order it was picked under; elsewhere it doesn't apply. */
   tableSort?: { key: string; descending: boolean; scope: string };
+  /** The widths, in pixels, the person dragged the table's columns to, by column key. */
+  widths?: Record<string, number>;
 };
 
 const periods = ["all", "7", "30"];
@@ -48,6 +51,14 @@ export const collectionMemory = createUiMemory<CollectionMemory>({
         descending: tableSort.descending === true,
         scope: tableSort.scope,
       };
+    const widths = record(saved.widths);
+    if (widths) {
+      const kept = Object.entries(widths).filter(
+        (pair): pair is [string, number] =>
+          typeof pair[1] === "number" && Number.isFinite(pair[1]) && pair[1] > 0,
+      );
+      if (kept.length) entry.widths = Object.fromEntries(kept);
+    }
     return entry;
   },
 });

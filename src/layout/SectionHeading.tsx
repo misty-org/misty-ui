@@ -38,6 +38,11 @@ export type SectionHeadingProps = {
   controls?: string;
   /** The heading level. Defaults to h2. */
   as?: "h2" | "h3";
+  /**
+   * The title bright and semibold instead of muted, as a file manager's sidebar sections (Kura's
+   * Quick access, Tags, Devices), where the heading leads its rows rather than sitting back.
+   */
+  strong?: boolean;
   id?: string;
   /** Layout only: margins or placement. */
   className?: string;
@@ -62,6 +67,7 @@ export function SectionHeading({
   onOpenChange,
   controls,
   as: Heading = "h2",
+  strong = false,
   id,
   className,
 }: SectionHeadingProps) {
@@ -84,7 +90,13 @@ export function SectionHeading({
       data-slot="section-heading"
       className={cn("flex h-8 min-w-0 items-center gap-2 pr-2", folds ? "pl-0" : "pl-2", className)}
     >
-      <Heading id={id} className="m-0 flex min-w-0 flex-1 text-meta font-medium text-cream-muted">
+      <Heading
+        id={id}
+        className={cn(
+          "m-0 flex min-w-0 flex-1 text-meta",
+          strong ? "font-semibold text-cream-bright" : "font-medium text-cream-muted",
+        )}
+      >
         {folds ? (
           <button
             type="button"

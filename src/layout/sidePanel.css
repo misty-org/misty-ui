@@ -1,8 +1,6 @@
-/* SidePanel and SideCard: cards docked beside a page's column, on the window's own surface.
-   Geometry: 8px from the column, from the top and from the bottom, 4px from what follows (a rail's
-   own 4px inset makes that 8px too). They wear the sidebar's surface, so the window's two sides
-   match, with a hairline edge (--hairline) drawn as an outline (content such as a terminal never covers it).
-   No shadow: the edge and the surface step set it off the page. */
+/* SidePanel and a docked SideCard: side columns of a FramedPage, as Kura's preview. Docked flush
+   beside the page's work on the frame's color (the sidebar's), parted from it by a hairline seam
+   down their leading edge, which the person drags to resize. No corners, no margin, no shadow. */
 
 .misty-side-panel {
   position: relative;
@@ -15,13 +13,10 @@
   /* Never more than leaves the column before it its `keep`. */
   max-width: max(20rem, calc(100% - var(--side-panel-keep, 22.5rem) - 0.75rem));
   min-height: 0;
-  margin: 0.5rem 0.25rem 0.5rem 0.5rem;
-  border-radius: var(--radius-xl);
-  /* The page's own color: its faint edge sets it apart, never a fill. */
-  background: var(--color-pane);
+  /* The frame's color, and the seam down its leading edge. */
+  background: var(--color-sidebar);
   color: var(--color-cream);
-  outline: var(--hairline) solid color-mix(in srgb, var(--misty-theme-text) 9%, transparent);
-  outline-offset: calc(-1 * var(--hairline));
+  border-left: var(--hairline) solid var(--color-charcoal-border);
 }
 .misty-side-panel[data-expanded] {
   flex: 1 1 auto;
@@ -41,17 +36,18 @@
 }
 .misty-side-panel:has([data-page-stage="inset"] [data-browser-page-presented])
   > .misty-side-panel-head {
-  background: var(--color-pane);
+  background: var(--color-sidebar);
 }
 
-/* The resize edge: the whole 8px gap on the panel's leading side. Nothing paints at rest; a
-   hairline shows on hover, focus and while dragging. */
+/* The resize edge: a grab area centred on the seam. The seam shows at rest; it brightens on hover,
+   focus and while dragging. */
 .misty-side-panel-resize {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -0.5rem;
+  left: -0.3125rem;
   width: 0.5rem;
+  z-index: 1;
   cursor: col-resize;
   touch-action: none;
   outline: none;
@@ -59,11 +55,10 @@
 .misty-side-panel-resize::after {
   content: "";
   position: absolute;
-  top: 0.75rem;
-  bottom: 0.75rem;
-  left: 0.2188rem;
+  top: 0;
+  bottom: 0;
+  left: 0.25rem;
   width: 1px;
-  border-radius: 1px;
   background: transparent;
   transition: background-color 120ms ease;
 }
@@ -76,8 +71,8 @@
   display: none;
 }
 
-/* The header row: the open view's controls (or the panel's name), then expand and close. One
-   hairline under it is the panel's only line. */
+/* The header row: the open view's controls (or the panel's name), then expand and close, closed by
+   a hairline as a FramedPage's toolbar rows are. */
 .misty-side-panel-head {
   display: flex;
   flex: none;
@@ -86,7 +81,7 @@
   min-width: 0;
   height: 2.5rem;
   padding: 0 0.25rem 0 0.75rem;
-  border-bottom: var(--hairline) solid color-mix(in srgb, var(--misty-theme-text) 7%, transparent);
+  border-bottom: var(--hairline) solid var(--color-charcoal-border);
 }
 /* A header that opens with a control (SidePanelLead) starts it 4px in, where the rows below start
    their wash, and the control's text 8px inside that, where their icons and names start. */
@@ -147,7 +142,6 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
-  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
 
 /* The glance card: narrow, only as tall as what it holds, its own scroll past the window. */
@@ -158,22 +152,27 @@
   flex-direction: column;
   align-self: flex-start;
   width: 18rem;
-  max-height: calc(100% - 1rem);
-  margin: 0.5rem 0.25rem 0.5rem 0.5rem;
-  border-radius: var(--radius-xl);
-  /* The page's own color: its faint edge sets it apart, never a fill. */
-  background: var(--color-pane);
+  /* Docked, it is a narrow side column on the frame's color, parted by a seam. */
+  align-self: stretch;
+  background: var(--color-sidebar);
   color: var(--color-cream);
-  outline: var(--hairline) solid color-mix(in srgb, var(--misty-theme-text) 9%, transparent);
-  outline-offset: calc(-1 * var(--hairline));
+  border-left: var(--hairline) solid var(--color-charcoal-border);
 }
-/* Floating: over the top right of its column, taking none of its width. */
+/* Floating: the one card left over the work, a glance at the top right of its column, taking none of
+   its width, only as tall as what it holds. */
 .misty-side-card[data-floating] {
   position: absolute;
   top: 0.5rem;
   right: calc(var(--misty-scrollbar-size) + 0.25rem);
   z-index: var(--stack-raised);
+  align-self: flex-start;
+  max-height: calc(100% - 1rem);
   margin: 0;
+  border-left: 0;
+  border-radius: var(--radius-xl);
+  background: var(--color-pane);
+  outline: var(--hairline) solid color-mix(in srgb, var(--misty-theme-text) 9%, transparent);
+  outline-offset: calc(-1 * var(--hairline));
 }
 /* Tucked: slid past the column's right edge, back while it peeks. */
 .misty-side-card[data-tucked] {

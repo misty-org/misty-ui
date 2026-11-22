@@ -58,15 +58,18 @@ const presenceNames: Record<MemberPresence, string> = {
  * Someone's status as a small dot on the corner of their face, wherever a face shows (a member
  * row, a DM, a friend): green online, amber idle, red do not disturb, nothing offline. The face
  * and the dot sit in this box; the dot's ring is the surface's own color (`ring` is the sidebar
- * where the face sits on the sidebar).
+ * where the face sits on the sidebar). `size="lg"` is for a large face (an xl Avatar), such as a
+ * profile's or a direct message's opening, whose dot grows with it.
  */
 export function PresenceFace({
   presence,
   ring = "pane",
+  size = "default",
   children,
 }: {
   presence: MemberPresence;
   ring?: "pane" | "sidebar";
+  size?: "default" | "lg";
   children: ReactNode;
 }) {
   return (
@@ -76,7 +79,8 @@ export function PresenceFace({
         role="img"
         aria-label={presenceNames[presence]}
         className={cn(
-          "absolute -right-0.5 -bottom-0.5 size-3 rounded-full border-2",
+          "absolute rounded-full",
+          size === "lg" ? "right-0.5 bottom-0.5 size-5 border-4" : "-right-0.5 -bottom-0.5 size-3 border-2",
           ring === "sidebar" ? "border-sidebar" : "border-pane",
           dotClass[presence],
         )}

@@ -2,7 +2,7 @@ import { ChevronRight } from "lucide-react";
 import type { ComponentPropsWithoutRef, HTMLAttributes, ReactNode, Ref } from "react";
 
 import { cn } from "../classNames";
-import { rowShape } from "../display/rowShape";
+import { rowShape, rowShapeTwoLine } from "../display/rowShape";
 import { Pressable } from "../controls/Pressable";
 import { OverflowFadeText, type OverflowFadeTextProps } from "../layout/OverflowFadeText";
 import { Text } from "../display/Text";
@@ -35,6 +35,16 @@ export type NavRowProps = Omit<ComponentPropsWithoutRef<"button">, "ref"> & {
    * It is a `div` that stands still under the pointer.
    */
   still?: boolean;
+  /**
+   * A part of the row above it, such as a section of the open Settings page: no mark of its own,
+   * its label set in to line up with the label of the row it belongs to. Never a row of chips.
+   */
+  nested?: boolean;
+  /**
+   * At least 54px, for a row whose label has more under it, such as a file manager's drive with its
+   * capacity and a Meter (Kura's Devices). The caller stacks the lines beside the mark.
+   */
+  tall?: boolean;
   ref?: Ref<HTMLButtonElement>;
 };
 
@@ -61,6 +71,8 @@ export function NavRow({
   hover = "wash",
   tone = "chrome",
   still,
+  nested,
+  tall,
   className,
   ref,
   ...props
@@ -68,9 +80,11 @@ export function NavRow({
   const filled = current || selected;
   const classes = cn(
     "group/nav-row w-full flex-none",
-    rowShape,
+    tall ? rowShapeTwoLine : rowShape,
     "text-left text-control",
     hover === "wash" && current ? toneText[tone].bright : toneText[tone].quiet,
+    // The parent's mark (18px) and its gap (9px) past the row's own inset.
+    nested && "pl-8",
     filled && "bg-row-active",
     !still && !filled && hover === "fill" && "hover:bg-row-hover focus-visible:bg-row-hover",
     className,

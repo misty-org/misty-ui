@@ -195,7 +195,7 @@ const DialogContent = React.forwardRef<
               scrolls ? "flex flex-col overflow-hidden" : "grid overflow-y-auto",
               "max-h-[calc(100dvh-var(--spacing)*16-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*8)]",
               dialogSizeClass[size],
-              "gap-4 rounded-xl p-6",
+              "misty-scrollbar-rounded gap-4 rounded-xl p-6",
               tone === "page" ? "bg-charcoal-bg" : "bg-charcoal-card",
               "text-body text-cream misty-dialog-motion",
               "data-[state=closed]:pointer-events-none",

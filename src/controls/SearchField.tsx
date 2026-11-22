@@ -13,6 +13,11 @@ type SearchFieldProps = Omit<React.ComponentProps<"input">, "size" | "type"> & {
   containerClassName?: string;
   /** Clears the search. Without it, clearing empties the box through its own `onChange`. */
   onClear?: () => void;
+  /**
+   * A field's frame instead of the fill: a hairline around the card's color, as Kura's search
+   * beside its path bar (PathField `framed`). The edge turns strong under the pointer and while typing.
+   */
+  framed?: boolean;
 };
 
 /** Sets a React-controlled input's text as if typed, so its own `onChange` sees the change. */
@@ -29,7 +34,7 @@ function typeInto(input: HTMLInputElement, text: string) {
  * clears it too.
  */
 const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
-  ({ className, containerClassName, onClear, onKeyDown, ...props }, ref) => {
+  ({ className, containerClassName, onClear, onKeyDown, framed = false, ...props }, ref) => {
     const inner = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(ref, () => inner.current as HTMLInputElement);
     const filled = props.value !== undefined ? String(props.value) !== "" : undefined;
@@ -47,8 +52,10 @@ const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
           // The clear button sits nearer the end than text would.
           "pl-2.5 pr-1",
           "group/search flex min-w-0 items-center gap-2 text-cream-muted",
-          "border border-transparent bg-cream/5 transition-colors",
-          "hover:bg-cream/8 focus-within:border-cream/14 focus-within:bg-cream/8",
+          "border transition-colors",
+          framed
+            ? "border-charcoal-border bg-charcoal-card hover:border-charcoal-border-strong focus-within:border-charcoal-border-strong"
+            : "border-transparent bg-cream/5 hover:bg-cream/8 focus-within:border-cream/14 focus-within:bg-cream/8",
           props.disabled && "pointer-events-none opacity-50",
           containerClassName,
         )}

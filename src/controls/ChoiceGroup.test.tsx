@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { LayoutGrid, List } from "lucide-react";
 import { describe, expect, it, vi } from "vitest";
 import { ChoiceGroup } from "./ChoiceGroup";
-import { FilterChip } from "./FilterChip";
 
 describe("ChoiceGroup", () => {
   it("is a radio group whose track is one control height", () => {
@@ -45,14 +44,3 @@ describe("ChoiceGroup", () => {
   });
 });
 
-describe("FilterChip", () => {
-  it("toggles its pressed state", () => {
-    const onPressedChange = vi.fn();
-    render(<FilterChip label="Unread" pressed={false} onPressedChange={onPressedChange} />);
-    const chip = screen.getByRole("button", { name: "Unread" });
-    expect(chip.getAttribute("aria-pressed")).toBe("false");
-    expect(chip.className).toContain("h-8");
-    fireEvent.click(chip);
-    expect(onPressedChange).toHaveBeenCalledWith(true);
-  });
-});

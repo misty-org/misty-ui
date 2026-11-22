@@ -6,7 +6,7 @@ import { RenameItemDialog } from "./RenameItemDialog";
 import {
   CollectionHeading,
   CollectionItems,
-  CollectionFilters,
+  CollectionControls,
   CollectionPage,
   CollectionSortMenu,
   CollectionViewToggle,
@@ -58,24 +58,6 @@ it("opens from metadata cells while keeping actions independent and headers alig
   fireEvent.click(screen.getByRole("menuitem", { name: "Rename" }));
   expect(onAction).toHaveBeenCalledTimes(1);
   expect(onOpen).toHaveBeenCalledTimes(2);
-});
-
-it("switches sections directly without a redundant filter menu", () => {
-  const onChange = vi.fn();
-  render(
-    <CollectionFilters
-      options={[
-        { value: "notes", label: "Notes" },
-        { value: "drawings", label: "Drawings" },
-      ]}
-      value="notes"
-      onChange={onChange}
-    />,
-  );
-  expect(screen.queryByRole("button", { name: "Filter collection" })).toBeNull();
-  expect(screen.getByRole("button", { name: "Notes" }).getAttribute("aria-pressed")).toBe("true");
-  fireEvent.click(screen.getByRole("button", { name: "Drawings" }));
-  expect(onChange).toHaveBeenCalledWith("drawings");
 });
 
 it.each(["preview", "compact"] as const)(
@@ -200,7 +182,7 @@ it("sorts incoming rows and discards header sorting when the menu ordering chang
 it("chooses columns independently per collection, preserves empty schemas, and resets defaults", () => {
   const ui = (id = "notes", empty = false) => (
     <CollectionPage>
-      <CollectionFilters options={[]} value="" onChange={() => {}} />
+      <CollectionControls />
       <CollectionItems
         columnSetId={id}
         fields={["Size", "Created"]}
@@ -394,21 +376,16 @@ it("heads a page with a PageHeader that never wraps, keeping loose controls at i
   expect(document.querySelector(".flex-wrap")).toBeNull();
 });
 
-it("keeps the section tabs and utilities on one bar that never wraps", () => {
+it("keeps the utilities and actions on one bar that never wraps, with no section tabs", () => {
   render(
-    <CollectionFilters
-      options={[
-        { value: "notes", label: "Notes" },
-        { value: "drawings", label: "Drawings" },
-      ]}
-      value="notes"
-      onChange={() => {}}
+    <CollectionControls
+      utilities={<button type="button">Refresh</button>}
       actions={<CollectionViewToggle value="list" onChange={() => {}} />}
     />,
   );
   const bar = screen.getByRole("toolbar", { name: "Collection controls" });
-  expect(within(bar).getByRole("button", { name: "Drawings" })).toBeTruthy();
   expect(within(bar).getByRole("group", { name: "View layout" })).toBeTruthy();
+  expect(within(bar).queryByRole("button", { pressed: true, name: "All" })).toBeNull();
   expect(document.querySelector(".flex-wrap")).toBeNull();
   expect(document.querySelector("[title]")).toBeNull();
 });

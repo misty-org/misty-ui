@@ -14,7 +14,8 @@ import { cn } from "../classNames";
  * overlays.css draws the same edge on every popup primitive and clips contents to the rounded
  * edge, so call sites need no `overflow-hidden` for corners.
  */
-export const popupSurfaceClass = "rounded-xl bg-charcoal-card text-cream popup-edge";
+export const popupSurfaceClass =
+  "misty-scrollbar-rounded rounded-xl bg-charcoal-card text-cream popup-edge";
 
 /**
  * Fade and a short slide away from the anchor, from literal keyframes in styles.css.

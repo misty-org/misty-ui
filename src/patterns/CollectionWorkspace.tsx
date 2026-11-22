@@ -4,7 +4,7 @@ export { CollectionPage } from "./collection/CollectionColumns";
 export {
   CollectionHeading,
   CollectionSearch,
-  CollectionFilters,
+  CollectionControls,
   CollectionSortMenu,
   CollectionViewToggle,
 } from "./collection/CollectionToolbar";
@@ -14,3 +14,4 @@ export { CollectionSkeleton } from "./collection/CollectionSkeleton";
 export { useCollectionView } from "./collection/collectionMemory";
 export type { CollectionColumn, CollectionItem } from "./collection/collectionItemTypes";
 export type { CollectionDrag } from "./collection/collectionDrag";
+export type { CollectionZoom } from "./collection/CollectionIconGrid";

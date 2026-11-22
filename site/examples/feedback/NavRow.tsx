@@ -54,10 +54,19 @@ function NavDemo() {
       </DropdownMenu>
       <NavList>
         {places.map(({ id, label, icon: Icon }) => (
-          <NavRow key={id} current={current === id} onClick={() => setCurrent(id)}>
-            <Icon />
-            <NavRowLabel bright={current === id}>{label}</NavRowLabel>
-          </NavRow>
+          <React.Fragment key={id}>
+            <NavRow current={current === id} onClick={() => setCurrent(id)}>
+              <Icon />
+              <NavRowLabel bright={current === id}>{label}</NavRowLabel>
+            </NavRow>
+            {id === "settings" && current === "settings"
+              ? ["General", "Appearance", "Shortcuts"].map((section) => (
+                  <NavRow key={section} nested>
+                    <NavRowLabel>{section}</NavRowLabel>
+                  </NavRow>
+                ))
+              : null}
+          </React.Fragment>
         ))}
       </NavList>
       <NavGroupHeading name="Pinned" collapsible={{ open, onToggle: () => setOpen(!open) }} />

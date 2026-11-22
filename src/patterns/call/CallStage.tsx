@@ -1,4 +1,4 @@
-import { MicOff } from "lucide-react";
+import { HeadphoneOff, MicOff } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../classNames";
@@ -82,6 +82,8 @@ export interface CallTileProps {
   speaking?: boolean;
   /** Their microphone is off: a crossed-out microphone by the name. */
   muted?: boolean;
+  /** They hear nothing of the call (an agent away doing what it was asked): crossed-out headphones by the name. */
+  deafened?: boolean;
   /** IconButtons at its top right, shown while it is hovered or holds focus. */
   actions?: React.ReactNode;
   /** Layout only. */
@@ -102,6 +104,7 @@ export function CallTile({
   fit = "cover",
   speaking = false,
   muted = false,
+  deafened = false,
   actions,
   className,
 }: CallTileProps) {
@@ -128,6 +131,7 @@ export function CallTile({
         )}
       >
         {muted ? <MicOff aria-label="Muted" className="shrink-0 opacity-70" /> : null}
+        {deafened ? <HeadphoneOff aria-label="Deafened" className="shrink-0 opacity-70" /> : null}
         <OverflowFadeText className="min-w-0">{name}</OverflowFadeText>
       </figcaption>
       {actions ? (

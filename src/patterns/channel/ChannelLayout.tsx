@@ -174,7 +174,9 @@ export function ChannelHeader(props: {
 
 /**
  * The top of a channel's history, once the very first message is in view: a large mark, a
- * welcome and where this channel begins.
+ * welcome and where this channel begins. A direct message opens the same way with the person's
+ * face as its `mark` (an xl Avatar in a large PresenceFace, or a group's faces) and its name as the
+ * title, and may offer a few buttons under the line (`actions`, such as Call).
  */
 export function ChannelWelcome(props: {
   icon?: LucideIcon;
@@ -182,11 +184,15 @@ export function ChannelWelcome(props: {
   mark?: ReactNode;
   title: string;
   line: string;
+  /** A few secondary or quiet Buttons under the line, at the default size. */
+  actions?: ReactNode;
 }) {
   const Icon = props.icon;
   return (
     <div className="flex flex-col items-start gap-1 pt-4 pb-4">
-      {props.mark ?? (
+      {props.mark ? (
+        <span className="mb-2 flex">{props.mark}</span>
+      ) : (
         <span className="mb-2 flex size-16 items-center justify-center rounded-full bg-control-active text-cream-bright">
           {Icon ? <Icon aria-hidden="true" className="size-9" /> : null}
         </span>
@@ -197,6 +203,7 @@ export function ChannelWelcome(props: {
       <Text as="p" size="body" tone="muted" wrap>
         {props.line}
       </Text>
+      {props.actions ? <div className="mt-3 flex items-center gap-2">{props.actions}</div> : null}
     </div>
   );
 }
@@ -229,8 +236,8 @@ export function ChannelDivider(props: { label?: string; kind?: "date" | "new" })
 }
 
 /**
- * "X is typing…" in the strip under the composer, where Discord writes it: the strip is the
- * composer's bottom margin, so it keeps its height when empty.
+ * "X is typing…" in the strip just above the composer, so it reads beside what is being
+ * written: the strip keeps its height when empty, so the history never jumps as it comes and goes.
  */
 export function TypingLine(props: { label?: string }) {
   return (

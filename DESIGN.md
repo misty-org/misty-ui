@@ -134,9 +134,10 @@ blocks, the editor, diffs, the terminal), never for URLs, paths, IDs, model name
   ring, border or shadow.
 - **Icons:** every glyph is 18px at one stroke (`styles/glyphs.css`). Icons take no `size`, `strokeWidth` or
   size class. The only larger icon is `PlaceholderIcon`, for a thumbnail, drop zone or empty state.
-- **Depth** comes from faint edges and hairlines, never from a fill. The page, the window's tab row and
-  bottom bar, a chat and its floating panels (side panels, side cards) are all the page's one color;
-  only the sidebar is a color of its own. **No shadows anywhere.**
+- **Depth** comes from two fills and hairlines, as in Kura: every page is a framed window. Its frame (the
+  page's bars, its own sidebar or rail, its side panels and preview) wears the sidebar's color, so with
+  Misty's own sidebar it reads as one frame around the work; the work itself (the chat, the list, the
+  editor, the settings rows) sits on the page's color. Hairlines part them. **No shadows anywhere.**
 - **Layers:** z-order uses named layer tokens (`layers.css`, `--stack-*`), never a number.
 - **Motion:** keyframes live in `styles/animations.css`, named for the motion. Popups keep the shared
   open/close motion.
@@ -158,7 +159,9 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A short fixed choice in a form | `OptionSelect` / `Select` | A dropdown of buttons |
 | A long, searchable choice | `SearchablePicker` | A custom popover list |
 | On/off | `Switch` (settings), `Checkbox` (lists, multi-select) | A toggle button |
-| Section tabs over a list | `FilterChip`s in a `CollectionFilters` / `ActionBar` | A free-wrapping chip row |
+| Groups of a list (categories, kinds, scopes) | Stacked `Shelf`s or groups under a `SectionHeading`, one under another, each with See all where it's cut | A row of chips or buttons to switch between them, in any form |
+| Sections of a long page (Settings) | Rows for them in the page's rail or sidebar, under the page's own row; picking one scrolls there | A row of chips or tabs across the page's top |
+| A collection's controls (sort, filter, refresh, view) | `CollectionControls` | A hand-made bar |
 | Questions or notes that open under their heading (an FAQ, release notes, a docs sidebar group) | `Disclosure` (`kind` section or row) in a `DisclosureList` | An accordion of styled buttons |
 | A tab strip | `TabStrip` | Buttons styled as tabs |
 | A toolbar | `ActionBar` (gives way: labels → icons → fade → ⋯), groups split by `ToolbarDivider` | A flex row that wraps or scrolls |
@@ -173,24 +176,29 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A notice | `notify` (bottom right, at most one action, leaves on its own) | Inline "Saved" text |
 | A file's sync state in a Space's drive | `StateMark` kinds `online-only` (cloud), `downloading` and `uploading` (the spinner), `not-synced` (crossed-out cloud), all muted; a grid card takes `sync` on its `CollectionItem`. A file in step shows no mark; a conflicting copy has no color of its own | A colored chip, a status word, the `online` (connected) kind |
 | Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, offline; `working` and `waiting` for their agent) | A colored chip, a status word in the row |
+| The other person beside a one-to-one direct message | `PersonProfile` (`face`: an xl `Avatar` in a `PresenceFace size="lg"`, `name`, their status as `line`) with `PersonProfileSection`s; a group's people are a `MemberList` | A member list of two, a hand-made card |
 | Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` (`track="well"`) with two `iconOnly` options: `spaceIcons.personal` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
 | Who is in a voice channel, under its row in the sidebar | `VoicePerson` (`avatar` at xs, `name`, `speaking` rings the face in the done tone, `muted`) | A list of names, a colored chip |
-| A call in full (a voice channel's page, a DM's call, full screen) | `CallStage` of `CallTile`s (`picture`, else `face`; `speaking`, `muted`; a shared screen as `focus`, `fit="contain"`), then a `CallBar` of IconButtons ending in a danger Leave; away from the call, `FloatingPip` | A grid of hand-made video boxes, a floating card of buttons |
+| A call in full (a voice channel's page, a DM's call, full screen) | `CallStage` of `CallTile`s (`picture`, else `face`; `speaking`, `muted`, `deafened`; a shared screen as `focus`, `fit="contain"`), then a `CallBar` of IconButtons ending in a danger Leave; away from the call, `FloatingPip` | A grid of hand-made video boxes, a floating card of buttons |
 | Who has a file open | `InUseMark` (`people`: at most three faces, then "+N", each named in its tooltip), at the row's end where its state goes | A list of names, a lock icon |
 | Nothing here yet / failed | `EmptyState`, `ErrorState` | A custom centered block |
 | First load of content you can draw before it arrives (rows, cards, settings rows, shelves, a tree) | A `Skeleton` shaped like it (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`, `ShelfSkeleton`) | "Loading…" text |
 | First load whose layout depends on the data (a chat's messages, a thread, a document or file preview, a diff, an item's details) | `PaneLoading`, one spinner in the pane's middle; `inline` for one part of a loaded page | A skeleton guessing the shape, "Loading…" text |
 | Work in progress | `Spinner` or `Progress` where the work happens | A spinner in a button |
 | A documentation site (guides, SDK, design system) | `DocsLayout` in three panels: `DocsHeader` (sections as chips), the section's `NavList`, the article, `DocsToc` ("On this page") and a sticky `DocsPager`; only for a docs site | The app's page layouts, a hand-built sidebar and rail |
+| A page's frame: toolbar rows, a rail or sidebar, side panels, the work between | `FramedPage` (`toolbar` rows, `start` and `end` columns, `footer`), as Kura's window | A page that lays out its own fills, lines and columns |
 | A page's top band | `PageHeader` (pages), `ViewHeader` (views of a Space), `CollectionHeading` (collections) | A hand-made header |
-| A browsable collection | `CollectionPage`, `CollectionHeading`, `CollectionFilters`, `CollectionSearch`, `CollectionViewToggle`, `CollectionSortMenu`, `CollectionFilterMenu`, `CollectionItems` | Custom bars |
+| A browsable collection | `CollectionPage`, `CollectionHeading`, `CollectionControls`, `CollectionSearch`, `CollectionViewToggle`, `CollectionSortMenu`, `CollectionFilterMenu`, `CollectionItems` | Custom bars |
 | Finder's column view (Files) | `ColumnBrowser` (`columns` of `rows`, `selected`, `onSelect`, `onOpen`, `menu`, `preview` as the last column), switched to by `CollectionViewToggle`'s `columns` | Side-by-side lists, a tree squeezed into columns |
 | Moving items by dragging them (files into folders) | `drag` on `CollectionItems` (items marked `dropTarget`) or `ColumnBrowser`: pointer dragging, ⌥ copies, the dragged items dim | HTML5 `draggable`, the native drag loop |
 | An item's Finder tags | `TagDots` after its name (`CollectionItem` `marks`, `ColumnBrowserRow` `marks`); one tag's color in a menu is `TagDot`, named by `tagToneName` | Colored chips, a list of tag names in the row |
 | A file's path whose folders open | `PathLine` with `onSelect` on each folder's segment | A row of buttons, a breadcrumb bar |
+| A file manager's path bar, which can be typed into (Files) | `PathField` (`segments` with `onSelect`, `value`, `onSubmit`) | A hand-made breadcrumb box, a PathLine in a bordered div |
+| A file manager's icon view and list (Files) | `CollectionItems` `view="grid"` `gridLayout="icons"`, sized by `zoom` 0 to 2; the list with `listIcons="inline"`, its columns sized by dragging their seams (kept with `remember`); details in the inspector are `PropertyList layout="info"`; a ⋯ menu's Sort holds the order through `sort` and `onSortChange`; a drive in the sidebar is a `NavRow tall` with a `Meter` | Preview cards for files, a hand-made tile grid or details table |
 | A catalog of installables | `CatalogGrid` + `CatalogCard` (`logo`, `title`, `maker`, `description`, `tag`, `detail`, `action`, `menu`); what's already added is a `CatalogTileRow` of `CatalogTile`s | A long full-width list with per-row toggles |
 | A store page's shelves (Explore) | `Shelf` + `ShelfItem` (`logo` at `tile`, `title`, `line`, one `action`, `menu`); featured picks are `FeatureCard`s in a `FeatureRow`, shown only with a banner; picking one opens `StoreDetail` | A grid of cards per section, a list with per-row toggles |
 | A persona's logo | `PersonaLogo` (`icon` for what it does, `color` from `personaTone(id)`) | The catalog's emoji, a bare initial |
+| The top of a chat's history | `ChannelWelcome`: a channel's icon, or a direct message's face as `mark`, its title, one line, and a few buttons as `actions` (Call) | A hand-made avatar and heading |
 | A channel's messages (Space chat) | `ChannelMessage` with `ChannelMessageText`, `ChannelReply` over a reply, `ChannelReactions` of `ReactionChip`s, `ThreadRepliesButton`; days and unread with `ChannelDivider` | Hand-built message rows |
 | Picking an emoji | `EmojiPicker`, handed the caller's emoji (`sections`, `search`) | A grid of styled buttons in a popover |
 | A file waiting to go with a message | `ComposerAttachment` in the composer's `context` | A hand-made chip |
@@ -202,17 +210,28 @@ The everyday components, several of which have no doc comment in the catalog yet
 
 ### Layout
 
-- The interface is quiet and mostly neutral and looks finished: flat panes on the window's surface that read as
-  one sheet, with no divider lines between them, generous spacing, modelled on OpenChamber. The one exception
-  is the window's sidebar: while open, a hairline (`Separator`) runs down its edge with the page.
+- The interface is quiet and mostly neutral and looks finished, laid out as Kura's window: every page is a
+  `FramedPage`. Its toolbar rows run across the top on the frame's color, a hairline under each; its side
+  columns (a rail, a sidebar, a side panel, a preview) stand beside the content on the frame's color, parted
+  from it by a hairline seam the person drags to resize; the content sits on the page's color between them.
+  Misty's own sidebar keeps its hairline with the page. Generous spacing, nothing floating over the work.
+- Hairlines meet. A line that parts two things runs edge to edge and joins the lines it reaches, with no gap
+  at either end: a list's header hairline runs to both sides of its pane, and a column's seam runs the
+  header's whole height, from the bar's hairline above to the header's below, and while the list is hovered
+  it carries on down through every row, unbroken, to the last. Space between a line and the
+  content comes from inside the component (a list's edge gutters, a row's own inset), never from padding
+  around it, so a list or table sits flush in its pane.
+- Never a row of category chips or section buttons over a list or a page. A list's groups stack, one under
+  another, under their headings; a page's sections are rows in its rail or sidebar.
 - Nothing wraps into ragged rows or spills past its edge. Every bar declares what gives way first: labels turn
   into icons, then the longest name shortens, then items move into a ⋯ menu. No horizontal page scrolling.
 - Labels never get cut off. When tiles or buttons are too narrow for their labels, the grid drops a column
   first.
 - On a wide page, panels pair up; one panel never stretches alone across the whole width. A list or grid keeps
   a readable width or shares the row with a companion panel.
-- Pages have no title bar: the sidebar names the page. A page's top bar holds only its controls: a
-  `PageHeader` or `CollectionHeading` with no `title`, which draws them at its end with no hairline.
+- Pages have no title bar: the sidebar names the page. A page's top bar holds its controls, in the
+  `FramedPage`'s toolbar rows (a tool page may have two, Kura's 54 and 45px), on the frame's color with a
+  hairline under each.
 - A page's create action (New, Create notebook, New task) is its primary button, filled: white in the dark
   theme, black in the light one. It lives where the things it makes are listed, not inside one of them.
 - A bar's controls stand bare, never some boxed and some not. Grid and list are two bare icons, the open one
@@ -231,11 +250,10 @@ The everyday components, several of which have no doc comment in the catalog yet
 - The window's own bars (the chat's right rail, the bottom bar, the sidebar's places) are `CustomizableBar`s:
   the person drags items into their order (or moves one with ⌥⇧ and an arrow), and a right-click on the bar
   shows or hides each item and resets the bar. Each bar keeps its arrangement for the device.
-- Floating cards overlay; they never push the chat aside. Only the terminal and browser side panels take the
-  chat's width. A chat's context panel (session, steps, changes, files, terminal, browser) floats beside the
-  chat as a rounded card with a faint edge; the session card is narrow and only as tall as it needs. Those, and
-  settings, are the only floating panels. The chat page itself is one flat sheet: no line parts its title bar,
-  the chat, the panel and the rail.
+- A chat's context panel (session, steps, changes, files, terminal, browser) is a side column of its
+  `FramedPage`: docked beside the chat on the frame's color, parted from it by a seam, taking its width from
+  the chat. Only the narrow glance card (`SideCard floating`) still floats over the chat's corner, and
+  settings open as their own overlay.
 - When one panel opens, animates or stacks over another popup, the others are never dimmed. The scrim is only
   behind a dialog, sheet or workspace overlay.
 
@@ -252,7 +270,9 @@ The everyday components, several of which have no doc comment in the catalog yet
   description, or use a comma. Never another separator glyph.
 - No loose status words ("Saved", "Done") in a row. Changes save themselves, and a failure shows next to what
   failed.
-- A control that doesn't work, or doesn't apply where it is, isn't shown.
+- A control that doesn't apply where it is isn't shown. In a toolbar, a tool that applies here but can't run
+  right now (Cut with nothing picked, Redo with nothing to redo) stays in its place, disabled, so the bar never
+  shifts as the selection changes, as in Kura's toolbar. Menus and rows still leave out what doesn't apply.
 
 ### Buttons
 
@@ -341,7 +361,10 @@ Both hold to the same rules:
 ### Specific surfaces
 
 - An empty state is centered in its pane: a title, one muted line, one button (`EmptyState`). The page's top
-  bar doesn't repeat that button while it shows.
+  bar doesn't repeat that button while it shows. A side column's quiet note (a preview with nothing picked)
+  is an `icon` in a round well over one muted line, with no title, as Kura's.
+- Section headings in a frame column (a tool page's sidebar: Spaces, Quick access, Tags) are bright and
+  semibold (`SectionHeading strong`), leading their rows as Kura's do; elsewhere they stay muted.
 - The composer is one bar that never wraps, with nothing under the box: where the chat works (Space, folder,
   branch) is shown in the chat's context panel. Screen capture lives in the + menu.
 - Every message has the same action bar under it, aligned to its edge, shown only on hover. A toggle that is on
@@ -380,20 +403,23 @@ Misty's `src/tests/architecture/uiRuleDefinitions.ts`). Feature stylesheets neve
 
 ### Explore
 
-- A rail on the page's left (search, then All, Apps, Agents, Plugins, Skills, Prompts, Connectors, a
-  hairline, then Updates), flat on the page like every pane, rows as `NavRow tone="page"`.
+- A `FramedPage` whose start column is the rail (search, then All, Apps, Templates, Engines, Speech, Plugins,
+  Skills, Prompts, Connectors, a hairline, then Updates) on the frame's color, rows as `NavRow`; the shelves sit
+  on the page's color beside it. Engines
+  and Speech wear `appIcons.engines` and `appIcons.speech`.
 - All opens with a `FeatureRow` of picks that have banners, then `Shelf`s: open-source apps first, then
-  agents. Each section is the same shelves, with `FilterChip`s for its groups.
+  agents. Each section is its groups as stacked shelves, one under another, each with See all; there is never a
+  row of chips to switch between them.
 - Get, a name or a logo opens `StoreDetail`: banner, logo, name, line, the one action, facts, previews,
   about.
 
 ### A catalog page (the apps catalog)
 
 - One `CollectionPage`. Its `CollectionHeading` holds the page's controls; no page title (the sidebar names it).
-- Switching between kinds of thing (Personas, Plugins, Skills…) is one `ChoiceGroup` or `TabStrip`, never two
-  stacked full-width bars.
-- Categories are `FilterChip`s inside `CollectionFilters`, which is an `ActionBar`: it gives way instead of
-  scrolling sideways. Counts go in the chip's label only if they help choosing.
+- Switching between kinds of thing (Templates, Plugins, Skills…) is the page's rail of `NavRow`s, never a row
+  of chips or tabs over the page.
+- Categories are stacked shelves or headed groups, one under another, never a row of chips. The page's
+  controls (sort, filter, refresh) are `CollectionControls`, an `ActionBar` that gives way instead of wrapping.
 - Search is `CollectionSearch`; sort and filter are one icon each.
 - Items are a `CatalogGrid` of `CatalogCard`s, each wearing its own logo or subject icon, with one `action` and
   the rest in its `menu`. What the person already added sits above as a `CatalogTileRow`.
@@ -401,7 +427,7 @@ Misty's `src/tests/architecture/uiRuleDefinitions.ts`). Feature stylesheets neve
 
 ### A list page
 
-`CollectionPage` → `CollectionHeading` (create action as the primary button) → `CollectionFilters` → `ListRow`s
+`CollectionPage` → `CollectionHeading` (create action as the primary button) → `CollectionControls` → `ListRow`s
 with `state` at the end and `menu` for the ⋯. No leading icon unless it tells rows apart.
 
 ### A form or settings section

@@ -12,8 +12,11 @@ export const screenMarkClass = {
   fill: "bg-art-paper text-art-ink shadow-[0_1px_0.375rem_rgb(0_0_0/0.55)]",
   /** A listening meter's bars: near-white, or the companion's color, with a dark halo. */
   meter: "bg-[var(--companion-ink,var(--color-art-paper))] shadow-[0_1px_0.375rem_rgb(0_0_0/0.55)]",
-  /** A sweep from clear to near-white, for a spinner's arc. */
-  sweep: "bg-[conic-gradient(from_90deg,transparent,var(--color-art-paper))]",
+  /** A spinner's faint full ring (an SVG circle), under its arc. */
+  spinnerTrack: "fill-none stroke-art-paper/30",
+  /** A spinner's arc (an SVG circle with a dash): near-white, or the companion's color, round-ended. */
+  spinnerArc:
+    "fill-none stroke-[var(--companion-ink,var(--color-art-paper))] [stroke-linecap:round]",
   /** A dark halo around a drawn shape (an SVG). */
   halo: "drop-shadow-[0_0_0.375rem_rgb(0_0_0/0.55)]",
   /**
@@ -79,14 +82,14 @@ export const screenMarkClass = {
     "pointer-events-none absolute top-0 left-0 rounded-md bg-art-ink/70 px-1.5 py-0.5 " +
     "text-caption font-medium whitespace-nowrap text-art-paper data-[current]:bg-art-ink",
   /**
-   * Misty herself beside the pointer (Tutor's cloud, in its own full color), with a dark halo so
-   * it reads on any page. It drifts at rest and moves with what Tutor is doing, read from its
-   * `data-phase`: it leans in while listening and holds still while it talks, so the caller can
-   * bob it with each word it says. `data-wave` waves hello. Its picture is the caller's; this is
-   * only the motion and the halo.
+   * Misty herself beside the pointer (Tutor's cloud, in its own full color, its own blue outline
+   * keeping it readable on any page, with no shadow). It drifts at rest and moves with what Tutor
+   * is doing, read from its `data-phase`: it leans in while listening and holds still while it
+   * talks, so the caller can bob it with each word it says. `data-wave` waves hello. Its picture
+   * is the caller's; this is only the motion.
    */
   companion:
-    "pointer-events-none origin-bottom select-none drop-shadow-[0_1px_0.375rem_rgb(0_0_0/0.55)] " +
+    "pointer-events-none origin-bottom select-none " +
     "animate-[misty-drift_3.2s_ease-in-out_infinite] " +
     "data-[phase=listening]:animate-[misty-lean_1.4s_ease-in-out_infinite] " +
     "data-[phase=responding]:animate-none " +

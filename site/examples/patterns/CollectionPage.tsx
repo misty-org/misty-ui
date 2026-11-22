@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowDownAZ, BookOpen, Clock, FileText, Plus } from "lucide-react";
 import {
   CollectionFilterMenu,
-  CollectionFilters,
+  CollectionControls,
   CollectionHeading,
   CollectionItems,
   CollectionPage,
@@ -13,7 +13,7 @@ import {
 } from "../../../src";
 
 export const meta = {
-  name: "CollectionPage · CollectionHeading · CollectionSearch · CollectionFilters · CollectionFilterMenu · CollectionSortMenu · CollectionViewToggle · CollectionItems",
+  name: "CollectionPage · CollectionHeading · CollectionSearch · CollectionControls · CollectionFilterMenu · CollectionSortMenu · CollectionViewToggle · CollectionItems",
   file: "patterns/collection/*",
   about: "A whole collection page; narrow the box to watch the bar give way.",
   wide: true,
@@ -62,7 +62,6 @@ const items: CollectionItem[] = [
 ];
 
 function CollectionDemo() {
-  const [tab, setTab] = React.useState("all");
   const [view, setView] = React.useState<"list" | "grid">("list");
   const [sort, setSort] = React.useState("recent");
   const [kind, setKind] = React.useState("any");
@@ -82,15 +81,7 @@ function CollectionDemo() {
             onChange={(event) => setQuery(event.target.value)}
             onClear={() => setQuery("")}
           />
-          <CollectionFilters
-            value={tab}
-            onChange={setTab}
-            options={[
-              { value: "all", label: "All" },
-              { value: "notes", label: "Notes" },
-              { value: "lab", label: "Lab" },
-              { value: "drawings", label: "Drawings" },
-            ]}
+          <CollectionControls
             filterControl={
               <CollectionFilterMenu
                 label="Filter"

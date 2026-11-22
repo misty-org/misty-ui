@@ -1,4 +1,5 @@
 import {
+  AudioLines,
   Brain,
   CircleUserRound,
   FlaskConical,
@@ -36,6 +37,10 @@ export const appIcons = {
   marketplace: Compass,
   music: Music,
   media: Film,
+  /** The engines agents run on (Claude Code, Codex and the rest), as Explore lists them. */
+  engines: SquareTerminal,
+  /** Speech models and voices: what Misty hears and speaks with. */
+  speech: AudioLines,
 } satisfies Record<string, LucideIcon>;
 
 export const appIconStrokeWidth = 2;

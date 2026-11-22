@@ -29,6 +29,7 @@ export default function Example() {
       <CallStage>
         <CallTile name="Ana" speaking face={face("A")} />
         <CallTile name="Sam" muted face={face("S")} />
+        <CallTile name="Ada, Sam’s agent" muted deafened face={face("A")} />
         <CallTile name="Lee" face={face("L")} />
       </CallStage>
       <CallBar>
