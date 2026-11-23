@@ -104,7 +104,7 @@ function CommandPaletteItem({
     <CommandPrimitive.Item
       ref={ref}
       className={cn(
-        "flex cursor-default items-center gap-2.5 rounded-lg px-3",
+        "flex cursor-pointer items-center gap-2.5 rounded-lg px-3",
         "text-meta leading-(--text-body--line-height) text-cream",
         twoLines ? "min-h-13 py-2" : "h-10",
         "data-[selected=true]:bg-control-hover data-[selected=true]:text-cream-bright",

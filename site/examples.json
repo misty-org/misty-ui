@@ -1,0 +1,1105 @@
+{
+  "controls/BackButton": {
+    "name": "BackButton",
+    "file": "controls/BackButton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 2
+  },
+  "controls/Button": {
+    "name": "Button",
+    "file": "controls/Button.tsx",
+    "about": "Four roles × three sizes, with icons, disabled.",
+    "wide": true,
+    "order": 0
+  },
+  "controls/Checkbox": {
+    "name": "Checkbox",
+    "file": "controls/Checkbox.tsx",
+    "about": "",
+    "wide": false,
+    "order": 24
+  },
+  "controls/ChoiceGroup": {
+    "name": "ChoiceGroup",
+    "file": "controls/ChoiceGroup.tsx",
+    "about": "",
+    "wide": false,
+    "order": 18
+  },
+  "controls/ChoiceList": {
+    "name": "ChoiceList",
+    "file": "controls/ChoiceList.tsx",
+    "about": "",
+    "wide": false,
+    "order": 19
+  },
+  "controls/ChoiceTile": {
+    "name": "ChoiceTile",
+    "file": "controls/ChoiceTile.tsx",
+    "about": "",
+    "wide": false,
+    "order": 20
+  },
+  "controls/ColorSwatch": {
+    "name": "ColorSwatch · CustomColorSwatch · ColorChip",
+    "file": "controls/ColorSwatch.tsx",
+    "about": "",
+    "wide": false,
+    "order": 26
+  },
+  "controls/CopyButton": {
+    "name": "CopyButton",
+    "file": "controls/CopyButton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 3
+  },
+  "controls/DisclosureButton": {
+    "name": "DisclosureButton",
+    "file": "controls/DisclosureButton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 5
+  },
+  "controls/DragHandleButton": {
+    "name": "DragHandleButton",
+    "file": "controls/DragHandleButton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 6
+  },
+  "controls/Field": {
+    "name": "Field · Label · FieldError",
+    "file": "controls/Field.tsx",
+    "about": "",
+    "wide": false,
+    "order": 15
+  },
+  "controls/FileInput": {
+    "name": "FileInput",
+    "file": "controls/FileInput.tsx",
+    "about": "",
+    "wide": false,
+    "order": 16
+  },
+  "controls/IconButton": {
+    "name": "IconButton",
+    "file": "controls/IconButton.tsx",
+    "about": "Hover for its tooltip.",
+    "wide": false,
+    "order": 1
+  },
+  "controls/InlineLink": {
+    "name": "InlineLink",
+    "file": "controls/InlineLink.tsx",
+    "about": "A button in a line of text, and with asChild a real link.",
+    "wide": false,
+    "order": 7
+  },
+  "controls/Input": {
+    "name": "Input",
+    "file": "controls/Input.tsx",
+    "about": "",
+    "wide": false,
+    "order": 10
+  },
+  "controls/OptionSelect": {
+    "name": "OptionSelect · Select",
+    "file": "controls/OptionSelect.tsx · Select.tsx",
+    "about": "",
+    "wide": false,
+    "order": 17
+  },
+  "controls/Pressable": {
+    "name": "Pressable",
+    "file": "controls/Pressable.tsx",
+    "about": "Each wash, under the pointer.",
+    "wide": false,
+    "order": 8
+  },
+  "controls/RowTools": {
+    "name": "RowTools",
+    "file": "controls/RowTools.tsx",
+    "about": "A row's own buttons, shown on hover.",
+    "wide": false,
+    "order": 9
+  },
+  "controls/SearchField": {
+    "name": "SearchField",
+    "file": "controls/SearchField.tsx",
+    "about": "",
+    "wide": false,
+    "order": 12
+  },
+  "controls/SecretField": {
+    "name": "SecretField",
+    "file": "controls/SecretField.tsx",
+    "about": "Empty, then saved (its ⋯ has Replace and Remove).",
+    "wide": false,
+    "order": 13
+  },
+  "controls/Segment": {
+    "name": "Segment · SegmentTrack",
+    "file": "controls/Segment.tsx",
+    "about": "",
+    "wide": false,
+    "order": 22
+  },
+  "controls/ShortcutField": {
+    "name": "ShortcutField",
+    "file": "controls/ShortcutField.tsx",
+    "about": "Click it and press keys.",
+    "wide": false,
+    "order": 14
+  },
+  "controls/Slider": {
+    "name": "Slider",
+    "file": "controls/Slider.tsx",
+    "about": "",
+    "wide": false,
+    "order": 25
+  },
+  "controls/SplitButton": {
+    "name": "SplitButton",
+    "file": "controls/SplitButton.tsx",
+    "about": "The chevron opens the other choices.",
+    "wide": false,
+    "order": 4
+  },
+  "controls/Switch": {
+    "name": "Switch",
+    "file": "controls/Switch.tsx",
+    "about": "",
+    "wide": false,
+    "order": 23
+  },
+  "controls/Textarea": {
+    "name": "Textarea",
+    "file": "controls/Textarea.tsx",
+    "about": "",
+    "wide": false,
+    "order": 11
+  },
+  "display/AppIcons": {
+    "name": "appIcons",
+    "file": "icons/app_icons.ts",
+    "about": "Each app's own icon, used everywhere the app shows.",
+    "wide": false,
+    "order": 28
+  },
+  "display/AppLogoImage": {
+    "name": "AppLogoImage",
+    "file": "icons/AppLogos.tsx",
+    "about": "No image given: the app's initial.",
+    "wide": false,
+    "order": 24
+  },
+  "display/Avatar": {
+    "name": "Avatar",
+    "file": "display/Avatar.tsx",
+    "about": "",
+    "wide": false,
+    "order": 10
+  },
+  "display/Badge": {
+    "name": "Badge",
+    "file": "display/Badge.tsx",
+    "about": "",
+    "wide": false,
+    "order": 6
+  },
+  "display/Card": {
+    "name": "Card",
+    "file": "display/Card.tsx",
+    "about": "",
+    "wide": false,
+    "order": 5
+  },
+  "display/CodeBlock": {
+    "name": "CodeBlock · CodeText",
+    "file": "display/CodeBlock.tsx",
+    "about": "",
+    "wide": false,
+    "order": 16
+  },
+  "display/CodeDiff": {
+    "name": "CodeDiff",
+    "file": "display/CodeDiff.tsx",
+    "about": "",
+    "wide": false,
+    "order": 17
+  },
+  "display/IndicatorDot": {
+    "name": "IndicatorDot",
+    "file": "display/IndicatorDot.tsx",
+    "about": "",
+    "wide": false,
+    "order": 9
+  },
+  "display/InUseMark": {
+    "name": "InUseMark",
+    "file": "display/InUseMark.tsx",
+    "about": "Who has a file open, at the row's end where its state goes.",
+    "wide": false,
+    "order": 8
+  },
+  "display/Kbd": {
+    "name": "Kbd",
+    "file": "display/Kbd.tsx",
+    "about": "",
+    "wide": false,
+    "order": 13
+  },
+  "display/ListCard": {
+    "name": "ListCard",
+    "file": "display/ListCard.tsx",
+    "about": "",
+    "wide": false,
+    "order": 4
+  },
+  "display/ListRow": {
+    "name": "ListRow · ListRowSkeleton",
+    "file": "display/ListRow.tsx",
+    "about": "States at the end; hover a row for its ⋯.",
+    "wide": true,
+    "order": 2
+  },
+  "display/LivePointer": {
+    "name": "LivePointer",
+    "file": "display/LivePointer.tsx",
+    "about": "",
+    "wide": false,
+    "order": 12
+  },
+  "display/LogoInitial": {
+    "name": "LogoInitial · LogoPlate",
+    "file": "icons/LogoFallbacks.tsx",
+    "about": "",
+    "wide": false,
+    "order": 26
+  },
+  "display/Mark": {
+    "name": "Mark",
+    "file": "icons/Mark.tsx",
+    "about": "",
+    "wide": false,
+    "order": 25
+  },
+  "display/MistyMark": {
+    "name": "MistyMark",
+    "file": "icons/MistyMark.tsx",
+    "about": "",
+    "wide": false,
+    "order": 22
+  },
+  "display/NumberedList": {
+    "name": "NumberedList",
+    "file": "display/NumberedList.tsx",
+    "about": "",
+    "wide": false,
+    "order": 15
+  },
+  "display/PersonaLogo": {
+    "name": "PersonaLogo",
+    "file": "icons/PersonaLogo.tsx",
+    "about": "",
+    "wide": false,
+    "order": 24
+  },
+  "display/PlaceholderIcon": {
+    "name": "PlaceholderIcon",
+    "file": "icons/PlaceholderIcon.tsx",
+    "about": "",
+    "wide": false,
+    "order": 27
+  },
+  "display/PropertyList": {
+    "name": "PropertyList",
+    "file": "display/PropertyList.tsx",
+    "about": "",
+    "wide": false,
+    "order": 14
+  },
+  "display/Prose": {
+    "name": "Prose · ProseTable · ProseCallout · ProseCode",
+    "file": "display/Prose.tsx",
+    "about": "",
+    "wide": true,
+    "order": 18
+  },
+  "display/RailTick": {
+    "name": "RailTick",
+    "file": "display/RailTick.tsx",
+    "about": "",
+    "wide": false,
+    "order": 20
+  },
+  "display/RoleName": {
+    "name": "RoleName · RoleDot · RoleMention",
+    "file": "display/RoleName.tsx",
+    "about": "",
+    "wide": false,
+    "order": 11
+  },
+  "display/SceneNameTag": {
+    "name": "SceneNameTag · SceneBubble · ScenePlate · SceneSign · SceneGlyph · SceneBadge · SceneMeter · SceneSlot · ScenePrompt · SceneReward · SceneCrosshair",
+    "file": "display/SceneLabel.tsx",
+    "about": "Game scene labels (the Studio, now parked in misty-3d).",
+    "wide": true,
+    "order": 21
+  },
+  "display/SpaceIcons": {
+    "name": "spaceIcons",
+    "file": "icons/app_icons.ts",
+    "about": "A Space's places and pages.",
+    "wide": false,
+    "order": 29
+  },
+  "display/StateMark": {
+    "name": "StateMark",
+    "file": "display/StateMark.tsx",
+    "about": "",
+    "wide": false,
+    "order": 7
+  },
+  "display/StepDot": {
+    "name": "StepDot",
+    "file": "display/StepDot.tsx",
+    "about": "",
+    "wide": false,
+    "order": 8
+  },
+  "display/Surface": {
+    "name": "Surface",
+    "file": "display/Surface.tsx",
+    "about": "Every tone, every edge, every tint.",
+    "wide": true,
+    "order": 1
+  },
+  "display/Table": {
+    "name": "Table",
+    "file": "display/Table.tsx",
+    "about": "",
+    "wide": false,
+    "order": 19
+  },
+  "display/TagDot": {
+    "name": "TagDot · TagDots",
+    "file": "display/TagDot.tsx",
+    "about": "",
+    "wide": false,
+    "order": 12
+  },
+  "display/Text": {
+    "name": "Text",
+    "file": "display/Text.tsx",
+    "about": "Every size role, then every tone.",
+    "wide": true,
+    "order": 0
+  },
+  "display/TreeRow": {
+    "name": "TreeRow",
+    "file": "display/TreeRow.tsx",
+    "about": "",
+    "wide": false,
+    "order": 3
+  },
+  "feedback/EmptyState": {
+    "name": "EmptyState",
+    "file": "feedback/StateView.tsx",
+    "about": "",
+    "wide": false,
+    "order": 0
+  },
+  "feedback/ErrorState": {
+    "name": "ErrorState",
+    "file": "feedback/StateView.tsx",
+    "about": "",
+    "wide": false,
+    "order": 1
+  },
+  "feedback/LoadingScreen": {
+    "name": "LoadingScreen",
+    "file": "feedback/LoadingScreen.tsx",
+    "about": "Inline it is a skeleton; full screen it is the startup splash.",
+    "wide": false,
+    "order": 12
+  },
+  "feedback/NavRow": {
+    "name": "NavRow · NavRowLabel · NavList · NavGroupHeading",
+    "file": "navigation/NavRow.tsx",
+    "about": "",
+    "wide": false,
+    "order": 14
+  },
+  "feedback/Notify": {
+    "name": "notify (NoticeViewport)",
+    "file": "feedback/Notices.tsx",
+    "about": "Notices stack at the bottom right and leave on their own.",
+    "wide": false,
+    "order": 10
+  },
+  "feedback/PaneLoading": {
+    "name": "PaneLoading",
+    "file": "feedback/PaneLoading.tsx",
+    "about": "",
+    "wide": false,
+    "order": 4
+  },
+  "feedback/Progress": {
+    "name": "Progress · Meter",
+    "file": "feedback/Progress.tsx",
+    "about": "",
+    "wide": false,
+    "order": 7
+  },
+  "feedback/QuietPane": {
+    "name": "QuietPane · FlyingMisty",
+    "file": "feedback/QuietPane.tsx · FlyingMisty.tsx",
+    "about": "",
+    "wide": false,
+    "order": 11
+  },
+  "feedback/RingMeter": {
+    "name": "RingMeter",
+    "file": "feedback/RingMeter.tsx",
+    "about": "",
+    "wide": false,
+    "order": 8
+  },
+  "feedback/SetupState": {
+    "name": "SetupState",
+    "file": "feedback/SetupState.tsx",
+    "about": "",
+    "wide": false,
+    "order": 2
+  },
+  "feedback/Skeleton": {
+    "name": "Skeleton · SkeletonList · ListRowSkeleton · SkeletonControl",
+    "file": "feedback/Skeleton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 3
+  },
+  "feedback/SkeletonCode": {
+    "name": "SkeletonCode",
+    "file": "feedback/Skeleton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 5
+  },
+  "feedback/SkeletonDocument": {
+    "name": "SkeletonDocument",
+    "file": "feedback/Skeleton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 4
+  },
+  "feedback/Spinner": {
+    "name": "Spinner",
+    "file": "feedback/Spinner.tsx",
+    "about": "",
+    "wide": false,
+    "order": 6
+  },
+  "feedback/StepProgress": {
+    "name": "StepProgress",
+    "file": "feedback/StepProgress.tsx",
+    "about": "",
+    "wide": false,
+    "order": 9
+  },
+  "feedback/TabStrip": {
+    "name": "TabStrip",
+    "file": "navigation/TabStrip.tsx",
+    "about": "Close, drag to reorder, drop a tab on another to group them, press a group's chip to fold it.",
+    "wide": true,
+    "order": 13
+  },
+  "feedback/VoicePerson": {
+    "name": "VoicePerson",
+    "file": "navigation/VoicePerson.tsx",
+    "about": "",
+    "wide": false,
+    "order": 15
+  },
+  "layout/ActionBar": {
+    "name": "ActionBar",
+    "file": "layout/ActionBar.tsx",
+    "about": "Drag the box's corner narrower: labels turn into icons, then fold into ⋯.",
+    "wide": true,
+    "order": 0
+  },
+  "layout/BottomBar": {
+    "name": "BottomBar",
+    "file": "layout/BottomBar.tsx",
+    "about": "",
+    "wide": true,
+    "order": 4
+  },
+  "layout/Collapsible": {
+    "name": "Collapsible",
+    "file": "layout/Collapsible.tsx",
+    "about": "",
+    "wide": false,
+    "order": 9
+  },
+  "layout/Disclosure": {
+    "name": "Disclosure",
+    "file": "layout/Disclosure.tsx",
+    "about": "Sections on one group fill, and a row in a sidebar.",
+    "wide": false,
+    "order": 10
+  },
+  "layout/DocsLayout": {
+    "name": "DocsLayout · DocsHeader · DocsToc · DocsPager",
+    "file": "layout/DocsLayout.tsx",
+    "about": "A docs site's page in three panels: the section's pages, the article, and its contents.",
+    "wide": true,
+    "order": 21
+  },
+  "layout/FloatingPanel": {
+    "name": "FloatingPanel",
+    "file": "layout/FloatingPanel.tsx",
+    "about": "For full-color scenes only; Misty's own panes are flat.",
+    "wide": true,
+    "order": 16
+  },
+  "layout/FramedBar": {
+    "name": "FramedBar",
+    "file": "layout/FramedBar.tsx",
+    "about": "A FramedPage's 54px toolbar row and its 45px tools row.",
+    "wide": true,
+    "order": 7
+  },
+  "layout/FramedPage": {
+    "name": "FramedPage",
+    "file": "layout/FramedPage.tsx",
+    "about": "Drag a seam, or focus it and use the arrow keys; a double-click puts it back.",
+    "wide": true,
+    "order": 8
+  },
+  "layout/OverflowFadeText": {
+    "name": "OverflowFadeText",
+    "file": "layout/OverflowFadeText.tsx",
+    "about": "Narrow the box: the end fades, no ellipsis.",
+    "wide": false,
+    "order": 7
+  },
+  "layout/PageEnter": {
+    "name": "PageEnter",
+    "file": "layout/PageEnter.tsx",
+    "about": "",
+    "wide": false,
+    "order": 17
+  },
+  "layout/PageHeader": {
+    "name": "PageHeader",
+    "file": "layout/PageHeader.tsx",
+    "about": "",
+    "wide": true,
+    "order": 1
+  },
+  "layout/PageStage": {
+    "name": "PageStage",
+    "file": "layout/PageStage.tsx",
+    "about": "Where a native page is placed; with no page it paints the page color over its skeleton.",
+    "wide": false,
+    "order": 19
+  },
+  "layout/PaneFrame": {
+    "name": "PaneFrame",
+    "file": "layout/PaneFrame.tsx",
+    "about": "The window's tab panes; its margins are 0 today, so it shows as a plain box.",
+    "wide": false,
+    "order": 18
+  },
+  "layout/PathField": {
+    "name": "PathField",
+    "file": "layout/PathField.tsx",
+    "about": "",
+    "wide": false,
+    "order": 6
+  },
+  "layout/PathLine": {
+    "name": "PathLine",
+    "file": "layout/PathLine.tsx",
+    "about": "",
+    "wide": false,
+    "order": 5
+  },
+  "layout/RowGroup": {
+    "name": "RowGroup",
+    "file": "layout/RowGroup.tsx",
+    "about": "Related rows on one faint fill under a label, groups a step apart, no lines.",
+    "wide": false,
+    "order": 20
+  },
+  "layout/ScrollArea": {
+    "name": "ScrollArea",
+    "file": "layout/ScrollArea.tsx",
+    "about": "",
+    "wide": false,
+    "order": 11
+  },
+  "layout/SectionHeading": {
+    "name": "SectionHeading",
+    "file": "layout/SectionHeading.tsx",
+    "about": "",
+    "wide": false,
+    "order": 6
+  },
+  "layout/Separator": {
+    "name": "Separator · ToolbarDivider",
+    "file": "layout/Separator.tsx",
+    "about": "",
+    "wide": false,
+    "order": 8
+  },
+  "layout/SideCard": {
+    "name": "SideCard",
+    "file": "layout/SidePanel.tsx",
+    "about": "",
+    "wide": true,
+    "order": 15
+  },
+  "layout/SidePanel": {
+    "name": "SidePanel · SidePanelHeader · SidePanelLead",
+    "file": "layout/SidePanel.tsx",
+    "about": "A FramedPage's end column: drag its seam; the header's button widens it over the chat.",
+    "wide": true,
+    "order": 14
+  },
+  "layout/SidewaysScroll": {
+    "name": "SidewaysScroll",
+    "file": "layout/SidewaysScroll.tsx",
+    "about": "Scroll it sideways with the wheel.",
+    "wide": false,
+    "order": 12
+  },
+  "layout/SplitHandle": {
+    "name": "SplitHandle",
+    "file": "layout/SplitHandle.tsx",
+    "about": "Drag the seam between the panes.",
+    "wide": true,
+    "order": 13
+  },
+  "layout/TopBar": {
+    "name": "TopBar",
+    "file": "layout/TopBar.tsx",
+    "about": "",
+    "wide": true,
+    "order": 3
+  },
+  "layout/ViewHeader": {
+    "name": "ViewHeader",
+    "file": "layout/ViewHeader.tsx",
+    "about": "",
+    "wide": true,
+    "order": 2
+  },
+  "overlays/AlertDialog": {
+    "name": "AlertDialog",
+    "file": "overlays/AlertDialog.tsx",
+    "about": "",
+    "wide": false,
+    "order": 10
+  },
+  "overlays/Command": {
+    "name": "Command",
+    "file": "overlays/Command.tsx",
+    "about": "",
+    "wide": false,
+    "order": 14
+  },
+  "overlays/CommandPaletteParts": {
+    "name": "CommandPalette parts",
+    "file": "overlays/CommandPalette.tsx",
+    "about": "",
+    "wide": false,
+    "order": 15
+  },
+  "overlays/ConfirmDeleteDialog": {
+    "name": "ConfirmDeleteDialog · useConfirmDelete",
+    "file": "overlays/ConfirmDeleteDialog.tsx",
+    "about": "",
+    "wide": false,
+    "order": 11
+  },
+  "overlays/ContextMenu": {
+    "name": "ContextMenu",
+    "file": "overlays/ContextMenu.tsx",
+    "about": "",
+    "wide": false,
+    "order": 3
+  },
+  "overlays/Dialog": {
+    "name": "Dialog · DialogHeader · DialogTitle · DialogBody · DialogFooter",
+    "file": "overlays/Dialog.tsx",
+    "about": "",
+    "wide": false,
+    "order": 9
+  },
+  "overlays/DropdownMenu": {
+    "name": "DropdownMenu · MenuTrigger · MenuItem · MenuCheckItem · MenuRadioGroup · MenuSubmenu · MenuLabel · MenuSeparator",
+    "file": "overlays/DropdownMenu.tsx · MenuItem.tsx · MenuTrigger.tsx",
+    "about": "Open it: a labelled group, a disabled row with its reason, a check, a submenu of radios, a danger row.",
+    "wide": false,
+    "order": 0
+  },
+  "overlays/FloatingPip": {
+    "name": "FloatingPip",
+    "file": "overlays/FloatingPip.tsx",
+    "about": "Drag it to another corner.",
+    "wide": true,
+    "order": 18
+  },
+  "overlays/InfoCorner": {
+    "name": "InfoCorner",
+    "file": "overlays/InfoCorner.tsx",
+    "about": "",
+    "wide": false,
+    "order": 16
+  },
+  "overlays/MenuChevron": {
+    "name": "MenuChevron",
+    "file": "overlays/MenuChevron.tsx",
+    "about": "",
+    "wide": false,
+    "order": 2
+  },
+  "overlays/MenuTriggerVariants": {
+    "name": "MenuTrigger variants",
+    "file": "overlays/MenuTrigger.tsx",
+    "about": "",
+    "wide": false,
+    "order": 1
+  },
+  "overlays/Popover": {
+    "name": "Popover (panel, flush) · PopoverHeader · PopoverText · PopoverBody · PopoverActions · PickerSearch · PickerList",
+    "file": "overlays/Popover.tsx",
+    "about": "",
+    "wide": false,
+    "order": 5
+  },
+  "overlays/RowActions": {
+    "name": "RowActions",
+    "file": "overlays/RowActions.tsx",
+    "about": "Hover the row for its ⋯, or right-click it.",
+    "wide": false,
+    "order": 4
+  },
+  "overlays/SearchablePicker": {
+    "name": "SearchablePicker",
+    "file": "overlays/SearchablePicker.tsx",
+    "about": "",
+    "wide": false,
+    "order": 6
+  },
+  "overlays/Sheet": {
+    "name": "Sheet",
+    "file": "overlays/Sheet.tsx",
+    "about": "",
+    "wide": false,
+    "order": 12
+  },
+  "overlays/SuggestionList": {
+    "name": "SuggestionList · SuggestionItem",
+    "file": "overlays/SuggestionList.tsx",
+    "about": "",
+    "wide": false,
+    "order": 7
+  },
+  "overlays/Tooltip": {
+    "name": "Tooltip",
+    "file": "overlays/Tooltip.tsx",
+    "about": "Hover the button.",
+    "wide": false,
+    "order": 8
+  },
+  "overlays/Tour": {
+    "name": "Tour",
+    "file": "overlays/Tour.tsx",
+    "about": "",
+    "wide": false,
+    "order": 17
+  },
+  "overlays/WorkspaceOverlay": {
+    "name": "WorkspaceOverlay",
+    "file": "overlays/WorkspaceOverlay.tsx",
+    "about": "",
+    "wide": false,
+    "order": 13
+  },
+  "patterns/AppLauncher": {
+    "name": "AppLauncher",
+    "file": "patterns/home/AppLauncher.tsx",
+    "about": "",
+    "wide": false,
+    "order": 8
+  },
+  "patterns/AppTile": {
+    "name": "AppTile · AddAppTile · AgentTile",
+    "file": "patterns/home/AppTile.tsx",
+    "about": "",
+    "wide": false,
+    "order": 7
+  },
+  "patterns/CallStage": {
+    "name": "CallStage",
+    "file": "patterns/call/CallStage.tsx",
+    "about": "",
+    "wide": true,
+    "order": 40
+  },
+  "patterns/CatalogGrid": {
+    "name": "CatalogGrid · CatalogCard · LogoTile · CatalogDone · CatalogTileRow · CatalogTile · CatalogNames",
+    "file": "patterns/CatalogCard.tsx",
+    "about": "What the Explore page should be built from.",
+    "wide": true,
+    "order": 0
+  },
+  "patterns/ChannelMessage": {
+    "name": "ChannelMessage · ChannelMessageText · ChannelReply · ChannelReactions · ReactionChip · AddReactionButton · ThreadRepliesButton",
+    "file": "patterns/channel/ChannelMessage.tsx",
+    "about": "",
+    "wide": true,
+    "order": 15
+  },
+  "patterns/ChannelPage": {
+    "name": "ChannelHeader · ChannelWelcome · ChannelDivider · TypingLine · MentionMark · MemberList · MemberGroupHeading · MemberRow",
+    "file": "patterns/channel/*",
+    "about": "",
+    "wide": true,
+    "order": 14
+  },
+  "patterns/CollectionCardTitle": {
+    "name": "CollectionCardTitle · CollectionCardMetadata",
+    "file": "patterns/collection/CollectionCards.tsx",
+    "about": "",
+    "wide": false,
+    "order": 3
+  },
+  "patterns/CollectionItemsDrag": {
+    "name": "CollectionItems (drag)",
+    "file": "patterns/collection/collection_drag.ts",
+    "about": "Files that move by dragging: drop on a folder or the background, ⌥ to copy. Tags sit after the name.",
+    "wide": true,
+    "order": 4
+  },
+  "patterns/CollectionItemsLong": {
+    "name": "CollectionItems (long)",
+    "file": "patterns/collection/CollectionItems.tsx",
+    "about": "Five thousand files, drawn only where they're in view. The arrow keys move through the order shown, and the picked one is brought into view.",
+    "wide": true,
+    "order": 5
+  },
+  "patterns/CollectionItemsSync": {
+    "name": "CollectionItems (sync)",
+    "file": "patterns/collection/CollectionCards.tsx",
+    "about": "Files in a Space's drive: each card wears its sync state bare in its corner.",
+    "wide": true,
+    "order": 3
+  },
+  "patterns/CollectionPage": {
+    "name": "CollectionPage · CollectionHeading · CollectionSearch · CollectionControls · CollectionFilterMenu · CollectionSortMenu · CollectionViewToggle · CollectionItems",
+    "file": "patterns/collection/*",
+    "about": "A whole collection page; narrow the box to watch the bar give way.",
+    "wide": true,
+    "order": 1
+  },
+  "patterns/CollectionSkeleton": {
+    "name": "CollectionSkeleton",
+    "file": "patterns/collection/CollectionSkeleton.tsx",
+    "about": "",
+    "wide": false,
+    "order": 2
+  },
+  "patterns/ColumnBrowser": {
+    "name": "ColumnBrowser",
+    "file": "patterns/ColumnBrowser.tsx",
+    "about": "Finder's column view: pick a folder and its items open in the next column.",
+    "wide": true,
+    "order": 24
+  },
+  "patterns/CustomizableBar": {
+    "name": "CustomizableBar",
+    "file": "patterns/CustomizableBar.tsx",
+    "about": "Drag the items; right-click the bar to hide one.",
+    "wide": false,
+    "order": 15
+  },
+  "patterns/EmojiPicker": {
+    "name": "EmojiPicker",
+    "file": "patterns/EmojiPicker.tsx",
+    "about": "",
+    "wide": false,
+    "order": 16
+  },
+  "patterns/FeatureCard": {
+    "name": "FeatureCard · FeatureRow",
+    "file": "patterns/FeatureCard.tsx",
+    "about": "Featured picks at the top of Explore, each filled by its banner.",
+    "wide": true,
+    "order": 0
+  },
+  "patterns/FindBar": {
+    "name": "FindBar",
+    "file": "patterns/FindBar.tsx",
+    "about": "",
+    "wide": true,
+    "order": 16
+  },
+  "patterns/HeroPage": {
+    "name": "HeroPage",
+    "file": "patterns/HeroPage.tsx",
+    "about": "",
+    "wide": true,
+    "order": 23
+  },
+  "patterns/HomeSection": {
+    "name": "HomeSection · HomeSectionHead · OverviewDot",
+    "file": "patterns/home/HomeSection.tsx",
+    "about": "",
+    "wide": true,
+    "order": 5
+  },
+  "patterns/ImageCropFrame": {
+    "name": "ImageCropFrame",
+    "file": "patterns/ImageCropFrame.tsx",
+    "about": "",
+    "wide": false,
+    "order": 19
+  },
+  "patterns/ItemCard": {
+    "name": "ItemCard",
+    "file": "patterns/home/ItemCard.tsx",
+    "about": "",
+    "wide": false,
+    "order": 4
+  },
+  "patterns/MediaPlayerCard": {
+    "name": "MediaPlayerCard",
+    "file": "patterns/MediaPlayerCard.tsx",
+    "about": "",
+    "wide": false,
+    "order": 18
+  },
+  "patterns/MessageActions": {
+    "name": "MessageActions",
+    "file": "patterns/MessageActions.tsx",
+    "about": "",
+    "wide": false,
+    "order": 9
+  },
+  "patterns/MessageComposer": {
+    "name": "MessageComposer · MessageComposerSend · MessageComposerAction · ComposerStatusRow · ComposerAttachment",
+    "file": "patterns/MessageComposer.tsx",
+    "about": "",
+    "wide": true,
+    "order": 8
+  },
+  "patterns/ModelPicker": {
+    "name": "ModelPicker",
+    "file": "patterns/ModelPicker.tsx",
+    "about": "",
+    "wide": false,
+    "order": 10
+  },
+  "patterns/PersonProfile": {
+    "name": "PersonProfile · PersonProfileSection",
+    "file": "patterns/channel/PersonProfile.tsx",
+    "about": "",
+    "order": 15
+  },
+  "patterns/PersonRow": {
+    "name": "PersonRow",
+    "file": "patterns/people/PersonRow.tsx",
+    "about": "",
+    "order": 16
+  },
+  "patterns/PlaceChip": {
+    "name": "PlaceChip",
+    "file": "patterns/home/HomeSection.tsx",
+    "about": "",
+    "wide": false,
+    "order": 6
+  },
+  "patterns/ProfileCard": {
+    "name": "ProfileCardBanner · ProfileCardHeader · ProfileCardStatus · ProfileCardName · ProfileCardGroup",
+    "file": "patterns/people/ProfileCard.tsx",
+    "about": "",
+    "order": 17
+  },
+  "patterns/QuestionPanel": {
+    "name": "QuestionPanel",
+    "file": "patterns/QuestionPanel.tsx",
+    "about": "",
+    "wide": false,
+    "order": 12
+  },
+  "patterns/RenameItemDialog": {
+    "name": "RenameItemDialog",
+    "file": "patterns/RenameItemDialog.tsx",
+    "about": "",
+    "wide": false,
+    "order": 21
+  },
+  "patterns/SettingsRow": {
+    "name": "SettingsSection · SettingsRow",
+    "file": "patterns/SettingsRow.tsx",
+    "about": "A settings page's sections: a label over one group of 45px rows.",
+    "wide": false,
+    "order": 41
+  },
+  "patterns/ShapeSelection": {
+    "name": "ShapeSelection",
+    "file": "patterns/ShapeSelection.tsx",
+    "about": "",
+    "wide": false,
+    "order": 20
+  },
+  "patterns/Shelf": {
+    "name": "Shelf · ShelfItem",
+    "file": "patterns/Shelf.tsx",
+    "about": "Explore's rows: a heading with See all, then items in two columns.",
+    "wide": true,
+    "order": 0
+  },
+  "patterns/StarterPrompts": {
+    "name": "StarterPrompts",
+    "file": "patterns/StarterPrompts.tsx",
+    "about": "",
+    "wide": true,
+    "order": 11
+  },
+  "patterns/StepPage": {
+    "name": "StepPage",
+    "file": "patterns/StepPage.tsx",
+    "about": "",
+    "wide": true,
+    "order": 22
+  },
+  "patterns/StoreDetail": {
+    "name": "StoreDetail · StoreDetailSection",
+    "file": "patterns/StoreDetail.tsx",
+    "about": "What opens on Get: the banner, the app, its facts and previews.",
+    "wide": false,
+    "order": 0
+  },
+  "patterns/TurnFold": {
+    "name": "TurnFold · ToolList · ToolRow · ToolPath · ToolLines · ToolBody · ToolNote · TurnStatus · TurnChanges",
+    "file": "patterns/ToolTimeline.tsx",
+    "about": "",
+    "wide": true,
+    "order": 13
+  },
+  "patterns/ZoomControl": {
+    "name": "ZoomControl",
+    "file": "patterns/ZoomControl.tsx",
+    "about": "",
+    "wide": false,
+    "order": 17
+  }
+}

@@ -226,7 +226,7 @@ const ListRow = React.forwardRef<HTMLElement, ListRowProps>(
           onClick={onOpen}
           data-slot="list-row-open"
           className={cn(
-            "flex min-w-0 flex-1 items-center gap-2 self-stretch text-left outline-none",
+            "flex min-w-0 flex-1 cursor-pointer items-center gap-2 self-stretch text-left outline-none",
             "after:absolute after:inset-0 after:rounded-md after:content-['']",
           )}
         >

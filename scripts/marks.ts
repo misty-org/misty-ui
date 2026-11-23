@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { optimize } from "svgo";
 
 const icons = join(dirname(fileURLToPath(import.meta.url)), "../src/icons");
 const marks = JSON.parse(readFileSync(join(icons, "marks.json"), "utf8")) as Record<string, unknown>;
@@ -18,7 +19,33 @@ if (unlisted.length || missing.length) {
   process.exit(1);
 }
 
-const imports = listed.map((id, index) => `import mark${index} from "./marks/${id}.svg?inline";`);
+for (const id of listed) {
+  const file = join(icons, "marks", `${id}.svg`);
+  const text = readFileSync(file, "utf8");
+  const { data } = optimize(text, {
+    path: file,
+    multipass: true,
+    floatPrecision: 4,
+    plugins: [
+      {
+        name: "preset-default",
+        params: {
+          overrides: {
+            convertColors: { names2hex: false, shortname: false },
+            removeUnknownsAndDefaults: { defaultAttrs: false },
+            minifyStyles: false,
+            inlineStyles: false,
+            convertTransform: false,
+            mergePaths: false,
+          },
+        },
+      },
+    ],
+  });
+  if (data.length < text.length) writeFileSync(file, data);
+}
+
+const imports = listed.map((id, index) => `import mark${index} from "./marks/${id}.svg?no-inline";`);
 const entries = listed.map((id, index) => `  ${JSON.stringify(id)}: mark${index},`);
 writeFileSync(
   join(icons, "mark_assets.ts"),

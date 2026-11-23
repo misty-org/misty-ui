@@ -1,5 +1,4 @@
 /** Shared geometry and controls for collection workspaces. */
-export { WorkspaceSidebar } from "./collection/WorkspaceChrome";
 export { CollectionPage } from "./collection/CollectionColumns";
 export {
   CollectionHeading,

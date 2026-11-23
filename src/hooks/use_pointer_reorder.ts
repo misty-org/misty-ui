@@ -1,5 +1,5 @@
 import "../patterns/pointer_reorder.css";
-import { reorderLayoutRect } from "./pointer_reorder_motion";
+import { reorderHoveredItem, reorderLayoutRect } from "./pointer_reorder_motion";
 import { createDwell } from "./pointer_dwell";
 import { startGesture } from "./pointer_gesture";
 import { usePointerDropTarget, type ReorderDrag } from "./pointer_drop_targets";
@@ -46,7 +46,8 @@ export function usePointerReorder(options: {
   hitArea?: "item" | "header";
   animate?: boolean;
   getDrag(id: string, element: HTMLElement): Omit<ReorderDrag, "scope"> | null;
-  onDrop(drag: ReorderDrag, targetId: string, after: boolean): void;
+  /** `onto` when the drag was let go on the target itself rather than beside it. */
+  onDrop(drag: ReorderDrag, targetId: string, after: boolean, onto?: boolean): void;
   onKeyboardMove(id: string, direction: -1 | 1): void;
   /** A drag rested on another item for a moment (a tab paused over opens while held). */
   onDwell?(id: string): void;
@@ -83,7 +84,7 @@ export function usePointerReorder(options: {
       const rect = reorderLayoutRect(item);
       const hit = hitRect(item);
       if (options.onDwell) {
-        const over = item.dataset.reorderItem!;
+        const over = options.animate ? reorderHoveredItem() : item.dataset.reorderItem!;
         dwell.current(over === drag.id ? null : over, (id) => options.onDwell?.(id));
       }
       return {
@@ -94,7 +95,10 @@ export function usePointerReorder(options: {
         axis: options.axis,
       };
     },
-    drop: (drag, hit) => options.onDrop(drag, hit.id, hit.after),
+    drop: (drag, hit) =>
+      hit.onto
+        ? options.onDrop(drag, hit.id, hit.after, true)
+        : options.onDrop(drag, hit.id, hit.after),
   });
   useEffect(() => () => cancel.current?.(), [options.scope]);
   return {

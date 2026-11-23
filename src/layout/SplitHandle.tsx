@@ -3,8 +3,8 @@ import { cn } from "../class_names";
 
 /**
  * The seam between two resizable panes. Nothing shows at rest: the panes meet edge to edge. A
- * wider grab area sits around the 1px seam, and a hairline shows while it is hovered, focused or
- * dragged. `direction` is the split's: "horizontal" panes sit side by side. With `seam` the
+ * wider grab area sits around the 1px seam, and the strong hairline shows while it is hovered,
+ * focused or dragged. `direction` is the split's: "horizontal" panes sit side by side. With `seam` the
  * hairline shows at rest too, for panes that nothing else divides (the window's split panes).
  */
 export function SplitHandle(props: {
@@ -19,10 +19,10 @@ export function SplitHandle(props: {
       aria-label={props.label}
       onDoubleClick={props.onDoubleClick}
       className={cn(
-        "relative z-20 transition-colors",
+        "relative z-(--stack-float) transition-colors",
         props.seam ? "bg-charcoal-border" : "bg-transparent",
-        "hover:bg-charcoal-border data-[resize-handle-state=drag]:bg-charcoal-border",
-        "focus-visible:bg-charcoal-border focus-visible:outline-none",
+        "hover:bg-charcoal-border-strong data-[resize-handle-state=drag]:bg-charcoal-border-strong",
+        "focus-visible:bg-charcoal-border-strong",
         "before:absolute before:content-['']",
         props.direction === "horizontal"
           ? "w-px cursor-col-resize before:-inset-x-1 before:inset-y-0"

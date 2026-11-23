@@ -1,4 +1,10 @@
-import type { MouseEvent, ReactNode } from "react";
+import {
+  useEffect,
+  type CSSProperties,
+  type MouseEvent,
+  type ReactNode,
+  type Ref,
+} from "react";
 import { Pressable } from "../../controls/Pressable";
 import { Card } from "../../display/Card";
 import { StateMark } from "../../display/StateMark";
@@ -7,11 +13,36 @@ import { Tooltip } from "../../overlays/Tooltip";
 import { cn } from "../../class_names";
 import { CollectionItemActions } from "./CollectionItemActions";
 import type { CollectionDragItemProps } from "./collection_drag";
-import { collectionIconTone, hasItemActions, type CollectionItem } from "./collection_item_types";
+import {
+  autoFillCount,
+  childStride,
+  useRevealItem,
+  useVirtualItems,
+} from "./collection_virtual";
+import {
+  collectionIconTone,
+  hasItemActions,
+  type CollectionItem,
+} from "./collection_item_types";
 
-function CollectionGrid({ children }: { children: ReactNode }) {
+/** A card's narrowest width, in steps of the spacing scale. */
+const cardSteps = 45;
+
+function CollectionGrid({
+  children,
+  ref,
+  style,
+}: {
+  children: ReactNode;
+  ref?: Ref<HTMLDivElement>;
+  style?: CSSProperties;
+}) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(min(--spacing(45),100%),1fr))] gap-3">
+    <div
+      ref={ref}
+      style={style}
+      className="grid grid-cols-[repeat(auto-fill,minmax(min(--spacing(45),100%),1fr))] gap-3"
+    >
       {children}
     </div>
   );
@@ -21,9 +52,19 @@ function CollectionGrid({ children }: { children: ReactNode }) {
  * A card's title: one line (or two with `lines={2}`) that fades at its end only when it doesn't
  * fit, never an ellipsis.
  */
-export function CollectionCardTitle({ title, lines = 1 }: { title: string; lines?: 1 | 2 }) {
+export function CollectionCardTitle({
+  title,
+  lines = 1,
+}: {
+  title: string;
+  lines?: 1 | 2;
+}) {
   return (
-    <OverflowFadeText full lines={lines} className="flex-1 text-control font-medium text-cream">
+    <OverflowFadeText
+      full
+      lines={lines}
+      className="flex-1 text-control font-medium text-cream"
+    >
       {title}
     </OverflowFadeText>
   );
@@ -100,6 +141,8 @@ export function CollectionItemsGrid({
   selectedIds = [],
   onSelect,
   dragItem,
+  reveal,
+  onPerRow,
 }: {
   items: CollectionItem[];
   hasCreators: boolean;
@@ -111,12 +154,40 @@ export function CollectionItemsGrid({
   onSelect?: (event: MouseEvent, id: string, onOpen: () => void) => void;
   /** What each card carries to be dragged (CollectionItems' `drag`). */
   dragItem?: (item: CollectionItem) => CollectionDragItemProps | undefined;
+  /** Scrolls this item's card into view whenever it changes to a new id. */
+  reveal?: string;
+  /** Told how many cards sit in a row, as it changes. */
+  onPerRow?: (perRow: number) => void;
 }) {
+  const picked = new Set(selectedIds);
+  const virtual = useVirtualItems({
+    count: items.length,
+    estimate: layout === "compact" ? 140 : 302,
+    perRow: (width, element) => autoFillCount(width, element, cardSteps),
+    measure: childStride,
+  });
+  useRevealItem(reveal, items, virtual.reveal, virtual.ready);
+  const perRow = virtual.perRow;
+  useEffect(() => {
+    if (perRow) onPerRow?.(perRow);
+  }, [perRow, onPerRow]);
   return (
-    <CollectionGrid>
-      {items.map((item) => {
+    <CollectionGrid
+      ref={virtual.ref}
+      style={
+        perRow
+          ? {
+              gridTemplateColumns: `repeat(${perRow}, minmax(0, 1fr))`,
+              paddingTop: virtual.before || undefined,
+              paddingBottom: virtual.after || undefined,
+            }
+          : undefined
+      }
+    >
+      {items.slice(virtual.start, virtual.end).map((item) => {
         const open = (event: MouseEvent) => {
-          if (item.selectable && onSelect) onSelect(event, item.id, item.onOpen);
+          if (item.selectable && onSelect)
+            onSelect(event, item.id, item.onOpen);
           else item.onOpen();
         };
         const actions = hasItemActions(item);
@@ -133,7 +204,7 @@ export function CollectionItemsGrid({
           <Card
             {...dragItem?.(item)}
             key={item.id}
-            data-selected={selectedIds.includes(item.id) || undefined}
+            data-selected={picked.has(item.id) || undefined}
             className={cardClass}
           >
             {layout === "compact" ? (
@@ -161,7 +232,11 @@ export function CollectionItemsGrid({
                     </span>
                   ) : null}
                   <CollectionCardTitle title={item.title} lines={titleLines} />
-                  {item.marks ? <span className="flex shrink-0 items-center">{item.marks}</span> : null}
+                  {item.marks ? (
+                    <span className="flex shrink-0 items-center">
+                      {item.marks}
+                    </span>
+                  ) : null}
                   {item.marker}
                 </span>
                 {metadata}
@@ -179,7 +254,11 @@ export function CollectionItemsGrid({
                   )}
                 >
                   <CollectionCardTitle title={item.title} />
-                  {item.marks ? <span className="flex shrink-0 items-center">{item.marks}</span> : null}
+                  {item.marks ? (
+                    <span className="flex shrink-0 items-center">
+                      {item.marks}
+                    </span>
+                  ) : null}
                   {item.marker}
                 </span>
                 <span

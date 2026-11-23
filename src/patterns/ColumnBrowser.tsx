@@ -10,15 +10,20 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "../class_names";
-import { useCollectionDrag, type CollectionDrag } from "./collection/collection_drag";
+import {
+  useCollectionDrag,
+  type CollectionDrag,
+} from "./collection/collection_drag";
 import {
   ColumnBrowserList,
-  columnRowDomId,
   type ColumnBrowserColumn,
   type ColumnBrowserRow,
 } from "./ColumnBrowserColumn";
 
-export type { ColumnBrowserColumn, ColumnBrowserRow } from "./ColumnBrowserColumn";
+export type {
+  ColumnBrowserColumn,
+  ColumnBrowserRow,
+} from "./ColumnBrowserColumn";
 
 export type ColumnBrowserProps = {
   /** The browser's accessible name, such as "Columns". */
@@ -29,7 +34,11 @@ export type ColumnBrowserProps = {
    * A row was picked, by a click or a key: the caller decides what that does to the selection
    * (⇧ and ⌘ on the event extend it) and which columns follow.
    */
-  onSelect: (column: number, id: string, event: MouseEvent | KeyboardEvent) => void;
+  onSelect: (
+    column: number,
+    id: string,
+    event: MouseEvent | KeyboardEvent,
+  ) => void;
   /** Double-click, Enter or ⌘↓ on a row. */
   onOpen: (column: number, id: string) => void;
   /** A row's actions as menu rows (MenuItem…), opened by a right-click on it. */
@@ -53,7 +62,8 @@ function deepestPicked(columns: ReadonlyArray<ColumnBrowserColumn>) {
  * Finder's column view: each open folder a 270px column of 36px rows, a chevron at the end of
  * each folder, the folder picked in one column listed in the next, and a picked file's `preview`
  * last. The picked rows take the row wash, stronger in the column the keyboard is in. The strip
- * scrolls sideways and keeps its last column in view; each column scrolls on its own. A loading
+ * scrolls sideways and keeps its last column in view; each column scrolls on its own and draws
+ * only the rows in view, so a folder of thousands stays quick. A loading
  * column shows ListRowSkeletons and a failed one a muted line. Keys: ↑ and ↓ move in a column (⇧
  * extends, as the caller decides), → enters the picked folder's column, ← goes back, Enter or ⌘↓
  * opens. Right-click opens a row's `menu`; with `drag` rows move by dragging, ⌥ copying.
@@ -80,17 +90,26 @@ export function ColumnBrowser({
   const stripRef = useRef<HTMLDivElement | null>(null);
   const [focusedColumn, setFocusedColumn] = useState(-1);
   const [cursors, setCursors] = useState<Record<string, string>>({});
-  const [menuFor, setMenuFor] = useState<{ column: number; id: string } | null>(null);
+  const [menuFor, setMenuFor] = useState<{ column: number; id: string } | null>(
+    null,
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const active =
-    focusedColumn >= 0 && focusedColumn < columns.length ? focusedColumn : deepestPicked(columns);
+    focusedColumn >= 0 && focusedColumn < columns.length
+      ? focusedColumn
+      : deepestPicked(columns);
 
   const labels = useMemo(() => {
     const names = new Map<string, string>();
-    for (const column of columns) for (const row of column.rows ?? []) names.set(row.id, row.label);
+    for (const column of columns)
+      for (const row of column.rows ?? []) names.set(row.id, row.label);
     return names;
   }, [columns]);
-  const { listProps, itemProps } = useCollectionDrag(drag, [], (id) => labels.get(id) ?? id);
+  const { listProps, itemProps } = useCollectionDrag(
+    drag,
+    [],
+    (id) => labels.get(id) ?? id,
+  );
   const dropRef = listProps.ref;
   const attach = useCallback(
     (node: HTMLDivElement | null) => {
@@ -100,7 +119,8 @@ export function ColumnBrowser({
     [dropRef],
   );
 
-  const shape = columns.map((column) => column.id).join("\n") + (preview ? "\n" : "");
+  const shape =
+    columns.map((column) => column.id).join("\n") + (preview ? "\n" : "");
   useLayoutEffect(() => {
     const strip = stripRef.current;
     if (strip) strip.scrollLeft = strip.scrollWidth;
@@ -113,7 +133,11 @@ export function ColumnBrowser({
     if (mine !== undefined && column.selected.includes(mine)) return mine;
     return column.selected[column.selected.length - 1];
   };
-  const pick = (index: number, id: string, event: MouseEvent | KeyboardEvent) => {
+  const pick = (
+    index: number,
+    id: string,
+    event: MouseEvent | KeyboardEvent,
+  ) => {
     setFocusedColumn(index);
     const column = columns[index];
     if (column) setCursors((previous) => ({ ...previous, [column.id]: id }));
@@ -125,12 +149,12 @@ export function ColumnBrowser({
       ?.querySelector<HTMLElement>(`[data-column-index="${index}"]`)
       ?.focus({ preventScroll: true });
   };
+  const [revealed, setRevealed] = useState<{
+    column: number;
+    at: { row: number };
+  } | null>(null);
   const reveal = (index: number, row: number) =>
-    requestAnimationFrame(() =>
-      document
-        .getElementById(columnRowDomId(base, index, row))
-        ?.scrollIntoView({ block: "nearest", inline: "nearest" }),
-    );
+    setRevealed({ column: index, at: { row } });
 
   const keyDown = (index: number) => (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) return;
@@ -205,11 +229,20 @@ export function ColumnBrowser({
           label={`${label}: column ${index + 1}`}
           active={index === active}
           cursor={cursorOf(index)}
-          menuRow={menuOpen && menuFor && menuFor.column === index ? menuFor.id : undefined}
-          menu={menu && menuFor && menuFor.column === index ? menu(index, menuFor.id) : null}
+          menuRow={
+            menuOpen && menuFor && menuFor.column === index
+              ? menuFor.id
+              : undefined
+          }
+          menu={
+            menu && menuFor && menuFor.column === index
+              ? menu(index, menuFor.id)
+              : null
+          }
           hasMenu={Boolean(menu)}
           onMenuOpenChange={setMenuOpen}
           dragProps={(row) => itemProps(row.id, row.folder, column.selected)}
+          reveal={revealed?.column === index ? revealed.at : undefined}
           onFocus={() => setFocusedColumn(index)}
           onKeyDown={keyDown(index)}
           onPick={(id, event) => pick(index, id, event)}

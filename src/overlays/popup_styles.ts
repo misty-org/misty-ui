@@ -92,11 +92,23 @@ export const pickerSearchInputClass = cn(
  * size. Radix menus and cmdk mark state with different attributes, so each adds its own.
  */
 export const menuRowClass = cn(
-  "relative flex min-h-8 w-full cursor-default select-none items-center",
+  "relative flex min-h-8 w-full cursor-pointer select-none items-center",
   "gap-2 rounded-md px-2 py-1.5 text-left text-control text-cream outline-none",
   "transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0",
   "[&_svg:not([class*='size-'])]:size-4",
   "data-[variant=danger]:text-danger",
+);
+
+const menuRowOnGroupClass = cn(
+  "[[data-slot=row-group]_&]:hover:bg-control-active [[data-slot=row-group]_&]:focus:bg-control-active",
+  "[[data-slot=row-group]_&]:focus-visible:bg-control-active",
+  "[[data-slot=row-group]_&]:data-highlighted:bg-control-active",
+  "[[data-slot=row-group]_&]:data-[state=open]:bg-control-active",
+  "[[data-slot=row-group]_&]:aria-pressed:bg-control-active",
+  "[[data-slot=row-group]_&:not([data-variant=danger])]:hover:text-cream-bright",
+  "[[data-slot=row-group]_&:not([data-variant=danger])]:focus:text-cream-bright",
+  "[[data-slot=row-group]_&:not([data-variant=danger])]:data-highlighted:text-cream-bright",
+  "[[data-slot=row-group]_&:not([data-variant=danger])]:data-[state=open]:text-cream-bright",
 );
 
 /** A menu row. Also used for plain buttons inside popovers that act as menus. */
@@ -107,13 +119,15 @@ export const menuItemClass = cn(
   "data-[state=open]:bg-charcoal-hover aria-pressed:bg-charcoal-hover",
   "aria-pressed:text-cream-bright disabled:pointer-events-none",
   "disabled:opacity-50 data-disabled:pointer-events-none data-disabled:opacity-50",
+  menuRowOnGroupClass,
 );
 
 /**
  * A disabled row that explains itself keeps its pointer events, so hovering it can show why.
  * Radix still refuses to select it.
  */
-export const menuItemExplainedClass = "data-disabled:pointer-events-auto";
+export const menuItemExplainedClass =
+  "data-disabled:pointer-events-auto data-disabled:cursor-not-allowed";
 
 /** A row with a checkmark pinned to the right edge. */
 export const menuIndicatorItemClass = `${menuItemClass} pr-8`;

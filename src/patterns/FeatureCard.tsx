@@ -34,7 +34,7 @@ export function FeatureCard({
       type="button"
       onClick={onOpen}
       className={cn(
-        "relative flex min-h-60 min-w-0 items-end overflow-hidden rounded-xl text-left",
+        "relative flex min-h-60 min-w-0 cursor-pointer items-end overflow-hidden rounded-xl text-left",
         "border border-charcoal-border bg-cover bg-center outline-none transition-colors",
         "hover:border-charcoal-border-strong focus-visible:border-charcoal-border-strong",
       )}

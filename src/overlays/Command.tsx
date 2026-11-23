@@ -160,7 +160,7 @@ function CommandItem({
       className={cn(
         commandItemClass,
         checked !== undefined && "pr-8",
-        explained && "data-[disabled=true]:pointer-events-auto",
+        explained && "data-[disabled=true]:pointer-events-auto data-[disabled=true]:cursor-not-allowed",
         className,
       )}
       {...props}

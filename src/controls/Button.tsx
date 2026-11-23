@@ -78,8 +78,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const baseClass = cn(
   "group/button inline-flex shrink-0 items-center border border-transparent",
   "bg-clip-padding text-control font-medium whitespace-nowrap",
-  "transition-none outline-none select-none",
-  "disabled:pointer-events-none disabled:opacity-50",
+  "cursor-pointer transition-none outline-none select-none",
+  "disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-not-allowed",
   "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
 );
 

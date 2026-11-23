@@ -16,7 +16,7 @@ export const meta = {
 
 export default function Example() {
   return (
-    <div className="h-96 overflow-hidden rounded-lg border border-charcoal-border">
+    <div className="h-96 w-72 overflow-hidden rounded-lg border border-charcoal-border">
       <PersonProfile
         label="Profile"
         face={

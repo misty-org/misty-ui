@@ -1,4 +1,4 @@
-import sprite from "../assets/misty-cloud-expression-cycle.webp?inline";
+import sprite from "../assets/misty-cloud-expression-cycle.webp";
 import "./flying_misty.css";
 
 /**

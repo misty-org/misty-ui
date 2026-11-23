@@ -9,11 +9,23 @@ import {
 } from "react";
 import { Pressable } from "../../controls/Pressable";
 import { StateMark } from "../../display/StateMark";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../display/Table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../display/Table";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { cn } from "../../class_names";
 import { CollectionItemActions } from "./CollectionItemActions";
 import type { CollectionDragItemProps } from "./collection_drag";
+import {
+  childStride,
+  useRevealItem,
+  useVirtualItems,
+} from "./collection_virtual";
 import {
   collectionIconTone,
   type CollectionColumn,
@@ -60,7 +72,12 @@ const MAX_COLUMN_WIDTH = 1200;
 const KEY_STEP = 9;
 
 const clampWidth = (key: string, width: number) =>
-  Math.round(Math.min(MAX_COLUMN_WIDTH, Math.max(key === "name" ? MIN_NAME_WIDTH : MIN_COLUMN_WIDTH, width)));
+  Math.round(
+    Math.min(
+      MAX_COLUMN_WIDTH,
+      Math.max(key === "name" ? MIN_NAME_WIDTH : MIN_COLUMN_WIDTH, width),
+    ),
+  );
 
 /**
  * The seam at a column's right edge, as Kura's: a hairline that shows while the table is
@@ -131,7 +148,9 @@ function SortHeader({
             ? "w-full min-w-64"
             : "min-w-28 whitespace-nowrap",
       )}
-      aria-sort={selected ? (sort.descending ? "descending" : "ascending") : "none"}
+      aria-sort={
+        selected ? (sort.descending ? "descending" : "ascending") : "none"
+      }
       aria-label={column.label}
     >
       <Pressable
@@ -141,7 +160,11 @@ function SortHeader({
           selected && "text-cream",
         )}
         onClick={() =>
-          onSort(selected && sort.descending ? null : { key: column.key, descending: selected })
+          onSort(
+            selected && sort.descending
+              ? null
+              : { key: column.key, descending: selected },
+          )
         }
       >
         <OverflowFadeText>{column.label}</OverflowFadeText>
@@ -182,6 +205,7 @@ export function CollectionItemsTable({
   dragItem,
   widths,
   onWidthsChange,
+  reveal,
 }: {
   items: CollectionItem[];
   /** Visible columns, including the name column. */
@@ -208,18 +232,39 @@ export function CollectionItemsTable({
   widths?: CollectionColumnWidths;
   /** Keeps widths the person dragged to; an empty set puts the columns back to fit the page. */
   onWidthsChange?: (widths: CollectionColumnWidths) => void;
+  /** Scrolls this item's row into view whenever it changes to a new id. */
+  reveal?: string;
 }) {
+  const picked = new Set(selectedIds);
+  const virtual = useVirtualItems({
+    count: items.length,
+    estimate: icons === true ? 54 : 36,
+    measure: (body) => childStride(body, 1, ":scope > tr[data-collection-row]"),
+  });
+  useRevealItem(reveal, items, virtual.reveal, virtual.ready);
+  const shownItems = items.slice(virtual.start, virtual.end);
   const cells = useRef(new Map<string, HTMLTableCellElement>());
   const [draft, setDraft] = useState<CollectionColumnWidths | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
   const resizable = onWidthsChange !== undefined;
   const held = draft ?? widths ?? {};
-  const fixed = resizable && columns.some((column) => held[column.key] !== undefined);
+  const fixed =
+    resizable && columns.some((column) => held[column.key] !== undefined);
   const widthOf = (key: string) =>
-    held[key] ?? cells.current.get(key)?.getBoundingClientRect().width ?? MIN_COLUMN_WIDTH * 2;
+    held[key] ??
+    cells.current.get(key)?.getBoundingClientRect().width ??
+    MIN_COLUMN_WIDTH * 2;
   const measured = (): CollectionColumnWidths =>
-    Object.fromEntries(columns.map((column) => [column.key, clampWidth(column.key, widthOf(column.key))]));
-  const total = columns.reduce((sum, column) => sum + (fixed ? widthOf(column.key) : 0), 0);
+    Object.fromEntries(
+      columns.map((column) => [
+        column.key,
+        clampWidth(column.key, widthOf(column.key)),
+      ]),
+    );
+  const total = columns.reduce(
+    (sum, column) => sum + (fixed ? widthOf(column.key) : 0),
+    0,
+  );
 
   const startResize = (key: string, event: PointerEvent<HTMLSpanElement>) => {
     if (event.button !== 0 || !onWidthsChange) return;
@@ -238,7 +283,10 @@ export function CollectionItemsTable({
     setDragging(key);
     setDraft(start);
     const move = (moved: globalThis.PointerEvent) => {
-      next = { ...start, [key]: clampWidth(key, start[key] + moved.clientX - startX) };
+      next = {
+        ...start,
+        [key]: clampWidth(key, start[key] + moved.clientX - startX),
+      };
       frame ??= requestAnimationFrame(() => {
         frame = null;
         setDraft(next);
@@ -260,7 +308,11 @@ export function CollectionItemsTable({
     seam.addEventListener("pointercancel", end);
   };
   const nudge = (key: string, event: KeyboardEvent<HTMLSpanElement>) => {
-    if (!onWidthsChange || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
+    if (
+      !onWidthsChange ||
+      (event.key !== "ArrowLeft" && event.key !== "ArrowRight")
+    )
+      return;
     event.preventDefault();
     const now = measured();
     const step = event.key === "ArrowLeft" ? -KEY_STEP : KEY_STEP;
@@ -276,9 +328,22 @@ export function CollectionItemsTable({
         onReset={() => onWidthsChange?.({})}
       />
     ) : null;
-  const filler = fixed ? <TableHead aria-hidden="true" className="p-0" /> : null;
-  const headGutter = <TableHead aria-hidden="true" data-gutter="" className="w-2 p-0" />;
-  const rowGutter = <TableCell aria-hidden="true" data-gutter="" className="w-2 p-0" />;
+  const filler = fixed ? (
+    <TableHead aria-hidden="true" className="p-0" />
+  ) : null;
+  const headGutter = (
+    <TableHead aria-hidden="true" data-gutter="" className="w-2 p-0" />
+  );
+  const rowGutter = (
+    <TableCell aria-hidden="true" data-gutter="" className="w-2 p-0" />
+  );
+  const span = columns.length + 2 + (fixed ? 1 : 0) + (hasActions ? 1 : 0);
+  const spacer = (height: number) =>
+    height > 0 ? (
+      <tr aria-hidden="true">
+        <td colSpan={span} style={{ height, padding: 0 }} />
+      </tr>
+    ) : null;
 
   return (
     <div className="min-w-0 shrink-0 overflow-x-auto">
@@ -291,7 +356,9 @@ export function CollectionItemsTable({
         )}
         style={
           fixed
-            ? { width: `max(100%, calc(${Math.ceil(total)}px + var(--spacing) * 4))` }
+            ? {
+                width: `max(100%, calc(${Math.ceil(total)}px + var(--spacing) * 4))`,
+              }
             : undefined
         }
       >
@@ -328,26 +395,32 @@ export function CollectionItemsTable({
               <TableHead
                 className={cn(
                   "w-10",
-                  stickyActions && "sticky right-0 z-10 bg-charcoal-workspace text-right",
+                  stickyActions &&
+                    "sticky right-0 z-10 bg-charcoal-workspace text-right",
                 )}
               >
-                <span className={stickyActions ? "px-2" : "sr-only"}>Actions</span>
+                <span className={stickyActions ? "px-2" : "sr-only"}>
+                  Actions
+                </span>
               </TableHead>
             )}
             {headGutter}
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {items.map((item) => {
+        <TableBody ref={virtual.ref}>
+          {spacer(virtual.before)}
+          {shownItems.map((item) => {
             const open = (event: MouseEvent) => {
-              if (item.selectable && onSelect) onSelect(event, item.id, item.onOpen);
+              if (item.selectable && onSelect)
+                onSelect(event, item.id, item.onOpen);
               else item.onOpen();
             };
             return (
               <TableRow
                 {...dragItem?.(item)}
                 key={item.id}
-                data-selected={selectedIds.includes(item.id) || undefined}
+                data-collection-row=""
+                data-selected={picked.has(item.id) || undefined}
                 className={cn(rowClass, icons === true && iconRowClass)}
                 onClick={(event) => {
                   if (ownClick(event)) open(event);
@@ -399,7 +472,9 @@ export function CollectionItemsTable({
                     </OverflowFadeText>
                     {item.marks ? (
                       <>
-                        <span className="flex shrink-0 items-center">{item.marks}</span>
+                        <span className="flex shrink-0 items-center">
+                          {item.marks}
+                        </span>
                         <span aria-hidden="true" className="flex-1" />
                       </>
                     ) : null}
@@ -410,7 +485,10 @@ export function CollectionItemsTable({
                 {metadataColumns.map((column) => (
                   <TableCell
                     key={column.key}
-                    className={cn("whitespace-nowrap text-cream-muted", resizable && columnLineClass)}
+                    className={cn(
+                      "whitespace-nowrap text-cream-muted",
+                      resizable && columnLineClass,
+                    )}
                   >
                     {fixed ? (
                       <OverflowFadeText full className="block min-w-0">
@@ -421,12 +499,15 @@ export function CollectionItemsTable({
                     )}
                   </TableCell>
                 ))}
-                {fixed ? <TableCell aria-hidden="true" className="p-0" /> : null}
+                {fixed ? (
+                  <TableCell aria-hidden="true" className="p-0" />
+                ) : null}
                 {hasActions && (
                   <TableCell
                     className={cn(
                       "w-10 whitespace-nowrap text-right",
-                      stickyActions && "sticky right-0 z-10 bg-charcoal-workspace",
+                      stickyActions &&
+                        "sticky right-0 z-10 bg-charcoal-workspace",
                     )}
                     onClick={(event) => event.stopPropagation()}
                   >
@@ -439,6 +520,7 @@ export function CollectionItemsTable({
               </TableRow>
             );
           })}
+          {spacer(virtual.after)}
         </TableBody>
       </Table>
     </div>

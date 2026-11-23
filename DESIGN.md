@@ -11,8 +11,9 @@ its website, and the apps people make for Misty. Two companions go with it:
 The docs site (`npm run dev`, hosted at https://misty-org.github.io/misty-ui/) gives every component a page:
 a live example, the code that draws it, its props (`docs/props.json`, read from the source) and its rows of
 "Which piece for which job" below. Examples live in `site/examples/<group>/`, one file per component; locally
-each page has a "Don't like" mark for review. `npm run catalog` regenerates the catalog and the props;
-`tests/design_catalog.contract.test.ts` fails when the catalog is out of date.
+each page has a "Don't like" mark for review. `npm run catalog` regenerates the catalog, the props and the
+list of examples (`site/examples.json`, read from each example's `meta`); `tests/design_catalog.contract.test.ts`
+fails when the catalog or the list is out of date.
 
 ## Using it
 
@@ -89,6 +90,9 @@ Color that carries meaning comes from the tones, never a new hex:
 - **Kind of made thing** (`--tint-*`): audio, video, report, cards… through `Surface`/`Text` `tint`.
 - **Art** (`--color-art-*`): only for full-color art drawn over any theme (Tutor, pets, the desktop overlay).
 - **Avatars** (`--color-avatar-*`): soft pastels assigned per person, behind dark ink.
+- **Tab groups** (`--tone-group-grey`, `-blue`, `-red`, `-yellow`, `-green`, `-pink`, `-purple`, `-cyan`,
+  `-orange`, Chrome's nine, with `--tone-group-ink` for a chip's name): only through `TabStrip`'s groups and
+  `TabGroupDot`.
 - **Finder tags** (`--tone-tag-gray`, `-green`, `-purple`, `-blue`, `-yellow`, `-red`, `-orange`, Finder's 1 to 7):
   only through `TagDot` and `TagDots`.
 
@@ -164,6 +168,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A collection's controls (sort, filter, refresh, view) | `CollectionControls` | A hand-made bar |
 | Questions or notes that open under their heading (an FAQ, release notes, a docs sidebar group) | `Disclosure` (`kind` section or row) in a `DisclosureList` | An accordion of styled buttons |
 | A tab strip | `TabStrip` | Buttons styled as tabs |
+| Groups of tabs, as Chrome's | `TabStrip` `groups` (`TabStripGroup`: `label`, `color`, `collapsed`, `menu`) with each tab's `group`; a group's color in a menu is `TabGroupDot`, named by `tabGroupColorName` | Colored tabs, a heading row over the tabs |
 | A toolbar | `ActionBar` (gives way: labels → icons → fade → ⋯), groups set a step apart by `ToolbarDivider`, which draws no line | A flex row that wraps or scrolls |
 | Related rows that belong together (a settings section, Friends' Online, a store item's facts) | `RowGroupSection` (a `RowGroupLabel` over one `RowGroup`), sections one under another in a `RowGroupStack`; facts as `PropertyList layout="grouped"` | A bordered card, a hairline between rows, a heading a row's height above its rows |
 | A setting | `SettingsSection` of `SettingsRow`s (`label`, a `description` only where it explains, the control as children, `sub`, `disabled`) | Hand-built rows, bright medium labels, a card per section |
@@ -190,7 +195,9 @@ The everyday components, several of which have no doc comment in the catalog yet
 | First load whose layout depends on the data (a chat's messages, a thread, a document or file preview, a diff, an item's details) | `PaneLoading`, one spinner in the pane's middle; `inline` for one part of a loaded page | A skeleton guessing the shape, "Loading…" text |
 | Work in progress | `Spinner` or `Progress` where the work happens | A spinner in a button |
 | A documentation site (guides, SDK, design system) | `DocsLayout` in three panels: `DocsHeader` (sections as chips), the section's `NavList`, the article, `DocsToc` ("On this page") and a sticky `DocsPager`; only for a docs site | The app's page layouts, a hand-built sidebar and rail |
-| A page's frame: toolbar rows, a rail or sidebar, side panels, the work between | `FramedPage` (`toolbar` rows, `start` and `end` columns, `footer`), as Kura's window | A page that lays out its own fills, lines and columns |
+| A page's frame: toolbar rows, a rail or sidebar, side panels, the work between | `FramedPage` (`toolbar` rows across the page, the work's own `header`, `start` and `end` columns in design px with an optional `header` each, `autoSaveId`, `footer`), as Kura's window | A page that lays out its own fills, lines and columns; percent widths; a fixed-width side column |
+| One toolbar row, or the header of the work or a column | `FramedBar` (`size` main 54 or tools 45, `start`, its actions as children); a channel's or DM's is `ChannelHeader`, built on it | A hand-made bar with its own height, padding or hairline |
+| A side view beside a chat (members, a thread, search, pinned, a profile, an agent's files or terminal) | One FramedPage `end` column whose `id` is the open view, so each keeps its own width; a closable panel with its own header is a `SidePanel` as the column's content | A fixed-width div with a border beside the chat |
 | A page's top band | `PageHeader` (pages), `ViewHeader` (views of a Space), `CollectionHeading` (collections) | A hand-made header |
 | A browsable collection | `CollectionPage`, `CollectionHeading`, `CollectionControls`, `CollectionSearch`, `CollectionViewToggle`, `CollectionSortMenu`, `CollectionFilterMenu`, `CollectionItems` | Custom bars |
 | Finder's column view (Files) | `ColumnBrowser` (`columns` of `rows`, `selected`, `onSelect`, `onOpen`, `menu`, `preview` as the last column), switched to by `CollectionViewToggle`'s `columns` | Side-by-side lists, a tree squeezed into columns |
@@ -206,7 +213,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A channel's messages (Space chat) | `ChannelMessage` with `ChannelMessageText`, `ChannelReply` over a reply, `ChannelReactions` of `ReactionChip`s, `ThreadRepliesButton`; days and unread with `ChannelDivider` | Hand-built message rows |
 | Picking an emoji | `EmojiPicker`, handed the caller's emoji (`sections`, `search`) | A grid of styled buttons in a popover |
 | A file waiting to go with a message | `ComposerAttachment` in the composer's `context` | A hand-made chip |
-| Panes the person resizes | `SplitPanes` of `SplitPane`s with a `SplitHandle` between | react-resizable-panels directly |
+| Panes the person resizes inside the work (a call's stage over its chat) | `SplitPanes` of `SplitPane`s with a `SplitHandle` between; a page's own columns are FramedPage's | react-resizable-panels directly |
 | A command palette (⌘K) | `CommandPalette` holding `CommandPaletteInput`, `CommandPaletteList`, `CommandPaletteGroup`, `CommandPaletteItem` | cmdk directly |
 | A subject's icon | `spaceIcons`, `appIcons`, `AppLogoImage` (an app's own icon), `EngineMark`, `MistyMark`, `BrandIcon` | A stand-in Lucide glyph or an emoji |
 
@@ -219,6 +226,13 @@ The everyday components, several of which have no doc comment in the catalog yet
   columns (a rail, a sidebar, a side panel, a preview) stand beside the content on the frame's color, parted
   from it by a hairline seam the person drags to resize; the content sits on the page's color between them.
   Misty's own sidebar keeps its hairline with the page. Generous spacing, nothing floating over the work.
+  Every bar in the frame is a `FramedBar`: 54px (or 45 for a tool page's second row), one 13.5px gutter, its
+  hairline drawn by the frame, so the work's header and a column's header meet in one line. Columns are sized
+  in design px, kept for the device, never narrower than their least width; the work keeps at least
+  `workMinWidth`, and when the window can't hold both the end column folds away before the start column. A
+  start column that is the page's only navigation (Settings' sections, Explore's rail) is `keep`: it never
+  folds away, it holds its least width and the work gives way. A seam brightens under the pointer and while
+  dragged; a double-click puts the column back to its width.
 - Hairlines meet. A line that parts two things runs edge to edge and joins the lines it reaches, with no gap
   at either end: a list's header hairline runs to both sides of its pane, and a column's seam runs the
   header's whole height, from the bar's hairline above to the header's below, and while the list is hovered

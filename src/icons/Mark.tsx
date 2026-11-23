@@ -130,7 +130,15 @@ export function Mark({ of, size = 24, label, className, style, ...aria }: MarkPr
       draggable={false}
       className={className}
       data-mark={mark.id}
-      style={{ display: "inline-block", flexShrink: 0, objectFit: "contain", verticalAlign: "middle", ...style }}
+      style={{
+        display: "inline-block",
+        flexShrink: 0,
+        objectFit: "contain",
+        verticalAlign: "middle",
+        width: size,
+        height: size,
+        ...style,
+      }}
     />
   );
   if (mark.render === "color") return image;

@@ -947,7 +947,7 @@
       "name": "actions",
       "type": "readonly ActionBarItem[]",
       "optional": true,
-      "doc": "The chat's icon buttons; a toggle that is on is `pressed`."
+      "doc": "The chat's icon buttons, which fold into ⋯ as room runs out; a toggle that is on is `pressed`."
     },
     {
       "name": "actionsLabel",
@@ -960,26 +960,6 @@
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
       "doc": "Always shown at the end, after the actions, and never folds: the message search."
-    }
-  ],
-  "ChannelMain": [
-    {
-      "name": "header",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "side",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "children",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
     }
   ],
   "ChannelMessage": [
@@ -1112,7 +1092,6 @@
       "doc": ""
     }
   ],
-  "ChannelPage": [],
   "ChannelReactions": [
     {
       "name": "children",
@@ -1161,26 +1140,6 @@
     {
       "name": "onOpen",
       "type": "() => void",
-      "optional": false,
-      "doc": ""
-    }
-  ],
-  "ChannelSidebar": [
-    {
-      "name": "header",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "children",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "aria-label",
-      "type": "string",
       "optional": false,
       "doc": ""
     }
@@ -1693,6 +1652,24 @@
       "type": "(sort: { key: string; descending: boolean; } | null) => void",
       "optional": true,
       "doc": ""
+    },
+    {
+      "name": "ordered",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The items arrive already in the order to draw them, sorted by the caller: a header click still reports the order through `onSortChange` and marks its column, but nothing is sorted here."
+    },
+    {
+      "name": "onShownOrder",
+      "type": "(ids: string[], perRow: number) => void",
+      "optional": true,
+      "doc": "Told the ids in the order they are drawn and how many sit in a row (1 for the list), each time either changes, so arrow keys can move through what the person sees."
+    },
+    {
+      "name": "reveal",
+      "type": "string",
+      "optional": true,
+      "doc": "Scrolls the item with this id into view each time it changes to a new id, such as the one the arrow keys just moved to: items out of view aren't drawn."
     }
   ],
   "CollectionPage": [],
@@ -3250,12 +3227,50 @@
       "doc": ""
     }
   ],
+  "FramedBar": [
+    {
+      "name": "size",
+      "type": "\"main\" | \"tools\"",
+      "optional": true,
+      "doc": "\"main\" is 54px (--ui-header), \"tools\" is 45px (Kura's second row). Default \"main\"."
+    },
+    {
+      "name": "start",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "What sits at its start (a title, a search field, a back button); it takes the room left."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "What sits at its end (the actions); it never shrinks below its content."
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    }
+  ],
   "FramedPage": [
     {
       "name": "toolbar",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "The toolbar rows across the top, on the frame's color, each closed by a hairline: a tab row, a navigation row, a row of tools. Empty rows are left out."
+      "doc": "Rows across the whole page, each a FramedBar, each closed by a hairline. Empty rows are left out."
+    },
+    {
+      "name": "header",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The work's own bar (a FramedBar or a component built on one, such as ChannelHeader), above the work only, beside the columns' headers, closed by a hairline."
     },
     {
       "name": "start",
@@ -3267,7 +3282,7 @@
       "name": "end",
       "type": "FramedPageColumn",
       "optional": true,
-      "doc": "The column at the end: a side panel, a preview."
+      "doc": "The column at the end: a side panel, a preview, a member list."
     },
     {
       "name": "footer",
@@ -3279,7 +3294,13 @@
       "name": "autoSaveId",
       "type": "string",
       "optional": true,
-      "doc": "Keeps the columns' widths for the device under this key."
+      "doc": "Remembers the columns' widths for the device under this key."
+    },
+    {
+      "name": "workMinWidth",
+      "type": "number",
+      "optional": true,
+      "doc": "The narrowest the work may get, design px, default 360."
     },
     {
       "name": "children",
@@ -4164,9 +4185,15 @@
       "doc": ""
     },
     {
+      "name": "loading",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The members' first load: skeleton rows in place of the groups."
+    },
+    {
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
+      "optional": true,
       "doc": ""
     }
   ],
@@ -4588,7 +4615,7 @@
       "name": "end",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "The bar's end, which never folds: the last controls and the send (or stop) button."
+      "doc": "The bar's end, which never folds: the last controls and the send (or stop) button. In the channel variant it sits after the text, in its row."
     },
     {
       "name": "path",
@@ -4612,7 +4639,7 @@
       "name": "variant",
       "type": "MessageComposerVariant",
       "optional": true,
-      "doc": "plain (default) or card; see MessageComposerVariant."
+      "doc": "plain (default), card or channel; see MessageComposerVariant."
     },
     {
       "name": "roomy",
@@ -4648,7 +4675,7 @@
       "name": "items",
       "type": "readonly ActionBarItem[]",
       "optional": true,
-      "doc": "The bar under the text, in order: the leading controls (the + menu with attach and screen capture, the mode), then the one long name that may shorten, such as the model, marked `shrink`. It never wraps: labels turn into icons, the shrink item fades, then items fold into ⋯, in the order their priorities say."
+      "doc": "The bar under the text, in order: the leading controls (the + menu with attach and screen capture, the mode), then the one long name that may shorten, such as the model, marked `shrink`. It never wraps: labels turn into icons, the shrink item fades, then items fold into ⋯, in the order their priorities say. In the channel variant they sit before the text, in its row."
     },
     {
       "name": "barLabel",
@@ -6129,7 +6156,7 @@
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
-      "doc": "The row's actions as MenuItems. The same rows open from the ⋯ and from a right-click."
+      "doc": "The row's actions as MenuItems. The same rows open from the ⋯ and from a right-click. A function is called only while a menu is open, so a long list builds no rows until one opens."
     },
     {
       "name": "width",
@@ -7210,34 +7237,10 @@
       "doc": ""
     },
     {
-      "name": "width",
-      "type": "number",
-      "optional": false,
-      "doc": "Its width in px; it never covers more than leaves `keep` of the column before it."
-    },
-    {
-      "name": "minWidth",
-      "type": "number",
-      "optional": true,
-      "doc": "The narrowest it goes, 320 by default."
-    },
-    {
-      "name": "keep",
-      "type": "number",
-      "optional": true,
-      "doc": "How much of the column before it always stays, 360 by default."
-    },
-    {
-      "name": "onResize",
-      "type": "(width: number) => void",
-      "optional": true,
-      "doc": "Dragging or arrowing its leading edge. Without it the panel keeps its width."
-    },
-    {
       "name": "expanded",
       "type": "boolean",
       "optional": true,
-      "doc": "Covers the column before it: the panel takes the whole width, the column stays mounted."
+      "doc": "Whether its column covers the work; only the header's button reads it."
     },
     {
       "name": "onToggleExpanded",
@@ -7842,6 +7845,20 @@
     }
   ],
   "Switch": [],
+  "TabGroupDot": [
+    {
+      "name": "color",
+      "type": "\"blue\" | \"red\" | \"green\" | \"orange\" | \"pink\" | \"yellow\" | \"purple\" | \"grey\" | \"cyan\"",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "Table": [
     {
       "name": "unwrapped",
@@ -7888,9 +7905,9 @@
     },
     {
       "name": "onReorder",
-      "type": "(id: string, index: number) => void",
+      "type": "(id: string, index: number, group?: string | null | undefined) => void",
       "optional": true,
-      "doc": "Moves a dragged tab to `index`; without it tabs don't drag."
+      "doc": "Moves a dragged tab to `index`; without it tabs don't drag. With `groups`, `group` is the group the tab lands in: one it was let go inside of, or null when it was let go outside any."
     },
     {
       "name": "after",
@@ -7920,7 +7937,37 @@
       "name": "onDragDwell",
       "type": "(id: string) => void",
       "optional": true,
-      "doc": "A drag paused over a tab for a moment, while still held: the window opens that tab, so the dragged page can be dropped into its panes. Drags from outside the row (a sidebar chat) that carry `workspace-tab-switch` pause the same way."
+      "doc": "A drag paused over a tab for a moment, while still held: the window opens that tab, so the dragged page can be dropped into its panes. A tab makes room only once the dragged tab's pointer has crossed all of it, so it stays under the pointer while the drag rests on it. Drags from outside the row (a sidebar chat) that carry `workspace-tab-switch` pause the same way."
+    },
+    {
+      "name": "groups",
+      "type": "readonly TabStripGroup[]",
+      "optional": true,
+      "doc": "Groups of tabs, as Chrome draws them: a chip in the group's color before its tabs (its name, or a dot when unnamed), and a line of that color under them. Pressing a chip folds its tabs away or brings them back (`onToggleGroup`); a right-click opens the group's `menu`."
+    },
+    {
+      "name": "onToggleGroup",
+      "type": "(id: string) => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onDropOnTab",
+      "type": "(id: string, target: string) => void",
+      "optional": true,
+      "doc": "A dragged tab let go on another tab: in Chrome's way, the two go into one group."
+    },
+    {
+      "name": "onDropOnGroup",
+      "type": "(id: string, group: string) => void",
+      "optional": true,
+      "doc": "A dragged tab let go on a group's chip: it joins that group."
+    },
+    {
+      "name": "onMoveGroup",
+      "type": "(group: string, before: string | null) => void",
+      "optional": true,
+      "doc": "A group dragged by its chip and let go: its tabs move, together, to just before `before`, or to the end when it is null. Without it groups don't drag."
     }
   ],
   "TagDot": [
@@ -8647,7 +8694,6 @@
       "doc": ""
     }
   ],
-  "WorkspaceSidebar": [],
   "ZoomControl": [
     {
       "name": "value",

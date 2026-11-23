@@ -115,7 +115,7 @@ export function ChoiceGroup<T extends string>({
             aria-label={iconOnly ? option.label : undefined}
             className={cn(
               "inline-flex min-w-0 items-center justify-center gap-1.5 leading-none whitespace-nowrap",
-              "text-control font-medium outline-none select-none",
+              "cursor-pointer text-control font-medium outline-none select-none",
               track === "well" ? "text-cream" : "text-cream-muted",
               "hover:bg-control-hover hover:text-cream",
               "focus-visible:bg-control-hover focus-visible:text-cream",
@@ -135,7 +135,7 @@ export function ChoiceGroup<T extends string>({
         if (option.disabled && option.reason)
           return (
             <Tooltip key={option.value} content={option.reason}>
-              <span className={cn("flex min-w-0", fill && !iconOnly && "flex-1 basis-0")}>
+              <span className={cn("flex min-w-0 cursor-not-allowed", fill && !iconOnly && "flex-1 basis-0")}>
                 {item}
               </span>
             </Tooltip>

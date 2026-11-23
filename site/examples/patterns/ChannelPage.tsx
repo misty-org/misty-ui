@@ -4,27 +4,19 @@ import {
   AvatarFallback,
   ChannelDivider,
   ChannelHeader,
-  ChannelMain,
-  ChannelPage,
-  ChannelSidebar,
   ChannelWelcome,
-  DropdownMenu,
-  DropdownMenuContent,
+  FramedPage,
   MemberGroupHeading,
   MemberList,
   MemberRow,
   MentionMark,
-  MenuItem,
-  MenuTrigger,
-  NavRow,
-  NavRowLabel,
   SearchField,
   Text,
   TypingLine,
 } from "../../../src";
 
 export const meta = {
-  name: "ChannelPage · ChannelSidebar · ChannelMain · ChannelHeader · ChannelWelcome · ChannelDivider · TypingLine · MentionMark · MemberList · MemberGroupHeading · MemberRow",
+  name: "ChannelHeader · ChannelWelcome · ChannelDivider · TypingLine · MentionMark · MemberList · MemberGroupHeading · MemberRow",
   file: "patterns/channel/*",
   about: "",
   wide: true,
@@ -34,39 +26,26 @@ export const meta = {
 function ChannelDemo() {
   return (
     <div className="h-96 overflow-hidden rounded-lg border border-charcoal-border">
-      <ChannelPage>
-        <ChannelSidebar aria-label="Channels" header={
-            <DropdownMenu>
-              <MenuTrigger heading label="Research" />
-              <DropdownMenuContent side="bottom" align="start">
-                <MenuItem label="Invite people" />
-              </DropdownMenuContent>
-            </DropdownMenu>
-          }>
-          <div className="grid gap-px p-2">
-            {["general", "design", "launch"].map((name, index) => (
-              <NavRow key={name} current={index === 0}>
-                <Hash />
-                <NavRowLabel>{name}</NavRowLabel>
-              </NavRow>
-            ))}
-          </div>
-        </ChannelSidebar>
-        <ChannelMain
-          header={
-            <ChannelHeader
-              icon={Hash}
-              name="general"
-              topic="Anything about the project"
-              actions={[
-                { id: "threads", icon: MessagesSquare, label: "Threads", priority: 2 },
-                { id: "pinned", icon: Pin, label: "Pinned", priority: 1 },
-                { id: "members", icon: Users, label: "Members", priority: 3, pressed: true },
-              ]}
-              end={<SearchField containerClassName="w-56" aria-label="Search" placeholder="Search" />}
-            />
-          }
-          side={
+      <FramedPage
+        autoSaveId="example-channel"
+        header={
+          <ChannelHeader
+            icon={Hash}
+            name="general"
+            topic="Anything about the project"
+            actions={[
+              { id: "threads", icon: MessagesSquare, label: "Threads", priority: 2 },
+              { id: "pinned", icon: Pin, label: "Pinned", priority: 1 },
+              { id: "members", icon: Users, label: "Members", priority: 3, pressed: true },
+            ]}
+            end={<SearchField containerClassName="w-56" aria-label="Search" placeholder="Search" />}
+          />
+        }
+        end={{
+          id: "members",
+          label: "Resize the member list",
+          width: 240,
+          content: (
             <MemberList label="Members">
               <MemberGroupHeading title="Online" count={2} />
               <MemberRow
@@ -91,28 +70,41 @@ function ChannelDemo() {
                 presence="waiting"
               />
             </MemberList>
-          }
-        >
-          <div className="grid gap-3 p-4">
-            <ChannelWelcome
-              icon={Hash}
-              title="Welcome to #general"
-              line="This is the start of the channel."
-            />
-            <ChannelDivider label="Today" kind="date" />
-            <div className="relative px-2">
-              <MentionMark />
-              <Text size="body">@you can you look at the gallery?</Text>
-            </div>
-            <ChannelDivider kind="new" />
-            <TypingLine label="Ada is typing…" />
+          ),
+        }}
+      >
+        <div className="grid min-h-0 flex-1 content-start gap-3 overflow-y-auto p-4">
+          <ChannelWelcome
+            icon={Hash}
+            title="Welcome to #general"
+            line="This is the start of the channel."
+          />
+          <ChannelDivider label="Today" kind="date" />
+          <div className="relative px-2">
+            <MentionMark />
+            <Text size="body">@you can you look at the gallery?</Text>
           </div>
-        </ChannelMain>
-      </ChannelPage>
+          <ChannelDivider kind="new" />
+          <TypingLine label="Ada is typing…" />
+        </div>
+      </FramedPage>
+    </div>
+  );
+}
+
+function LoadingMembersDemo() {
+  return (
+    <div className="h-72 w-60 overflow-hidden rounded-lg border border-charcoal-border">
+      <MemberList label="Members" loading />
     </div>
   );
 }
 
 export default function Example() {
-  return <ChannelDemo />;
+  return (
+    <div className="grid gap-4">
+      <ChannelDemo />
+      <LoadingMembersDemo />
+    </div>
+  );
 }

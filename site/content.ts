@@ -1,10 +1,15 @@
 import type { ComponentType } from "react";
 
-import design from "../DESIGN.md?raw";
-import propsJson from "../docs/props.json";
+import exampleList from "./examples.json";
 import groupList from "./groups.json";
 
 export type PropDoc = { name: string; type: string; optional: boolean; doc: string };
+
+export type ExampleDetails = {
+  Component: ComponentType;
+  code: string;
+  props: Record<string, PropDoc[]>;
+};
 
 export type Example = {
   id: string;
@@ -17,23 +22,30 @@ export type Example = {
   about: string;
   wide: boolean;
   order: number;
-  Component: ComponentType;
-  code: string;
+  load: () => Promise<ExampleDetails>;
 };
 
 export type Group = { id: string; letter: string; title: string; examples: Example[] };
 
-type ExampleModule = {
-  default: ComponentType;
-  meta: { name: string; file: string; about: string; wide: boolean; order: number };
-};
+type ExampleMeta = { name: string; file: string; about: string; wide?: boolean; order: number };
 
-const modules = import.meta.glob<ExampleModule>("./examples/*/*.tsx", { eager: true });
-const sources = import.meta.glob<string>("./examples/*/*.tsx", {
-  eager: true,
-  query: "?raw",
-  import: "default",
-});
+const modules = import.meta.glob<ComponentType>("./examples/*/*.tsx", { import: "default" });
+const sources = import.meta.glob<string>("./examples/*/*.tsx", { query: "?raw", import: "default" });
+
+function once<T>(load: () => Promise<T>): () => Promise<T> {
+  let pending: Promise<T> | undefined;
+  return () => {
+    pending ??= load().catch((error: unknown) => {
+      pending = undefined;
+      throw error;
+    });
+    return pending;
+  };
+}
+
+export const loadProps = once(() =>
+  import("../docs/props.json").then((module) => module.default as Record<string, PropDoc[]>),
+);
 
 function cleanSource(raw: string): string {
   return raw
@@ -50,19 +62,31 @@ function componentsIn(name: string): string[] {
     .filter((part) => /^[A-Za-z]\w*$/.test(part));
 }
 
-const examples: Example[] = Object.entries(modules).map(([path, module]) => {
-  const [, group, slug] = /\.\/examples\/([^/]+)\/([^/]+)\.tsx$/.exec(path)!;
-  const components = componentsIn(module.meta.name);
-  return {
-    id: `${group}/${slug}`,
-    group,
-    slug,
-    ...module.meta,
-    title: components[0] ?? module.meta.name,
-    components,
-    Component: module.default,
-    code: cleanSource(sources[path]),
-  };
+const examples: Example[] = Object.entries(exampleList as Record<string, ExampleMeta>).flatMap(([id, meta]) => {
+  const path = `./examples/${id}.tsx`;
+  const loadModule = modules[path];
+  const loadSource = sources[path];
+  if (!loadModule || !loadSource) return [];
+  const [group, slug] = id.split("/");
+  const components = componentsIn(meta.name);
+  return [
+    {
+      id,
+      group,
+      slug,
+      ...meta,
+      wide: meta.wide ?? false,
+      title: components[0] ?? meta.name,
+      components,
+      load: once(() =>
+        Promise.all([loadModule(), loadSource(), loadProps()]).then(([Component, raw, props]) => ({
+          Component,
+          code: cleanSource(raw),
+          props,
+        })),
+      ),
+    },
+  ];
 });
 
 export const groups: Group[] = groupList.map((group) => ({
@@ -73,35 +97,3 @@ export const groups: Group[] = groupList.map((group) => ({
 }));
 
 export const allExamples = groups.flatMap((group) => group.examples);
-
-export const props = propsJson as Record<string, PropDoc[]>;
-
-export type Guidance = { job: string; use: string; not: string };
-
-const guidanceRows: Guidance[] = (() => {
-  const section = design.split("## Which piece for which job")[1]?.split("\n## ")[0] ?? "";
-  return section
-    .split("\n")
-    .filter((line) => line.startsWith("|") && !line.startsWith("| Job") && !line.startsWith("| ---"))
-    .map((line) => {
-      const [job, use, not] = line
-        .slice(1, -1)
-        .split(/(?<!\\)\|/)
-        .map((cell) => cell.trim());
-      return { job, use, not };
-    });
-})();
-
-export function guidanceFor(components: string[]): Guidance[] {
-  return guidanceRows.filter((row) =>
-    components.some((name) => row.use.includes(`\`${name}\``) || row.use.includes(`${name}\``)),
-  );
-}
-
-export const principles: string[] = (() => {
-  const section = design.split("## Before writing any UI")[1]?.split("\n## ")[0] ?? "";
-  return section
-    .split(/\n(?=\d+\. )/)
-    .filter((item) => /^\d+\. /.test(item.trim()))
-    .map((item) => item.trim().replace(/^\d+\.\s*/, "").replace(/\s+/g, " "));
-})();

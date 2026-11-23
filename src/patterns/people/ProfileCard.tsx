@@ -84,9 +84,10 @@ export function ProfileCardStatus({
     <DropdownMenuPrimitive.Item
       onSelect={onSelect}
       className={cn(
-        "flex min-h-8 max-w-full min-w-0 cursor-default items-center gap-2 rounded-xl bg-row-hover px-3 py-1.5 outline-none",
-        "hover:bg-charcoal-hover focus:bg-charcoal-hover data-highlighted:bg-charcoal-hover",
-        set ? "text-cream" : "text-cream-muted hover:text-cream data-highlighted:text-cream",
+        "flex min-h-8 max-w-full min-w-0 cursor-pointer items-center gap-2 rounded-xl bg-row-hover px-3 py-1.5 outline-none",
+        "hover:bg-control-active focus:bg-control-active data-highlighted:bg-control-active",
+        set ? "text-cream" : "text-cream-muted",
+        "hover:text-cream-bright focus:text-cream-bright data-highlighted:text-cream-bright",
       )}
     >
       {set ? (
@@ -98,7 +99,7 @@ export function ProfileCardStatus({
       ) : (
         <Plus aria-hidden="true" />
       )}
-      <Text size="meta" tone={set ? "default" : "muted"} lines={2} className="min-w-0">
+      <Text size="meta" lines={2} className="min-w-0">
         {set ? text || "" : placeholder}
       </Text>
     </DropdownMenuPrimitive.Item>

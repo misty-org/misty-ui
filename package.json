@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "vite --config site/vite.config.mjs",
     "build:site": "vite build --config site/vite.config.mjs",
-    "catalog": "node scripts/marks.ts && node scripts/design_catalog.ts && node scripts/props.ts",
+    "catalog": "node scripts/marks.ts && node scripts/design_catalog.ts && node scripts/props.ts && node scripts/examples.ts",
     "marks": "node scripts/marks.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
@@ -67,7 +67,7 @@
     "lucide-react": "^1.63.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-router-dom": "^7.18.2",
+    "svgo": "4.1.0",
     "tailwindcss": "^4.3.1",
     "typescript": "5.9.3",
     "vite": "^7.3.6",

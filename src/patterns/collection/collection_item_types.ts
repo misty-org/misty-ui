@@ -25,9 +25,10 @@ export type CollectionItem = {
   /**
    * The item's actions as menu rows (MenuItem, MenuCheckItem, MenuSubmenu…). They open from the
    * ⋯ at the row's or card's right end on hover and from a right-click anywhere on it, so an item
-   * has its actions in one place.
+   * has its actions in one place. A function is called only while a menu is open, so a long
+   * collection builds no menu rows until one is used.
    */
-  menu?: ReactNode;
+  menu?: ReactNode | (() => ReactNode);
   /** The ⋯ button's name and tooltip. Defaults to "Actions for {title}". */
   menuLabel?: string;
   /** Called as either menu opens, before its rows are used, e.g. to point a selection at it. */
@@ -95,6 +96,9 @@ export function compareCollectionValues(
   const comparison =
     typeof a === "number" && typeof b === "number"
       ? a - b
-      : String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: "base" });
+      : String(a).localeCompare(String(b), undefined, {
+          numeric: true,
+          sensitivity: "base",
+        });
   return descending ? -comparison : comparison;
 }

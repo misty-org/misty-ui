@@ -99,7 +99,7 @@ export function ShelfItem({
           type="button"
           onClick={onOpen}
           aria-label={`${title}, details`}
-          className="flex min-w-0 shrink-0 rounded-[calc(var(--spacing)*3.75)] outline-none"
+          className="flex min-w-0 shrink-0 cursor-pointer rounded-[calc(var(--spacing)*3.75)] outline-none"
         >
           {logo}
         </button>
@@ -115,7 +115,7 @@ export function ShelfItem({
             <button
               type="button"
               onClick={onOpen}
-              className="grid min-w-0 flex-1 gap-0.5 rounded-sm pt-1 text-left outline-none hover:underline focus-visible:underline decoration-cream-muted underline-offset-2"
+              className="grid min-w-0 flex-1 cursor-pointer gap-0.5 rounded-sm pt-1 text-left outline-none hover:underline focus-visible:underline decoration-cream-muted underline-offset-2"
             >
               {words}
             </button>

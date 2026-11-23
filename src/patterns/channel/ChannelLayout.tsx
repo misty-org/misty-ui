@@ -1,60 +1,14 @@
-import type { ComponentProps, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 
 import { cn } from "../../class_names";
 import { IconButton } from "../../controls/IconButton";
 import { ActionBar, renderIcon, type ActionBarItem } from "../../layout/ActionBar";
+import { FramedBar } from "../../layout/FramedBar";
 import { ToolbarDivider } from "../../layout/Separator";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { Text } from "../../display/Text";
-
-/** The whole page: the channel column, then the open channel. */
-export function ChannelPage({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cn("flex h-full min-h-0 min-w-0", className)} {...props} />;
-}
-
-/**
- * The channel column, on the sidebar's fill: a bar naming the place (`header`, a MenuTrigger
- * `heading` that opens the place's menu), then the list.
- */
-export function ChannelSidebar(props: {
-  header: ReactNode;
-  children: ReactNode;
-  "aria-label": string;
-}) {
-  return (
-    <aside
-      aria-label={props["aria-label"]}
-      className="flex h-full min-h-0 w-60 shrink-0 flex-col bg-charcoal-sidebar"
-    >
-      <div className={cn(headerBar, "px-2")}>{props.header}</div>
-      <div className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 pt-3 pb-2">
-        {props.children}
-      </div>
-    </aside>
-  );
-}
-
-/** Both headers' height and the line under them, so the two read as one bar across the page. */
-const headerBar = "flex h-11 shrink-0 items-center border-b border-charcoal-border";
-
-/**
- * The open channel on the page's own color, as the tab row and bottom bar are: its header across the top, the chat, then `side` (the
- * member list, a thread, search results) after a line, on the same fill.
- */
-export function ChannelMain(props: { header: ReactNode; side?: ReactNode; children: ReactNode }) {
-  return (
-    <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col bg-pane">
-      {props.header}
-      <div className="flex min-h-0 flex-1">
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col">{props.children}</div>
-        {props.side ? (
-          <div className="flex min-h-0 shrink-0 border-l border-charcoal-border">{props.side}</div>
-        ) : null}
-      </div>
-    </section>
-  );
-}
+import { PlaceholderIcon } from "../../icons/PlaceholderIcon";
 
 /** A header action drawn as its icon alone, muted until it is a toggle that is on. */
 function iconOnly(item: ActionBarItem): ActionBarItem {
@@ -78,11 +32,14 @@ function iconOnly(item: ActionBarItem): ActionBarItem {
 }
 
 /**
- * The open chat's own bar, under the window's tabs, for a channel or a direct message: its icon (or the person's face) and name, an optional topic, then its controls. Each
- * pane draws its own, so a split never loses a chat's controls. `actions` are its icon buttons
- * (calls, Threads, Pinned, Members, a ⋯ of the rest), icons only with the label as the tooltip;
- * `end` is what stays last and never folds, such as the message search. The name fades first; then
- * the actions give way into a ⋯ menu, lowest priority first. It never wraps.
+ * The open chat's own bar, for a channel or a direct message: its icon (or the person's face) and
+ * name, an optional topic, then its controls. It is a FramedBar (54px, one gutter, no fill or line
+ * of its own), so it goes in a FramedPage's `header`, which paints the frame behind it and the
+ * hairline under it. Each pane draws its own, so a split never loses a chat's controls. `actions`
+ * are every control that may fold (calls, Threads, Pinned, Members, a ⋯ of the rest), icons only
+ * with the label as the tooltip; `end` is what stays last and never folds, such as the message
+ * search. The name fades first; then the actions give way into a ⋯ menu, lowest priority first.
+ * It never wraps.
  */
 export function ChannelHeader(props: {
   icon?: LucideIcon;
@@ -90,7 +47,7 @@ export function ChannelHeader(props: {
   leading?: ReactNode;
   name: string;
   topic?: string;
-  /** The chat's icon buttons; a toggle that is on is `pressed`. */
+  /** The chat's icon buttons, which fold into ⋯ as room runs out; a toggle that is on is `pressed`. */
   actions?: ReadonlyArray<ActionBarItem>;
   /** Accessible name of the actions toolbar. Default "Chat actions". */
   actionsLabel?: string;
@@ -99,48 +56,53 @@ export function ChannelHeader(props: {
 }) {
   const Icon = props.icon;
   return (
-    <header className={cn(headerBar, "gap-2 px-4")}>
-      {props.leading ??
-        (Icon ? (
-          <Text bare tone="muted" className="flex shrink-0">
-            <Icon aria-hidden="true" />
-          </Text>
-        ) : null)}
-      <Text
-        as="h1"
-        size="body"
-        weight="semibold"
-        tone="bright"
-        full
-        className={props.topic ? "min-w-32 shrink" : "min-w-32 flex-1"}
+    <header className="min-w-0">
+      <FramedBar
+        start={
+          <>
+            {props.leading ??
+              (Icon ? (
+                <Text bare tone="muted" className="flex shrink-0">
+                  <Icon aria-hidden="true" />
+                </Text>
+              ) : null)}
+            <Text
+              as="h1"
+              size="body"
+              weight="semibold"
+              tone="bright"
+              full
+              className={props.topic ? "min-w-32 shrink" : "min-w-32 flex-1"}
+            >
+              {props.name}
+            </Text>
+            {props.topic ? (
+              <>
+                <ToolbarDivider />
+                <OverflowFadeText className="min-w-0 flex-1 text-meta text-cream-muted">
+                  {props.topic}
+                </OverflowFadeText>
+              </>
+            ) : null}
+            {props.actions?.length ? (
+              <ActionBar
+                label={props.actionsLabel ?? "Chat actions"}
+                width="content"
+                items={props.actions.map(iconOnly)}
+              />
+            ) : null}
+          </>
+        }
       >
-        {props.name}
-      </Text>
-      {props.topic ? (
-        <>
-          <ToolbarDivider />
-          <OverflowFadeText className="min-w-0 flex-1 text-meta text-cream-muted">
-            {props.topic}
-          </OverflowFadeText>
-        </>
-      ) : null}
-      {props.actions?.length ? (
-        <ActionBar
-          label={props.actionsLabel ?? "Chat actions"}
-          width="content"
-          items={props.actions.map(iconOnly)}
-          end={props.end}
-        />
-      ) : props.end ? (
-        <div className="flex shrink-0 items-center gap-2">{props.end}</div>
-      ) : null}
+        {props.end}
+      </FramedBar>
     </header>
   );
 }
 
 /**
- * The top of a channel's history, once the very first message is in view: a large mark, a
- * welcome and where this channel begins. A direct message opens the same way with the person's
+ * The top of a channel's history, once the very first message is in view: its icon, bare and
+ * large (a PlaceholderIcon), a welcome and where this channel begins. A direct message opens the same way with the person's
  * face as its `mark` (an xl Avatar in a PresenceFace with `face="xl"`, or a group's faces) and its name as the
  * title, and may offer a few buttons under the line (`actions`, such as Call).
  */
@@ -158,11 +120,11 @@ export function ChannelWelcome(props: {
     <div className="flex flex-col items-start gap-1 pt-4 pb-4">
       {props.mark ? (
         <span className="mb-2 flex">{props.mark}</span>
-      ) : (
-        <span className="mb-2 flex size-16 items-center justify-center rounded-full bg-control-active text-cream-bright">
-          {Icon ? <Icon aria-hidden="true" className="size-9" /> : null}
+      ) : Icon ? (
+        <span className="mb-2 flex">
+          <PlaceholderIcon icon={Icon} />
         </span>
-      )}
+      ) : null}
       <Text as="h2" size="display" weight="semibold" tone="bright" wrap>
         {props.title}
       </Text>

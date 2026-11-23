@@ -1,7 +1,11 @@
 if (typeof globalThis.ResizeObserver === "undefined") {
   globalThis.ResizeObserver = class ResizeObserver {
+    constructor(private readonly callback: ResizeObserverCallback) {}
     disconnect() {}
-    observe() {}
+    observe(target: Element) {
+      const entry = { target, contentRect: target.getBoundingClientRect() } as ResizeObserverEntry;
+      this.callback([entry], this);
+    }
     unobserve() {}
   } as typeof globalThis.ResizeObserver;
 }

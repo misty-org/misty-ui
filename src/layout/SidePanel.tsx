@@ -1,42 +1,38 @@
 // Layout adapted from OpenChamber (MIT, Copyright (c) 2025 Bohdan Triapitsyn).
 import { Maximize2, Minimize2, X, type LucideIcon } from "lucide-react";
-import {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type KeyboardEvent,
-  type PointerEvent,
-  type ReactNode,
-} from "react";
+import { useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
+import { FramedBar } from "./FramedBar";
+import { Separator } from "./Separator";
 import { HeaderSlot, InPanel } from "./side_panel_context";
 import "./side_panel.css";
-import { designPx, remCss, uiPx } from "../lib/ui_scale";
-
-/** Width steps the keyboard takes on the resize edge. */
-const KEY_STEP = 16;
 
 /**
- * The side column a page docks beside its work, such as a chat's files, changes, terminal or
- * browser: flush beside it on the frame's color (the sidebar's), parted by a hairline seam down its
- * leading edge, as a FramedPage's columns are. It takes width from the column before it (its
- * previous sibling), never below `keep` for that column; the person drags the seam to resize it.
- * The header's expand button makes it cover that column entirely, until it is restored.
+ * What a FramedPage's end column holds when it docks a side panel beside the work, such as a
+ * chat's files, changes, terminal or browser: a 54px header on a FramedBar's geometry, so it lines
+ * up with the work's header, then the open view. It draws no frame, width or seam of its own: the
+ * page's end column gives it its place, its width and the seam the person drags. Pass it as the
+ * column's `content` (its header is part of it, so the column takes no `header`), and pass the
+ * column `expanded` while it covers the work; here `expanded` and `onToggleExpanded` only draw the
+ * Widen and Restore width button. Escape inside it closes it. The narrow glance card is SideCard.
  *
  * The header row belongs to what is open: a view renders its controls in `SidePanelHeader` and
  * they take the row's start (a branch picker, an address, terminal tabs). With nothing there the
- * row shows `name`. Expand and close always sit at its end.
+ * row shows `name`. Widen and close always sit at its end.
  *
  * ```tsx
- * <SidePanel label="Changes" name="Changes" icon={GitCompareArrows} width={w} onResize={setW}
- *   onClose={close}>
- *   <SidePanelHeader><BranchPicker /></SidePanelHeader>
- *   <ChangesList />
- * </SidePanel>
+ * <FramedPage end={{ id: "changes", label: "Resize the changes", width: 440, expanded,
+ *   content: (
+ *     <SidePanel label="Changes" name="Changes" icon={GitCompareArrows} expanded={expanded}
+ *       onToggleExpanded={toggle} onClose={close}>
+ *       <SidePanelHeader><BranchPicker /></SidePanelHeader>
+ *       <ChangesList />
+ *     </SidePanel>
+ *   ) }}>
+ *   <Chat />
+ * </FramedPage>
  * ```
  */
 export function SidePanel(props: {
@@ -45,15 +41,7 @@ export function SidePanel(props: {
   /** What shows at the header's start when the open view puts nothing there. */
   name?: string;
   icon?: LucideIcon;
-  /** Its width in px; it never covers more than leaves `keep` of the column before it. */
-  width: number;
-  /** The narrowest it goes, 320 by default. */
-  minWidth?: number;
-  /** How much of the column before it always stays, 360 by default. */
-  keep?: number;
-  /** Dragging or arrowing its leading edge. Without it the panel keeps its width. */
-  onResize?(width: number): void;
-  /** Covers the column before it: the panel takes the whole width, the column stays mounted. */
+  /** Whether its column covers the work; only the header's button reads it. */
   expanded?: boolean;
   onToggleExpanded?(): void;
   onClose(): void;
@@ -66,10 +54,6 @@ export function SidePanel(props: {
     label,
     name,
     icon: Icon,
-    width,
-    minWidth = 320,
-    keep = 360,
-    onResize,
     expanded = false,
     onToggleExpanded,
     onClose,
@@ -78,46 +62,6 @@ export function SidePanel(props: {
     ...data
   } = props;
   const [slot, setSlot] = useState<HTMLElement | null>(null);
-  const room = (panel: HTMLElement) => {
-    const before = panel.previousElementSibling as HTMLElement | null;
-    const spare = before ? before.getBoundingClientRect().width - uiPx(keep) : 0;
-    return panel.getBoundingClientRect().width + Math.max(0, spare);
-  };
-  const clamp = (value: number, panel: HTMLElement) =>
-    Math.min(Math.max(value, uiPx(minWidth)), Math.max(uiPx(minWidth), room(panel)));
-  const drag = (event: PointerEvent<HTMLDivElement>) => {
-    if (!onResize || event.button !== 0) return;
-    const handle = event.currentTarget;
-    const panel = handle.parentElement;
-    if (!panel) return;
-    event.preventDefault();
-    const startX = event.clientX;
-    const startWidth = panel.getBoundingClientRect().width;
-    const most = Math.max(uiPx(minWidth), room(panel));
-    handle.setPointerCapture(event.pointerId);
-    handle.dataset.dragging = "";
-    const move = (next: globalThis.PointerEvent) =>
-      onResize(
-        designPx(Math.min(Math.max(startWidth + (startX - next.clientX), uiPx(minWidth)), most)),
-      );
-    const end = () => {
-      delete handle.dataset.dragging;
-      handle.removeEventListener("pointermove", move);
-      handle.removeEventListener("pointerup", end);
-      handle.removeEventListener("pointercancel", end);
-    };
-    handle.addEventListener("pointermove", move);
-    handle.addEventListener("pointerup", end);
-    handle.addEventListener("pointercancel", end);
-  };
-  const nudge = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (!onResize || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
-    const panel = event.currentTarget.parentElement;
-    if (!panel) return;
-    event.preventDefault();
-    const step = event.key === "ArrowLeft" ? KEY_STEP : -KEY_STEP;
-    onResize(designPx(clamp(panel.getBoundingClientRect().width + uiPx(step), panel)));
-  };
   return (
     <aside
       {...data}
@@ -125,9 +69,6 @@ export function SidePanel(props: {
       data-slot="side-panel"
       data-expanded={expanded || undefined}
       className={cn("misty-side-panel", className)}
-      style={
-        { "--side-panel-width": remCss(width), "--side-panel-keep": remCss(keep) } as CSSProperties
-      }
       onKeyDown={(event) => {
         if (event.key !== "Escape" || event.defaultPrevented) return;
         if (!event.currentTarget.contains(event.target as Node)) return;
@@ -136,28 +77,21 @@ export function SidePanel(props: {
         onClose();
       }}
     >
-      {onResize ? (
-        <div
-          role="separator"
-          aria-orientation="vertical"
-          aria-label={`Resize ${label.toLowerCase()}`}
-          aria-valuenow={width}
-          aria-valuemin={minWidth}
-          tabIndex={0}
-          className="misty-side-panel-resize"
-          onPointerDown={drag}
-          onKeyDown={nudge}
-        />
-      ) : null}
-      <div className="misty-side-panel-head">
-        {name ? (
-          <span className="misty-side-panel-name">
-            {Icon ? <Icon aria-hidden="true" /> : null}
-            <span>{name}</span>
-          </span>
-        ) : null}
-        <div ref={setSlot} className="misty-side-panel-slot" />
-        <div className="misty-side-panel-end">
+      <FramedBar
+        className="misty-side-panel-head"
+        start={
+          <>
+            {name ? (
+              <span className="misty-side-panel-name">
+                {Icon ? <Icon aria-hidden="true" /> : null}
+                <span>{name}</span>
+              </span>
+            ) : null}
+            <div ref={setSlot} className="misty-side-panel-slot" />
+          </>
+        }
+      >
+        <div className="flex items-center gap-0.5">
           {onToggleExpanded ? (
             <IconButton
               label={expanded ? "Restore width" : "Widen"}
@@ -172,7 +106,8 @@ export function SidePanel(props: {
             <X />
           </IconButton>
         </div>
-      </div>
+      </FramedBar>
+      <Separator />
       <div className="misty-side-panel-body misty-scrollbar-rounded">
         <InPanel.Provider value>
           <HeaderSlot.Provider value={slot}>{children}</HeaderSlot.Provider>

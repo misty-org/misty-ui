@@ -74,7 +74,7 @@ function SourceLink({ source }: { source: CatalogSource }) {
       onClick={source.onOpen}
       aria-label={`Open ${source.label}${onGithub(source.href) ? " on GitHub" : ""}`}
       className={cn(
-        "inline-flex max-w-full min-w-0 items-center gap-1 self-start rounded-sm text-caption",
+        "inline-flex max-w-full min-w-0 cursor-pointer items-center gap-1 self-start rounded-sm text-caption",
         "text-cream-muted outline-none hover:text-cream hover:underline focus-visible:text-cream",
         "focus-visible:underline",
       )}
@@ -126,7 +126,7 @@ function TitleButton({ title, onOpen }: { title: string; onOpen: () => void }) {
       type="button"
       onClick={onOpen}
       className={cn(
-        "min-w-0 rounded-sm text-left outline-none hover:underline focus-visible:underline",
+        "min-w-0 cursor-pointer rounded-sm text-left outline-none hover:underline focus-visible:underline",
         "decoration-cream-muted underline-offset-2",
       )}
     >

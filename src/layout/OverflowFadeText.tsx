@@ -1,6 +1,7 @@
 import {
   useCallback,
   useLayoutEffect,
+  useRef,
   useState,
   type HTMLAttributes,
   type ReactNode,
@@ -70,7 +71,9 @@ const fadeClass = (lines: number) =>
 /**
  * Long text (names, models, paths, branches) shortens with a fade at its end, never an ellipsis.
  * The fade appears only while the text doesn't fit, and follows the label as its box or text
- * changes. This is the default for every label in shared components.
+ * changes. This is the default for every label in shared components. Every label shares one
+ * ResizeObserver, and plain text is measured again only when it changes, so long lists of them
+ * stay cheap.
  */
 export function OverflowFadeText({
   as: Tag = "span",
@@ -100,28 +103,41 @@ export function OverflowFadeText({
         ? element.scrollHeight > element.clientHeight + 1
         : element.scrollWidth > element.clientWidth + 1;
     setOverflowing((current) => (current === next ? current : next));
-    if (full === true) setText(element.textContent ?? "");
+    if (full === true && next) setText(element.textContent ?? "");
   }, [element, lines, full]);
+
+  const plain = typeof children === "string" || typeof children === "number";
 
   useLayoutEffect(() => {
     if (!element) return;
     const stopResize = watchSize(element, measure);
-    const mutations =
-      typeof MutationObserver === "undefined"
-        ? null
-        : new MutationObserver(measure);
-    mutations?.observe(element, {
+    if (!sizeObserved()) measure();
+    if (plain || typeof MutationObserver === "undefined") return stopResize;
+    const mutations = new MutationObserver(measure);
+    mutations.observe(element, {
       characterData: true,
       childList: true,
       subtree: true,
     });
     return () => {
       stopResize();
-      mutations?.disconnect();
+      mutations.disconnect();
     };
-  }, [element, measure]);
+  }, [element, measure, plain]);
 
-  useLayoutEffect(measure, [measure, children]);
+  const measured = useRef<{ element: HTMLElement | null; children: ReactNode }>(
+    {
+      element: null,
+      children: undefined,
+    },
+  );
+  useLayoutEffect(() => {
+    const last = measured.current;
+    measured.current = { element, children };
+    if (!element || last.element !== element) return;
+    if (plain && last.children === children) return;
+    measure();
+  }, [element, children, plain, measure]);
 
   const label = (
     <Tag
@@ -153,6 +169,10 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
 
 const sizeWatchers = new Map<Element, () => void>();
 let sizeObserver: ResizeObserver | null = null;
+
+function sizeObserved() {
+  return typeof ResizeObserver !== "undefined";
+}
 
 function watchSize(element: HTMLElement, update: () => void) {
   if (typeof ResizeObserver === "undefined") {

@@ -165,7 +165,7 @@ export function PathField({
                     className={cn(
                       segmentClass,
                       last ? "text-cream-bright" : "text-cream",
-                      "transition-colors hover:bg-control-hover hover:text-cream-bright",
+                      "cursor-pointer transition-colors hover:bg-control-hover hover:text-cream-bright",
                       "focus-visible:bg-control-hover focus-visible:text-cream-bright",
                     )}
                     onClick={segment.onSelect}

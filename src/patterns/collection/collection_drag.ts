@@ -7,7 +7,11 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { startGesture } from "../../hooks/pointer_gesture";
-import { contains, usePointerDropTarget, visibleRect, type ReorderHit } from "../../hooks/pointer_drop_targets";
+import {
+  usePointerDropTarget,
+  visibleRect,
+  type ReorderHit,
+} from "../../hooks/pointer_drop_targets";
 
 /**
  * Moving items by dragging them (CollectionItems, ColumnBrowser): drop them on a folder or on the
@@ -42,16 +46,22 @@ function trackCopyKey() {
   const note = (event: KeyboardEvent | PointerEvent) => {
     copyHeld = event.altKey;
   };
-  for (const type of ["keydown", "keyup", "pointerdown", "pointermove"] as const)
+  for (const type of [
+    "keydown",
+    "keyup",
+    "pointerdown",
+    "pointermove",
+  ] as const)
     window.addEventListener(type, note, true);
 }
 
-const ignored = "input, textarea, [contenteditable=true], [data-reorder-ignore], [data-slot=row-actions]";
+const ignored =
+  "input, textarea, [contenteditable=true], [data-reorder-ignore], [data-slot=row-actions]";
 
 /**
  * Pointer dragging for a collection's items, never the browser's or Tauri's native drag loop. The
- * root (`listProps`) is the drop region: items marked with `data-collection-drop` (folders) take
- * the drop first, then the `data-collection-zone` under the pointer (a column), then the root
+ * root (`listProps`) is the drop region: the item under the pointer, when it is marked with
+ * `data-collection-drop` (a folder), takes the drop first, then the `data-collection-zone` under the pointer (a column), then the root
  * itself as the open folder. Dropping back into the zone the items came from does nothing unless
  * ⌥ makes it a copy.
  */
@@ -79,62 +89,105 @@ export function useCollectionDrag(
       const current = latest.current.drag;
       if (!root || !current) return null;
       const ids = moving.ids ?? [moving.id];
-      const own = (node: HTMLElement) => node.closest("[data-reorder-list]") === root;
-      const under = (selector: string) =>
-        [...root.querySelectorAll<HTMLElement>(selector)].find(
-          (node) => own(node) && contains(node.getBoundingClientRect(), x, y) && contains(visibleRect(node), x, y),
+      const own = (node: HTMLElement | null | undefined) =>
+        node && node.closest("[data-reorder-list]") === root ? node : undefined;
+      const top = document
+        .elementsFromPoint(x, y)
+        .find(
+          (node): node is HTMLElement =>
+            node instanceof HTMLElement && root.contains(node),
         );
-      const folder = under("[data-collection-drop]");
+      const folder = own(top?.closest<HTMLElement>("[data-collection-drop]"));
       if (folder) {
         const id = folder.dataset.collectionDrop!;
         if (ids.includes(id) || current.canDrop?.(id) === false) return null;
-        return { id, after: false, rect: visibleRect(folder), axis: "y", box: true };
+        return {
+          id,
+          after: false,
+          rect: visibleRect(folder),
+          axis: "y",
+          box: true,
+        };
       }
-      const zone = under("[data-collection-zone]");
+      const zone = own(top?.closest<HTMLElement>("[data-collection-zone]"));
       const id = zone?.dataset.collectionZone ?? "";
       if (source.current === id && !copyHeld) return null;
       if (id && current.canDrop?.(id) === false) return null;
-      return { id, after: false, rect: visibleRect(zone ?? root), axis: "y", box: true };
+      return {
+        id,
+        after: false,
+        rect: visibleRect(zone ?? root),
+        axis: "y",
+        box: true,
+      };
     },
     drop(moving, hit) {
-      latest.current.drag?.onDrop(hit.id === "" ? null : hit.id, moving.ids ?? [moving.id], copyHeld);
+      latest.current.drag?.onDrop(
+        hit.id === "" ? null : hit.id,
+        moving.ids ?? [moving.id],
+        copyHeld,
+      );
     },
   });
 
   /** The drop region's props: the list, grid or strip that holds the items. */
-  const listProps: { ref?: (node: HTMLElement | null) => void; "data-reorder-list"?: string } = drag
-    ? { ref: setElement, "data-reorder-list": collectionDragScope }
-    : {};
+  const listProps: {
+    ref?: (node: HTMLElement | null) => void;
+    "data-reorder-list"?: string;
+  } = drag ? { ref: setElement, "data-reorder-list": collectionDragScope } : {};
 
-  const start = (event: ReactPointerEvent<HTMLElement>, id: string, picked: ReadonlyArray<string>) => {
+  const start = (
+    event: ReactPointerEvent<HTMLElement>,
+    id: string,
+    picked: ReadonlyArray<string>,
+  ) => {
     if (!latest.current.drag) return;
-    if (event.button !== 0 || !event.isPrimary || event.metaKey || event.ctrlKey || event.shiftKey) return;
+    if (
+      event.button !== 0 ||
+      !event.isPrimary ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey
+    )
+      return;
     if ((event.target as Element).closest(ignored)) return;
     const ids = picked.includes(id) ? [...picked] : [id];
-    const label = ids.length === 1 ? latest.current.labelOf(ids[0]) : `${ids.length} items`;
-    const zone = event.currentTarget.closest<HTMLElement>("[data-collection-zone]")?.dataset.collectionZone ?? "";
+    const label =
+      ids.length === 1 ? latest.current.labelOf(ids[0]) : `${ids.length} items`;
+    const zone =
+      event.currentTarget.closest<HTMLElement>("[data-collection-zone]")
+        ?.dataset.collectionZone ?? "";
     cancel.current?.();
-    cancel.current = startGesture(event, { id, ids, label, scope: collectionDragScope }, () => {
-      source.current = zone;
-      setDragging(ids);
-      return () => {
-        source.current = null;
-        setDragging([]);
-      };
-    });
+    cancel.current = startGesture(
+      event,
+      { id, ids, label, scope: collectionDragScope },
+      () => {
+        source.current = zone;
+        setDragging(ids);
+        return () => {
+          source.current = null;
+          setDragging([]);
+        };
+      },
+    );
   };
 
   /**
    * The props an item needs to be dragged; `folder` makes it a drop target too. `picked` is the
    * selection it belongs to (a column's), when not the one the hook was given.
    */
-  const itemProps = (id: string, folder: boolean, picked?: ReadonlyArray<string>): CollectionDragItemProps | undefined =>
+  const itemProps = (
+    id: string,
+    folder: boolean,
+    picked?: ReadonlyArray<string>,
+  ): CollectionDragItemProps | undefined =>
     drag
       ? {
           "data-reorder-handle": "",
           "data-collection-drop": folder ? id : undefined,
           "data-reorder-dragging": dragging.includes(id) ? "true" : undefined,
-          onPointerDown: (event) => start(event, id, picked ?? latest.current.selected),
+          onPointerDown: (event) =>
+            start(event, id, picked ?? latest.current.selected),
         }
       : undefined;
 

@@ -34,11 +34,16 @@ export const messageComposerTextClass = `${textBaseClass} px-1 py-2 text-body`;
 /** The text box grows between these heights: one line, then up to max-h-40. */
 const minInputPx = 38;
 const maxInputPx = 160;
+const channelInputPx = 32;
+
+const channelTextClass = "px-1 py-1.5 text-body leading-5";
 
 /**
  * plain: a bordered box that sits in its pane. card: the box floats as one roomy rounded card
  * on its raised fill alone (no edge, no shadow), the text and its bar inset alike
- * so the + glyph lines up with the text above it.
+ * so the + glyph lines up with the text above it. channel: one bar that never wraps, as a Space
+ * chat's: the leading `items` (the + menu), the text, then `end` (emoji, Send), all in one row;
+ * as the text grows to more lines the buttons stay on its last line's row.
  */
 export type MessageComposerVariant = "plain" | "card" | "channel";
 
@@ -56,8 +61,8 @@ const restingClass = {
 /** Files dragged over the box. */
 const draggingClass = {
   plain: "border-cream-muted bg-charcoal-hover",
-  card: "bg-charcoal-hover shadow-[0_0_0_1px_var(--color-cream-muted)]",
-  channel: "bg-charcoal-active shadow-[0_0_0_1px_var(--color-cream-muted)]",
+  card: "bg-charcoal-hover hairline-outline outline-charcoal-border-strong",
+  channel: "bg-charcoal-active hairline-outline outline-charcoal-border-strong",
 } as const;
 
 /** The card's text: 15px in a 24.75px line, or body type in a taller box when roomy. */
@@ -71,7 +76,7 @@ export type MessageComposerProps = Omit<ComponentProps<"div">, "children"> & {
     [key: `data-${string}`]: unknown;
   };
   inputRef?: RefObject<HTMLTextAreaElement | null>;
-  /** plain (default) or card; see MessageComposerVariant. */
+  /** plain (default), card or channel; see MessageComposerVariant. */
   variant?: MessageComposerVariant;
   /** card only: a taller box in body type, for a chat with nothing in it yet. */
   roomy?: boolean;
@@ -93,10 +98,14 @@ export type MessageComposerProps = Omit<ComponentProps<"div">, "children"> & {
    * The bar under the text, in order: the leading controls (the + menu with attach and screen
    * capture, the mode), then the one long name that may shorten, such as the model, marked
    * `shrink`. It never wraps: labels turn into icons, the shrink item fades, then items fold
-   * into ⋯, in the order their priorities say.
+   * into ⋯, in the order their priorities say. In the channel variant they sit before the text,
+   * in its row.
    */
   items?: ReadonlyArray<ActionBarItem>;
-  /** The bar's end, which never folds: the last controls and the send (or stop) button. */
+  /**
+   * The bar's end, which never folds: the last controls and the send (or stop) button. In the
+   * channel variant it sits after the text, in its row.
+   */
   end?: ReactNode;
   /** The bar's accessible name. Default "Message options". */
   barLabel?: string;
@@ -153,13 +162,15 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
     const localRef = useRef<HTMLTextAreaElement>(null);
     const textareaRef = inputRef ?? localRef;
     const measured = useRef<string | null>(null);
+    const oneBar = variant === "channel";
+    const leastPx = oneBar ? channelInputPx : minInputPx;
     const resize = useCallback(() => {
       const input = textareaRef.current;
       if (!input) return;
       input.style.height = "0px";
-      input.style.height = `${Math.min(uiPx(maxInputPx), Math.max(uiPx(minInputPx), input.scrollHeight))}px`;
+      input.style.height = `${Math.min(uiPx(maxInputPx), Math.max(uiPx(leastPx), input.scrollHeight))}px`;
       measured.current = input.value;
-    }, [textareaRef]);
+    }, [textareaRef, leastPx]);
     useLayoutEffect(() => {
       const input = textareaRef.current;
       if (!input) return;
@@ -221,15 +232,22 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
           data-slot="message-composer-text"
           className={cn(
             "flex min-w-0 items-end gap-1",
-            card
-              ? hasBar
-                ? "px-3 pt-2.5"
-                : "px-3 py-2.5"
-              : hasBar
-                ? "px-2 pt-1.5"
-                : "p-1.5",
+            oneBar
+              ? "p-1"
+              : card
+                ? hasBar
+                  ? "px-3 pt-2.5"
+                  : "px-3 py-2.5"
+                : hasBar
+                  ? "px-2 pt-1.5"
+                  : "p-1.5",
           )}
         >
+          {oneBar && items?.length ? (
+            <div data-slot="message-composer-start" className="flex h-8 shrink-0 items-center">
+              <ActionBar label={barLabel} size={barSize} width="content" items={items} />
+            </div>
+          ) : null}
           <div className="relative min-w-0 flex-1">
             {overlay}
             <Textarea
@@ -238,15 +256,22 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
               ref={textareaRef}
               rows={1}
               className={cn(
-                card
-                  ? [textBaseClass, cardTextClass[roomy ? "roomy" : "compact"]]
-                  : messageComposerTextClass,
+                oneBar
+                  ? [textBaseClass, channelTextClass]
+                  : card
+                    ? [textBaseClass, cardTextClass[roomy ? "roomy" : "compact"]]
+                    : messageComposerTextClass,
                 inputProps.className,
               )}
             />
           </div>
+          {oneBar && end ? (
+            <div data-slot="message-composer-end" className="flex h-8 shrink-0 items-center gap-1">
+              {end}
+            </div>
+          ) : null}
         </div>
-        {hasBar && (
+        {hasBar && !oneBar && (
           <div
             data-slot="message-composer-bar"
             className={cn(

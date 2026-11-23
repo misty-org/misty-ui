@@ -28,6 +28,8 @@ export type ReorderHit = {
   axis: "x" | "y";
   /** Highlight the whole region (dropping into it) instead of an insertion line. */
   box?: boolean;
+  /** Dropped on the item `id` itself rather than beside it (a tab dropped on a tab). */
+  onto?: boolean;
   /**
    * What dropping does, shown in the middle of the highlighted region ("Split right"): the
    * region is then drawn as a split preview, the part of the pane the dropped page will take.

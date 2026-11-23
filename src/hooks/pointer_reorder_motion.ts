@@ -4,8 +4,14 @@ const layouts = new WeakMap<
   { rect: DOMRect; list: HTMLElement; x: number; y: number }
 >();
 let settleCurrent: (() => void) | undefined;
+let hoveredItem: string | null = null;
 export function settleReorderMotion() {
   settleCurrent?.();
+}
+
+/** The tab a dragged tab's pointer is over: the one a pause opens. */
+export function reorderHoveredItem(): string | null {
+  return hoveredItem;
 }
 
 const timing = { duration: 180, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" };
@@ -32,6 +38,8 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
   const animations = new Map<HTMLElement, Animation>();
   const original = new Map(items.map((item) => [item, item.style.transform]));
   let lastOrder = items;
+  let shown: { target: string; after: boolean } | undefined;
+  const offsets = new Map<HTMLElement, number>();
   let finishFrame = 0;
   let settlingPreview: HTMLElement | undefined;
   let settlingAnimation: Animation | undefined;
@@ -48,6 +56,7 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
     settlingAnimation?.cancel();
     settlingPreview?.remove();
     restore();
+    hoveredItem = null;
     if (settleCurrent === cleanup) settleCurrent = undefined;
   };
   settleCurrent = cleanup;
@@ -72,6 +81,53 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
       animation.onfinish = () => {
         if (animations.get(item) === animation) animations.delete(item);
       };
+    }
+  };
+  const orderFor = (target: string | undefined, after: boolean) => {
+    if (!target || ids.includes(target)) return items;
+    const rest = items.filter((item) => !moving.includes(item));
+    const index = rest.findIndex((item) => item.dataset.reorderItem === target);
+    if (index < 0) return items;
+    const insertion = index + (after ? 1 : 0);
+    return [...rest.slice(0, insertion), ...moving, ...rest.slice(insertion)];
+  };
+  const id = (item: HTMLElement | undefined) => item?.dataset.reorderItem;
+  const paint = (order: HTMLElement[]) => {
+    if (order.every((item, index) => item === lastOrder[index])) return;
+    lastOrder = order;
+    const at = order.indexOf(moving[0]);
+    const next = id(order[at + moving.length]);
+    const previous = id(order[at - 1]);
+    shown = order.every((item, index) => item === items[index])
+      ? undefined
+      : next
+        ? { target: next, after: false }
+        : previous
+          ? { target: previous, after: true }
+          : undefined;
+    const gap =
+      Number.parseFloat(getComputedStyle(list)[axis === "x" ? "columnGap" : "rowGap"]) || 0;
+    const margins = (item: HTMLElement) => {
+      const style = getComputedStyle(item);
+      return [
+        Number.parseFloat(style[axis === "x" ? "marginLeft" : "marginTop"]) || 0,
+        Number.parseFloat(style[axis === "x" ? "marginRight" : "marginBottom"]) || 0,
+      ];
+    };
+    let cursor = start(reorderLayoutRect(items[0])) - margins(items[0])[0];
+    for (const item of order) {
+      const [leading, trailing] = margins(item);
+      cursor += leading;
+      const rect = reorderLayoutRect(item);
+      const delta = cursor - start(rect);
+      offsets.set(item, delta);
+      if (!moving.includes(item)) {
+        const painted = getComputedStyle(item).transform;
+        const next = transform(delta);
+        item.style.transform = next;
+        animate(item, painted === "none" ? transform(0) : painted, next);
+      }
+      cursor += size(rect) + trailing + gap;
     }
   };
   return {
@@ -114,41 +170,36 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
         hitY: horizontal ? top + source.height / 2 : hit,
       };
     },
-    update(target?: string, after = false) {
-      let order = items;
-      if (target && !ids.includes(target)) {
-        const rest = items.filter((item) => !moving.includes(item));
-        const index = rest.findIndex((item) => item.dataset.reorderItem === target);
-        if (index >= 0) {
-          const insertion = index + (after ? 1 : 0);
-          order = [...rest.slice(0, insertion), ...moving, ...rest.slice(insertion)];
-        }
-      }
-      if (order.every((item, index) => item === lastOrder[index])) return;
-      lastOrder = order;
-      const gap =
-        Number.parseFloat(getComputedStyle(list)[axis === "x" ? "columnGap" : "rowGap"]) || 0;
-      const margins = (item: HTMLElement) => {
-        const style = getComputedStyle(item);
-        return [
-          Number.parseFloat(style[axis === "x" ? "marginLeft" : "marginTop"]) || 0,
-          Number.parseFloat(style[axis === "x" ? "marginRight" : "marginBottom"]) || 0,
-        ];
-      };
-      let cursor = start(reorderLayoutRect(items[0])) - margins(items[0])[0];
-      for (const item of order) {
-        const [leading, trailing] = margins(item);
-        cursor += leading;
+    follow(target: string | undefined, _after: boolean, point: { x: number; y: number }) {
+      const along = axis === "x" ? point.x : point.y;
+      const across = axis === "x" ? point.y : point.x;
+      const rest = lastOrder.filter((item) => !moving.includes(item));
+      const shownAt = (item: HTMLElement) => {
         const rect = reorderLayoutRect(item);
-        const delta = cursor - start(rect);
-        if (!moving.includes(item)) {
-          const painted = getComputedStyle(item).transform;
-          const next = transform(delta);
-          item.style.transform = next;
-          animate(item, painted === "none" ? transform(0) : painted, next);
-        }
-        cursor += size(rect) + trailing + gap;
+        const from = start(rect) + (offsets.get(item) ?? 0);
+        return { from, to: from + size(rect), rect };
+      };
+      hoveredItem = null;
+      if (target === undefined) {
+        paint(items);
+        return;
       }
+      for (const item of rest) {
+        const { from, to, rect } = shownAt(item);
+        const [low, high] = axis === "x" ? [rect.top, rect.bottom] : [rect.left, rect.right];
+        if (along >= from && along <= to && across >= low - 40 && across <= high + 40)
+          hoveredItem = item.dataset.reorderItem ?? null;
+      }
+      let at = lastOrder.indexOf(moving[0]);
+      while (at < rest.length && along > shownAt(rest[at]).to) at++;
+      while (at > 0 && along < shownAt(rest[at - 1]).from) at--;
+      paint([...rest.slice(0, at), ...moving, ...rest.slice(at)]);
+    },
+    dropAt(): { target: string; after: boolean; onto?: boolean } | undefined {
+      return hoveredItem ? { target: hoveredItem, after: false, onto: true } : shown;
+    },
+    update(target?: string, after = false) {
+      paint(orderFor(target, after));
     },
     finish(preview?: HTMLElement) {
       const painted = new Map(items.map((item) => [item, item.getBoundingClientRect()]));

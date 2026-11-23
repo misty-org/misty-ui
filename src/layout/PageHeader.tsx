@@ -41,7 +41,7 @@ export function PageHeader({
     <header
       data-slot="page-header"
       className={cn(
-        "flex h-(--ui-header) min-w-0 shrink-0 items-center gap-3 px-4",
+        "flex h-(--ui-header) min-w-0 shrink-0 items-center gap-3 px-3",
         untitled ? "justify-end" : "border-b border-charcoal-border",
         className,
       )}

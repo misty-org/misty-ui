@@ -8,24 +8,59 @@ import type { AvatarSize } from "../../display/Avatar";
 import { RoleName } from "../../display/RoleName";
 import { Text } from "../../display/Text";
 import { Tooltip } from "../../overlays/Tooltip";
+import { Skeleton, SkeletonList } from "../../feedback/Skeleton";
 
-/** The member list beside a channel's messages, on the channel's own fill. */
-export function MemberList(props: { label: string; children: ReactNode }) {
+/**
+ * The member list beside a channel's messages, filling the column it is given (a FramedPage's end
+ * column), on that column's fill. While its members load (`loading`), it shows rows shaped like
+ * its MemberRows under a heading's place.
+ */
+export function MemberList(props: {
+  label: string;
+  /** The members' first load: skeleton rows in place of the groups. */
+  loading?: boolean;
+  children?: ReactNode;
+}) {
   return (
     <aside
       aria-label={props.label}
-      className="flex h-full min-h-0 w-60 shrink-0 flex-col overflow-y-auto px-2 pb-4"
+      className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-y-auto px-2 pb-4"
     >
-      {props.children}
+      {props.loading ? <MemberListSkeleton label={props.label} /> : props.children}
     </aside>
   );
 }
 
-/** A group's heading: its name, a dash and how many are in it ("Online — 3"). */
+function MemberListSkeleton(props: { label: string }) {
+  return (
+    <div className="flex flex-col">
+      <div className="px-2 pt-5 pb-1">
+        <Skeleton className="h-3 w-20 rounded-sm" />
+      </div>
+      <SkeletonList
+        label={props.label}
+        rows={6}
+        leading="avatar"
+        className="gap-0"
+        rowClassName="min-h-10 px-2 py-1"
+      />
+    </div>
+  );
+}
+
+/** A group's heading: its name, then how many are in it, muted beside it ("Online 3"). */
 export function MemberGroupHeading(props: { title: string; count: number }) {
   return (
-    <Text as="h3" size="caption" weight="semibold" tone="muted" className="px-2 pt-5 pb-1">
-      {`${props.title} — ${props.count}`}
+    <Text
+      as="h3"
+      bare
+      size="caption"
+      weight="semibold"
+      tone="muted"
+      className="flex min-w-0 items-center gap-1 px-2 pt-5 pb-1"
+    >
+      <OverflowFadeText className="min-w-0">{props.title}</OverflowFadeText>
+      <span className="shrink-0 tabular-nums">{props.count}</span>
     </Text>
   );
 }

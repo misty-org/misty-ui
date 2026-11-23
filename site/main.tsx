@@ -1,6 +1,5 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { MemoryRouter } from "react-router-dom";
 import { ArrowLeft, ArrowRight, BookOpen, Moon, Palette, Sun } from "lucide-react";
 
 import "./docs.css";
@@ -10,6 +9,7 @@ import {
   Button,
   Checkbox,
   CodeBlock,
+  ErrorState,
   IconButton,
   InlineLink,
   MistyMark,
@@ -19,6 +19,7 @@ import {
   NavRowLabel,
   NoticeViewport,
   NumberedList,
+  PaneLoading,
   Pressable,
   SearchField,
   Surface,
@@ -34,7 +35,8 @@ import {
   notify,
 } from "../src";
 
-import { allExamples, groups, guidanceFor, principles, props, type Example } from "./content";
+import { allExamples, groups, type Example, type PropDoc } from "./content";
+import { guidanceFor, principles } from "./guidance";
 
 const repository = "https://github.com/misty-org/misty-ui";
 
@@ -88,6 +90,25 @@ class Boundary extends React.Component<{ children: React.ReactNode }, { error: E
         <Text size="meta" tone="danger" wrap>
           Couldn't render: {this.state.error.message}
         </Text>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+class LoadBoundary extends React.Component<{ children: React.ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (this.state.failed) {
+      return (
+        <ErrorState
+          inline
+          title="Couldn't load this component"
+          action={{ label: "Try again", onClick: () => this.setState({ failed: false }) }}
+        />
       );
     }
     return this.props.children;
@@ -356,8 +377,7 @@ function TokensPage() {
   );
 }
 
-function PropsTable({ name }: { name: string }) {
-  const rows = props[name];
+function PropsTable({ name, rows }: { name: string; rows: PropDoc[] | undefined }) {
   if (!rows?.length) return null;
   return (
     <div className="grid gap-2">
@@ -402,9 +422,6 @@ function ComponentPage(props: { example: Example; mark: Review; onMark(mark: Rev
   const index = allExamples.indexOf(example);
   const previous = allExamples[index - 1];
   const next = allExamples[index + 1];
-  const guidance = guidanceFor(example.components);
-  const withProps = example.components.filter((name) => (propsOf(name)?.length ?? 0) > 0);
-  const Preview = example.Component;
   return (
     <div className="grid gap-8">
       <div className="grid gap-2">
@@ -448,6 +465,35 @@ function ComponentPage(props: { example: Example; mark: Review; onMark(mark: Rev
           onChange={(event) => onMark({ ...mark, note: event.target.value })}
         />
       ) : null}
+      <LoadBoundary key={example.id}>
+        <React.Suspense fallback={<PaneLoading inline label={`Loading ${example.title}`} />}>
+          <ComponentDetails example={example} />
+        </React.Suspense>
+      </LoadBoundary>
+      <div className="flex justify-between gap-3">
+        {previous ? (
+          <Button variant="quiet" icon={ArrowLeft} onClick={() => go(previous.id)}>
+            {previous.title}
+          </Button>
+        ) : (
+          <span />
+        )}
+        {next ? (
+          <Button variant="quiet" iconEnd={ArrowRight} onClick={() => go(next.id)}>
+            {next.title}
+          </Button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function ComponentDetails({ example }: { example: Example }) {
+  const { Component: Preview, code, props } = React.use(example.load());
+  const guidance = guidanceFor(example.components);
+  const withProps = example.components.filter((name) => (props[name]?.length ?? 0) > 0);
+  return (
+    <>
       <Surface tone="page" edge="hairline" radius="xl" className="relative min-w-0 p-6">
         <Boundary key={example.id}>
           <Preview />
@@ -473,37 +519,19 @@ function ComponentPage(props: { example: Example; mark: Review; onMark(mark: Rev
         </Section>
       ) : null}
       <Section title="Code">
-        <CodeBlock language="tsx" code={example.code} />
+        <CodeBlock language="tsx" code={code} />
       </Section>
       {withProps.length ? (
         <Section title="Props">
           <div className="grid gap-6">
             {withProps.map((name) => (
-              <PropsTable key={name} name={name} />
+              <PropsTable key={name} name={name} rows={props[name]} />
             ))}
           </div>
         </Section>
       ) : null}
-      <div className="flex justify-between gap-3">
-        {previous ? (
-          <Button variant="quiet" icon={ArrowLeft} onClick={() => go(previous.id)}>
-            {previous.title}
-          </Button>
-        ) : (
-          <span />
-        )}
-        {next ? (
-          <Button variant="quiet" iconEnd={ArrowRight} onClick={() => go(next.id)}>
-            {next.title}
-          </Button>
-        ) : null}
-      </div>
-    </div>
+    </>
   );
-}
-
-function propsOf(name: string) {
-  return props[name];
 }
 
 function Docs() {
@@ -555,10 +583,8 @@ function Docs() {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <MemoryRouter>
-    <TooltipProvider>
-      <Docs />
-      <NoticeViewport />
-    </TooltipProvider>
-  </MemoryRouter>,
+  <TooltipProvider>
+    <Docs />
+    <NoticeViewport />
+  </TooltipProvider>,
 );

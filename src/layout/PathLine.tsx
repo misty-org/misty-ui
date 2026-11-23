@@ -71,7 +71,7 @@ const segmentClass = cn(
 /** A segment that opens a menu or a picker. */
 const openerClass = cn(
   segmentClass,
-  "h-6 px-1 outline-none hover:bg-control-hover hover:text-cream",
+  "h-6 cursor-pointer px-1 outline-none hover:bg-control-hover hover:text-cream",
   "focus-visible:bg-control-hover focus-visible:text-cream",
   "data-[state=open]:bg-control-active data-[state=open]:text-cream",
 );

@@ -179,7 +179,7 @@ const ShortcutField = React.forwardRef<HTMLButtonElement, ShortcutFieldProps>(
             aria-pressed={recording}
             data-slot="shortcut-field-record"
             className={cn(
-              "flex h-full min-w-0 flex-1 items-center gap-2 rounded-lg bg-transparent px-2.5",
+              "flex h-full min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-lg bg-transparent px-2.5",
               "text-left font-sans outline-none",
               chord && !recording ? "text-cream" : "text-cream-muted",
             )}

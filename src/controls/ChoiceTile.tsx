@@ -66,7 +66,7 @@ const ChoiceTile = React.forwardRef<HTMLButtonElement, ChoiceTileProps>(
         className={cn(
           "grid min-w-0 justify-items-center gap-1 rounded-md border border-transparent",
           roomy ? "px-2 py-3" : "p-2",
-          "text-cream outline-none transition-colors select-none",
+          "cursor-pointer text-cream outline-none transition-colors select-none",
           "hover:bg-control-hover focus-visible:bg-control-hover",
           "aria-pressed:bg-control-active aria-pressed:text-cream-bright",
           "aria-checked:bg-control-active aria-checked:text-cream-bright",
@@ -74,7 +74,7 @@ const ChoiceTile = React.forwardRef<HTMLButtonElement, ChoiceTileProps>(
           "data-[look=outline]:aria-pressed:border-charcoal-border-strong",
           "data-[look=outline]:aria-checked:border-charcoal-border-strong",
           "disabled:pointer-events-none disabled:opacity-50",
-          "aria-disabled:cursor-default aria-disabled:opacity-45 aria-disabled:hover:bg-transparent",
+          "aria-disabled:cursor-not-allowed aria-disabled:opacity-45 aria-disabled:hover:bg-transparent",
           className,
         )}
         onClick={onSelect}

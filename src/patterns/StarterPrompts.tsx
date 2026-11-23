@@ -56,7 +56,7 @@ export function StarterPrompts({
                 className={cn(
                   rowShape,
                   "w-full text-left",
-                  "text-control text-cream outline-none transition-colors",
+                  "cursor-pointer text-control text-cream outline-none transition-colors",
                   "hover:bg-control-hover hover:text-cream-bright",
                   "focus-visible:bg-control-hover focus-visible:text-cream-bright",
                 )}
@@ -119,7 +119,7 @@ function StarterChips({
                 onClick={() => onPick(item)}
                 className={cn(
                   "flex h-8 items-center gap-1.5 rounded-full border border-charcoal-border px-3",
-                  "text-control text-cream outline-none transition-colors",
+                  "cursor-pointer text-control text-cream outline-none transition-colors",
                   "hover:border-charcoal-border-strong hover:bg-control-hover hover:text-cream-bright",
                   "focus-visible:border-charcoal-border-strong focus-visible:bg-control-hover focus-visible:text-cream-bright",
                 )}

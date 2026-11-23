@@ -1,8 +1,19 @@
-import { useContext, useEffect, useState, type MouseEvent, type ReactNode } from "react";
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { CollectionCreator, CollectionItemsGrid } from "./CollectionCards";
 import { CollectionIconGrid, type CollectionZoom } from "./CollectionIconGrid";
-import { CollectionColumnsContext, useHiddenColumns } from "./CollectionColumns";
+import {
+  CollectionColumnsContext,
+  useHiddenColumns,
+} from "./CollectionColumns";
 import { collectionMemory, rememberCollection } from "./collection_memory";
 import {
   CollectionItemsTable,
@@ -26,8 +37,12 @@ import {
  * down through the rows while the list is hovered; a double-click on
  * a seam fits the columns to the page again. The list keeps its own step in from each side, so
  * put it flush in its pane, with no padding around it: the header's hairline then runs to both
- * edges and its seams meet the bar's hairline above. For Finder's column view use ColumnBrowser; for a
- * tree, TreeRow.
+ * edges and its seams meet the bar's hairline above. Only the rows in view are drawn, so a
+ * collection of thousands stays quick: the scroller around it keeps its full height, `reveal`
+ * brings an item that isn't drawn into view, and `onShownOrder` says the order the items are
+ * drawn in and how many sit in a row, for a caller that moves a selection with the arrow keys.
+ * Icon tiles keep room for a two-line name, so every tile is one height. For Finder's column view
+ * use ColumnBrowser; for a tree, TreeRow.
  */
 export function CollectionItems({
   items,
@@ -50,6 +65,9 @@ export function CollectionItems({
   drag,
   sort: controlledSort,
   onSortChange,
+  ordered = false,
+  onShownOrder,
+  reveal,
 }: {
   items: CollectionItem[];
   categoryLabel?: string;
@@ -99,10 +117,35 @@ export function CollectionItems({
    */
   sort?: { key: string; descending: boolean } | null;
   onSortChange?: (sort: { key: string; descending: boolean } | null) => void;
+  /**
+   * The items arrive already in the order to draw them, sorted by the caller: a header click
+   * still reports the order through `onSortChange` and marks its column, but nothing is sorted
+   * here.
+   */
+  ordered?: boolean;
+  /**
+   * Told the ids in the order they are drawn and how many sit in a row (1 for the list), each
+   * time either changes, so arrow keys can move through what the person sees.
+   */
+  onShownOrder?: (ids: string[], perRow: number) => void;
+  /**
+   * Scrolls the item with this id into view each time it changes to a new id, such as the one
+   * the arrow keys just moved to: items out of view aren't drawn.
+   */
+  reveal?: string;
 }) {
-  const titles = new Map(items.map((item) => [item.id, item.title]));
-  const { listProps, itemProps } = useCollectionDrag(drag, selectedIds, (id) => titles.get(id) ?? id);
-  const dragItem = drag ? (item: CollectionItem) => itemProps(item.id, item.dropTarget === true) : undefined;
+  const titles = useMemo(
+    () => new Map(items.map((item) => [item.id, item.title])),
+    [items],
+  );
+  const { listProps, itemProps } = useCollectionDrag(
+    drag,
+    selectedIds,
+    (id) => titles.get(id) ?? id,
+  );
+  const dragItem = drag
+    ? (item: CollectionItem) => itemProps(item.id, item.dropTarget === true)
+    : undefined;
   const hasActions = items.some(hasItemActions);
   const hasCreators = items.some((item) => item.creator !== undefined);
   const scope = [
@@ -124,15 +167,21 @@ export function CollectionItems({
   const widths = remember ? (remembered?.widths ?? {}) : localWidths;
   const setWidths = (next: CollectionColumnWidths) => {
     if (remember)
-      rememberCollection(remember, { widths: Object.keys(next).length ? next : undefined });
+      rememberCollection(remember, {
+        widths: Object.keys(next).length ? next : undefined,
+      });
     else setLocalWidths(next);
   };
   const controlled = onSortChange !== undefined;
   const heldSort = controlledSort ? { ...controlledSort, scope } : null;
   const sort = controlled ? heldSort : remember ? savedSort : localSort;
-  const setSort = (next: { key: string; descending: boolean; scope: string } | null) => {
-    if (controlled) onSortChange(next && { key: next.key, descending: next.descending });
-    else if (remember) rememberCollection(remember, { tableSort: next ?? undefined });
+  const setSort = (
+    next: { key: string; descending: boolean; scope: string } | null,
+  ) => {
+    if (controlled)
+      onSortChange(next && { key: next.key, descending: next.descending });
+    else if (remember)
+      rememberCollection(remember, { tableSort: next ?? undefined });
     else setLocalSort(next);
   };
   let activeSort = sort?.scope === scope ? sort : null;
@@ -150,7 +199,10 @@ export function CollectionItems({
             key: "creator",
             label: creatorLabel,
             render: (item: CollectionItem) => (
-              <CollectionCreator description={item.creatorDescription} className="max-w-48">
+              <CollectionCreator
+                description={item.creatorDescription}
+                className="max-w-48"
+              >
                 {item.creator || "Unknown"}
               </CollectionCreator>
             ),
@@ -162,7 +214,8 @@ export function CollectionItems({
       key: "updated",
       label: "Last activity",
       render: (item) => <span className="text-meta">{item.updated}</span>,
-      sortValue: (item) => (item.updatedAt ? Date.parse(item.updatedAt) : undefined),
+      sortValue: (item) =>
+        item.updatedAt ? Date.parse(item.updatedAt) : undefined,
     },
   ];
   const extraColumns: CollectionColumn[] = fields.map((label) => ({
@@ -178,14 +231,23 @@ export function CollectionItems({
   const metadataColumns = [
     ...baseColumns.filter((column) => column.key !== "updated"),
     ...extraColumns,
-    ...baseColumns.filter((column) => column.key === "updated" && showLastActivity),
+    ...baseColumns.filter(
+      (column) => column.key === "updated" && showLastActivity,
+    ),
   ];
   const allColumns: CollectionColumn[] = [
-    { key: "name", label: "Name", render: (item) => item.title, sortValue: (item) => item.title },
+    {
+      key: "name",
+      label: "Name",
+      render: (item) => item.title,
+      sortValue: (item) => item.title,
+    },
     ...metadataColumns,
   ];
   const register = useContext(CollectionColumnsContext)?.register;
-  const schemaKey = JSON.stringify(allColumns.map(({ key, label }) => ({ key, label })));
+  const schemaKey = JSON.stringify(
+    allColumns.map(({ key, label }) => ({ key, label })),
+  );
   const schemaId = columnSetId ?? schemaKey;
   useEffect(() => {
     if (view !== "list") return;
@@ -197,19 +259,57 @@ export function CollectionItems({
     if (remember || controlled) activeSort = null;
     else setSort(null);
   }
-  const visibleColumns = allColumns.filter((column) => !hidden.includes(column.key));
-  const visibleMetadataColumns = metadataColumns.filter((column) => !hidden.includes(column.key));
-  const selectedColumn = visibleColumns.find((column) => column.key === activeSort?.key);
-  const orderedItems =
-    activeSort && selectedColumn
-      ? [...items].sort((a, b) =>
-          compareCollectionValues(
-            selectedColumn.sortValue(a),
-            selectedColumn.sortValue(b),
-            activeSort.descending,
-          ),
-        )
-      : items;
+  const visibleColumns = allColumns.filter(
+    (column) => !hidden.includes(column.key),
+  );
+  const visibleMetadataColumns = metadataColumns.filter(
+    (column) => !hidden.includes(column.key),
+  );
+  const selectedColumn = visibleColumns.find(
+    (column) => column.key === activeSort?.key,
+  );
+  const sorted = useRef<{
+    items: CollectionItem[];
+    by: string;
+    result: CollectionItem[];
+  } | null>(null);
+  const sortBy =
+    !ordered && activeSort && selectedColumn
+      ? `${scope}\n${activeSort.key}\n${activeSort.descending}`
+      : "";
+  let orderedItems = items;
+  if (sortBy && selectedColumn && activeSort) {
+    const held = sorted.current;
+    if (held && held.items === items && held.by === sortBy)
+      orderedItems = held.result;
+    else {
+      const descending = activeSort.descending;
+      orderedItems = [...items].sort((a, b) =>
+        compareCollectionValues(
+          selectedColumn.sortValue(a),
+          selectedColumn.sortValue(b),
+          descending,
+        ),
+      );
+      sorted.current = { items, by: sortBy, result: orderedItems };
+    }
+  }
+  const [gridPerRow, setGridPerRow] = useState(1);
+  const perRow = view === "grid" ? gridPerRow : 1;
+  const reportOrder = useRef(onShownOrder);
+  reportOrder.current = onShownOrder;
+  const reporting = onShownOrder !== undefined;
+  const shownIds = useMemo(
+    () => (reporting ? orderedItems.map((item) => item.id) : []),
+    [reporting, orderedItems],
+  );
+  const shownKey = useMemo(() => shownIds.join("\u0000"), [shownIds]);
+  const latestIds = useRef(shownIds);
+  latestIds.current = shownIds;
+  useEffect(() => {
+    if (!reporting) return;
+    reportOrder.current?.(latestIds.current, perRow);
+  }, [reporting, shownKey, perRow]);
   const region = (content: ReactNode) =>
     drag ? (
       <div {...listProps} className="flex min-h-full min-w-0 flex-1 flex-col">
@@ -226,6 +326,8 @@ export function CollectionItems({
         selectedIds={selectedIds}
         onSelect={onSelect}
         dragItem={dragItem}
+        reveal={reveal}
+        onPerRow={setGridPerRow}
       />,
     );
   if (view === "grid")
@@ -239,6 +341,8 @@ export function CollectionItems({
         selectedIds={selectedIds}
         onSelect={onSelect}
         dragItem={dragItem}
+        reveal={reveal}
+        onPerRow={setGridPerRow}
       />,
     );
   return region(
@@ -250,12 +354,15 @@ export function CollectionItems({
       stickyActions={stickyActions}
       icons={listIcons}
       sort={activeSort}
-      onSort={(next: CollectionSort | null) => setSort(next && { ...next, scope })}
+      onSort={(next: CollectionSort | null) =>
+        setSort(next && { ...next, scope })
+      }
       selectedIds={selectedIds}
       onSelect={onSelect}
       dragItem={dragItem}
       widths={widths}
       onWidthsChange={setWidths}
+      reveal={reveal}
     />,
   );
 }

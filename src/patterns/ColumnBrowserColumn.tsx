@@ -1,12 +1,22 @@
 import { ChevronRight } from "lucide-react";
-import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
+import {
+  useEffect,
+  type KeyboardEvent,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import { cn } from "../class_names";
 import { ListRowSkeleton } from "../display/ListRow";
 import { rowShape } from "../display/row_shape";
 import { Text } from "../display/Text";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../overlays/ContextMenu";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuTrigger,
+} from "../overlays/ContextMenu";
 import type { CollectionDragItemProps } from "./collection/collection_drag";
+import { childStride, useVirtualItems } from "./collection/collection_virtual";
 
 /** One item in a ColumnBrowser column: a file or a folder. */
 export type ColumnBrowserRow = {
@@ -31,6 +41,9 @@ export type ColumnBrowserColumn = {
   /** The ids picked in this column; in a column before the last, the folder open after it. */
   selected: ReadonlyArray<string>;
 };
+
+/** The space between a column's rows (`gap-0.5`), in pixels. */
+const rowGap = 2.25;
 
 /** A row's id in the page, for `aria-activedescendant`. */
 export function columnRowDomId(base: string, column: number, row: number) {
@@ -72,7 +85,10 @@ function Row({
         rowShape,
         "w-full cursor-default select-none text-control text-cream",
         picked
-          ? cn("bg-row-active", strong && "group-focus-within/columns:bg-control-active")
+          ? cn(
+              "bg-row-active",
+              strong && "group-focus-within/columns:bg-control-active",
+            )
           : menuOpen
             ? "bg-row-hover"
             : "hover:bg-row-hover",
@@ -83,11 +99,17 @@ function Row({
       onContextMenu={onMenu}
     >
       {row.icon ? (
-        <span aria-hidden="true" className="flex shrink-0 items-center text-cream-muted">
+        <span
+          aria-hidden="true"
+          className="flex shrink-0 items-center text-cream-muted"
+        >
           {row.icon}
         </span>
       ) : null}
-      <OverflowFadeText full className={row.marks ? "min-w-0 shrink" : "flex-1"}>
+      <OverflowFadeText
+        full
+        className={row.marks ? "min-w-0 shrink" : "flex-1"}
+      >
         {row.label}
       </OverflowFadeText>
       {row.marks ? (
@@ -96,14 +118,20 @@ function Row({
           <span aria-hidden="true" className="flex-1" />
         </>
       ) : null}
-      {row.folder ? <ChevronRight aria-hidden="true" className="shrink-0 text-cream-muted" /> : null}
+      {row.folder ? (
+        <ChevronRight
+          aria-hidden="true"
+          className="shrink-0 text-cream-muted"
+        />
+      ) : null}
     </div>
   );
 }
 
 /**
- * One column of a ColumnBrowser: a listbox of its rows that scrolls on its own, 270px wide. While
- * its rows load it shows ListRowSkeletons; a failure is one muted line.
+ * One column of a ColumnBrowser: a listbox of its rows that scrolls on its own, 270px wide. Only
+ * the rows in view are drawn, so a folder of thousands stays quick. While its rows load it shows
+ * ListRowSkeletons; a failure is one muted line.
  */
 export function ColumnBrowserList({
   column,
@@ -122,6 +150,7 @@ export function ColumnBrowserList({
   onPick,
   onOpen,
   onMenu,
+  reveal,
 }: {
   column: ColumnBrowserColumn;
   index: number;
@@ -144,21 +173,54 @@ export function ColumnBrowserList({
   onPick: (id: string, event: MouseEvent) => void;
   onOpen: (id: string) => void;
   onMenu: (id: string, event: MouseEvent) => void;
+  /** Scrolls this row into view each time a new one is handed in. */
+  reveal?: { row: number };
 }) {
   const rows = column.rows;
+  const virtual = useVirtualItems({
+    count: rows?.length ?? 0,
+    estimate: 38.25,
+    self: true,
+    measure: (element) =>
+      childStride(element, 1, ":scope > [data-slot=column-browser-row]"),
+  });
+  const scrollTo = virtual.reveal;
+  useEffect(() => {
+    if (reveal) scrollTo(reveal.row);
+  }, [reveal, scrollTo]);
+  const gap = (height: number) =>
+    height > rowGap ? (
+      <div
+        aria-hidden="true"
+        className="shrink-0"
+        style={{ height: height - rowGap }}
+      />
+    ) : null;
   const openMenu = (event: MouseEvent) => {
-    if (!hasMenu || !(event.target as Element).closest("[data-slot=column-browser-row]")) event.preventDefault();
+    if (
+      !hasMenu ||
+      !(event.target as Element).closest("[data-slot=column-browser-row]")
+    )
+      event.preventDefault();
   };
-  const cursorIndex = rows && cursor !== undefined ? rows.findIndex((row) => row.id === cursor) : -1;
+  const cursorIndex =
+    rows && cursor !== undefined
+      ? rows.findIndex((row) => row.id === cursor)
+      : -1;
   return (
     <ContextMenu onOpenChange={onMenuOpenChange}>
       <ContextMenuTrigger asChild onContextMenu={openMenu}>
         <div
+          ref={virtual.ref}
           role="listbox"
           aria-label={label}
           aria-multiselectable="true"
           aria-busy={rows === null && !column.error ? true : undefined}
-          aria-activedescendant={cursorIndex >= 0 ? columnRowDomId(base, index, cursorIndex) : undefined}
+          aria-activedescendant={
+            cursorIndex >= 0
+              ? columnRowDomId(base, index, cursorIndex)
+              : undefined
+          }
           tabIndex={active ? 0 : -1}
           data-column-index={index}
           data-collection-zone={column.id}
@@ -175,20 +237,27 @@ export function ColumnBrowserList({
           ) : rows === null ? (
             <ListRowSkeleton label={label} rows={6} />
           ) : (
-            rows.map((row, rowIndex) => (
-              <Row
-                key={row.id}
-                row={row}
-                domId={columnRowDomId(base, index, rowIndex)}
-                picked={column.selected.includes(row.id)}
-                strong={active}
-                menuOpen={menuRow === row.id}
-                dragProps={dragProps(row)}
-                onPick={(event) => onPick(row.id, event)}
-                onOpen={() => onOpen(row.id)}
-                onMenu={(event) => onMenu(row.id, event)}
-              />
-            ))
+            <>
+              {gap(virtual.before)}
+              {rows.slice(virtual.start, virtual.end).map((row, at) => {
+                const rowIndex = virtual.start + at;
+                return (
+                  <Row
+                    key={row.id}
+                    row={row}
+                    domId={columnRowDomId(base, index, rowIndex)}
+                    picked={column.selected.includes(row.id)}
+                    strong={active}
+                    menuOpen={menuRow === row.id}
+                    dragProps={dragProps(row)}
+                    onPick={(event) => onPick(row.id, event)}
+                    onOpen={() => onOpen(row.id)}
+                    onMenu={(event) => onMenu(row.id, event)}
+                  />
+                );
+              })}
+              {gap(virtual.after)}
+            </>
           )}
         </div>
       </ContextMenuTrigger>

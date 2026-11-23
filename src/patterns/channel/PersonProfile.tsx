@@ -5,8 +5,8 @@ import { Text } from "../../display/Text";
 /**
  * The other person's profile beside a one-to-one direct message, where a channel has its member
  * list: their face large (a `PresenceFace` with `face="xl"`), their name, their
- * own status line, then `PersonProfileSection`s about them. It sits in `ChannelMain`'s `side`, on
- * the chat's own fill, and carries no banner. A group's people are a `MemberList` instead.
+ * own status line, then `PersonProfileSection`s about them. It fills the column it is given (a
+ * FramedPage's end column), on that column's fill, and carries no banner. A group's people are a `MemberList` instead.
  */
 export function PersonProfile(props: {
   /** Accessible name of the panel, such as "Profile". */
@@ -21,7 +21,7 @@ export function PersonProfile(props: {
   return (
     <aside
       aria-label={props.label}
-      className="flex h-full min-h-0 w-72 shrink-0 flex-col overflow-y-auto pb-4"
+      className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-y-auto pb-4"
     >
       <div className="flex flex-col items-start px-4 pt-6 pb-3">
         {props.face}

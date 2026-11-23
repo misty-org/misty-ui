@@ -66,6 +66,7 @@ export * from "./layout/DocsLayout";
 export * from "./layout/PathLine";
 export * from "./layout/PathField";
 export * from "./layout/FramedPage";
+export * from "./layout/FramedBar";
 export * from "./layout/SectionHeading";
 export * from "./layout/RowGroup";
 export * from "./layout/SidePanel";
@@ -126,6 +127,7 @@ export {
 } from "./feedback/Notices";
 
 export * from "./navigation/TabStrip";
+export * from "./navigation/TabGroup";
 export * from "./navigation/NavRow";
 export * from "./navigation/VoicePerson";
 export { rowShape, rowShapeTwoLine, rowShapeWrap } from "./display/row_shape";

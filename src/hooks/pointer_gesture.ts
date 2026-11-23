@@ -56,6 +56,12 @@ export function startGesture(
     if (ended) return;
     ended = true;
     cancelAnimationFrame(frame);
+    if (motion && current?.target.element === motion.list) {
+      const at = motion.dropAt();
+      current = at
+        ? { ...current, hit: { ...current.hit, id: at.target, after: at.after, onto: at.onto } }
+        : undefined;
+    }
     window.removeEventListener("pointermove", move, true);
     window.removeEventListener("pointerup", up, true);
     window.removeEventListener("pointercancel", cancel, true);
@@ -140,9 +146,10 @@ export function startGesture(
         break;
       }
     }
-    motion?.update(
+    motion?.follow(
       current?.target.element === motion.list ? current.hit.id : undefined,
-      current?.hit.after,
+      current?.hit.after ?? false,
+      point,
     );
     if (preview) {
       preview.style.left = `${Math.max(0, Math.min(placement?.left ?? point.x - offset.x, window.innerWidth - preview.offsetWidth))}px`;

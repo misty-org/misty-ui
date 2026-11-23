@@ -19,6 +19,16 @@
   --ui-bottom-bar: calc(var(--spacing) * 8);
   --ui-bottom-bar-standard: calc(var(--spacing) * 10);
   --hairline: 1px;
+  --tone-group-grey: #a8abb2;
+  --tone-group-blue: #8ab4f8;
+  --tone-group-red: #f28b82;
+  --tone-group-yellow: #fdd663;
+  --tone-group-green: #81c995;
+  --tone-group-pink: #ff8bcb;
+  --tone-group-purple: #c58af9;
+  --tone-group-cyan: #78d9ec;
+  --tone-group-orange: #fcad70;
+  --tone-group-ink: #202124;
 }
 :root[data-theme="light"] {
   color-scheme: light;
@@ -38,6 +48,16 @@
   --workspace-tab-surface: #FAFAFA;
   --workspace-tab-text: #2B2B2B;
   --workspace-tab-muted: #5F5F5F;
+  --tone-group-grey: #5f6368;
+  --tone-group-blue: #1a73e8;
+  --tone-group-red: #d93025;
+  --tone-group-yellow: #e37400;
+  --tone-group-green: #1e8e3e;
+  --tone-group-pink: #d01884;
+  --tone-group-purple: #9334e6;
+  --tone-group-cyan: #007b83;
+  --tone-group-orange: #fa903e;
+  --tone-group-ink: #ffffff;
 }
 @media (min-resolution: 2dppx) {
   :root {

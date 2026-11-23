@@ -19,7 +19,7 @@ describe("marks registry", () => {
 
   it("keeps mark_assets.ts in step with marks.json", () => {
     const assets = readFileSync(new URL("mark_assets.ts", icons), "utf8");
-    for (const id of Object.keys(marks)) expect(assets).toContain(`"./marks/${id}.svg?inline"`);
+    for (const id of Object.keys(marks)) expect(assets).toContain(`"./marks/${id}.svg?no-inline"`);
   });
 
   it("gives every entry a name, a kind, a known render and a source", () => {
