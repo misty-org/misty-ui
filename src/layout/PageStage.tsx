@@ -1,5 +1,5 @@
 import type { ReactNode, RefObject } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 interface PageStageProps {
   hostRef: RefObject<HTMLDivElement | null>;
@@ -10,7 +10,7 @@ interface PageStageProps {
   /** The person is picking an element on the page: the frame says so. */
   picking?: boolean;
   /**
-   * A rounded frame with the page's corners cut to it (browserHostBounds.ts), for a page that
+   * A rounded frame with the page's corners cut to it (browser_host_bounds.ts), for a page that
    * stands on its own, like the agent browser's. Without it the page fills its pane edge to edge,
    * under the pane's toolbar.
    */
@@ -18,7 +18,7 @@ interface PageStageProps {
   /**
    * A page set into a SidePanel: a 6.75px margin of the panel round it and its
    * corners rounded just inside the panel's, with a neutral outline while picking. Once the page is
-   * on screen the panel lets it show beneath the renderer under a menu or dialog (sidePanel.css),
+   * on screen the panel lets it show beneath the renderer under a menu or dialog (side_panel.css),
    * and this margin keeps the panel's fill.
    */
   inset?: boolean;

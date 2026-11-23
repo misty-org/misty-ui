@@ -1,12 +1,12 @@
 import * as React from "react";
 import { OutOfRow } from "../controls/RowContext";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Button } from "../controls/Button";
 import { Text } from "../display/Text";
 import { Portal } from "./Portal";
-import { popupMotionClass, popupSurfaceClass } from "./popupStyles";
+import { popupMotionClass, popupSurfaceClass } from "./popup_styles";
 import { ViewportLayer } from "./ViewportLayer";
-import { uiPx } from "../lib/uiScale";
+import { uiPx } from "../lib/ui_scale";
 
 /** One stop on a tour: the control it lights up, and what to say about it. */
 export type TourStep = {
@@ -108,7 +108,6 @@ function rectOf(element: HTMLElement | null): Rect | null {
  * covers as little of what is around the control as it can. With nothing lit, centered.
  */
 function cardPosition(rect: Rect | null, cardHeight: number): React.CSSProperties {
-  // The card's size and spacing are design pixels; the window and the lit control are CSS pixels.
   const cardWidth = uiPx(CARD_WIDTH);
   const margin = uiPx(MARGIN);
   const gap = uiPx(GAP);
@@ -172,7 +171,6 @@ function TourLayer({
   steps: readonly TourStep[];
   onClose(finished: boolean): void;
 }) {
-  // Only the steps that have something to show, decided once as the tour opens.
   const [shown] = React.useState(() =>
     steps.filter((step) => !step.target || rectOf(targetOf(step))),
   );
@@ -183,7 +181,6 @@ function TourLayer({
   const step = shown[index];
   const last = index === shown.length - 1;
 
-  // Follows the lit element as the window lays out, scrolls or resizes.
   React.useLayoutEffect(() => {
     if (!step) return;
     const element = targetOf(step);
@@ -243,16 +240,12 @@ function TourLayer({
   return (
     <Portal>
       <OutOfRow>
-        {/* Over a modal dialog the body takes no pointer, so the tour opts back in; the dialog
-          also lets clicks and focus inside the tour pass (`DialogContent`). */}
         <ViewportLayer
           layer="blocking-popup"
           data-slot="tour"
           aria-label={label}
           className="pointer-events-auto"
         >
-          {/* The dim, with a hole over the lit element; it takes the pointer so nothing behind
-            it is clicked by mistake mid-tour. */}
           {rect ? (
             <div
               aria-hidden="true"

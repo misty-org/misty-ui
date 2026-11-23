@@ -2,7 +2,8 @@ import * as React from "react";
 import { Button, type ButtonIcon, type ButtonProps } from "../controls/Button";
 import { IconButton, type IconButtonProps } from "../controls/IconButton";
 import { Pressable } from "../controls/Pressable";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
+import { Text } from "../display/Text";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { MenuChevron } from "./MenuChevron";
 import { MenuIconSlot } from "./MenuItem";
@@ -46,15 +47,22 @@ type MenuTriggerProps = Omit<
    */
   fit?: boolean;
   /**
-   * Set as a bar's name, not a control: the control size, semibold and bright, as the logo and page
-   * name beside it in a navbar are, with the same hover wash and chevron.
+   * The name of a place that opens its menu, set as a name rather than a control: a sidebar's
+   * Space, a docs site's section, a channel column's place. Semibold and bright, with `mark` before
+   * it and the chevron right after, as one compact button only as wide as what it holds. The name
+   * is shown whole, never faded: a long one wraps onto a second line. It stands alone in its row;
+   * the place's actions (Invite people) live in its menu.
    */
   heading?: boolean;
+  /** With `heading`: the place's own mark before the name, such as the Space's avatar. */
+  mark?: React.ReactNode;
 };
 
 /**
- * The button that opens a DropdownMenu, or a Popover with kind="popover". Labeled triggers
- * end in a chevron unless `chevron={false}`. Features never draw their own.
+ * The one button that opens a DropdownMenu, or a Popover with kind="popover": a labeled button,
+ * an icon (`iconOnly`), quiet text at a row's end (`plain`) or a place's name (`heading`, the
+ * sidebar's Space). Labeled triggers end in the MenuChevron unless `chevron={false}`. Features
+ * never draw their own; a field that picks a value is Select instead.
  *
  * ```tsx
  * <DropdownMenu>
@@ -79,6 +87,7 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
       plain = false,
       fit = false,
       heading = false,
+      mark,
       ...props
     },
     ref,
@@ -94,7 +103,6 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
             aria-label={value === undefined ? undefined : label}
             className={cn(
               "inline-flex min-w-0 max-w-full items-center rounded-md px-0.5",
-              // The type of the value it sits with (a session card row's value), brighter open.
               "text-meta font-normal whitespace-nowrap text-cream",
               "data-[state=open]:text-cream-bright",
               className,
@@ -102,6 +110,32 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
             {...rest}
           >
             <OverflowFadeText full>{value ?? label}</OverflowFadeText>
+          </Pressable>
+        </Trigger>
+      );
+    }
+    if (heading) {
+      const { justify: _justify, ...rest } = props;
+      return (
+        <Trigger asChild>
+          <Pressable
+            ref={ref}
+            type="button"
+            wash="control"
+            data-slot="menu-trigger-heading"
+            aria-label={value === undefined ? undefined : label}
+            className={cn(
+              "inline-flex min-h-8 w-fit max-w-full min-w-0 flex-none items-center gap-1 rounded-md px-2 py-1",
+              "text-left data-[state=open]:bg-control-active",
+              className,
+            )}
+            {...rest}
+          >
+            {mark ? <span className="mr-1 grid size-4 flex-none place-items-center">{mark}</span> : null}
+            <Text tone="bright" size="body" weight="semibold" wrap className="min-w-0 break-words">
+              {value ?? label}
+            </Text>
+            <MenuChevron />
           </Pressable>
         </Trigger>
       );
@@ -120,7 +154,7 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
             {...props}
           >
             <MenuIconSlot icon={icon} />
-            {withChevron && <MenuChevron className="size-4" />}
+            {withChevron && <MenuChevron />}
           </IconButton>
         </Trigger>
       );
@@ -137,7 +171,6 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
           aria-label={value === undefined ? undefined : label}
           className={cn(
             fit ? "shrink-0 gap-1.5" : "min-w-0 gap-1.5",
-            heading && "px-1.5 text-control font-semibold tracking-[-0.01em] text-cream-bright",
             className,
           )}
           {...props}
@@ -147,7 +180,7 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
           ) : (
             <OverflowFadeText full>{value ?? label}</OverflowFadeText>
           )}
-          {withChevron && <MenuChevron className="text-cream-muted" />}
+          {withChevron && <MenuChevron />}
         </Button>
       </Trigger>
     );

@@ -1,5 +1,3 @@
-// The @misty/ui docs: every component on its own page, with a live example, the code that draws it,
-// its props and the design system's guidance, built from the package's own components.
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { MemoryRouter } from "react-router-dom";
@@ -8,7 +6,7 @@ import { ArrowLeft, ArrowRight, BookOpen, Moon, Palette, Sun } from "lucide-reac
 import "./docs.css";
 
 import {
-  BrandIcon,
+  Mark,
   Button,
   Checkbox,
   CodeBlock,
@@ -40,10 +38,6 @@ import { allExamples, groups, guidanceFor, principles, props, type Example } fro
 
 const repository = "https://github.com/misty-org/misty-ui";
 
-// ---------------------------------------------------------------------------------------------
-// Routing: the page lives in the hash (#/tokens, #/controls/Button), so the site is plain files
-// that any static host serves.
-
 function useRoute(): string {
   const read = () => window.location.hash.replace(/^#\/?/, "");
   const [route, setRoute] = React.useState(read);
@@ -61,9 +55,6 @@ function useRoute(): string {
 const go = (route: string) => {
   window.location.hash = `/${route}`;
 };
-
-// ---------------------------------------------------------------------------------------------
-// Inline text from DESIGN.md: `code` spans and **bold**, nothing else.
 
 function Inline({ text }: { text: string }) {
   const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
@@ -103,15 +94,12 @@ class Boundary extends React.Component<{ children: React.ReactNode }, { error: E
   }
 }
 
-// ---------------------------------------------------------------------------------------------
-// Review marks, only while the site runs locally: a "Don't like" and a note on each page.
-
-type Mark = { dislike: boolean; note: string };
+type Review = { dislike: boolean; note: string };
 const marksKey = "misty-ui-docs-marks";
 
-function readMarks(): Record<string, Mark> {
+function readMarks(): Record<string, Review> {
   try {
-    return JSON.parse(localStorage.getItem(marksKey) ?? "{}") as Record<string, Mark>;
+    return JSON.parse(localStorage.getItem(marksKey) ?? "{}") as Record<string, Review>;
   } catch {
     return {};
   }
@@ -119,20 +107,19 @@ function readMarks(): Record<string, Mark> {
 
 function useMarks() {
   const [marks, setMarks] = React.useState(readMarks);
-  const set = (id: string, mark: Mark) =>
+  const set = (id: string, mark: Review) =>
     setMarks((current) => {
       const next = { ...current, [id]: mark };
       try {
         localStorage.setItem(marksKey, JSON.stringify(next));
       } catch {
-        /* the marks last as long as the page */
       }
       return next;
     });
   return { marks, set };
 }
 
-async function copyMarks(marks: Record<string, Mark>) {
+async function copyMarks(marks: Record<string, Review>) {
   const lines = allExamples
     .filter((example) => marks[example.id]?.dislike)
     .map((example) => {
@@ -143,12 +130,9 @@ async function copyMarks(marks: Record<string, Mark>) {
     await navigator.clipboard.writeText(lines.join("\n") || "Nothing marked.");
     notify({ message: `Copied ${lines.length} marked` });
   } catch {
-    notify({ message: "The clipboard refused", tone: "danger" });
+    notify({ message: "The clipboard refused", tone: "error" });
   }
 }
-
-// ---------------------------------------------------------------------------------------------
-// The sidebar.
 
 function Sidebar(props: { route: string }) {
   const [query, setQuery] = React.useState("");
@@ -209,9 +193,6 @@ function Sidebar(props: { route: string }) {
     </Surface>
   );
 }
-
-// ---------------------------------------------------------------------------------------------
-// Pages.
 
 function Section(props: { title: string; children: React.ReactNode }) {
   return (
@@ -416,7 +397,7 @@ function PropsTable({ name }: { name: string }) {
   );
 }
 
-function ComponentPage(props: { example: Example; mark: Mark; onMark(mark: Mark): void }) {
+function ComponentPage(props: { example: Example; mark: Review; onMark(mark: Review): void }) {
   const { example, mark, onMark } = props;
   const index = allExamples.indexOf(example);
   const previous = allExamples[index - 1];
@@ -525,8 +506,6 @@ function propsOf(name: string) {
   return props[name];
 }
 
-// ---------------------------------------------------------------------------------------------
-
 function Docs() {
   const route = useRoute();
   const { marks, set } = useMarks();
@@ -553,7 +532,7 @@ function Docs() {
           </IconButton>
           <IconButton label="Source on GitHub" asChild>
             <a href={repository}>
-              <BrandIcon brand="github" label="GitHub" />
+              <Mark of="github" label="GitHub" />
             </a>
           </IconButton>
         </Surface>

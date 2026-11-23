@@ -10,7 +10,6 @@ import { IconButton } from "./IconButton";
 
 afterEach(cleanup);
 
-// Tooltips open on hover and on keyboard focus; jsdom has no keyboard focus, so tests hover.
 function hover(element: HTMLElement) {
   act(() => {
     fireEvent.pointerMove(element, { pointerType: "mouse" });
@@ -25,7 +24,6 @@ describe("Button", () => {
     expect(button.dataset.size).toBe("md");
     expect(button.className).toContain("h-8");
     expect(button.className).toContain("text-control");
-    // A soft fill, never an outlined box.
     expect(button.className).toContain("bg-control-hover");
     expect(button.className).not.toContain("border-charcoal-border-strong");
   });
@@ -143,8 +141,6 @@ describe("IconButton", () => {
         <Plus />
       </IconButton>,
     );
-    // Focus handed back after a click is never :focus-visible. The test's DOM can't tell a
-    // pointer's focus from the keyboard's, so the browser's answer for it is given here.
     const matches = Element.prototype.matches;
     const spy = vi.spyOn(Element.prototype, "matches").mockImplementation(function (
       this: Element,

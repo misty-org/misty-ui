@@ -1,11 +1,11 @@
 import { MoreHorizontal } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Button } from "../controls/Button";
 import { IconButton } from "../controls/IconButton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../overlays/DropdownMenu";
 import { MenuCheckItem, MenuItem, MenuSubmenu } from "../overlays/MenuItem";
-import { uiPx } from "../lib/uiScale";
+import { uiPx } from "../lib/ui_scale";
 import { OverflowFadeText } from "./OverflowFadeText";
 import {
   defaultMinWidth,
@@ -14,14 +14,14 @@ import {
   samePlan,
   type ActionBarMeasure,
   type ActionBarPlan,
-} from "./actionBarPlan";
+} from "./action_bar_plan";
 
-export { actionBarGiveWayOrder, planActionBar } from "./actionBarPlan";
-export type { ActionBarMeasure, ActionBarPlacement, ActionBarPlan } from "./actionBarPlan";
+export { actionBarGiveWayOrder, planActionBar } from "./action_bar_plan";
+export type { ActionBarMeasure, ActionBarPlacement, ActionBarPlan } from "./action_bar_plan";
 
 /**
  * An icon given to a shared component: a component such as a Lucide icon (`Folder`), or an element
- * for marks that need props (`<BrandIcon id="claude" />`). Components get the size from their slot.
+ * for marks that need props (`<Mark of="engine:claude" />`). Components get the size from their slot.
  */
 export type IconSource =
   | React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>
@@ -95,8 +95,6 @@ const allFull = (items: ReadonlyArray<ActionBarItem>): ActionBarPlan => ({
   overflowing: false,
 });
 
-// Whole pixels: WebKit reports fractional widths that shift by a hair as the bar resizes, and a
-// plan made on them can flip with every layout and never settle.
 const widthOf = (element: Element | null | undefined) =>
   element ? Math.ceil(element.getBoundingClientRect().width) : 0;
 
@@ -166,7 +164,6 @@ function FoldedItem({ item }: { item: ActionBarItem }) {
         {item.menu}
       </MenuSubmenu>
     );
-  // A toggle keeps its state in the menu, as a checkmark.
   if (item.pressed !== undefined)
     return (
       <MenuCheckItem
@@ -212,18 +209,13 @@ export function ActionBar({
   const [plan, setPlan] = React.useState<ActionBarPlan>(() => allFull(items));
   const [naturalWidth, setNaturalWidth] = React.useState<number | null>(null);
   const control = controlPx[size];
-  // The observer reads the latest items without resubscribing on every render.
   const itemsRef = React.useRef(items);
   const itemKey = items.map((item) => `${item.id}${item.render ? "*" : ""}`).join("\n");
   const hasEnd = Boolean(end);
-  // Plans made since the last frame. A layout that answers each plan with a different width
-  // would otherwise re-plan synchronously until React gives up; past the limit the bar waits
-  // for the next frame, so at worst it settles a frame late.
   const syncPlans = React.useRef(0);
   const deferred = React.useRef(false);
   const frame = React.useRef(0);
   const measureLater = React.useRef<() => void>(() => {});
-  // What is shown now, so a measure knows whether it changes anything.
   const shownPlan = React.useRef(plan);
   shownPlan.current = plan;
   const shownNatural = React.useRef(naturalWidth);
@@ -279,11 +271,9 @@ export function ActionBar({
       setNaturalWidth(rounded);
       changed = true;
     }
-    // Not laid out (hidden, or a test without layout): keep what is shown.
     const available = root.getBoundingClientRect().width;
     if (available > 0) {
       const next = planActionBar({
-        // Within a pixel counts as fitting, so the bar sized to its own width always fits it.
         available: Math.round(available) + 1,
         items: measures.map((item) => (item.id === shrinkId ? item : { ...item, shrink: false })),
         more: control,
@@ -316,7 +306,6 @@ export function ActionBar({
       window.addEventListener("resize", measure);
       return () => window.removeEventListener("resize", measure);
     }
-    // The row's own width, each item's natural width (labels change) and the end slot.
     const observer = new ResizeObserver(() => measure());
     observer.observe(root);
     for (const child of Array.from(layer.children)) observer.observe(child);
@@ -337,8 +326,6 @@ export function ActionBar({
       data-size={size}
       className={cn(
         "relative flex min-w-0 shrink items-center gap-1",
-        // Every control's content sits 9px in from both its edges, as an icon button's glyph does,
-        // so the space between any two controls in the bar is the same.
         "[&_button[data-slot=button]]:px-2",
         heightClass,
         width === "fill" ? "w-full" : "max-w-full",
@@ -388,8 +375,6 @@ export function ActionBar({
           {end}
         </div>
       ) : null}
-      {/* Every item at its natural width, out of sight, so the bar knows what it would take to
-          show more before showing it. Clipped to the bar so it never adds a scrollbar. */}
       <div
         aria-hidden="true"
         inert
@@ -401,7 +386,6 @@ export function ActionBar({
               <div data-measure={`${item.id}:full`} className="flex shrink-0 items-center">
                 <ItemBody item={item} mode="full" size={size} shrinking={false} />
               </div>
-              {/* A plain item's icon form is one control square; only drawn items need measuring. */}
               {item.render ? (
                 <div data-measure={`${item.id}:icon`} className="flex shrink-0 items-center">
                   <ItemBody item={item} mode="icon" size={size} shrinking={false} />

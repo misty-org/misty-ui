@@ -3,9 +3,9 @@ import { OutOfRow } from "../controls/RowContext";
 import { X } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
-import { PageDimmedContext } from "./pageDimmed";
+import { PageDimmedContext } from "./page_dimmed";
 
 function cleanupPointerEvents() {
   if (typeof document === "undefined") return;
@@ -151,9 +151,7 @@ const DialogContent = React.forwardRef<
     ref,
   ) => {
     const scrolls = layout === "scroll" || size === "media";
-    // Over a dialog that already dims the page, this one doesn't dim it (and that dialog) again.
     const dimmed = React.useContext(PageDimmedContext);
-    // A tour shown over the dialog lives outside it; stepping through it must not close the dialog.
     const fromTour = (event: Event) =>
       event.target instanceof Element && event.target.closest('[data-slot="tour"]') !== null;
     React.useEffect(() => {
@@ -170,8 +168,6 @@ const DialogContent = React.forwardRef<
         {backdrop && !dimmed ? (
           <DialogOverlay className={container ? "absolute inset-0" : undefined} />
         ) : null}
-        {/* Flex layout centers the panel on whole pixels; a 50% translate would land odd
-          sizes on a half pixel and blur their text on 1x displays. */}
         <div
           data-slot="dialog-positioner"
           className={cn(

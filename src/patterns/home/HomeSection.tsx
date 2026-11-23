@@ -1,10 +1,10 @@
 import type { ComponentPropsWithoutRef, ComponentType, ReactNode } from "react";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { Pressable } from "../../controls/Pressable";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { Surface } from "../../display/Surface";
 import { Text } from "../../display/Text";
-import { homeDividedClass, homePanelClass, homeSectionClass } from "./homeLayout";
+import { homeDividedClass, homePanelClass, homeSectionClass } from "./home_layout";
 
 /**
  * The one heading every block on a Space's home wears: a title, its count, an optional dot
@@ -28,7 +28,6 @@ export function HomeSectionHead(props: {
       >
         {props.attention && <OverviewDot status="needs-you" />}
         {props.title}
-        {/* The count reads as part of the title: same size, weight and color. */}
         {props.count ? <span className="tabular-nums">{props.count}</span> : null}
       </Text>
       {props.action ? (
@@ -129,7 +128,6 @@ export function PlaceChip({
       tone="faint"
       radius="lg"
       wash="control"
-      // Pressable's `selected`: the picked chip keeps its wash's pressed fill.
       data-selected={pressed || undefined}
       aria-pressed={pressed}
       className={cn(

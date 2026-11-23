@@ -1,4 +1,3 @@
-/* Shared component motion and touch targets. */
 @layer components {
   @keyframes collapsible-down {
     from {
@@ -22,14 +21,10 @@
     }
   }
 
-  /* A first load's placeholder shows only once the wait passes 300ms, so a quick load shows
-     nothing. Skeletons and PaneLoading share it; blocks mounted together appear together. */
   .misty-appear-late {
     animation: misty-appear-late 150ms ease-out 300ms both;
   }
 
-  /* Monochrome loading placeholder: a soft highlight sweeps across the block. It appears late,
-     like PaneLoading. */
   .misty-skeleton {
     animation: misty-appear-late 150ms ease-out 300ms both;
     position: relative;
@@ -51,7 +46,6 @@
     animation: misty-skeleton-sweep 1.6s ease-in-out infinite;
   }
 
-  /* Live work reads as a gray highlight sweeping left to right across its text. */
   .misty-shimmer {
     background: linear-gradient(
       90deg,
@@ -114,31 +108,18 @@
   }
 }
 
-/* A hairline edge drawn as an outline just inside the box (content never covers it): width,
-   style and offset from --hairline; the caller sets its color with outline-[…]. Named so
-   tailwind-merge doesn't take it for an outline color. */
 @utility hairline-outline {
   outline-style: solid;
   outline-width: var(--hairline);
   outline-offset: calc(-1 * var(--hairline));
 }
 
-/* A popup's edge (menus, popovers, dialogs, tooltips): 1px, drawn as an outline over the
-   card's own rim so it paints above everything inside the card. A colored border paints under
-   the contents, which thin its inner half at the rounded corners; a ring is a box shadow outside
-   the card, which meets the card's own antialiased corner and leaves a dark seam on the curve.
-   Both read as faint, cut-off corners on 1x and scaled displays. The transparent border keeps
-   the card's size and padding as they were with a real border. overlays.css draws the same edge
-   on every popup primitive; keep the two in sync. !important, as there: Radix writes
-   `outline: none` inline on menus and Select lists, which no plain rule can beat. */
 @utility popup-edge {
   border: 1px solid transparent;
   outline: 1px solid color-mix(in srgb, currentColor 24%, transparent) !important;
   outline-offset: -1px !important;
 }
 
-/* A scroller that shows no scrollbar, for a bar's row that scrolls sideways (SidewaysScroll):
-   a scrollbar would take the bar's own room. */
 @utility scrollbar-none {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -146,9 +127,6 @@
   }
 }
 
-/* Long text shortens with a fade at its end, never an ellipsis (OverflowFadeText, Text). The fade
-   is set only while the text overflows, so a label that fits stays crisp to its last letter.
-   It sits at the end the text runs to, which is the left in right-to-left text. */
 @utility fade-end {
   -webkit-mask-image: linear-gradient(to right, black calc(100% - 1.125rem), transparent);
   mask-image: linear-gradient(to right, black calc(100% - 1.125rem), transparent);
@@ -159,9 +137,6 @@
   }
 }
 
-/* Two-line text that runs past its second line: the first line stays whole and the second fades
-   at its end. The element is exactly two lines tall while this is set. */
-/* Any number of lines: every line but the last stays whole, and the last fades at its end. */
 @utility fade-end-lines {
   -webkit-mask-image:
     linear-gradient(black, black),
@@ -222,7 +197,6 @@
   }
 }
 
-/* A file drop area (`useFileDropZone` with `area`) lights up as a whole while files hover over it. */
 [data-file-drop-area] {
   position: relative;
 }

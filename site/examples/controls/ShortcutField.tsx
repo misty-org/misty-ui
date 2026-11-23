@@ -11,7 +11,7 @@ export const meta = {
 
 function ShortcutDemo() {
   const [value, setValue] = React.useState("Mod+K");
-  return <ShortcutField label="Open command palette" value={value} onChange={setValue} />;
+  return <ShortcutField label="Open command palette" value={value} onChange={(next) => setValue(next ?? "")} />;
 }
 
 export default function Example() {

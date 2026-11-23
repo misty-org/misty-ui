@@ -1,6 +1,3 @@
-// What the docs site shows, read from the package itself: the examples (and their source), each
-// component's props (docs/props.json), and the guidance in DESIGN.md. Nothing here is written by
-// hand, so the site can't drift from the code.
 import type { ComponentType } from "react";
 
 import design from "../DESIGN.md?raw";
@@ -14,16 +11,13 @@ export type Example = {
   group: string;
   slug: string;
   name: string;
-  /** The page's title: the first component the example shows. */
   title: string;
-  /** Every component the example shows, by export name. */
   components: string[];
   file: string;
   about: string;
   wide: boolean;
   order: number;
   Component: ComponentType;
-  /** The example's source, as a person would write it in their own app. */
   code: string;
 };
 
@@ -41,7 +35,6 @@ const sources = import.meta.glob<string>("./examples/*/*.tsx", {
   import: "default",
 });
 
-/** The source with the docs' own bookkeeping taken out and the import pointed at the package. */
 function cleanSource(raw: string): string {
   return raw
     .replace(/export const meta = [^\n]*;\n\n?/, "")
@@ -85,7 +78,6 @@ export const props = propsJson as Record<string, PropDoc[]>;
 
 export type Guidance = { job: string; use: string; not: string };
 
-/** The rows of DESIGN.md's "Which piece for which job" table, by the components they name. */
 const guidanceRows: Guidance[] = (() => {
   const section = design.split("## Which piece for which job")[1]?.split("\n## ")[0] ?? "";
   return section
@@ -106,7 +98,6 @@ export function guidanceFor(components: string[]): Guidance[] {
   );
 }
 
-/** DESIGN.md's top rules, for the home page: the numbered "Before writing any UI" list. */
 export const principles: string[] = (() => {
   const section = design.split("## Before writing any UI")[1]?.split("\n## ")[0] ?? "";
   return section

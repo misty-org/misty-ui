@@ -1,15 +1,9 @@
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Text } from "../display/Text";
 import { Skeleton } from "../feedback/Skeleton";
 import { RowActions } from "../overlays/RowActions";
-
-/*
- * A store's shelves, as the App Store lays out its rows: a heading with "See all", then items in
- * two columns, each a large logo with its name, one line and its action under them, split by
- * hairlines. Explore's sections are built from these.
- */
 
 /**
  * A shelf of things to add: its heading (with one action at the end, such as See all), then
@@ -46,7 +40,6 @@ export function Shelf({
       <ul
         className={cn(
           "m-0 grid min-w-0 list-none p-0",
-          // The last row of each column has no hairline under it.
           "[&>li:last-child>[data-shelf-text]]:border-b-0",
           columns === 2 &&
             "lg:grid-cols-2 lg:gap-x-8 lg:[&>li:nth-last-child(2):nth-child(odd)>[data-shelf-text]]:border-b-0",

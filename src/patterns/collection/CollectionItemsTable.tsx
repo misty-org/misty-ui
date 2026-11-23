@@ -11,21 +11,17 @@ import { Pressable } from "../../controls/Pressable";
 import { StateMark } from "../../display/StateMark";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../display/Table";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { CollectionItemActions } from "./CollectionItemActions";
-import type { CollectionDragItemProps } from "./collectionDrag";
+import type { CollectionDragItemProps } from "./collection_drag";
 import {
   collectionIconTone,
   type CollectionColumn,
   type CollectionItem,
-} from "./collectionItemTypes";
+} from "./collection_item_types";
 
 export type CollectionSort = { key: string; descending: boolean };
 
-// 36px rows like every other list row. The wash is a gradient laid over each cell's own
-// background, so a sticky actions cell keeps its opaque fill under the highlight while the table
-// scrolls beneath it. The rows sit between the table's edge gutters, which take no wash, and keep
-// 2px apart with a clear top edge, clipped from the wash, so the header has no gap above it.
 const rowClass = cn(
   "group/row h-8 cursor-pointer border-0 transition-none",
   "[&>td]:h-8 [&>td]:py-0 [&>td:not([data-gutter])]:px-2",
@@ -40,7 +36,6 @@ const rowClass = cn(
   "[&>td:not([data-gutter])]:bg-[image:linear-gradient(var(--row-wash),var(--row-wash))]",
 );
 
-// Rows that start with an icon are taller, so the icon and a two-line title fit.
 const iconRowClass = "h-auto [&>td]:h-auto [&>td]:py-0";
 
 /**
@@ -94,7 +89,6 @@ function ColumnSeam({
       tabIndex={0}
       data-active={active || undefined}
       className={cn(
-        // Inside the column's own edge, so the last seam never makes the table scroll sideways.
         "absolute right-0 top-0 z-10 h-full w-2 cursor-col-resize touch-none outline-none",
         "after:absolute after:inset-y-0 after:right-0 after:w-px after:content-['']",
         "after:bg-transparent group-hover/table:after:bg-charcoal-border",
@@ -138,10 +132,10 @@ function SortHeader({
             : "min-w-28 whitespace-nowrap",
       )}
       aria-sort={selected ? (sort.descending ? "descending" : "ascending") : "none"}
+      aria-label={column.label}
     >
       <Pressable
         className={cn(
-          // The whole cell, down to the header's hairline, as Kura's: no box of its own.
           "group/sort flex h-8 w-full min-w-0 items-center gap-1 px-2",
           "font-medium text-cream-muted hover:text-cream focus-visible:text-cream",
           selected && "text-cream",
@@ -216,7 +210,6 @@ export function CollectionItemsTable({
   onWidthsChange?: (widths: CollectionColumnWidths) => void;
 }) {
   const cells = useRef(new Map<string, HTMLTableCellElement>());
-  // The widths while a seam is dragged, kept only once it is let go.
   const [draft, setDraft] = useState<CollectionColumnWidths | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
   const resizable = onWidthsChange !== undefined;
@@ -224,7 +217,6 @@ export function CollectionItemsTable({
   const fixed = resizable && columns.some((column) => held[column.key] !== undefined);
   const widthOf = (key: string) =>
     held[key] ?? cells.current.get(key)?.getBoundingClientRect().width ?? MIN_COLUMN_WIDTH * 2;
-  // Every column's width as drawn now, so the first drag fixes them where they already are.
   const measured = (): CollectionColumnWidths =>
     Object.fromEntries(columns.map((column) => [column.key, clampWidth(column.key, widthOf(column.key))]));
   const total = columns.reduce((sum, column) => sum + (fixed ? widthOf(column.key) : 0), 0);
@@ -284,11 +276,7 @@ export function CollectionItemsTable({
         onReset={() => onWidthsChange?.({})}
       />
     ) : null;
-  // Past the dragged columns, a filler takes what is left of the page, so a seam follows the
-  // pointer instead of the columns sharing out the room.
   const filler = fixed ? <TableHead aria-hidden="true" className="p-0" /> : null;
-  // The table's edges, a step wide: the header's hairline runs through them to the pane's sides,
-  // while the rows' washes stay a step in from them.
   const headGutter = <TableHead aria-hidden="true" data-gutter="" className="w-2 p-0" />;
   const rowGutter = <TableCell aria-hidden="true" data-gutter="" className="w-2 p-0" />;
 
@@ -425,7 +413,6 @@ export function CollectionItemsTable({
                     className={cn("whitespace-nowrap text-cream-muted", resizable && columnLineClass)}
                   >
                     {fixed ? (
-                      // A column narrower than its value fades it at the edge, as every label does.
                       <OverflowFadeText full className="block min-w-0">
                         {column.render(item)}
                       </OverflowFadeText>

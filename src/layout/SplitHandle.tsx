@@ -1,5 +1,5 @@
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * The seam between two resizable panes. Nothing shows at rest: the panes meet edge to edge. A

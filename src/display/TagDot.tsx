@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Tooltip } from "../overlays/Tooltip";
 
 /** Finder's tag colors by its numbers, 1 to 7; 0 is a tag with no color. */
@@ -37,7 +37,6 @@ function Dot({ color, className }: { color: number; className?: string }) {
       data-slot="tag-dot"
       className={cn(
         dotClass,
-        // A tag with no color is a hollow ring, as Finder draws one.
         tone ? tone.dot : "border border-cream-muted",
         className,
       )}

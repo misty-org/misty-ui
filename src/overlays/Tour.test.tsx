@@ -18,7 +18,6 @@ function Page() {
 
 describe("Tour", () => {
   it("leaves out steps whose control isn't on screen and finishes on Done", () => {
-    // jsdom lays nothing out, so give the lit control a box.
     vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
       top: 10,
       left: 10,
@@ -31,7 +30,6 @@ describe("Tour", () => {
       toJSON: () => ({}),
     });
     const onClose = vi.fn();
-    // A tour opens over a page that is already there.
     const { rerender } = render(<Page />);
     rerender(
       <>

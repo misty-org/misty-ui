@@ -114,9 +114,7 @@ it.each([false, true])("renders one tree of rows in either menu (context=%s)", (
   );
   openMenu(context);
   const rename = screen.getByRole("menuitem", { name: /Rename/ });
-  // Every row starts with its 16px icon.
   expect(rename.firstElementChild?.matches("svg.lucide-pencil")).toBe(true);
-  // Rows read at the control size, in either kind of menu.
   expect(rename.className.split(" ")).toEqual(
     expect.arrayContaining(["text-control", "text-cream"]),
   );
@@ -130,13 +128,11 @@ it.each([false, true])("renders one tree of rows in either menu (context=%s)", (
   const fork = screen.getByRole("menuitem", { name: "Fork" });
   expect(fork.getAttribute("data-disabled")).not.toBeNull();
 
-  // Selection is a checkmark at the right edge, after the label, never a dot.
   const pinned = screen.getByRole("menuitemcheckbox", { name: "Pinned" });
   expect(pinned.querySelector("svg.lucide-check")).toBeNull();
   fireEvent.click(pinned);
   expect(pinned.getAttribute("aria-checked")).toBe("true");
   expect(pinned.lastElementChild?.querySelector("svg.lucide-check")).toBeTruthy();
-  // A check row stays open so several can be toggled in one go.
   expect(screen.getByRole("menu")).toBeTruthy();
 
   const recent = screen.getByRole("menuitemradio", { name: "Recent" });

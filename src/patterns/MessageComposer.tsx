@@ -17,9 +17,9 @@ import {
   type ActionBarSize,
 } from "../layout/ActionBar";
 import { PathLine, type PathLineSegment } from "../layout/PathLine";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
-import { uiPx } from "../lib/uiScale";
+import { uiPx } from "../lib/ui_scale";
 
 /** The text box without its inset and type; the box grows to 180px, then scrolls. */
 const textBaseClass =
@@ -44,9 +44,7 @@ export type MessageComposerVariant = "plain" | "card" | "channel";
 
 const boxClass = {
   plain: "rounded-xl border",
-  // No border, ring or shadow: its raised fill alone sets it off the page, in light and dark.
   card: "relative rounded-xl",
-  // In a channel the page is already the card's fill, so the box steps up once more.
   channel: "relative rounded-xl",
 } as const;
 /** The box's edge and fill while nothing is dragged over it. */
@@ -88,7 +86,7 @@ export type MessageComposerProps = Omit<ComponentProps<"div">, "children"> & {
   overlay?: ReactNode;
   /**
    * card only: rows about the chat's state at the top of the box, above the text, such as
-   * messages queued to send next: each a ComposerStatusRow, parted by hairlines.
+   * messages queued to send next: each a ComposerStatusRow, together on one faint fill.
    */
   status?: ReactNode;
   /**
@@ -159,15 +157,12 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
       const input = textareaRef.current;
       if (!input) return;
       input.style.height = "0px";
-      // The limits are design pixels; scrollHeight is CSS pixels (shared/lib/uiScale.ts).
       input.style.height = `${Math.min(uiPx(maxInputPx), Math.max(uiPx(minInputPx), input.scrollHeight))}px`;
       measured.current = input.value;
     }, [textareaRef]);
     useLayoutEffect(() => {
       const input = textareaRef.current;
       if (!input) return;
-      // Collapsing to 0px and re-measuring forces two layouts per keystroke. Appended text
-      // that still fits cannot change the height, so skip it.
       if (
         measured.current !== null &&
         input.value.startsWith(measured.current) &&
@@ -207,7 +202,7 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
         {card && status ? (
           <div
             data-slot="message-composer-status"
-            className="flex min-w-0 flex-col border-b border-[color:color-mix(in_srgb,var(--misty-theme-text)_7%,transparent)] empty:hidden"
+            className="m-1 mb-0 flex min-w-0 flex-col gap-0.5 rounded-lg bg-row-hover empty:hidden"
           >
             {status}
           </div>
@@ -317,7 +312,7 @@ export function MessageComposerAction({
 
 /**
  * One row at the top of a card composer, about the chat's state: a muted glyph, what it says
- * (fading at the edge), and its actions at the end. 36px, with a hairline under all but the last;
+ * (fading at the edge), and its actions at the end. 36px, the rows together on one faint fill;
  * the row makes its actions 27px, buttons and icon buttons alike.
  */
 export function ComposerStatusRow(props: {
@@ -333,11 +328,10 @@ export function ComposerStatusRow(props: {
     <div
       data-slot="composer-status-row"
       className={cn(
-        "flex h-8 min-w-0 items-center gap-2 pr-1 pl-3 text-meta text-cream-muted",
-        "[&+&]:border-t [&+&]:border-[color:color-mix(in_srgb,var(--misty-theme-text)_7%,transparent)]",
+        "flex h-8 min-w-0 items-center gap-2 rounded-lg pr-1 pl-2 text-meta text-cream-muted",
       )}
     >
-      <Icon aria-hidden className="size-3.5 shrink-0" />
+      <Icon aria-hidden className="shrink-0" />
       {props.label ? <span className="shrink-0">{props.label}</span> : null}
       <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap text-cream [mask-image:linear-gradient(to_right,black_calc(100%-1.25rem),transparent)]">
         {props.children}

@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Button } from "../controls/Button";
 
 /** The one button an empty or error state may offer. */

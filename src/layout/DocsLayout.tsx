@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight, Search, type LucideIcon } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Pressable } from "../controls/Pressable";
 import { Kbd } from "../display/Kbd";
 import { CommandEmpty } from "../overlays/Command";
@@ -58,7 +58,6 @@ export function DocsLayout({
       <div
         className={cn(
           "mx-auto grid max-w-(--docs-max,90rem) px-(--docs-gutter,0px) min-[52rem]:grid-cols-[--spacing(64)_minmax(0,1fr)]",
-          // The third column exists only for a page that has a contents list.
           toc && "min-[62rem]:grid-cols-[--spacing(64)_minmax(0,1fr)_--spacing(52)]",
         )}
       >
@@ -144,8 +143,7 @@ export function DocsSwitcher({
         </Text>
       ) : null}
       <DropdownMenu>
-        {/* The trigger's own side padding is pulled back, so its name sits as far from the slash as the names before it, and its wash never reaches the slash. */}
-        <MenuTrigger label="Choose the docs" value={open?.label ?? title} heading className="-ml-1.5" />
+        <MenuTrigger label="Choose the docs" value={open?.label ?? title} heading className="-ml-2" />
         <DropdownMenuContent align="start">
           <MenuRadioGroup value={current ?? ""} onValueChange={onSelect}>
             {sections.map((section) => (
@@ -279,7 +277,6 @@ export function DocsToc({
       <Text size="meta" weight="medium" tone="bright">
         {label}
       </Text>
-      {/* A hairline runs down the column like a trail, and the section being read marks it bright. */}
       <div className="grid border-l border-charcoal-border">
         {items.map((item) => (
           <Pressable
@@ -392,7 +389,6 @@ export function DocsSearch({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
-  // Each section once, in order, under the part of the docs it belongs to.
   const groups = [...new Map(items.map((item) => [`${item.detail ?? ""}\u0000${item.group}`, item])).values()];
   return (
     <>

@@ -1,7 +1,7 @@
 import { RotateCcw } from "lucide-react";
 import { useId, type ReactNode } from "react";
-import { reorderIds, usePointerReorder } from "../hooks/usePointerReorder";
-import { cn } from "../classNames";
+import { reorderIds, usePointerReorder } from "../hooks/use_pointer_reorder";
+import { cn } from "../class_names";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../overlays/ContextMenu";
 import { MenuCheckItem, MenuItem, MenuSeparator } from "../overlays/MenuItem";
 
@@ -51,7 +51,6 @@ export function CustomizableBar(props: {
 }) {
   const { label, axis, items, layout, onChange, onReset, arrangement, className, ...data } = props;
   const dock = arrangement === "dock";
-  // A dock keeps every item's place, even one with nothing to show right now.
   const available = layout.order.filter((id) => items[id] && (dock || items[id].node !== null));
   const shown = available.filter((id) => !layout.hidden.includes(id));
   const move = (id: string, target: string, after: boolean) =>
@@ -61,7 +60,6 @@ export function CustomizableBar(props: {
     axis,
     getDrag: (id) => ({ id, label: items[id]?.label ?? id }),
     onDrop: (drag, target, after) => move(drag.id, target, after),
-    // A step passes the next item the bar shows, never a hidden one.
     onKeyboardMove: (id, direction) => {
       const neighbour = shown[shown.indexOf(id) + direction];
       if (neighbour) move(id, neighbour, direction === 1);
@@ -93,8 +91,6 @@ export function CustomizableBar(props: {
           )}
         >
           {(dock ? available : shown).map((id, index, placed) => (
-            // An item with nothing to say right now draws nothing, and takes no gap either. Down
-            // a column an item takes the column's width (a sidebar row runs edge to edge).
             <div
               key={id}
               className={cn("flex empty:hidden", axis === "y" && "flex-col")}

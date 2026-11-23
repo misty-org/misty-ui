@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Text } from "../display/Text";
 import { Pressable } from "./Pressable";
 
@@ -17,8 +17,8 @@ export type ChoiceRowProps = {
 };
 
 /**
- * One answer to choose: its words, a line about it, and a checkmark at the right once chosen.
- * Rows live in a ChoiceList, which gives them their group and hairlines.
+ * One answer to choose: its number key when it has one, its words, a line about it, and a
+ * checkmark at the right once chosen. Rows live in a ChoiceList, which gives them their group.
  */
 function ChoiceRow({
   selected,
@@ -36,9 +36,20 @@ function ChoiceRow({
       aria-keyshortcuts={shortcut ? String(shortcut) : undefined}
       disabled={disabled}
       data-slot="choice-row"
-      className="flex min-h-8 w-full items-center gap-2 px-1 py-1.5 text-left hover:bg-control-hover"
+      className="flex min-h-8 w-full items-center gap-3 rounded-lg py-1.5 pr-2 pl-3 text-left hover:bg-control-hover"
       onClick={onSelect}
     >
+      {shortcut ? (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "grid size-5 shrink-0 place-items-center rounded-md text-caption tabular-nums",
+            selected ? "bg-cream text-charcoal-bg" : "bg-row-hover text-cream-muted",
+          )}
+        >
+          {shortcut}
+        </span>
+      ) : null}
       <span className="grid min-w-0 flex-1">
         <Text size="control" full>
           {label}
@@ -49,7 +60,7 @@ function ChoiceRow({
           </Text>
         ) : null}
       </span>
-      {selected ? <Check aria-hidden="true" className="size-4 shrink-0" /> : null}
+      {selected ? <Check aria-hidden="true" className="shrink-0" /> : null}
     </Pressable>
   );
 }
@@ -80,7 +91,8 @@ export type ChoiceListProps = {
 };
 
 /**
- * A vertical list of choices split by hairlines, with a checkmark on each picked row: one pick
+ * A vertical list of choices on one RowGroup's fill, with no lines between them, the number key
+ * before each when `shortcuts`, and a checkmark on each picked row: one pick
  * (a radio group) or several (`multiple`). For questions an agent asks, quiz answers and other
  * pick-from-these lists whose rows carry a line of description. Short sets of mutually exclusive
  * options in a bar use ChoiceGroup instead.
@@ -105,7 +117,10 @@ export function ChoiceList({
       role={multiple ? "group" : "radiogroup"}
       aria-label={label}
       data-slot="choice-list"
-      className={cn("grid divide-y divide-charcoal-border", className)}
+      className={cn(
+        "grid grid-cols-[minmax(0,1fr)] gap-0.5 rounded-xl bg-row-hover p-1",
+        className,
+      )}
     >
       {options.map((option, index) => {
         const value = option.value ?? option.label;

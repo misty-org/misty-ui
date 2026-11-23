@@ -1,5 +1,5 @@
-import { cn } from "../classNames";
-import { controlFrame } from "../controls/controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "../controls/control_frame";
 
 /**
  * One placeholder block. Its fill is the control wash (text at 10%), so it shows on every surface
@@ -44,7 +44,6 @@ type SkeletonControlKind =
   "button" | "button-sm" | "icon" | "switch" | "field" | "select" | "badge" | "text" | "time";
 
 const controlShapes: Record<SkeletonControlKind, string> = {
-  // Controls wear the shared control frame, so a placeholder is the shape of what replaces it.
   button: cn(controlFrame.md, "w-20"),
   "button-sm": cn(controlFrame.sm, "w-16"),
   icon: cn(controlFrame.md, "w-8"),
@@ -122,8 +121,8 @@ const leadingShapes = {
  * Placeholder rows shaped like the list that will replace them. Use instead of "Loading…" text;
  * `label` names what is loading for screen readers. Pick the `variant` the real rows use, the
  * number of text `lines`, the `leading` picture and the `trailing` controls, so the swap doesn't
- * move anything. A list of ListRows uses ListRowSkeleton; settings rows in a settings panel use
- * `SettingsRowSkeleton` in the settings feature, which keeps the panel's hairlines.
+ * move anything. A list of ListRows uses ListRowSkeleton; settings rows use the settings
+ * feature's row skeleton inside the same SettingsSection, so the group's fill stays put.
  */
 function SkeletonList({
   label,
@@ -147,7 +146,6 @@ function SkeletonList({
 }) {
   const shape = rowVariants[variant];
   const end: SkeletonTrailing = trailing === true ? "button-sm" : trailing;
-  // Settings and card rows set their title at body size; plain rows at the control size.
   const titleHeight = variant === "list" ? "h-3" : "h-4";
   return (
     <div

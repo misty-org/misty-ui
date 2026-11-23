@@ -248,6 +248,12 @@
       "type": "AppLogoSize",
       "optional": true,
       "doc": ""
+    },
+    {
+      "name": "render",
+      "type": "MarkRender",
+      "optional": true,
+      "doc": ""
     }
   ],
   "AppTile": [
@@ -400,44 +406,6 @@
       "doc": ""
     }
   ],
-  "BrandIcon": [
-    {
-      "name": "brand",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "size",
-      "type": "number",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "className",
-      "type": "string",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "style",
-      "type": "CSSProperties",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "label",
-      "type": "string",
-      "optional": true,
-      "doc": "The brand's name, for a mark that stands alone: its accessible name. Leave it out when a label beside the mark already says it. To show the name on hover, wrap it in a Tooltip."
-    },
-    {
-      "name": "aria-hidden",
-      "type": "boolean",
-      "optional": true,
-      "doc": ""
-    }
-  ],
   "Button": [
     {
       "name": "variant",
@@ -511,13 +479,141 @@
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
-      "doc": "The call's controls as IconButtons: microphone, camera, screen, then the rest, with a `ToolbarDivider` before Leave (`variant=\"danger\"`)."
+      "doc": "The call's controls as IconButtons: microphone, camera, screen, then the rest, with a `ToolbarDivider`'s space before Leave (`variant=\"danger\"`)."
     },
     {
       "name": "className",
       "type": "string",
       "optional": true,
       "doc": "Layout only."
+    }
+  ],
+  "CallCaptions": [
+    {
+      "name": "lines",
+      "type": "CallCaptionLine[]",
+      "optional": false,
+      "doc": "The last few things said, oldest first; each leaves on its own after a few seconds."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    }
+  ],
+  "CallControl": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "What pressing it does now, such as \"Mute\" or \"Turn camera on\": its accessible name and tooltip."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The glyph for its state now: a microphone, or a crossed-out one while muted."
+    },
+    {
+      "name": "off",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The thing is off (muted, camera off). The button fills, white in the dark theme and black in the light one, so being muted reads at a glance from across the room, not only from the glyph."
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "optional": true,
+      "doc": "The device menu's name, such as \"Audio devices\". Needed with `menu`."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The menu its chevron opens, as menu rows (`MenuLabel`, `MenuRadioGroup` of devices, a `MenuCheckItem`): which microphone, speaker or camera the call uses. Without it there is no chevron."
+    },
+    {
+      "name": "menuOpen",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The device menu open or shut, for opening it from elsewhere (a notice's action)."
+    },
+    {
+      "name": "onMenuOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "CallLobby": [
+    {
+      "name": "preview",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "Your own picture before you join: a `CallTile` with your camera, or your face."
+    },
+    {
+      "name": "controls",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The microphone and camera `CallControl`s, set as they'll be when you join."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": "Where you're about to go, such as the voice channel's name."
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": "Who is there now, in plain words (\"Ana and Sam are here\")."
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The one action, Join, as a primary `Button` at `lg`."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    }
+  ],
+  "CallReactions": [
+    {
+      "name": "reactions",
+      "type": "{ emoji: string; label: string; }[]",
+      "optional": false,
+      "doc": "The reactions offered, each with its name for its tooltip and accessible name."
+    },
+    {
+      "name": "onPick",
+      "type": "(emoji: string) => void",
+      "optional": false,
+      "doc": "Sends one into the call. The row stays open, so several can go in a row."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
     }
   ],
   "CallStage": [
@@ -532,6 +628,12 @@
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
       "doc": "The call's tiles (`CallTile`), one per person."
+    },
+    {
+      "name": "dimmed",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The call has lost its connection and is getting it back: every tile dims until it does. Say so in words beside it (a notice), since dimming alone doesn't tell why."
     },
     {
       "name": "className",
@@ -588,6 +690,36 @@
       "type": "boolean",
       "optional": true,
       "doc": "They hear nothing of the call (an agent away doing what it was asked): crossed-out headphones by the name."
+    },
+    {
+      "name": "weak",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Their connection is poor, so their picture or voice may stutter: a low signal mark and the words at the tile's bottom right, in the waiting tone. Leave it off while the connection is fine."
+    },
+    {
+      "name": "hand",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Their hand is up: a ring in the waiting tone (unless they're talking) and a hand before their name, until they or someone lowers it."
+    },
+    {
+      "name": "handPlace",
+      "type": "number",
+      "optional": true,
+      "doc": "Where their raised hand stands in line, 1 being first, shown after the hand while more than one hand is up. Leave it off while theirs is the only one."
+    },
+    {
+      "name": "reaction",
+      "type": "{ key: string | number; emoji: string; }",
+      "optional": true,
+      "doc": "A reaction they just sent, rising off the tile and fading. Give each a new `key` so the same emoji twice plays twice; leave it off once it has played."
+    },
+    {
+      "name": "zoom",
+      "type": "number",
+      "optional": true,
+      "doc": "How far the picture is zoomed in, 1 being whole. Above 1 the picture grows inside the tile, which scrolls to move around it: for reading a shared screen."
     },
     {
       "name": "actions",
@@ -1051,32 +1183,6 @@
       "type": "string",
       "optional": false,
       "doc": ""
-    }
-  ],
-  "ChannelSidebarHeader": [
-    {
-      "name": "name",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "open",
-      "type": "boolean",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "selected",
-      "type": "boolean",
-      "optional": true,
-      "doc": "The item shown now in a list of them (the step whose picture is on screen): it keeps its wash's pressed fill, hovered or not. For `row`, `control` and `panel` washes."
-    },
-    {
-      "name": "wash",
-      "type": "PressableWash",
-      "optional": true,
-      "doc": "The shared hover look. Without it the content draws its own."
     }
   ],
   "ChannelWelcome": [
@@ -2325,7 +2431,7 @@
       "name": "open",
       "type": "boolean",
       "optional": false,
-      "doc": "Whether what it shows is open: the chevron turns up."
+      "doc": "Whether what it shows is open: the chevron turns down."
     }
   ],
   "DisclosureList": [],
@@ -2645,6 +2751,12 @@
       "type": "MenuWidth",
       "optional": true,
       "doc": ""
+    },
+    {
+      "name": "kind",
+      "type": "\"card\" | \"list\"",
+      "optional": true,
+      "doc": "`list` (the default) is a menu of rows. `card` is a menu laid out as a card, 324px wide with no padding of its own, for a header over its rows: the profile card (`ProfileCard`)."
     }
   ],
   "DropdownMenuGroup": [],
@@ -3122,6 +3234,20 @@
       "type": "string",
       "optional": true,
       "doc": "A selector for something in the container it keeps clear of at the top, such as a header floating over the container's top edge."
+    }
+  ],
+  "FoldChevron": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
     }
   ],
   "FramedPage": [
@@ -3830,9 +3956,9 @@
   ],
   "LogoPlate": [
     {
-      "name": "logo",
-      "type": "string",
-      "optional": false,
+      "name": "plate",
+      "type": "LogoPlateTheme",
+      "optional": true,
       "doc": ""
     },
     {
@@ -3859,6 +3985,44 @@
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
+      "doc": ""
+    }
+  ],
+  "Mark": [
+    {
+      "name": "of",
+      "type": "string",
+      "optional": false,
+      "doc": "The mark's id or one of its aliases, such as `anthropic`, `engine:claude` or `twitter`."
+    },
+    {
+      "name": "size",
+      "type": "string | number",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": "The subject's name, for a mark that stands alone: its accessible name, and the initial shown when there's no artwork. Leave it out when a label beside the mark already says it."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "style",
+      "type": "CSSProperties",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "aria-hidden",
+      "type": "boolean",
+      "optional": true,
       "doc": ""
     }
   ],
@@ -4360,7 +4524,13 @@
       "name": "heading",
       "type": "boolean",
       "optional": true,
-      "doc": "Set as a bar's name, not a control: the control size, semibold and bright, as the logo and page name beside it in a navbar are, with the same hover wash and chevron."
+      "doc": "The name of a place that opens its menu, set as a name rather than a control: a sidebar's Space, a docs site's section, a channel column's place. Semibold and bright, with `mark` before it and the chevron right after, as one compact button only as wide as what it holds. The name is shown whole, never faded: a long one wraps onto a second line. It stands alone in its row; the place's actions (Invite people) live in its menu."
+    },
+    {
+      "name": "mark",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "With `heading`: the place's own mark before the name, such as the Space's avatar."
     }
   ],
   "MessageActions": [
@@ -4472,7 +4642,7 @@
       "name": "status",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "card only: rows about the chat's state at the top of the box, above the text, such as messages queued to send next: each a ComposerStatusRow, parted by hairlines."
+      "doc": "card only: rows about the chat's state at the top of the box, above the text, such as messages queued to send next: each a ComposerStatusRow, together on one faint fill."
     },
     {
       "name": "items",
@@ -4924,26 +5094,6 @@
       "doc": ""
     }
   ],
-  "NavTitleButton": [
-    {
-      "name": "name",
-      "type": "string | (string & ReactElement<unknown, string | JSXElementConstructor<any>>) | (strin…",
-      "optional": false,
-      "doc": "The place's name. Its length is capped where it is typed, so it shows whole."
-    },
-    {
-      "name": "mark",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "The place's own mark before the name, at the 18px glyph size, such as the Space's avatar."
-    },
-    {
-      "name": "ref",
-      "type": "RefObject<HTMLButtonElement | null> | ((instance: HTMLButtonElement | null) => void | (…",
-      "optional": true,
-      "doc": ""
-    }
-  ],
   "NumberedList": [
     {
       "name": "items",
@@ -5142,13 +5292,13 @@
       "name": "framed",
       "type": "boolean",
       "optional": true,
-      "doc": "A rounded frame with the page's corners cut to it (browserHostBounds.ts), for a page that stands on its own, like the agent browser's. Without it the page fills its pane edge to edge, under the pane's toolbar."
+      "doc": "A rounded frame with the page's corners cut to it (browser_host_bounds.ts), for a page that stands on its own, like the agent browser's. Without it the page fills its pane edge to edge, under the pane's toolbar."
     },
     {
       "name": "inset",
       "type": "boolean",
       "optional": true,
-      "doc": "A page set into a SidePanel: a 6.75px margin of the panel round it and its corners rounded just inside the panel's, with a neutral outline while picking. Once the page is on screen the panel lets it show beneath the renderer under a menu or dialog (sidePanel.css), and this margin keeps the panel's fill."
+      "doc": "A page set into a SidePanel: a 6.75px margin of the panel round it and its corners rounded just inside the panel's, with a neutral outline while picking. Once the page is on screen the panel lets it show beneath the renderer under a menu or dialog (side_panel.css), and this margin keeps the panel's fill."
     },
     {
       "name": "children",
@@ -5321,6 +5471,68 @@
       "doc": ""
     }
   ],
+  "PersonRow": [
+    {
+      "name": "face",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "Their face: an Avatar at the default size in a `PresenceFace`."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "owner",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The Space's owner: a crown after the name, named in its tooltip."
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": "One quiet line about them now, said in plain words: their own status, where they are (\"In Lounge in Weekend build\"), what their agent is doing, or a request's state."
+    },
+    {
+      "name": "away",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Offline: the row dims until it is hovered."
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": true,
+      "doc": "Opens them, such as their direct message."
+    },
+    {
+      "name": "actions",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Buttons that always show at the row's end, for something waiting on the person (Accept and Ignore on a friend request): labeled `Button`s at `sm`."
+    },
+    {
+      "name": "tools",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "IconButtons shown at the row's end while it is hovered (Message, Call)."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The rows of its ⋯ menu, also opened by a right-click; its name is \"`name` actions\"."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    }
+  ],
   "PickerList": [],
   "PickerSearch": [
     {
@@ -5452,6 +5664,14 @@
       "doc": ""
     }
   ],
+  "PresenceDot": [
+    {
+      "name": "presence",
+      "type": "MemberPresence",
+      "optional": false,
+      "doc": ""
+    }
+  ],
   "PresenceFace": [
     {
       "name": "presence",
@@ -5460,14 +5680,8 @@
       "doc": ""
     },
     {
-      "name": "ring",
-      "type": "\"sidebar\" | \"pane\"",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "size",
-      "type": "\"default\" | \"lg\"",
+      "name": "face",
+      "type": "AvatarSize",
       "optional": true,
       "doc": ""
     },
@@ -5492,6 +5706,88 @@
       "doc": "The item shown now in a list of them (the step whose picture is on screen): it keeps its wash's pressed fill, hovered or not. For `row`, `control` and `panel` washes."
     }
   ],
+  "ProfileCardBanner": [
+    {
+      "name": "src",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onChange",
+      "type": "() => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "changeLabel",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "ProfileCardGroup": [
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "ProfileCardHeader": [
+    {
+      "name": "face",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "status",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "ProfileCardName": [
+    {
+      "name": "name",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "ProfileCardStatus": [
+    {
+      "name": "emoji",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "text",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onSelect",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    }
+  ],
   "Progress": [
     {
       "name": "variant",
@@ -5509,9 +5805,9 @@
     },
     {
       "name": "layout",
-      "type": "\"stacked\" | \"side\" | \"info\"",
+      "type": "\"stacked\" | \"side\" | \"info\" | \"grouped\"",
       "optional": true,
-      "doc": "`side` (default): the key on the left, the value on the right of a 36px row. `stacked`: the value under its key, for narrow panes or long values such as paths. `info`: Finder's and Kura's Get Info, the key right-aligned in a narrow muted column and the value beside it in the meta role, wrapping onto more lines (a long path shows whole)."
+      "doc": "`side` (default): the key on the left, the value on the right of a 36px row. `stacked`: the value under its key, for narrow panes or long values such as paths. `info`: Finder's and Kura's Get Info, the key right-aligned in a narrow muted column and the value beside it in the meta role, wrapping onto more lines (a long path shows whole). `grouped`: 36px rows on one RowGroup's fill, the key in the text color and the value muted at the row's end, for facts that stand as their own group (a store item's facts, an inspector's details)."
     },
     {
       "name": "label",
@@ -5635,7 +5931,7 @@
       "name": "actions",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "The buttons in one 36px row: a BackButton, then the one primary action, then a quiet one."
+      "doc": "The buttons in one 36px row at the panel's end: a BackButton first where there is one, then quiet ones (Skip), then the one primary action last."
     },
     {
       "name": "error",
@@ -5854,6 +6150,91 @@
       "doc": ""
     }
   ],
+  "RowGroup": [
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "as",
+      "type": "\"div\" | \"ul\"",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "RowGroupLabel": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "SectionHeadingAction",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "RowGroupSection": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "SectionHeadingAction",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "description",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A muted line about the whole group, only where it explains something the rows don't."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "as",
+      "type": "\"div\" | \"ul\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    }
+  ],
+  "RowGroupStack": [],
   "RowTools": [
     {
       "name": "reveal",
@@ -6331,6 +6712,12 @@
       "doc": "The title bright and semibold instead of muted, as a file manager's sidebar sections (Kura's Quick access, Tags, Devices), where the heading leads its rows rather than sitting back."
     },
     {
+      "name": "kind",
+      "type": "\"label\" | \"row\"",
+      "optional": true,
+      "doc": "`row` (the default) is a 36px heading aligned with the rows under it, for the sidebar and lists of bare rows. `label` sits tight over a RowGroup, set just inside the group's edge so it starts on the same line as the page's title (RowGroupLabel is this)."
+    },
+    {
       "name": "id",
       "type": "string",
       "optional": true,
@@ -6400,6 +6787,82 @@
       "type": "boolean",
       "optional": true,
       "doc": "The stronger hairline, for a line that joins things rather than parting them (a mind map's branches) or one shown under the pointer (a pane's resize seam)."
+    }
+  ],
+  "SettingsRow": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "description",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A muted line under the label, only where it explains something the label doesn't (\"Space drives stay in sync while Misty is in the menu bar\"). Most rows have none."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "The row's control (a Switch, an OptionSelect, a field, a value), at its end."
+    },
+    {
+      "name": "sub",
+      "type": "boolean",
+      "optional": true,
+      "doc": "A row that only applies under the one above it, set in a step."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Doesn't apply right now (its parent setting is off): dimmed, with its control kept in place."
+    },
+    {
+      "name": "stacked",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The control under the label instead of beside it, for a wide control (a list, a textarea)."
+    },
+    {
+      "name": "leading",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A picture before the label, such as an engine's mark."
+    }
+  ],
+  "SettingsSection": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "description",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A muted line about the whole section, only where it explains something its rows don't."
+    },
+    {
+      "name": "action",
+      "type": "SectionHeadingAction",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
     }
   ],
   "SetupState": [
@@ -7606,12 +8069,6 @@
   ],
   "ToolBody": [
     {
-      "name": "onFold",
-      "type": "() => void",
-      "optional": true,
-      "doc": ""
-    },
-    {
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
@@ -7670,12 +8127,6 @@
   ],
   "ToolRow": [
     {
-      "name": "icon",
-      "type": "LucideIcon",
-      "optional": false,
-      "doc": ""
-    },
-    {
       "name": "name",
       "type": "string",
       "optional": false,
@@ -7695,7 +8146,7 @@
     },
     {
       "name": "state",
-      "type": "\"done\" | \"failed\" | \"running\"",
+      "type": "\"done\" | \"waiting\" | \"failed\" | \"running\"",
       "optional": true,
       "doc": ""
     },
@@ -7994,6 +8445,20 @@
       "doc": "For a virtual list's placement."
     }
   ],
+  "TurnChanges": [
+    {
+      "name": "files",
+      "type": "TurnChange[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "TurnFold": [
     {
       "name": "summary",
@@ -8032,8 +8497,34 @@
       "doc": "Earlier steps a live turn hides; pressing the line shows them all."
     },
     {
-      "name": "icon",
-      "type": "LucideIcon",
+      "name": "meta",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "At its end, such as how long the turn worked."
+    }
+  ],
+  "TurnStatus": [
+    {
+      "name": "phrase",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "elapsed",
+      "type": "string",
+      "optional": true,
+      "doc": "How long the turn has worked, such as \"1m 12s\"."
+    },
+    {
+      "name": "extra",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "More facts after the time, such as the tokens so far."
+    },
+    {
+      "name": "waiting",
+      "type": "boolean",
       "optional": true,
       "doc": ""
     }

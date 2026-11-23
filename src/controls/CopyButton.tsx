@@ -1,7 +1,7 @@
 import { Check, Copy } from "lucide-react";
 import * as React from "react";
 
-import { notify } from "../feedback/notices";
+import { notify } from "../feedback/Notices";
 import { renderIcon, type IconSource } from "../layout/ActionBar";
 import { IconButton, type IconButtonProps } from "./IconButton";
 

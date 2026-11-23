@@ -7,8 +7,8 @@ import {
   DropdownMenuTrigger,
 } from "../../overlays/DropdownMenu";
 import { MenuCheckItem, MenuItem, MenuLabel, MenuSeparator } from "../../overlays/MenuItem";
-import { cn } from "../../classNames";
-import { collectionMemory } from "./collectionMemory";
+import { cn } from "../../class_names";
+import { collectionMemory } from "./collection_memory";
 
 type ColumnSchema = {
   id: string;
@@ -54,7 +54,6 @@ export function CollectionPage({ className, children, ...props }: ComponentProps
           {...props}
         >
           <div ref={setSlot} className="shrink-0 empty:hidden" />
-          {/* A flat sheet with no rounded corner to clear, so the thumb runs to both ends. */}
           <div className="misty-scrollbar-flush flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pt-4 pb-5">
             {children}
           </div>
@@ -108,7 +107,6 @@ export function CollectionColumnChooser() {
             key={column.key}
             label={column.label}
             checked={!excluded.includes(column.key)}
-            // The name says which row is which, so it can't be hidden.
             disabled={column.key === "name"}
             onCheckedChange={(checked) =>
               setExcluded((current) =>

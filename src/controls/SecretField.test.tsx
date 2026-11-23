@@ -6,7 +6,6 @@ import { SecretField } from "./SecretField";
 
 afterEach(cleanup);
 
-/** Holds `saved` the way a settings row does, flipping it as the keychain answers. */
 function Harness(props: {
   initial: boolean;
   save?: (value: string) => Promise<void>;
@@ -145,7 +144,6 @@ describe("SecretField", () => {
   });
 });
 
-/** A menu row by its name inside an open menu. */
 async function within(menu: HTMLElement, name: string) {
   await waitFor(() => expect(menu.querySelector('[role="menuitem"]')).not.toBeNull());
   const item = Array.from(menu.querySelectorAll<HTMLElement>('[role="menuitem"]')).find((row) =>

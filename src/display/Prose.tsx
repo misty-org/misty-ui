@@ -1,7 +1,7 @@
 import "./prose.css";
 import type { LucideIcon } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 type ProseSize = "meta" | "control" | "body" | "page";
 
@@ -101,7 +101,9 @@ export function ProseCallout({
 
 /**
  * A code block: a header with the language and the block's actions (Copy), then the code, wrapped
- * so nothing hides past the edge. The ref is the `pre`, for reading its text.
+ * so nothing hides past the edge. The ref is the `pre`, for reading its text. Code highlighted with
+ * Shiki's CSS variables theme (`--shiki-token-*`) takes the block's monochrome look: keywords,
+ * names and numbers bright, strings a step down, comments muted.
  */
 export const ProseCode = React.forwardRef<
   HTMLPreElement,

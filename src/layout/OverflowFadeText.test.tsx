@@ -4,7 +4,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { Text } from "../display/Text";
 import { OverflowFadeText } from "./OverflowFadeText";
 
-// The tooltip is its own component; here it only has to show what it was given.
 vi.mock("../overlays/Tooltip", () => ({
   Tooltip: ({ content, children }: { content: string; children: ReactElement }) => (
     <div data-testid="tooltip" data-content={content}>

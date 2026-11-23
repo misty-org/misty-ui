@@ -35,34 +35,21 @@ export function LogoInitial({ name, size = 16 }: { name: string; size?: LogoSize
 /** The theme on which a logo all but disappears, and so sits on a plate there. */
 export type LogoPlateTheme = "dark" | "light";
 
-/**
- * Logos whose official artwork has no variant that reads on one theme, by kind and id. Prefer the
- * brand's own light or dark variant; list a logo here only when none exists.
- * `logoArtwork.contract.test.tsx` checks every logo's contrast on both themes against this list.
- */
-export const logoPlates: Record<string, LogoPlateTheme> = {
-  "brand:aws": "dark",
-  "brand:citrix": "dark",
-  "brand:meituan": "light",
-  "provider:openrouter-color": "light",
-};
-
 const plateStyle: Record<LogoPlateTheme, CSSProperties> = {
-  // A light plate on the dark theme only, and a dark plate on the light theme only.
   dark: { backgroundColor: "light-dark(transparent, #f2f2f2)" },
   light: { backgroundColor: "light-dark(#1c1c1c, transparent)" },
 };
 
 /**
  * Puts a logo on a small plate on the theme where it would disappear, as a last resort after the
- * brand's own variants. Logos not in `logoPlates` pass through bare.
+ * brand's own variants. A mark says when it needs one (`render` in `marks.json`, which `Mark` reads);
+ * without `plate` the logo passes through bare.
  */
-export function LogoPlate({ logo, children }: { logo: string; children: ReactNode }) {
-  const theme = logoPlates[logo];
-  if (!theme) return children;
+export function LogoPlate({ plate, children }: { plate?: LogoPlateTheme; children: ReactNode }) {
+  if (!plate) return children;
   return (
     <span
-      data-logo-plate={theme}
+      data-logo-plate={plate}
       style={{
         display: "inline-flex",
         flexShrink: 0,
@@ -70,7 +57,7 @@ export function LogoPlate({ logo, children }: { logo: string; children: ReactNod
         justifyContent: "center",
         padding: "calc(var(--spacing) * 0.5)",
         borderRadius: "var(--radius-sm)",
-        ...plateStyle[theme],
+        ...plateStyle[plate],
       }}
     >
       {children}

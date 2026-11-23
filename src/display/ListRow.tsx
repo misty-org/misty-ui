@@ -1,16 +1,16 @@
 import { Slot } from "@radix-ui/react-slot";
-import { useNow } from "../hooks/useNow";
+import { useNow } from "../hooks/use_now";
 import { RowControls } from "../controls/RowContext";
 import { Check } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
-import { itemToneClass, type ItemTone } from "../icons/itemTones";
+import { cn } from "../class_names";
+import { itemToneClass, type ItemTone } from "../icons/item_tones";
 import { renderIcon, type IconSource } from "../layout/ActionBar";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { RowActions } from "../overlays/RowActions";
 import { SkeletonControl, trailingControls, type SkeletonTrailing } from "../feedback/Skeleton";
 import { StateMark, type StateMarkKind } from "./StateMark";
-import { rowShape, rowShapeTwoLine } from "./rowShape";
+import { rowShape, rowShapeTwoLine } from "./row_shape";
 
 /**
  * What a row shows at its right end. A row has one state at a time: the agent working on it, the
@@ -205,7 +205,6 @@ const ListRow = React.forwardRef<HTMLElement, ListRowProps>(
         data-two-line={description ? true : undefined}
         className={cn(
           "group/row relative",
-          // One line is the shared row; a description makes it two lines, with the same edges.
           description ? rowShapeTwoLine : rowShape,
           "text-control text-cream transition-colors",
           "hover:bg-control-hover has-[:focus-visible]:bg-control-hover",
@@ -218,7 +217,6 @@ const ListRow = React.forwardRef<HTMLElement, ListRowProps>(
           ref={ref}
           id={id}
           {...openProps}
-          // With a description, the row is named by its label and described by the line.
           aria-label={ariaLabel ?? (description ? label : undefined)}
           aria-describedby={description ? descriptionId : undefined}
           aria-current={selected ? "true" : undefined}
@@ -229,8 +227,6 @@ const ListRow = React.forwardRef<HTMLElement, ListRowProps>(
           data-slot="list-row-open"
           className={cn(
             "flex min-w-0 flex-1 items-center gap-2 self-stretch text-left outline-none",
-            // The open target covers the whole row, so its padding opens it too; the right slot
-            // sits above it.
             "after:absolute after:inset-0 after:rounded-md after:content-['']",
           )}
         >
@@ -243,7 +239,6 @@ const ListRow = React.forwardRef<HTMLElement, ListRowProps>(
             : text}
         </Open>
         {hasTrailing ? (
-          // Above the open target, which covers the whole row.
           <span data-slot="list-row-trailing" className="relative flex shrink-0 items-center gap-1">
             <RowControls>{trailing}</RowControls>
           </span>
@@ -258,7 +253,6 @@ const ListRow = React.forwardRef<HTMLElement, ListRowProps>(
                 data-slot="list-row-state"
                 className={cn(
                   "flex items-center justify-end",
-                  // The ⋯ shows on exactly these conditions (RowActions), so the two never overlap.
                   hasMenu && [
                     "group-hover/row:invisible group-focus-within/row:invisible",
                     "group-has-[[data-state=open]]/row:invisible group-has-[[data-context-open]]/row:invisible",

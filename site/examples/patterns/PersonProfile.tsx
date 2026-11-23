@@ -20,7 +20,7 @@ export default function Example() {
       <PersonProfile
         label="Profile"
         face={
-          <PresenceFace presence="online" size="lg">
+          <PresenceFace presence="online" face="xl">
             <Avatar size="xl" tone="blue">
               <AvatarFallback>J</AvatarFallback>
             </Avatar>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { Tooltip } from "../overlays/Tooltip";
 
@@ -74,7 +74,6 @@ const ChoiceTile = React.forwardRef<HTMLButtonElement, ChoiceTileProps>(
           "data-[look=outline]:aria-pressed:border-charcoal-border-strong",
           "data-[look=outline]:aria-checked:border-charcoal-border-strong",
           "disabled:pointer-events-none disabled:opacity-50",
-          // Shown but not pickable (`aria-disabled`), so its tooltip can still say why.
           "aria-disabled:cursor-default aria-disabled:opacity-45 aria-disabled:hover:bg-transparent",
           className,
         )}

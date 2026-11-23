@@ -30,9 +30,9 @@ function SelectDemo() {
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="week">Monday</SelectItem>
-          <SelectItem value="sunday">Sunday</SelectItem>
-          <SelectItem value="saturday">Saturday</SelectItem>
+          <SelectItem value="week" label="Monday" />
+          <SelectItem value="sunday" label="Sunday" />
+          <SelectItem value="saturday" label="Saturday" />
         </SelectContent>
       </Select>
     </div>

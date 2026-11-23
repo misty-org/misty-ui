@@ -1,6 +1,6 @@
 import { Palette } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 type SwatchShape = "circle" | "square";
 
@@ -8,8 +8,6 @@ const swatchClass = (shape: SwatchShape) =>
   cn(
     "size-5 shrink-0 border border-charcoal-border outline-none transition-[box-shadow,border-color]",
     "hover:border-cream-muted focus-visible:border-cream",
-    // The selected mark is a shadow, not a ring: the app clears rings on focus, and the swatch
-    // just picked keeps focus.
     "aria-pressed:shadow-[0_0_0_1px_var(--color-charcoal-card),0_0_0_0.1875rem_var(--color-cream)]",
     "aria-checked:shadow-[0_0_0_1px_var(--color-charcoal-card),0_0_0_0.1875rem_var(--color-cream)]",
     shape === "circle" ? "rounded-full" : "rounded-md",

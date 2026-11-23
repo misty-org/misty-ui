@@ -1,11 +1,6 @@
 :root {
-  /* Fixed logical pixels keep the same thickness at every viewport size. The thumb is a pill
-     inset by --misty-scrollbar-inset inside this track, so no scrollbar touches an edge. */
   --misty-scrollbar-size: 0.75rem;
   --misty-scrollbar-inset: 0.1875rem;
-  /* Room kept clear at each end of the track inside a rounded surface (misty-scrollbar-rounded).
-     WebKit doesn't clip a scrollbar to rounded corners; with this and the thumb's own inset its
-     round end starts 7px in, which still clears a 16px corner's curve. */
   --misty-scrollbar-end: 0.25rem;
 }
 
@@ -15,9 +10,6 @@
     scrollbar-color: var(--misty-theme-active, #737373) var(--misty-theme-bg, transparent);
   }
 
-  /* WebKit/Blink standard scrollbar properties override custom sizing.
-     Use their pixel-sized track; other engines retain the thin fallback.
-     Base-layer defaults let deliberately hidden scrollbars stay hidden. */
   @supports selector(::-webkit-scrollbar) {
     * {
       scrollbar-width: auto;
@@ -30,9 +22,6 @@
     height: var(--misty-scrollbar-size);
   }
 
-  /* No painted track: the scroller's own surface shows, so a rounded panel never shows a
-     differently colored strip. The thumb's transparent border keeps the pill off every edge,
-     including the ends, where a corner would otherwise clip it. */
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-corner {
     background: transparent;
@@ -50,8 +39,6 @@
   }
 }
 
-/* A scrollbar that floats inside its pane: no track, a full pill thumb inset from the edge
-   so a rounded panel corner never clips it. Pair with vertical margin on the scroller. */
 @layer components {
   .misty-scrollbar-floating::-webkit-scrollbar {
     width: 1rem;
@@ -69,11 +56,6 @@
     background-color: var(--misty-theme-active, #737373);
   }
 
-  /* A rounded surface (a popup, a dialog, a floating or side panel, a code block): its scrollers,
-     and its own, keep room clear at each end of the track so a corner never clips the thumb.
-     Everywhere else the track runs to both ends, so the thumb reaches the top and bottom of its
-     scroller with only its own inset. Along the track's length only: the ends of a vertical one,
-     the sides of a level one. */
   .misty-scrollbar-rounded::-webkit-scrollbar-track:vertical,
   .misty-scrollbar-rounded *::-webkit-scrollbar-track:vertical {
     margin-top: var(--misty-scrollbar-end);
@@ -85,8 +67,6 @@
     margin-right: var(--misty-scrollbar-end);
   }
 
-  /* A scroller inside a rounded surface that doesn't reach its corners (a list between a popup's
-     header and footer): the track runs to both ends again. */
   .misty-scrollbar-flush::-webkit-scrollbar-track:vertical,
   .misty-scrollbar-flush::-webkit-scrollbar-track:horizontal {
     margin: 0;

@@ -1,12 +1,10 @@
-import { ChevronRight } from "lucide-react";
 import type { ComponentPropsWithoutRef, HTMLAttributes, ReactNode, Ref } from "react";
 
-import { cn } from "../classNames";
-import { rowShape, rowShapeTwoLine } from "../display/rowShape";
+import { cn } from "../class_names";
+import { rowShape, rowShapeTwoLine } from "../display/row_shape";
 import { Pressable } from "../controls/Pressable";
 import { OverflowFadeText, type OverflowFadeTextProps } from "../layout/OverflowFadeText";
-import { Text } from "../display/Text";
-import { MenuChevron } from "../overlays/MenuChevron";
+import { FoldChevron } from "../overlays/MenuChevron";
 
 /**
  * How a sidebar row answers the pointer:
@@ -83,7 +81,6 @@ export function NavRow({
     tall ? rowShapeTwoLine : rowShape,
     "text-left text-control",
     hover === "wash" && current ? toneText[tone].bright : toneText[tone].quiet,
-    // The parent's mark (18px) and its gap (9px) past the row's own inset.
     nested && "pl-8",
     filled && "bg-row-active",
     !still && !filled && hover === "fill" && "hover:bg-row-hover focus-visible:bg-row-hover",
@@ -109,57 +106,6 @@ export function NavRow({
       {...props}
       className={classes}
     />
-  );
-}
-
-export type NavTitleButtonProps = Omit<ComponentPropsWithoutRef<"button">, "ref" | "children"> & {
-  /** The place's name. Its length is capped where it is typed, so it shows whole. */
-  name: ReactNode;
-  /** The place's own mark before the name, at the 18px glyph size, such as the Space's avatar. */
-  mark?: ReactNode;
-  ref?: Ref<HTMLButtonElement>;
-};
-
-/**
- * The name at the top of a sidebar, naming the place its rows belong to (a Space) and opening
- * that place's menu: its mark, the name in bold and a chevron right after it, as one compact
- * button only as wide as what it holds. It is quiet at rest and takes the control wash under the
- * pointer, on keyboard focus and while its menu is open, when the chevron turns over; it never
- * draws a ring or an outline. The name is shown whole, never faded: a long one wraps onto a second
- * line. It stands alone in its row: the place's actions (Invite people) live in its menu. Put it in
- * a `DropdownMenuTrigger asChild`. For a page title that opens a menu, use MenuTrigger with `fit`.
- *
- * ```tsx
- * <DropdownMenu>
- *   <DropdownMenuTrigger asChild>
- *     <NavTitleButton aria-label="Moku, switch Space" mark={<SpaceAvatar … />} name="Moku" />
- *   </DropdownMenuTrigger>
- *   <DropdownMenuContent>…</DropdownMenuContent>
- * </DropdownMenu>
- * ```
- */
-export function NavTitleButton({ name, mark, className, ref, ...props }: NavTitleButtonProps) {
-  return (
-    <Pressable
-      ref={ref}
-      type="button"
-      wash="control"
-      data-slot="nav-title-button"
-      {...props}
-      className={cn(
-        "inline-flex min-h-8 w-fit max-w-full min-w-0 flex-none items-center gap-1 rounded-md px-2 py-1",
-        "text-left",
-        "data-[state=open]:bg-control-active",
-        className,
-      )}
-    >
-      {mark ? <span className="mr-1 grid size-4 flex-none place-items-center">{mark}</span> : null}
-      <Text tone="bright" size="body" weight="semibold" wrap className="min-w-0 break-words">
-        {name}
-      </Text>
-      {/* A direct child of the trigger, so it turns over while the menu is open. */}
-      <MenuChevron className={chromeMuted} />
-    </Pressable>
   );
 }
 
@@ -228,13 +174,7 @@ export function NavGroupHeading({
       onClick={collapsible.onToggle}
     >
       {name}
-      <ChevronRight
-        aria-hidden="true"
-        className={cn(
-          "transition-transform duration-120 ease-[ease] motion-reduce:transition-none",
-          collapsible.open && "rotate-90",
-        )}
-      />
+      <FoldChevron open={collapsible.open} />
     </Pressable>
   ) : name !== undefined ? (
     <span className={nameClass}>{name}</span>

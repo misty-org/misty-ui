@@ -11,7 +11,7 @@ export {
 export { CollectionCardTitle, CollectionCardMetadata } from "./collection/CollectionCards";
 export { CollectionItems } from "./collection/CollectionItems";
 export { CollectionSkeleton } from "./collection/CollectionSkeleton";
-export { useCollectionView } from "./collection/collectionMemory";
-export type { CollectionColumn, CollectionItem } from "./collection/collectionItemTypes";
-export type { CollectionDrag } from "./collection/collectionDrag";
+export { useCollectionView } from "./collection/collection_memory";
+export type { CollectionColumn, CollectionItem } from "./collection/collection_item_types";
+export type { CollectionDrag } from "./collection/collection_drag";
 export type { CollectionZoom } from "./collection/CollectionIconGrid";

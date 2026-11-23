@@ -7,7 +7,6 @@ import {
   useCollectionRefinement,
 } from "./CollectionFilterMenu";
 
-// The default storage is localStorage, under the misty-ui: prefix.
 const read = (scope: string) => JSON.parse(localStorage.getItem(`misty-ui:${scope}`) ?? "null");
 
 const rows = [

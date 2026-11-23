@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useCompactControls, useOnRow } from "./RowContext";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Badge } from "../display/Badge";
 import { Tooltip, type TooltipSide } from "../overlays/Tooltip";
 import { Button, type ButtonLook, type ButtonProps } from "./Button";
@@ -14,8 +14,6 @@ export type IconButtonSize = "sm" | "md";
 export type IconButtonVariant = ButtonLook;
 
 const sizeClass: Record<IconButtonSize, string> = {
-  // Width and height stay separate classes so a caller's `w-auto` replaces the width outright
-  // instead of racing `size-*` in the stylesheet.
   sm: "h-6 w-6",
   md: "h-8 w-8",
 };
@@ -43,9 +41,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     },
     ref,
   ) => {
-    // Kept to two digits so the bubble stays a corner mark and never covers the icon.
     const shownCount = count && count > 0 ? (count > 99 ? "99+" : String(count)) : null;
-    // On a row or in a compact bar every IconButton is 27px, whatever the feature passed.
     const onRow = useOnRow();
     const compact = useCompactControls();
     const resolvedSize = onRow || compact ? "sm" : (size ?? "md");
@@ -65,7 +61,6 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           )}
           {...props}
         >
-          {/* One child unless there is a count, so `asChild` can style a link. */}
           {shownCount ? (
             <>
               {children}

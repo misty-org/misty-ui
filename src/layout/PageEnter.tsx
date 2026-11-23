@@ -1,6 +1,6 @@
 import type { ElementType, HTMLAttributes } from "react";
-import { cn } from "../classNames";
-import "./pageEnter.css";
+import { cn } from "../class_names";
+import "./page_enter.css";
 
 export type PageEnterProps = HTMLAttributes<HTMLElement> & {
   /** The element drawn; a `div` unless the content is a heading or a footer. */

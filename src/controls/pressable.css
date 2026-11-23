@@ -1,8 +1,3 @@
-/*
- * Pressable's washes (its `wash` prop). Unlayered, so the resting color and fill a surface's own
- * stylesheet gives it can't hide them. The open item (aria-current) and a disabled one keep their
- * own look.
- */
 [data-wash]:is(:hover, :focus-visible, :focus-within, [data-hover]):not(
     :disabled,
     [aria-current="page"],
@@ -24,7 +19,6 @@
   ) {
   background-color: var(--color-control-hover);
 }
-/* Over the panel's own fill, not in place of it: the control wash is see-through. */
 [data-wash="panel"]:is(:hover, :focus-visible, :focus-within, [data-hover]):not(
     :disabled,
     [aria-current="page"],
@@ -41,8 +35,6 @@
   background-color: var(--color-charcoal-hover);
 }
 
-/* A `selected` row or control (the item shown now in a list of them) keeps its pressed fill under
-   the pointer too. */
 [data-wash="row"][data-selected],
 [data-wash="row"][data-selected]:is(:hover, :focus-visible, :focus-within, [data-hover]) {
   background-color: var(--color-row-active);
@@ -56,8 +48,6 @@
   background-image: linear-gradient(var(--color-control-active), var(--color-control-active));
 }
 
-/* `strong`: the pressed fill and bright text, for a control that must answer the pointer clearly
-   (the Windows caption buttons). */
 [data-wash="strong"]:is(:hover, :focus-visible, :focus-within, [data-hover]):not(
     :disabled,
     [aria-current="page"],
@@ -67,8 +57,6 @@
   color: var(--color-cream-bright);
 }
 
-/* `tint`: a surface tinted by the kind of thing it makes (Surface's `tint`, which sets
-   --surface-tint) takes more of its color. */
 [data-wash="tint"]:is(:hover, :focus-visible, :focus-within, [data-hover]):not(
     :disabled,
     [aria-current="page"],

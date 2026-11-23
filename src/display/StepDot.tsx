@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /** Where a step of some work is: not started, being worked on, finished, or stopped by a failure. */
 export type StepDotState = "pending" | "working" | "done" | "failed";

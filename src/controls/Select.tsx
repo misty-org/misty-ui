@@ -15,16 +15,10 @@ import {
   menuListClass,
   popupMotionClass,
   popupSurfaceClass,
-} from "../overlays/popupStyles";
+} from "../overlays/popup_styles";
 import { Tooltip } from "../overlays/Tooltip";
-import { cn } from "../classNames";
-import { controlFrame, fieldInset } from "./controlFrame";
-
-/*
- * A field that picks one value from a list. The rows follow the menu rules: an 18px icon, the
- * label, and a checkmark at the right edge for the one picked. The trigger shows the picked
- * row's icon and label. OptionSelect builds the whole thing from a list of options.
- */
+import { cn } from "../class_names";
+import { controlFrame, fieldInset } from "./control_frame";
 
 const Select = SelectPrimitive.Root;
 
@@ -38,7 +32,6 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     data-slot="select-trigger"
     className={cn(
-      // The field frame: 36px with a field's corners and inset, like every control in its row.
       controlFrame.md,
       fieldInset.md,
       "flex w-full min-w-0 items-center justify-between gap-2 whitespace-nowrap border",
@@ -47,7 +40,6 @@ const SelectTrigger = React.forwardRef<
       "focus-visible:border-charcoal-active",
       "data-[placeholder]:text-cream-muted disabled:cursor-not-allowed disabled:opacity-50",
       "aria-invalid:border-danger",
-      // The picked value: its icon and its label, which fades when the field is narrow.
       "[&>span]:flex [&>span]:min-w-0 [&>span]:flex-1 [&>span]:items-center [&>span]:gap-2",
       "[&>span]:overflow-hidden [&_svg]:pointer-events-none [&_svg]:shrink-0",
       "[&_svg:not([class*='size-'])]:size-4",
@@ -57,7 +49,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <MenuChevron className="size-4 text-cream-muted" />
+      <MenuChevron />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));

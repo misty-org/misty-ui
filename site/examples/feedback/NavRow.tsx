@@ -5,19 +5,18 @@ import {
   AvatarFallback,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger,
+  MenuTrigger,
   MenuCheckItem,
   MenuItem,
   NavGroupHeading,
   NavList,
   NavRow,
   NavRowLabel,
-  NavTitleButton,
   Surface,
 } from "../../../src";
 
 export const meta = {
-  name: "NavRow · NavTitleButton · NavRowLabel · NavList · NavGroupHeading",
+  name: "NavRow · NavRowLabel · NavList · NavGroupHeading",
   file: "navigation/NavRow.tsx",
   about: "",
   wide: false,
@@ -36,17 +35,16 @@ function NavDemo() {
   return (
     <Surface tone="sidebar" radius="lg" className="grid w-64 gap-2 p-2">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <NavTitleButton
-            aria-label="Moku, switch Space"
-            mark={
-              <Avatar size="xs" shape="tile">
-                <AvatarFallback>M</AvatarFallback>
-              </Avatar>
-            }
-            name="Moku"
-          />
-        </DropdownMenuTrigger>
+        <MenuTrigger
+          heading
+          label="Moku, switch Space"
+          value="Moku"
+          mark={
+            <Avatar size="xs" shape="tile">
+              <AvatarFallback>M</AvatarFallback>
+            </Avatar>
+          }
+        />
         <DropdownMenuContent side="bottom" align="start">
           <MenuCheckItem checked label="Moku" />
           <MenuItem icon={<UserPlus />} label="Invite people" />

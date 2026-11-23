@@ -39,7 +39,6 @@ const tree: Record<string, ColumnBrowserRow[]> = {
 };
 
 export default function Example() {
-  // The id picked in each column, left to right.
   const [path, setPath] = useState<string[]>(["Documents"]);
   const columns: ColumnBrowserColumn[] = [{ id: "home", rows: tree.home, selected: path.slice(0, 1) }];
   path.forEach((id, index) => {

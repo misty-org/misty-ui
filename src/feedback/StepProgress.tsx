@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 export type StepProgressProps = {
   /** How many steps there are. */

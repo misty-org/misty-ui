@@ -1,9 +1,9 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Kbd } from "../display/Kbd";
-import { popupMotionClass, popupSurfaceClass } from "./popupStyles";
+import { popupMotionClass, popupSurfaceClass } from "./popup_styles";
 
 /**
  * Misty's own tooltips: quick, one short label on the popup surface, with the command's shortcut
@@ -52,8 +52,6 @@ function TooltipProvider({
   );
 }
 
-// Radix throws without a provider. Tests and stories that render one component on its own get a
-// provider of their own, with the app's defaults.
 function WithProvider({ children }: { children: React.ReactNode }) {
   const settings = React.useContext(TooltipSettingsContext);
   if (settings) return <>{children}</>;
@@ -119,7 +117,6 @@ function openOnKeyboardFocusOnly(event: React.FocusEvent<HTMLElement>) {
   try {
     fromKeyboard = event.currentTarget.matches(":focus-visible");
   } catch {
-    // An engine without :focus-visible treats every focus as the keyboard's.
   }
   if (!fromKeyboard) event.preventDefault();
 }

@@ -23,7 +23,7 @@ import {
   MenuSubmenu,
   type MenuIcon,
 } from "../overlays/MenuItem";
-import { collectionMemory } from "./collection/collectionMemory";
+import { collectionMemory } from "./collection/collection_memory";
 
 export type CollectionFilterOption = {
   value: string;
@@ -209,7 +209,6 @@ export function useCollectionRefinement<T>(
   let state = local;
   if (remember) {
     state = { ...defaultCollectionRefinement, ...saved, ...(asked ? { facet: asked } : {}) };
-    // A saved type that this collection no longer offers shows everything.
     if (options.facet && !options.facet.options.some((option) => option.value === state.facet))
       state = { ...state, facet: defaultCollectionRefinement.facet };
   }

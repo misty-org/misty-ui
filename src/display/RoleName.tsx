@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * The swatches a role's color picker offers first: the app's pastels, the same ones a person's
@@ -74,7 +74,7 @@ export function RoleDot(props: { color?: string }) {
 }
 
 /**
- * A role mentioned in a message, as Discord draws it: "@Moderator" in the role's color over a
+ * A role mentioned in a message: "@Moderator" in the role's color over a
  * faint wash of it. A role with no color, or one since deleted, reads like any other mention.
  */
 export function RoleMention(props: { color?: string; label: string }) {

@@ -1,6 +1,6 @@
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 const Collapsible = CollapsiblePrimitive.Root;
 
@@ -15,7 +15,6 @@ const CollapsibleContent = React.forwardRef<
     data-slot="collapsible-content"
     className={cn(
       "overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down",
-      // Radix keeps force-mounted content showing; folded, it stays mounted but out of sight.
       props.forceMount && "data-[state=closed]:hidden",
       className,
     )}

@@ -1,11 +1,11 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { OutOfRow } from "../controls/RowContext";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import * as React from "react";
 import { IconButton } from "../controls/IconButton";
-import { PageDimmedContext } from "./pageDimmed";
+import { PageDimmedContext } from "./page_dimmed";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -78,7 +78,6 @@ const SheetContent = React.forwardRef<
     },
     ref,
   ) => {
-    // Over a dialog that already dims the page, a sheet doesn't dim it (and that dialog) again.
     const dimmed = React.useContext(PageDimmedContext);
     const content = (
       <>

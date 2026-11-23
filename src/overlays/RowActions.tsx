@@ -1,10 +1,10 @@
 import * as React from "react";
 import { MoreHorizontal } from "lucide-react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "./ContextMenu";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "./DropdownMenu";
-import type { MenuWidth } from "./popupStyles";
+import type { MenuWidth } from "./popup_styles";
 
 /** The row a RowActions belongs to: the nearest element that carries Tailwind's `group/row`. */
 const rowSelector = '[class~="group/row"]';
@@ -50,8 +50,6 @@ function RowActions({ label, children, width, onOpenChange, className }: RowActi
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const anchorRef = React.useRef<HTMLSpanElement>(null);
 
-  // Radix opens a context menu from its trigger's own contextmenu event, at the pointer. The
-  // trigger here is an empty anchor, so a right-click on the row is handed on to it.
   React.useEffect(() => {
     const row = buttonRef.current?.closest<HTMLElement>(rowSelector);
     const anchor = anchorRef.current;
@@ -59,7 +57,6 @@ function RowActions({ label, children, width, onOpenChange, className }: RowActi
     const open = (event: MouseEvent) => {
       if (event.target === anchor || event.defaultPrevented || isEditable(event.target)) return;
       event.preventDefault();
-      // A keyboard's menu key reports no pointer, so the menu opens under the row instead.
       const keyboard = event.clientX === 0 && event.clientY === 0;
       const box = row.getBoundingClientRect();
       anchor.dispatchEvent(
@@ -101,7 +98,6 @@ function RowActions({ label, children, width, onOpenChange, className }: RowActi
               "data-[state=open]:opacity-100 data-[context-open]:opacity-100",
               className,
             )}
-            // The row is often a link or button of its own; the ⋯ must not open it too.
             onClick={(event) => event.stopPropagation()}
             onDoubleClick={(event) => event.stopPropagation()}
           >

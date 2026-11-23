@@ -1,19 +1,9 @@
-/*
- * Every keyframe animation in Misty, by what it shows. A component plays one with Tailwind's
- * `animate-[name_duration_easing_iteration]` (for example `animate-[misty-pulse_1.4s_ease-in-out_infinite]`).
- * Feature stylesheets have none of their own: add the keyframes here, named for the motion, not
- * for the feature, and reuse one that already says the same thing.
- */
-
-/* Something appearing: it fades in from clear. */
 @keyframes misty-fade-in {
   from {
     opacity: 0;
   }
 }
 
-/* Something that shows only once a wait runs long: clear through its delay, then fading in. Played
-   with a delay (`.misty-appear-late`), so a quick load is over before anything shows. */
 @keyframes misty-appear-late {
   from {
     opacity: 0;
@@ -23,7 +13,6 @@
   }
 }
 
-/* A mark's dark halo breathing stronger and back (screenMarkClass.targetPulse). */
 @keyframes misty-halo-pulse {
   50% {
     box-shadow:
@@ -32,7 +21,6 @@
   }
 }
 
-/* A white ring breathing around something an agent is working in (FloatingPip while active). */
 @keyframes misty-ring-pulse {
   0%,
   100% {
@@ -47,8 +35,6 @@
   }
 }
 
-/* One of a row of dots lighting up in turn, dim the rest of the time: someone typing. Each dot
-   starts a little later than the one before it (`[animation-delay:…]`). */
 @keyframes misty-dot-blink {
   0%,
   60%,
@@ -60,14 +46,12 @@
   }
 }
 
-/* Something at work breathing: it dims halfway and comes back (StepDot while working). */
 @keyframes misty-breathe {
   50% {
     opacity: 0.35;
   }
 }
 
-/* A circle's ring spreading out from its center once and fading (an SVG circle's radius). */
 @keyframes misty-ripple {
   from {
     r: 2;
@@ -79,7 +63,6 @@
   }
 }
 
-/* Something earned rising off what earned it and fading away (SceneReward's "+1"). */
 @keyframes misty-rise-fade {
   0% {
     opacity: 0;
@@ -98,21 +81,18 @@
   }
 }
 
-/* Something resting in the air, floating up a little and back (Misty beside the pointer). */
 @keyframes misty-drift {
   50% {
     transform: translateY(-0.1875rem);
   }
 }
 
-/* Leaning in to listen: tipping forward and back, slowly (Misty while the person talks). */
 @keyframes misty-lean {
   50% {
     transform: rotate(-8deg) translateY(-0.125rem);
   }
 }
 
-/* A wave hello, rocking side to side (Misty starting the tour). */
 @keyframes misty-wave {
   25% {
     transform: rotate(-12deg);
@@ -122,9 +102,6 @@
   }
 }
 
-/* Reduce motion, chosen in Misty's Settings › Interface › Accessibility (`data-reduce-motion` on
-   <html>): transitions and smooth scrolling end at once. Spinners and other loops keep running,
-   since they show that work is happening. */
 :root[data-reduce-motion="true"] *,
 :root[data-reduce-motion="true"] *::before,
 :root[data-reduce-motion="true"] *::after {

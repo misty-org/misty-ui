@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * A small dot pinned to the corner of an icon or avatar, marking that something about it needs

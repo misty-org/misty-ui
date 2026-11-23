@@ -4,7 +4,6 @@ import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { SearchablePicker, type SearchablePickerOption } from "./SearchablePicker";
 
 afterEach(cleanup);
-// cmdk scrolls the highlighted row into view; jsdom has no layout to scroll.
 beforeAll(() => {
   Element.prototype.scrollIntoView ??= () => undefined;
 });

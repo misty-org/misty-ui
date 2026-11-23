@@ -1,8 +1,8 @@
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { MenuIconSlot, type MenuIcon } from "./MenuItem";
-import { menuItemClass, menuLabelTextClass, menuListClass, popupSurfaceClass } from "./popupStyles";
+import { menuItemClass, menuLabelTextClass, menuListClass, popupSurfaceClass } from "./popup_styles";
 
 /**
  * The popup under a combobox field (composer mentions, search boxes). Focus stays in the field,
@@ -62,7 +62,6 @@ function SuggestionItem({
       aria-selected={selected}
       data-slot="suggestion-item"
       className={cn(menuItemClass, "group/suggestion", selected && "bg-charcoal-hover", className)}
-      // Keep focus in the field so choosing a row does not blur it first.
       onPointerDown={(event) => {
         event.preventDefault();
         onPointerDown?.(event);

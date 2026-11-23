@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
-import { cn } from "../classNames";
-import { rowShape } from "../display/rowShape";
+import { cn } from "../class_names";
+import { rowShape } from "../display/row_shape";
 
 export type StarterPrompt = {
   /** What the idea is, in a few words: the row's label. */

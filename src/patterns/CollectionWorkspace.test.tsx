@@ -88,7 +88,6 @@ it.each(["preview", "compact"] as const)(
     const card = screen.getByRole("button", { name: title });
     expect(within(card).getByText("Sep 30")).toBeTruthy();
     expect(within(card).getByText("Created by Sam")).toBeTruthy();
-    // The whole title stays the card's name; it fades instead of being cut with an ellipsis.
     expect(within(card).getByText(title)).toBeTruthy();
     expect(document.querySelector("[title]")).toBeNull();
     openMenu(screen.getByRole("button", { name: "Note actions" }));
@@ -281,7 +280,6 @@ it.each(["list", "grid"] as const)(
     fireEvent.click(screen.getByRole("menuitem", { name: "Rename" }));
     expect(onRename).toHaveBeenCalledTimes(1);
     expect(onOpen).not.toHaveBeenCalled();
-    // The same rows open from a right-click anywhere on the item.
     fireEvent.contextMenu(screen.getByRole("button", { name: "Team note" }));
     expect(screen.getByRole("menuitem", { name: "Delete" })).toBeTruthy();
     expect(onOpen).not.toHaveBeenCalled();
@@ -401,7 +399,6 @@ it("chooses grid or list as bare pressed icons and keeps the board a separate bu
   expect(
     within(group).getByRole("button", { name: "Grid view" }).getAttribute("aria-pressed"),
   ).toBe("false");
-  // No box around the pair: the buttons are quiet, with no border or fill of their own.
   expect(within(group).getByRole("button", { name: "List view" }).dataset.variant).toBe("quiet");
   fireEvent.click(within(group).getByRole("button", { name: "Grid view" }));
   expect(onChange).toHaveBeenCalledWith("grid");

@@ -1,9 +1,9 @@
 import type { ElementType, HTMLAttributes, Ref } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import type { PressableWash } from "../controls/Pressable";
 import "../controls/pressable.css";
-import { artFillClass, artRingClass, artTintClass, type ArtColor } from "./artPalette";
+import { artFillClass, artRingClass, artTintClass, type ArtColor } from "./art_palette";
 
 /**
  * What a surface is, which decides its fill:
@@ -99,8 +99,6 @@ const toneClass: Record<SurfaceTone, string> = {
     "dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.08),0_0.375rem_1.25rem_rgb(0_0_0/0.3)]",
   ].join(" "),
   smoke: "border border-white/12 bg-[rgb(20_20_20/0.96)] text-art-white",
-  // The same card as the chat's side cards (sidePanel.css): the sidebar's fill, a faint edge drawn
-  // as an outline and a soft shadow. Solid, never frosted, so the scene behind it doesn't bleed in.
   "scene-panel": [
     "bg-charcoal-sidebar text-cream",
     "hairline-outline",
@@ -206,7 +204,6 @@ export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
 /** The colors a place (a Space) can have, from the theme's tones, for `Surface`'s `place`. */
 export type PlaceColor = "blue" | "teal" | "violet" | "orange" | "pink" | "green" | "amber" | "red";
 
-// Literal class names so Tailwind picks them up.
 const placeVarClass: Record<PlaceColor, string> = {
   blue: "[--surface-place:var(--color-tone-blue)]",
   teal: "[--surface-place:var(--color-tone-teal)]",
@@ -236,8 +233,6 @@ export type Tint =
   | "table"
   | "lesson";
 
-// Literal class names so Tailwind picks them up. `--surface-tint` is read by the fills below and
-// by Pressable's `tint` wash.
 const tintVarClass: Record<Tint, string> = {
   audio: "[--surface-tint:var(--tint-audio)]",
   video: "[--surface-tint:var(--tint-video)]",

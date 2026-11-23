@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /** How a tick stands among its neighbours: at rest, nearest the pointer, or the place shown now. */
 export type RailTickState = "rest" | "near" | "current";

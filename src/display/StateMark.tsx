@@ -1,5 +1,5 @@
 import { Check, Cloud, CloudOff, X } from "lucide-react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Spinner } from "../feedback/Spinner";
 import { Tooltip } from "../overlays/Tooltip";
 

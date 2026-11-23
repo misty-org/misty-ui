@@ -4,10 +4,10 @@ import { Card } from "../../display/Card";
 import { StateMark } from "../../display/StateMark";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { Tooltip } from "../../overlays/Tooltip";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { CollectionItemActions } from "./CollectionItemActions";
-import type { CollectionDragItemProps } from "./collectionDrag";
-import { collectionIconTone, hasItemActions, type CollectionItem } from "./collectionItemTypes";
+import type { CollectionDragItemProps } from "./collection_drag";
+import { collectionIconTone, hasItemActions, type CollectionItem } from "./collection_item_types";
 
 function CollectionGrid({ children }: { children: ReactNode }) {
   return (
@@ -85,8 +85,6 @@ export function CollectionCardMetadata({
   );
 }
 
-// A card is the item's surface: it highlights while hovered, focused or picked, and its actions
-// sit in one ⋯ at the top right.
 const cardClass = cn(
   "group/row relative min-w-0 gap-0 p-0",
   "hover:bg-charcoal-hover has-[:focus-visible]:bg-charcoal-hover",
@@ -200,8 +198,6 @@ export function CollectionItemsGrid({
               </Pressable>
             )}
             {actions || item.sync ? (
-              // Level with the title line, inside the card's padding. The sync mark and the ⋯
-              // share the corner: the ⋯ takes the mark's place while it shows, as in a list row.
               <div
                 className={cn(
                   "absolute right-3 top-4 grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1",
@@ -213,7 +209,6 @@ export function CollectionItemsGrid({
                     data-slot="collection-card-sync"
                     className={cn(
                       "flex items-center",
-                      // The ⋯ shows on exactly these conditions (RowActions), so the two never overlap.
                       actions && [
                         "group-hover/row:invisible group-focus-within/row:invisible",
                         "group-has-[[data-state=open]]/row:invisible group-has-[[data-context-open]]/row:invisible",

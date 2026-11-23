@@ -5,7 +5,6 @@ import { Command, CommandGroup, CommandItem, CommandList } from "./Command";
 import { SuggestionItem, SuggestionList } from "./SuggestionList";
 
 beforeAll(() => {
-  // cmdk scrolls the picked row into view, which jsdom doesn't do.
   Element.prototype.scrollIntoView ??= () => undefined;
 });
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Search } from "lucide-react";
 
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { Text } from "../../display/Text";
 import { Dialog, DialogContent, DialogTitle } from "../../overlays/Dialog";
 import { homeAppsClass } from "./AppTile";

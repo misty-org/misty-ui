@@ -1,0 +1,1379 @@
+{
+  "agy": {
+    "name": "Antigravity",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:agy"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "airtable": {
+    "name": "Airtable",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "akamai": {
+    "name": "Akamai",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "netstorage"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "alibaba": {
+    "name": "Alibaba Cloud",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "anthropic": {
+    "name": "Anthropic",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "apple-music": {
+    "name": "Apple Music",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "applemusic"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "arc": {
+    "name": "Arc",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "arcee": {
+    "name": "Arcee",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "asana": {
+    "name": "Asana",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "aws": {
+    "name": "AWS",
+    "kinds": [
+      "brand"
+    ],
+    "render": "plate-dark",
+    "aliases": [
+      "amazon",
+      "s3"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "azure": {
+    "name": "Azure",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "azureblob",
+      "azurefiles"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "azureai-color": {
+    "name": "Azure AI",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "backblaze": {
+    "name": "Backblaze",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "b2"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "bailian-color": {
+    "name": "Bailian",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "baseten": {
+    "name": "Baseten",
+    "kinds": [
+      "provider"
+    ],
+    "render": "theme",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "bedrock-color": {
+    "name": "Amazon Bedrock",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "bitbucket": {
+    "name": "Bitbucket",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "box": {
+    "name": "Box",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "brave": {
+    "name": "Brave",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "bytedance": {
+    "name": "ByteDance",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "cal": {
+    "name": "Cal",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "calcom"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "canvas": {
+    "name": "Canvas",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "cerebras-color": {
+    "name": "Cerebras",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "chrome": {
+    "name": "Google Chrome",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "chromium": {
+    "name": "Chromium",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "citrix": {
+    "name": "Citrix",
+    "kinds": [
+      "brand"
+    ],
+    "render": "plate-dark",
+    "aliases": [
+      "sharefile"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "claude-color": {
+    "name": "Claude",
+    "kinds": [
+      "provider",
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:claude"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "cloudflare-color": {
+    "name": "Cloudflare",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "cloudinary": {
+    "name": "Cloudinary",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "codebuddy": {
+    "name": "CodeBuddy",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:codebuddy"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "codex": {
+    "name": "Codex",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:codex"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "cohere": {
+    "name": "Cohere",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "composio": {
+    "name": "Composio",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "aliases": [
+      "composio-search"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "copilot-color": {
+    "name": "GitHub Copilot",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "crunchyroll": {
+    "name": "Crunchyroll",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "deepseek": {
+    "name": "DeepSeek",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "deepseek-color": {
+    "name": "DeepSeek",
+    "kinds": [
+      "provider",
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:dsh"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "discord": {
+    "name": "Discord",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "dropbox": {
+    "name": "Dropbox",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "figma": {
+    "name": "Figma",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "file-io": {
+    "name": "file.io",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "gofile"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "filen": {
+    "name": "Filen",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "files-com": {
+    "name": "Files.com",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "aliases": [
+      "filescom"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "filezilla": {
+    "name": "FileZilla",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "firecrawl": {
+    "name": "Firecrawl",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "firefox": {
+    "name": "Firefox",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "fireworks": {
+    "name": "Fireworks",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "fireworks-color": {
+    "name": "Fireworks",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "fish-audio": {
+    "name": "FishAudio",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "gemini": {
+    "name": "Google Gemini",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "googlegemini"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "gemini-color": {
+    "name": "Gemini",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:gemini"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "github": {
+    "name": "GitHub",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "gmail": {
+    "name": "Gmail",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "google"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "google-calendar": {
+    "name": "Google Calendar",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "googlecalendar"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "google-cloud": {
+    "name": "Google Cloud",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "gcs"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "google-docs": {
+    "name": "Google Docs",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "googledocs"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "google-drive": {
+    "name": "Google Drive",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "drive",
+      "googledrive"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "google-logo": {
+    "name": "Google",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "google-photos": {
+    "name": "Google Photos",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "googlephotos",
+      "gphotos"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "google-sheets": {
+    "name": "Google Sheets",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "googlesheets"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "google-tasks": {
+    "name": "Google Tasks",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "googletasks"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "grok": {
+    "name": "Grok",
+    "kinds": [
+      "engine"
+    ],
+    "render": "theme",
+    "aliases": [
+      "engine:grok"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "groq": {
+    "name": "Groq",
+    "kinds": [
+      "provider"
+    ],
+    "render": "theme",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "hadoop": {
+    "name": "Apache Hadoop",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "hdfs"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "hermes": {
+    "name": "Hermes Agent",
+    "kinds": [
+      "engine"
+    ],
+    "render": "theme",
+    "aliases": [
+      "engine:hermes"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "huawei": {
+    "name": "Huawei",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "huaweidrive"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "hubspot": {
+    "name": "HubSpot",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "huggingface": {
+    "name": "Hugging Face",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "huggingface-color": {
+    "name": "Hugging Face",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "icloud": {
+    "name": "iCloud",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "iclouddrive"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "inception": {
+    "name": "Inception",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "instagram": {
+    "name": "Instagram",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "internet-archive": {
+    "name": "Internet Archive",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "aliases": [
+      "internetarchive"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "jira": {
+    "name": "Jira",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "kimi": {
+    "name": "Kimi",
+    "kinds": [
+      "provider"
+    ],
+    "render": "theme",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "kimi-color": {
+    "name": "Kimi",
+    "kinds": [
+      "provider",
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:kimi"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "linear": {
+    "name": "Linear",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "ling-color": {
+    "name": "Ling",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "linkedin": {
+    "name": "Linkedin",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "longcat-color": {
+    "name": "LongCat",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "mail-ru": {
+    "name": "Mail.Ru",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "mailru"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "mega": {
+    "name": "MEGA",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "meituan": {
+    "name": "Meituan",
+    "kinds": [
+      "brand"
+    ],
+    "render": "plate-light",
+    "source": "The brand's own artwork"
+  },
+  "messenger": {
+    "name": "Messenger",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "meta": {
+    "name": "Meta",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "microsoft-edge": {
+    "name": "Microsoft Edge",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "microsoft-logo": {
+    "name": "Microsoft",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "microsoft-onenote": {
+    "name": "Microsoft Onenote",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "onenote"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "microsoft-teams": {
+    "name": "Microsoft Teams",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "teams"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "microsoft-todo": {
+    "name": "ToDo_48x",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "microsoft-word": {
+    "name": "Microsoft Word",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "word"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "minimax": {
+    "name": "Minimax",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "minimax-color": {
+    "name": "MiniMax",
+    "kinds": [
+      "provider",
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:minimax"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "mistral": {
+    "name": "Mistral AI",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "mistralai"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "mistral-color": {
+    "name": "Mistral",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "moonshot": {
+    "name": "MoonshotAI",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "netflix": {
+    "name": "Netflix",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "notion": {
+    "name": "Notion",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "nvidia": {
+    "name": "NVIDIA",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "nvidia-color": {
+    "name": "NVIDIA",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "obsidian": {
+    "name": "Obsidian",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "ollama": {
+    "name": "Ollama",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "omp": {
+    "name": "Oh My Pi",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:omp"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "onedrive": {
+    "name": "Onedrive",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "one-drive"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "openai": {
+    "name": "OpenAI",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "opencode": {
+    "name": "OpenCode",
+    "kinds": [
+      "provider",
+      "engine"
+    ],
+    "render": "theme",
+    "aliases": [
+      "engine:opencode"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "openrouter": {
+    "name": "OpenRouter",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "openrouter-color": {
+    "name": "OpenRouter",
+    "kinds": [
+      "provider"
+    ],
+    "render": "plate-light",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "openstack": {
+    "name": "OpenStack",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "opera": {
+    "name": "Opera",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "outlook": {
+    "name": "Outlook",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "microsoft",
+      "outlook-calendar"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "perplexity": {
+    "name": "Perplexity",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "perplexity-ai",
+      "perplexityai"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "pi": {
+    "name": "Pi",
+    "kinds": [
+      "engine"
+    ],
+    "render": "theme",
+    "aliases": [
+      "engine:pi"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "poolside": {
+    "name": "Poolside",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "prime-video": {
+    "name": "Prime Video",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "primevideo"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "proton-drive": {
+    "name": "Proton Drive",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "protondrive"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "qoder": {
+    "name": "Qoder",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:qoder",
+      "engine:qoder-cn"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "qwen": {
+    "name": "Qwen",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "qwen-color": {
+    "name": "Qwen",
+    "kinds": [
+      "provider",
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:qwen"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "reddit": {
+    "name": "Reddit",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "safari": {
+    "name": "Safari",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "sakana": {
+    "name": "sakana.ai",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "seafile": {
+    "name": "Seafile",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "serpapi": {
+    "name": "Serpapi",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "slack": {
+    "name": "Slack",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "slackbot"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "soundcloud": {
+    "name": "Soundcloud",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "spotify": {
+    "name": "Spotify",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "stepfun": {
+    "name": "Stepfun",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "storj": {
+    "name": "Storj",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "tardigrade"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "stripe": {
+    "name": "Stripe",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "supabase": {
+    "name": "supabase",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "tencent": {
+    "name": "Tencent",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "todoist": {
+    "name": "Todoist",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "together-color": {
+    "name": "Together AI",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "trello": {
+    "name": "Trello",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "twitch": {
+    "name": "Twitch",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "typeform": {
+    "name": "Typeform",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "vercel": {
+    "name": "Vercel",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "vivaldi": {
+    "name": "Vivaldi",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "wrike": {
+    "name": "Wrike",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "x": {
+    "name": "X",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "aliases": [
+      "twitter"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "xai": {
+    "name": "xAI",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "xiaomi": {
+    "name": "Xiaomi",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "xiaomimimo": {
+    "name": "Xiaomi MiMo",
+    "kinds": [
+      "provider"
+    ],
+    "render": "theme",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "yahoo": {
+    "name": "Yahoo!",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "yandex": {
+    "name": "Yandex",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "youtube": {
+    "name": "YouTube",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  },
+  "youtube-music": {
+    "name": "YouTube Music",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "aliases": [
+      "youtubemusic"
+    ],
+    "source": "The brand's own artwork"
+  },
+  "zai": {
+    "name": "Z.ai",
+    "kinds": [
+      "brand"
+    ],
+    "render": "theme",
+    "source": "The brand's own artwork"
+  },
+  "zhipu-color": {
+    "name": "Zhipu",
+    "kinds": [
+      "provider"
+    ],
+    "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "zoho": {
+    "name": "Zoho",
+    "kinds": [
+      "brand"
+    ],
+    "render": "color",
+    "source": "The brand's own artwork"
+  }
+}

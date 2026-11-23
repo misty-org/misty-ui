@@ -12,7 +12,7 @@ The docs site (`npm run dev`, hosted at https://misty-org.github.io/misty-ui/) g
 a live example, the code that draws it, its props (`docs/props.json`, read from the source) and its rows of
 "Which piece for which job" below. Examples live in `site/examples/<group>/`, one file per component; locally
 each page has a "Don't like" mark for review. `npm run catalog` regenerates the catalog and the props;
-`tests/designCatalog.contract.test.ts` fails when the catalog is out of date.
+`tests/design_catalog.contract.test.ts` fails when the catalog is out of date.
 
 ## Using it
 
@@ -51,9 +51,9 @@ import { Button, TooltipProvider } from "@misty/ui";
    the catalog don't name it, it isn't part of Misty. Ask instead of improvising.
 
 A feature never picks its own colors, borders, corners, sizes or spacing, and never adds a stylesheet. In
-Misty, `src/tests/architecture/uiRules.ts` enforces this. Its baseline only shrinks: a rule that reaches zero is locked
+Misty, `src/tests/architecture/ui_rules.ts` enforces this. Its baseline only shrinks: a rule that reaches zero is locked
 there for good with no exceptions, and a new rule starts locked, so debt can't be recorded, only paid.
-`tests/rowHeights.contract.test.tsx` renders the shared rows and checks every control in a row has the row's height.
+`tests/RowHeights.contract.test.tsx` renders the shared rows and checks every control in a row has the row's height.
 
 ## Tokens
 
@@ -70,7 +70,7 @@ Misty is neutral: charcoal on dark, cream on light, one coherent palette the The
 | Page | `--misty-theme-bg` (`pane`) | The pane every page sits on |
 | Sidebar | `--misty-theme-sidebar` | The sidebar |
 | Card | `--misty-theme-card` | Cards and raised surfaces (`Surface tone="card"`) |
-| Edge | `--misty-theme-border` | Hairlines between rows and around cards |
+| Edge | `--misty-theme-border` | The page's frame: under toolbar rows, column seams, a field's edge |
 | Field edge | `--misty-theme-border-strong` | Fields people type into or pick from |
 | Text | `--misty-theme-text` / `-bright` / `-muted` | `Text tone="default" \| "bright" \| "muted"` |
 | Danger | `--misty-theme-danger` | Only what deletes or has failed |
@@ -85,7 +85,7 @@ Color that carries meaning comes from the tones, never a new hex:
 - **A Space's own color** (the tone its picture tile wears), washed faintly into its sidebar through
   `Surface tone="sidebar" place=…`. Only the sidebar's fill takes it: its rows, selection and text stay neutral,
   and Personal stays neutral.
-- **Kind of file** (`--tone-code`, `-style`, `-data`, `-doc`, `-image`) through `itemTones.ts`.
+- **Kind of file** (`--tone-code`, `-style`, `-data`, `-doc`, `-image`) through `item_tones.ts`.
 - **Kind of made thing** (`--tint-*`): audio, video, report, cards… through `Surface`/`Text` `tint`.
 - **Art** (`--color-art-*`): only for full-color art drawn over any theme (Tutor, pets, the desktop overlay).
 - **Avatars** (`--color-avatar-*`): soft pastels assigned per person, behind dark ink.
@@ -164,22 +164,26 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A collection's controls (sort, filter, refresh, view) | `CollectionControls` | A hand-made bar |
 | Questions or notes that open under their heading (an FAQ, release notes, a docs sidebar group) | `Disclosure` (`kind` section or row) in a `DisclosureList` | An accordion of styled buttons |
 | A tab strip | `TabStrip` | Buttons styled as tabs |
-| A toolbar | `ActionBar` (gives way: labels → icons → fade → ⋯), groups split by `ToolbarDivider` | A flex row that wraps or scrolls |
+| A toolbar | `ActionBar` (gives way: labels → icons → fade → ⋯), groups set a step apart by `ToolbarDivider`, which draws no line | A flex row that wraps or scrolls |
+| Related rows that belong together (a settings section, Friends' Online, a store item's facts) | `RowGroupSection` (a `RowGroupLabel` over one `RowGroup`), sections one under another in a `RowGroupStack`; facts as `PropertyList layout="grouped"` | A bordered card, a hairline between rows, a heading a row's height above its rows |
+| A setting | `SettingsSection` of `SettingsRow`s (`label`, a `description` only where it explains, the control as children, `sub`, `disabled`) | Hand-built rows, bright medium labels, a card per section |
 | A list of things | `ListRow` (`label`, `description`, `badge`, `state`, `menu`, `trailing`); `TreeRow` for trees | Hand-built rows |
 | A row's own buttons | `RowTools` (`reveal` hover / cover); a row's ⋯ is `RowActions` / `ListRow menu` | Stray icons beside the row |
 | A menu of actions | `DropdownMenu` + `MenuTrigger` with `MenuItem`, `MenuCheckItem`, `MenuRadioItem`, `MenuSubmenu`; right-click is `ContextMenu` with the same items | A `Popover` listing actions, raw menu items |
-| The place a sidebar lists (the Space's selector), opening its menu | `NavTitleButton` (`mark`, `name`) in a `DropdownMenuTrigger asChild`: avatar, name and chevron as one compact button, alone in its row; the place's actions (Invite people) live in its menu | A name button beside a separate boxed chevron |
+| The place a sidebar lists (the Space's selector, a channel column's place, a docs site's section), opening its menu | `MenuTrigger heading` (`value` the name, `mark` its avatar): mark, name and chevron as one compact button, alone in its row; the place's actions (Invite people) live in its menu | A name button beside a separate boxed chevron, a trigger of its own |
 | A popover | `Popover` kind `panel` (`PopoverHeader`, `PopoverText`, `PopoverBody`, `PopoverActions`), `list`, or `flush` (`PickerSearch`, `PickerList`, `Command`) | `className` on a popover |
 | A dialog | `Dialog` (`DialogHeader`, `DialogTitle`, `DialogBody`, `DialogFooter`); deletes use `ConfirmDeleteDialog` / `useConfirmDelete`; renames `RenameItemDialog` | A fixed full-screen div |
 | A full-page overlay | `WorkspaceOverlay` or `Sheet` | Custom portals |
 | A tooltip | `Tooltip` (IconButton has one built in) | `title=` |
 | A notice | `notify` (bottom right, at most one action, leaves on its own) | Inline "Saved" text |
 | A file's sync state in a Space's drive | `StateMark` kinds `online-only` (cloud), `downloading` and `uploading` (the spinner), `not-synced` (crossed-out cloud), all muted; a grid card takes `sync` on its `CollectionItem`. A file in step shows no mark; a conflicting copy has no color of its own | A colored chip, a status word, the `online` (connected) kind |
-| Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, offline; `working` and `waiting` for their agent) | A colored chip, a status word in the row |
-| The other person beside a one-to-one direct message | `PersonProfile` (`face`: an xl `Avatar` in a `PresenceFace size="lg"`, `name`, their status as `line`) with `PersonProfileSection`s; a group's people are a `MemberList` | A member list of two, a hand-made card |
+| Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, invisible, offline; `working` and `waiting` for their agent; `face` the Avatar's size, which the dot scales with); a status alone in a menu row is `PresenceDot` | A colored chip, a status word in the row, a dot painted over the face |
+| The person's own profile, opened from their name at the sidebar's foot: their banner, face, status and account | `DropdownMenuContent kind="card"` holding `ProfileCardBanner` (cropped to `profileBannerSize`), `ProfileCardHeader` (an xl face, `ProfileCardStatus`), `ProfileCardName`, then `ProfileCardGroup`s of `MenuItem`s and `MenuSubmenu`s (Status opens the statuses) | A separate status button, a menu headed by an email |
+| A list of people (Friends): face, name and a line about them now | `PersonRow` (`face` in a `PresenceFace`, `line`, `away` when offline; `actions` for a request's answers, `tools` on hover, `menu`), in `RowGroupSection`s | `ListRow` with an avatar squeezed in, a hand-made card per person |
+| The other person beside a one-to-one direct message | `PersonProfile` (`face`: an xl `Avatar` in a `PresenceFace face="xl"`, `name`, their status as `line`) with `PersonProfileSection`s; a group's people are a `MemberList` | A member list of two, a hand-made card |
 | Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` (`track="well"`) with two `iconOnly` options: `spaceIcons.personal` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
 | Who is in a voice channel, under its row in the sidebar | `VoicePerson` (`avatar` at xs, `name`, `speaking` rings the face in the done tone, `muted`) | A list of names, a colored chip |
-| A call in full (a voice channel's page, a DM's call, full screen) | `CallStage` of `CallTile`s (`picture`, else `face`; `speaking`, `muted`, `deafened`; a shared screen as `focus`, `fit="contain"`), then a `CallBar` of IconButtons ending in a danger Leave; away from the call, `FloatingPip` | A grid of hand-made video boxes, a floating card of buttons |
+| A call in full (a voice channel's page, a DM's call, full screen) | `CallStage` of `CallTile`s (`picture`, else `face`; `speaking`, `muted`, `deafened`; a shared screen as `focus`, `fit="contain"`), then a `CallBar`: the microphone and camera as `CallControl`s (filled while off, a chevron for their devices), reactions as `CallReactions`, the rest IconButtons, ending in a danger Leave; a raised hand is `hand` (with `handPlace` while several are up) and a sent reaction `reaction` on the tile, live captions a `CallCaptions` between the stage and the bar, a shared screen zooms with `zoom`; a weak connection is `weak` on its tile, a lost one `dimmed` on the stage; away from the call, `FloatingPip` | A grid of hand-made video boxes, a floating card of buttons |
 | Who has a file open | `InUseMark` (`people`: at most three faces, then "+N", each named in its tooltip), at the row's end where its state goes | A list of names, a lock icon |
 | Nothing here yet / failed | `EmptyState`, `ErrorState` | A custom centered block |
 | First load of content you can draw before it arrives (rows, cards, settings rows, shelves, a tree) | A `Skeleton` shaped like it (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`, `ShelfSkeleton`) | "Loading…" text |
@@ -236,8 +240,8 @@ The everyday components, several of which have no doc comment in the catalog yet
   theme, black in the light one. It lives where the things it makes are listed, not inside one of them.
 - A bar's controls stand bare, never some boxed and some not. Grid and list are two bare icons, the open one
   pressed (`CollectionViewToggle`, with a third for column view where a collection has one); the order is one sort icon (`CollectionSortMenu`) and filtering one filter
-  icon (`CollectionFilterMenu`), never a spelled-out "Most recent". Groups of controls are split by a
-  `ToolbarDivider`.
+  icon (`CollectionFilterMenu`), never a spelled-out "Most recent". Groups of controls sit a step apart
+  (`ToolbarDivider`), never split by a line.
 - Controls in one row share one height. A container decides its controls' geometry: a bar gives every control
   the same height and inner padding, and a feature never passes size, height, width or padding classes to a
   shared button. IconButton `sm` (24px) is only for an inline closer in a row or tab. A row's own buttons go in
@@ -259,6 +263,11 @@ The everyday components, several of which have no doc comment in the catalog yet
 
 ### Rows and lists
 
+- Rows that belong together sit on one faint fill (`RowGroup`): 14px corners, 4.5px in, 2.25px between
+  rows, groups 22.5px apart under a muted label. No line between rows and no bordered card around a
+  section; lines are only the page's frame. A group's label starts on the same line as the page's title.
+- In a group, a row's label is the text color at the control size, its line muted at the meta size. Bright
+  and medium is for a name that leads its row (a person), not every label.
 - Long text (names, models, paths, branches) shortens with a fade-out edge (`OverflowFadeText`), never an
   ellipsis.
 - A row's state sits at its right end: a spinner while an agent works, an amber dot when it waits on the
@@ -281,7 +290,7 @@ The everyday components, several of which have no doc comment in the catalog yet
   empty states.
 - Buttons keep the system's shape: no `rounded-full` or circular icon buttons.
 - Focus never draws a ring, an outline or a glow, on anything: a focused control shows its hover wash, a
-  field its edge. `styles/focus.css` takes the browser's own away, and `tests/noFocusRing.contract.test.ts`
+  field its edge. `styles/focus.css` takes the browser's own away, and `tests/no_focus_ring.contract.test.ts`
   fails on any focus ring added back.
 - Getting something from a store (Get, Install, Make agent, Update) is the filled primary look, white in the
   dark theme and black in the light one: `variant="get"` on shelf items, `variant="get-filled"` as the one action
@@ -301,6 +310,10 @@ The everyday components, several of which have no doc comment in the catalog yet
   things (models, efforts, folders, agents, chats, columns) is text alone, never one icon repeated down the
   list; a choice of a few different things (Build and Plan, sort orders) keeps its own icons. A choice shows no
   shortcut. The selection is a checkmark. `MenuRadioGroup` drops icons that don't differ.
+- Two chevrons, never drawn by hand. Anything that opens a menu is a `MenuTrigger` (a field that picks a value is
+  `Select`), ending in `MenuChevron`: down, muted, turning over while open. Anything that shows or hides what is
+  under it (a heading's group, a question's answer, more of a list, a tree's folder) wears `FoldChevron`:
+  right while closed, down while open. A fold's heading brightens under the pointer with no wash behind it.
 - Deleting always asks first in a small dialog: what goes, then Cancel (quiet) and Delete (danger).
 - Tooltips are Misty's own (`Tooltip`), quick, with the shortcut when shortcut hints are on, never the system
   title.
@@ -312,7 +325,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 - An icon is its subject's, the same one everywhere that subject shows: a row, an option, a tab, a tile and the
   sidebar all wear the icon the thing already has, never a stand-in (a house for a Space, a keyboard on every
   shortcut category, a generic fallback for a page). Look it up first: `spaceIcons` and `appIcons`
-  (`src/icons/appIcons.ts`), `AppLogoImage` (`AppLogos.tsx`), `EngineMark`, `MistyMark`. A subject with
+  (`src/icons/app_icons.ts`), `AppLogoImage` (`AppLogos.tsx`), `EngineMark`, `MistyMark`. A subject with
   no icon yet gets one added there, not chosen at the call site. When nothing tells the items apart, they go
   text alone. Never one icon repeated down a list, and never emoji in place of an icon.
 - Icons, logos and engine marks stand bare, never inside a box: no fill, border or rounded tile behind them.
@@ -321,7 +334,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 - Every third-party logo is the brand's official artwork in its own colors: a single-color mark follows the
   theme (black on light, white on dark), and one with no artwork shows its initial. A colored logo that would
   disappear on one theme uses the brand's own variant; only when none exists does it sit on a small plate
-  (`logoPlates` in `LogoFallbacks.tsx`). Misty's `logoArtwork.contract.test.tsx` checks every logo on both themes.
+  (`logoPlates` in `LogoFallbacks.tsx`). Misty's `LogoArtwork.contract.test.tsx` checks every logo on both themes.
 - Never the sparkles star, in any form: it reads as AI filler. An icon shows what the thing is.
 
 ### Copy
@@ -396,7 +409,7 @@ A docs site (`DocsLayout`) is the one place with three panels. Its rules, so a d
 
 Features have no stylesheets. The only ones are for content, not interface: code views, presented media (a
 Tutor slide or video scene) and the skins of third-party widgets (`contentStylesheets` in
-Misty's `src/tests/architecture/uiRuleDefinitions.ts`). Feature stylesheets never restyle a shared component's parts
+Misty's `src/tests/architecture/ui_rule_definitions.ts`). Feature stylesheets never restyle a shared component's parts
 (`[data-slot]`), its button states or its glyph sizes.
 
 ## Recipes
@@ -432,8 +445,11 @@ with `state` at the end and `menu` for the ⋯. No leading icon unless it tells 
 
 ### A form or settings section
 
-`SectionHeading`, then rows of `Field` + `Label` + control. Switches for on/off, `OptionSelect` for short
-choices, `SecretField` for secrets. Changes save themselves; errors show under the field with `FieldError`.
+A `RowGroupStack` of `SettingsSection`s, each a label over one group of 45px `SettingsRow`s: the label, a
+muted line only where it explains something, the control at the end, a dependent row as `sub`. Switches
+for on/off, `OptionSelect` for short choices, `SecretField` for secrets. Changes save themselves; errors
+show under the field with `FieldError`. A form in a dialog is `Field` + `Label` + control, and a choice of
+several there is a `RowGroupSection` of rows.
 
 ### A dialog
 

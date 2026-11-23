@@ -2,7 +2,7 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -15,7 +15,6 @@ const Checkbox = React.forwardRef<
       "peer grid size-4 shrink-0 place-content-center rounded-sm border",
       "border-charcoal-border-strong bg-transparent outline-none",
       "transition-colors duration-150 ease-out",
-      // Focus shows as a brighter edge; the app draws no focus rings.
       "hover:border-cream-muted focus-visible:border-cream",
       "disabled:cursor-not-allowed disabled:opacity-50",
       "data-[state=checked]:border-charcoal-active data-[state=checked]:bg-charcoal-active",

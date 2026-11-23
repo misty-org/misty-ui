@@ -1,16 +1,8 @@
 import { Command as CommandPrimitive } from "cmdk";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Pressable } from "../controls/Pressable";
-
-/*
- * The parts of a full command palette in a dialog (⌘K), larger than a picker's Command: a wide
- * search box with no icon or frame, a row of type tabs, muted group headings and rows of 45px
- * (two lines with an excerpt). They keep the dialog's body line height, so a heading or a
- * two-line row is as tall as the dialog's own text. Layout inside a row is the caller's;
- * `CommandPalette` and `CommandPaletteGroup` hold them.
- */
 
 /**
  * The palette itself, holding its input, list and rows: a column with no look of its own, since

@@ -9,9 +9,7 @@ describe("pathLineLabelCap", () => {
   });
 
   it("shortens the longest label first", () => {
-    // 40 + 80 + 100 = 220: only the 120 label gives up 20.
     expect(pathLineLabelCap([40, 80, 120], 220)).toBe(100);
-    // Once it reaches the next longest, both shorten together: 40 + 2 * 60 = 160.
     expect(pathLineLabelCap([40, 120, 80], 160)).toBe(60);
   });
 

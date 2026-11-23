@@ -7,7 +7,7 @@ import {
   type Ref,
   type RefObject,
 } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Tooltip } from "../overlays/Tooltip";
 
 /** The elements a label can be. A label is one line of text, or two with `lines={2}`. */
@@ -85,7 +85,6 @@ export function OverflowFadeText({
   const [overflowing, setOverflowing] = useState(false);
   const [text, setText] = useState("");
 
-  // A callback ref, so measuring follows the element when the tooltip wrapper remounts it.
   const attach = useCallback(
     (node: HTMLElement | null) => {
       setElement(node);
@@ -107,7 +106,6 @@ export function OverflowFadeText({
   useLayoutEffect(() => {
     if (!element) return;
     const stopResize = watchSize(element, measure);
-    // Text that changes inside a child component never changes this one's children.
     const mutations =
       typeof MutationObserver === "undefined"
         ? null
@@ -123,7 +121,6 @@ export function OverflowFadeText({
     };
   }, [element, measure]);
 
-  // New children re-measure without setting the observers up again on every render.
   useLayoutEffect(measure, [measure, children]);
 
   const label = (
@@ -154,7 +151,6 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
   else if (ref) (ref as RefObject<T | null>).current = value;
 }
 
-// One observer for every label on screen: a long list shouldn't carry an observer per row.
 const sizeWatchers = new Map<Element, () => void>();
 let sizeObserver: ResizeObserver | null = null;
 

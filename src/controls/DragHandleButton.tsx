@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { IconButton, type IconButtonProps } from "./IconButton";
 
 export type DragHandleButtonProps = Omit<IconButtonProps, "aria-label" | "asChild">;

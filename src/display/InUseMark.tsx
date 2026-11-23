@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Tooltip } from "../overlays/Tooltip";
 import { Avatar, AvatarFallback, AvatarImage, type AvatarTone } from "./Avatar";
 import { Text } from "./Text";
@@ -88,7 +88,6 @@ export function InUseMark({ people, className }: InUseMarkProps) {
                 tone={person.tone}
                 role="img"
                 aria-label={label}
-                // A ring in the page's color cuts each face out of the one under it.
                 className="ring-2 ring-charcoal-bg"
               >
                 {person.image ? <AvatarImage src={person.image} alt="" /> : null}

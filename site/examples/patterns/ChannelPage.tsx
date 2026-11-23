@@ -7,12 +7,15 @@ import {
   ChannelMain,
   ChannelPage,
   ChannelSidebar,
-  ChannelSidebarHeader,
   ChannelWelcome,
+  DropdownMenu,
+  DropdownMenuContent,
   MemberGroupHeading,
   MemberList,
   MemberRow,
   MentionMark,
+  MenuItem,
+  MenuTrigger,
   NavRow,
   NavRowLabel,
   SearchField,
@@ -21,7 +24,7 @@ import {
 } from "../../../src";
 
 export const meta = {
-  name: "ChannelPage · ChannelSidebar · ChannelSidebarHeader · ChannelMain · ChannelHeader · ChannelWelcome · ChannelDivider · TypingLine · MentionMark · MemberList · MemberGroupHeading · MemberRow",
+  name: "ChannelPage · ChannelSidebar · ChannelMain · ChannelHeader · ChannelWelcome · ChannelDivider · TypingLine · MentionMark · MemberList · MemberGroupHeading · MemberRow",
   file: "patterns/channel/*",
   about: "",
   wide: true,
@@ -32,7 +35,14 @@ function ChannelDemo() {
   return (
     <div className="h-96 overflow-hidden rounded-lg border border-charcoal-border">
       <ChannelPage>
-        <ChannelSidebar aria-label="Channels" header={<ChannelSidebarHeader name="Research" />}>
+        <ChannelSidebar aria-label="Channels" header={
+            <DropdownMenu>
+              <MenuTrigger heading label="Research" />
+              <DropdownMenuContent side="bottom" align="start">
+                <MenuItem label="Invite people" />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          }>
           <div className="grid gap-px p-2">
             {["general", "design", "launch"].map((name, index) => (
               <NavRow key={name} current={index === 0}>

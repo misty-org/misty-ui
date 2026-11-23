@@ -1,7 +1,7 @@
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * How far something has got. `default` sits on the page; `media` is a thin light bar for over a

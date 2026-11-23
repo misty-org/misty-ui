@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "../../overlays/DropdownMenu";
 import { MenuRadioGroup, MenuRadioItem } from "../../overlays/MenuItem";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import {
   CollectionColumnChooser,
   CollectionColumnsContext,
@@ -57,7 +57,6 @@ export function CollectionHeading({ title, actions, actionsLabel, end }: Collect
     <PageHeader title={title} actions={actions} actionsLabel={actionsLabel} end={end} />
   );
   if (!page) return header;
-  // In a page, wait the one commit until its band has mounted rather than mount here and move.
   return page.slot ? createPortal(header, page.slot) : null;
 }
 
@@ -111,7 +110,7 @@ export function CollectionControls({
 
 /**
  * Grid or list, as two bare icon buttons, the open one pressed: no box around them. A bar puts a
- * ToolbarDivider between them and its other controls. A collection that can also be browsed in
+ * ToolbarDivider's space between them and its other controls. A collection that can also be browsed in
  * columns (Files, as Finder's column view) passes `columns`: a third bare icon, pressed while
  * active, and then neither grid nor list is. The board is another page rather than a way to draw
  * this one, so it is a separate button beside them.

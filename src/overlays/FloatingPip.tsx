@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
-import { uiPx } from "../lib/uiScale";
+import { uiPx } from "../lib/ui_scale";
 
 /** The four corners a picture-in-picture rests in. */
 export type PipCorner = "top-left" | "top-right" | "bottom-left" | "bottom-right";
@@ -69,14 +69,12 @@ export function FloatingPip({
   clearOf,
 }: FloatingPipProps) {
   const frame = React.useRef<HTMLDivElement>(null);
-  // Where it is while dragged (its top left in the container), else null and its corner decides.
   const [dragged, setDragged] = React.useState<Point | null>(null);
   const [gliding, setGliding] = React.useState(false);
   const [resting, setResting] = React.useState<Point | null>(null);
   const press = React.useRef<{ start: Point; offset: Point; moved: boolean } | null>(null);
   const [topInset, setTopInset] = React.useState(0);
 
-  // Where its corner is in the container, kept current as the container or the picture resizes.
   const place = React.useCallback(() => {
     const element = frame.current;
     const box = element?.offsetParent as HTMLElement | null;
@@ -119,7 +117,6 @@ export function FloatingPip({
   };
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    // Its own buttons keep their presses.
     if (event.button !== 0 || (event.target as Element).closest("[data-pip-action]")) return;
     const element = frame.current;
     if (!element) return;
@@ -141,7 +138,6 @@ export function FloatingPip({
     current.moved = true;
     setGliding(false);
     const box = element.offsetParent as HTMLElement;
-    // Held inside the container, with room to be pulled a little past its right edge to dock.
     const maxX = box.clientWidth - element.offsetWidth + (onDock ? element.offsetWidth / 2 : 0);
     setDragged({
       x: Math.min(Math.max(event.clientX - current.offset.x, 0), maxX),
@@ -204,8 +200,6 @@ export function FloatingPip({
       <button
         type="button"
         aria-label={openLabel}
-        // A press on the picture opens it; the frame's pointer handling does the work, so the
-        // button is here for the keyboard.
         onClick={(event) => {
           if (event.detail === 0) onOpen();
         }}
@@ -239,7 +233,6 @@ export function FloatingPip({
           {actions}
         </div>
       ) : null}
-      {/* The ring sits over the picture's edge, so it shows on any picture. */}
       {active ? (
         <span
           aria-hidden="true"

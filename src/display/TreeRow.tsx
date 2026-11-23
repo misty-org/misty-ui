@@ -1,13 +1,13 @@
 // Adapted from desktop-cc-gui (MIT, Copyright (c) 2026 zhukunpenglinyutong).
-import { ChevronRight } from "lucide-react";
+import { FoldChevron } from "../overlays/MenuChevron";
 import { RowControls } from "../controls/RowContext";
 import type { CSSProperties, ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Pressable } from "../controls/Pressable";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { RowActions, type RowActionsProps } from "../overlays/RowActions";
 import { Text } from "./Text";
-import { remCss } from "../lib/uiScale";
+import { remCss } from "../lib/ui_scale";
 
 /**
  * The name's color, where it carries meaning: what Git says of the file (new, changed, gone), or
@@ -96,10 +96,7 @@ export function TreeRow(props: TreeRowProps) {
         onClick={props.onOpen}
       >
         {props.chevron ? (
-          <ChevronRight
-            aria-hidden
-            className={cn("size-4 flex-none transition-transform", props.expanded && "rotate-90")}
-          />
+          <FoldChevron open={Boolean(props.expanded)} />
         ) : null}
         {props.icon ? (
           <span aria-hidden className="flex size-4 flex-none items-center [&>svg]:size-4">

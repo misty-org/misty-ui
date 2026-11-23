@@ -1,9 +1,11 @@
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Button } from "../controls/Button";
 import { IconButton } from "../controls/IconButton";
+import { Pressable } from "../controls/Pressable";
 import { DropdownMenu, DropdownMenuContent } from "../overlays/DropdownMenu";
+import { FoldChevron } from "../overlays/MenuChevron";
 import { MenuTrigger } from "../overlays/MenuTrigger";
 import { OverflowFadeText } from "./OverflowFadeText";
 
@@ -43,6 +45,12 @@ export type SectionHeadingProps = {
    * Quick access, Tags, Devices), where the heading leads its rows rather than sitting back.
    */
   strong?: boolean;
+  /**
+   * `row` (the default) is a 36px heading aligned with the rows under it, for the sidebar and
+   * lists of bare rows. `label` sits tight over a RowGroup, set just inside the group's edge so it
+   * starts on the same line as the page's title (RowGroupLabel is this).
+   */
+  kind?: "row" | "label";
   id?: string;
   /** Layout only: margins or placement. */
   className?: string;
@@ -51,8 +59,8 @@ export type SectionHeadingProps = {
 /**
  * The heading over a group of rows: a Space home section, the sidebar's chat sections, a chat's
  * Channels and Direct messages. Plain muted text, not a chip, 36px tall and aligned with the rows
- * under it, with an optional count, one action at the right end and an optional fold. Only the
- * fold button washes on hover.
+ * under it (or, with `kind="label"`, tight over a RowGroup), with an optional count, one action at the right end and an optional fold: the title
+ * and its FoldChevron brighten under the pointer, with no wash, as a sidebar group's heading does.
  *
  * ```tsx
  * <SectionHeading title="Channels" count={channels.length} open={open} onOpenChange={setOpen}
@@ -68,6 +76,7 @@ export function SectionHeading({
   controls,
   as: Heading = "h2",
   strong = false,
+  kind = "row",
   id,
   className,
 }: SectionHeadingProps) {
@@ -77,10 +86,8 @@ export function SectionHeading({
       <OverflowFadeText full className="min-w-0">
         {title}
       </OverflowFadeText>
-      {/* A space for the accessible name ("Chats 4"); flex drops it visually. */}
       {count !== undefined ? " " : null}
       {count !== undefined ? (
-        // The count reads as part of the title: same size, weight and color.
         <span className="shrink-0 tabular-nums">{count}</span>
       ) : null}
     </>
@@ -88,7 +95,12 @@ export function SectionHeading({
   return (
     <div
       data-slot="section-heading"
-      className={cn("flex h-8 min-w-0 items-center gap-2 pr-2", folds ? "pl-0" : "pl-2", className)}
+      data-kind={kind}
+      className={cn(
+        "flex min-w-0 items-center gap-2",
+        kind === "label" ? "min-h-6 px-0.5" : "h-8 px-2",
+        className,
+      )}
     >
       <Heading
         id={id}
@@ -98,26 +110,19 @@ export function SectionHeading({
         )}
       >
         {folds ? (
-          <button
+          <Pressable
             type="button"
             aria-expanded={open}
             aria-controls={controls}
             onClick={() => onOpenChange(!open)}
             className={cn(
-              "flex h-6 min-w-0 max-w-full items-center gap-1 rounded-sm px-2 text-left outline-none",
-              "transition-colors hover:bg-control-hover hover:text-cream",
-              "focus-visible:bg-control-hover focus-visible:text-cream",
+              "flex min-w-0 max-w-full items-center gap-1 rounded-md text-left",
+              "hover:text-cream-bright focus-visible:text-cream-bright",
             )}
           >
             {words}
-            <ChevronRight
-              aria-hidden="true"
-              className={cn(
-                "size-4 shrink-0 transition-transform motion-reduce:transition-none",
-                open && "rotate-90",
-              )}
-            />
-          </button>
+            <FoldChevron open={open} />
+          </Pressable>
         ) : (
           <span className="flex min-w-0 items-center gap-1">{words}</span>
         )}

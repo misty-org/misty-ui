@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Surface } from "../display/Surface";
 import { RowControls } from "./RowContext";
 
@@ -41,8 +41,6 @@ export function RowTools({
 }) {
   if (reveal === "cover")
     return (
-      // Over the row's end: the panel's fill under the hovered row's wash, so it sits on the row
-      // unseen; the row must be `relative`.
       <Surface
         tone="sidebar"
         data-slot="row-tools"

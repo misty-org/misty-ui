@@ -5,8 +5,8 @@ import {
   reorderIds,
   usePointerDropTarget,
   usePointerReorder,
-} from "../hooks/usePointerReorder";
-import { cn } from "../classNames";
+} from "../hooks/use_pointer_reorder";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
 import { Pressable } from "../controls/Pressable";
 import { Text } from "../display/Text";
@@ -62,14 +62,7 @@ export interface TabStripProps {
 /** The scope a drag from outside a tab row carries to open tabs it pauses over. */
 export const tabSwitchScope = "workspace-tab-switch";
 
-// Tabs are a sidebar row's height, padding, type and washes. The row is the shared 54px header band, so they
-// have 9px above and below; the first tab's icon lines up with a page header's title, 18px in,
-// and the end controls keep the page header's 18px from the edge. Every tab starts at the same
-// 162px and all shrink alike when they don't fit, down to 108px (still wide enough for the
-// closer); past that the row scrolls sideways.
 const tabClass = cn(
-  // An explicit width, not just a flex basis: the tab is a size container (for its closer), so
-  // its content adds nothing to its size, and the row measures tabs by this width.
   "group/tab @container/tab relative flex h-8 w-36 min-w-24 flex-initial items-center",
   "overflow-hidden rounded-md hover:bg-row-hover data-[selected]:bg-row-active",
 );
@@ -121,7 +114,6 @@ export function TabStrip(props: TabStripProps) {
     },
   });
 
-  // A drag from outside the row (a sidebar chat) opens the tab it pauses over; it never drops here.
   const dwell = useRef(createDwell());
   usePointerDropTarget(list, {
     scope: tabSwitchScope,
@@ -138,7 +130,6 @@ export function TabStrip(props: TabStripProps) {
     drop() {},
   });
 
-  // The open tab scrolls into view when it changes, as a newly opened tab lands past the edge.
   useEffect(() => {
     if (!props.active) return;
     list.current
@@ -177,7 +168,6 @@ export function TabStrip(props: TabStripProps) {
           role="tablist"
           aria-label={props.label}
           className="flex min-w-0 flex-[0_1_auto] items-center gap-1"
-          // The tabs' least widths and the gaps between them: below this the row scrolls.
           style={{
             minWidth: `calc(${props.tabs.length} * var(--spacing) * 24 + ${Math.max(0, props.tabs.length - 1)} * var(--spacing))`,
           }}
@@ -218,7 +208,6 @@ export function TabStrip(props: TabStripProps) {
                   </Text>
                 </Pressable>
                 {closable ? (
-                  // Always shown, on every tab, until the tab is too narrow to hold it.
                   <span className="flex flex-none @max-[5.5rem]/tab:hidden">
                     <IconButton
                       label={tab.closeLabel!}
@@ -249,7 +238,6 @@ export function TabStrip(props: TabStripProps) {
         </div>
         {props.after ? <div className="flex flex-none items-center">{props.after}</div> : null}
       </SidewaysScroll>
-      {/* The end controls keep to the far edge, however few tabs there are. */}
       {props.end ? (
         <div className="ml-auto flex flex-none items-center gap-1">{props.end}</div>
       ) : null}

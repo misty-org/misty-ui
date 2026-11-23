@@ -1,12 +1,11 @@
 import type { ComponentProps, WheelEvent } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /** A mouse wheel's vertical turn scrolls the row sideways; a trackpad's sideways swipe already does. */
 function scrollSideways(event: WheelEvent<HTMLDivElement>) {
   const row = event.currentTarget;
   if (Math.abs(event.deltaX) >= Math.abs(event.deltaY) || row.scrollWidth <= row.clientWidth)
     return;
-  // Line-based wheels (deltaMode 1) count lines, not pixels.
   row.scrollLeft += event.deltaY * (event.deltaMode === 1 ? 16 : 1);
 }
 

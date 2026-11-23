@@ -1,6 +1,6 @@
 import { Disclosure, DisclosureList, Text } from "../../../src";
 
-export const meta = { name: "Disclosure", file: "layout/Disclosure.tsx", about: "Sections in a list split by hairlines, and a row in a sidebar.", wide: false, order: 10 };
+export const meta = { name: "Disclosure", file: "layout/Disclosure.tsx", about: "Sections on one group fill, and a row in a sidebar.", wide: false, order: 10 };
 
 export default function Example() {
   return (

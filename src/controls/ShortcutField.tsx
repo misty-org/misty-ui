@@ -8,8 +8,8 @@ import {
   shortcutFromEvent,
 } from "../lib/shortcuts";
 import type { ShortcutPlatform } from "../lib/shortcuts";
-import { cn } from "../classNames";
-import { controlFrame } from "./controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "./control_frame";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { FieldError } from "./Field";
 import { IconButton } from "./IconButton";
@@ -99,27 +99,22 @@ const ShortcutField = React.forwardRef<HTMLButtonElement, ShortcutFieldProps>(
       if (disabled) return;
       setProblem("");
       changeRecording(true);
-      // WebKit doesn't focus a button on click; recording should still hold the focus.
       buttonRef.current?.focus();
     };
 
     const latest = React.useRef({ onChange, stop, platform, allowReserved });
     latest.current = { onChange, stop, platform, allowReserved };
 
-    // While recording, every key is the field's, before the app's shortcuts or a settings window
-    // that closes on Escape can see it, so it listens on the window in the capture phase.
     React.useEffect(() => {
       if (!recording) return;
       const onKeyDown = (event: KeyboardEvent) => {
         const { onChange, stop, platform, allowReserved } = latest.current;
-        // Plain Tab moves on, so the field never traps the keyboard.
         if (event.key === "Tab" && !event.metaKey && !event.ctrlKey && !event.altKey) {
           stop();
           return;
         }
         event.preventDefault();
         event.stopImmediatePropagation();
-        // A modifier on its own is the start of a chord, not the chord.
         if (modifierKeys.includes(event.key)) return;
         if (event.key === "Escape" && !event.metaKey && !event.ctrlKey && !event.altKey) {
           stop();

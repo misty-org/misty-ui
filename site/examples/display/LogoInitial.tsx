@@ -1,4 +1,4 @@
-import { BrandIcon, LogoInitial, LogoPlate } from "../../../src";
+import { LogoInitial, LogoPlate, Mark } from "../../../src";
 
 export const meta = {
   name: "LogoInitial · LogoPlate",
@@ -15,8 +15,8 @@ export default function Example() {
     <div className={row}>
       <LogoInitial name="Hermes" />
       <LogoInitial name="Grok" size={24} />
-      <LogoPlate logo="brand:github">
-        <BrandIcon brand="github" label="github" />
+      <LogoPlate plate="dark">
+        <Mark of="github" label="github" />
       </LogoPlate>
     </div>
   );

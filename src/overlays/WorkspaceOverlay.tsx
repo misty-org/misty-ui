@@ -27,7 +27,6 @@ export function WorkspaceOverlay(props: {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      // A menu, dialog or field inside that handled Escape itself has it, not the overlay.
       if (event.key === "Escape" && !event.defaultPrevented) onClose();
     };
     window.addEventListener("keydown", onKeyDown);
@@ -35,7 +34,6 @@ export function WorkspaceOverlay(props: {
   }, [onClose, open]);
   useEffect(() => {
     if (!open) return;
-    // Focus goes back to whatever opened the overlay once it closes.
     const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     return () => {
       if (opener?.isConnected) opener.focus({ preventScroll: true });

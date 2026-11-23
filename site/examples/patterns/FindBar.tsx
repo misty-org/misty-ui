@@ -3,7 +3,6 @@ import { FindBar } from "../../../src";
 
 export const meta = { name: "FindBar", file: "patterns/FindBar.tsx", about: "", wide: true, order: 16 };
 
-/** A box to narrow by its corner, for pieces that give way as they shrink. */
 function ResizableBox(props: { children: React.ReactNode; className?: string }) {
   return (
     <div

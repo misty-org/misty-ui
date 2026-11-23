@@ -9,8 +9,8 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react";
-import { cn } from "../classNames";
-import { useCollectionDrag, type CollectionDrag } from "./collection/collectionDrag";
+import { cn } from "../class_names";
+import { useCollectionDrag, type CollectionDrag } from "./collection/collection_drag";
 import {
   ColumnBrowserList,
   columnRowDomId,
@@ -100,7 +100,6 @@ export function ColumnBrowser({
     [dropRef],
   );
 
-  // A new column, or the preview, comes into view at the end.
   const shape = columns.map((column) => column.id).join("\n") + (preview ? "\n" : "");
   useLayoutEffect(() => {
     const strip = stripRef.current;

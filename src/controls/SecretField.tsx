@@ -1,8 +1,8 @@
 import { KeyRound, Lock, MoreHorizontal, Trash2 } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
-import { controlFrame } from "./controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "./control_frame";
 import { Skeleton } from "../feedback/Skeleton";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { ConfirmDeleteDialog } from "../overlays/ConfirmDeleteDialog";
@@ -86,7 +86,6 @@ const SecretField = React.forwardRef<HTMLInputElement, SecretFieldProps>(
     const failedValue = React.useRef("");
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useImperativeHandle(forwardedRef, () => inputRef.current!, []);
-    // Replace hands focus to the field once its menu has closed.
     const focusOnClose = React.useRef(false);
     const alive = React.useRef(true);
     React.useEffect(
@@ -97,7 +96,6 @@ const SecretField = React.forwardRef<HTMLInputElement, SecretFieldProps>(
     );
     const errorId = React.useId();
 
-    // A value saved or removed elsewhere ends a replace.
     React.useEffect(() => {
       setReplacing(false);
       setDraft("");
@@ -111,12 +109,9 @@ const SecretField = React.forwardRef<HTMLInputElement, SecretFieldProps>(
 
     const save = async (leaving: boolean) => {
       const value = draft.trim();
-      // Enter disables the field while it saves, and that blur must not save twice.
       if (saving.current) return;
-      // Leaving the field again doesn't retry a value that just failed; Enter does.
       if (leaving && value && value === failedValue.current) return;
       if (!value) {
-        // Leaving an empty replace keeps the saved value.
         if (replacing) setReplacing(false);
         return;
       }
@@ -159,7 +154,6 @@ const SecretField = React.forwardRef<HTMLInputElement, SecretFieldProps>(
       );
     } else if (editing) {
       control = (
-        // Focus moving to the field's own eye button isn't leaving it, so blur is read here.
         <div
           className="w-full min-w-0"
           onBlur={(event) => {
@@ -194,7 +188,6 @@ const SecretField = React.forwardRef<HTMLInputElement, SecretFieldProps>(
                 event.preventDefault();
                 void save(false);
               } else if (event.key === "Escape" && (draft || replacing)) {
-                // Handled here, so a dialog or settings window around it stays open.
                 event.preventDefault();
                 event.stopPropagation();
                 cancel();

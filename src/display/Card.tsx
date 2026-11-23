@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
- * A bordered surface for the collection grid and a few settings and invitation panels. Panes
- * elsewhere are flat, split by hairlines, and never cards.
+ * A bordered surface for a tile in the collection grid. Rows that belong together (a settings
+ * section, an invitation's people) are a RowGroup instead, and panes are flat, never cards.
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, size = "default", ...props }, ref) => (

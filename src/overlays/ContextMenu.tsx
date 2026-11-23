@@ -10,7 +10,7 @@ import {
   menuSeparatorClass,
   menuWidthClass,
   type MenuWidth,
-} from "./popupStyles";
+} from "./popup_styles";
 import { OutOfRow } from "../controls/RowContext";
 import type { MenuItemVariant } from "./DropdownMenu";
 
@@ -18,13 +18,7 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { Check, ChevronRight } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
-
-/*
- * Radix's right-click menu with the same rows as the dropdown. Features put MenuItem,
- * MenuCheckItem, MenuRadioGroup/MenuRadioItem and MenuSubmenu inside ContextMenuContent; those
- * read the menu kind from it, so the same tree also works inside a DropdownMenu.
- */
+import { cn } from "../class_names";
 
 const contextViewportClass =
   "max-h-[min(--spacing(96),var(--radix-context-menu-content-available-height))] max-w-[var(--radix-context-menu-content-available-width)]";

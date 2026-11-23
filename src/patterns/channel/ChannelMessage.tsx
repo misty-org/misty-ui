@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { CornerUpLeft, MessagesSquare, Plus } from "lucide-react";
 
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { Pressable } from "../../controls/Pressable";
 import { IconButton } from "../../controls/IconButton";
 import { CompactControls } from "../../controls/RowContext";
@@ -10,13 +10,6 @@ import { RoleName } from "../../display/RoleName";
 import { Text } from "../../display/Text";
 import { Tooltip } from "../../overlays/Tooltip";
 import { MentionMark } from "./ChannelLayout";
-
-/*
- * One message in a channel, as Discord lays it out: the sender's face in a 45px column, their name
- * and the time over the text, and a run of messages from the same sender folded under the first,
- * each showing its time in the face's column only under the pointer. Whatever hangs off a message
- * (files, link previews, reactions, a thread's replies) follows the text in the same column.
- */
 
 /**
  * One message in a channel. `grouped` folds it under the sender's previous message: no face or
@@ -158,8 +151,9 @@ export function ChannelMessage({
 }
 
 /**
- * A message's text: body type that keeps its line breaks and wraps long words. `jumbo` sets a
- * message of only a few emoji large, as Discord does; `edited` adds the quiet "(edited)" after it,
+ * A message's text: body type at an easy reading measure (72 characters) and line height, keeping
+ * its line breaks and wrapping long words. `jumbo` sets a
+ * message of only a few emoji large; `edited` adds the quiet "(edited)" after it,
  * with when in its tooltip.
  */
 export function ChannelMessageText(props: {
@@ -172,8 +166,8 @@ export function ChannelMessageText(props: {
     <div
       dir="auto"
       className={cn(
-        "min-w-0 whitespace-pre-wrap break-words [overflow-wrap:anywhere]",
-        props.jumbo ? "text-display leading-snug" : "text-body",
+        "min-w-0 max-w-[72ch] whitespace-pre-wrap break-words [overflow-wrap:anywhere]",
+        props.jumbo ? "text-display leading-snug" : "text-body leading-normal",
         props.failed ? "text-danger" : "text-cream",
       )}
     >

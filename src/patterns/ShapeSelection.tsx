@@ -1,6 +1,6 @@
 import type * as React from "react";
-import { cn } from "../classNames";
-import type { ItemTone } from "../icons/itemTones";
+import { cn } from "../class_names";
+import type { ItemTone } from "../icons/item_tones";
 
 /** A handle on a selection: where it sits in its parent, in pixels, and the cursor it shows. */
 export type SelectionHandle = {

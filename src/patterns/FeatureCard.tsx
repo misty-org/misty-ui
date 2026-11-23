@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Text } from "../display/Text";
 
 /**

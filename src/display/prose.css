@@ -1,11 +1,7 @@
-/*
- * Prose (Prose.tsx): read-only rich text. Monochrome throughout: code highlighting uses weight,
- * brightness and italics rather than hue, and callouts carry their kind as an icon and a label.
- * Only code is monospace. Sizes follow the surrounding text role, so spacing is in em.
- */
 .misty-prose {
   overflow-wrap: anywhere;
   white-space: normal;
+  line-height: 1.65;
 
   & > :first-child {
     margin-top: 0;
@@ -15,7 +11,7 @@
   }
 
   & :is(p, ul, ol, pre, blockquote) {
-    margin: 0.55em 0;
+    margin: 0.85em 0;
   }
   & :is(ul, ol) {
     padding-left: 1.25em;
@@ -30,7 +26,10 @@
     margin: 0.2em 0;
   }
   & li + li {
-    margin-top: 0.2em;
+    margin-top: 0.3em;
+  }
+  & li::marker {
+    color: var(--color-cream-muted);
   }
 
   & :is(code, pre, kbd, samp) {
@@ -39,8 +38,8 @@
   & code {
     border-radius: var(--radius-sm);
     background: var(--color-control-hover);
-    padding: 0.08em 0.25em;
-    font-size: var(--text-meta);
+    padding: 0.1em 0.3em;
+    font-size: 0.875em;
   }
   & pre {
     overflow-x: auto;
@@ -60,7 +59,7 @@
   }
 
   & :is(h1, h2, h3, h4, h5, h6) {
-    margin: 1.1em 0 0.45em;
+    margin: 1.6em 0 0.55em;
     color: var(--color-cream-bright);
     font-weight: 600;
     line-height: 1.3;
@@ -109,7 +108,6 @@
     text-decoration: none;
   }
 
-  /* Task lists: a monochrome box, filled with a check when done. */
   & li:has(> input[type="checkbox"]) {
     list-style: none;
     margin-left: -1.25em;
@@ -141,7 +139,6 @@
     transform: rotate(45deg);
   }
 
-  /* Math: display equations scroll rather than overflow the message. */
   & .katex-display {
     margin: 0.7em 0;
     overflow-x: auto;
@@ -152,7 +149,6 @@
     font-size: var(--text-page);
   }
 
-  /* Footnotes (GFM): a quiet section after a rule. */
   & .footnotes {
     margin-top: 1em;
     padding-top: 0.6em;
@@ -162,10 +158,9 @@
   }
 }
 
-/* Tables scroll sideways inside the prose; hairline rules, muted header. */
 .misty-prose-table {
   max-width: 100%;
-  margin: 0.7em 0;
+  margin: 1.1em 0;
   overflow-x: auto;
   border: 1px solid var(--color-charcoal-border);
   border-radius: var(--radius-md);
@@ -203,10 +198,23 @@
   }
 }
 
-/* Code blocks: a header with the language and Copy, then the code, wrapped so nothing hides past
-   the edge. */
 .misty-prose-code {
-  margin: 0.7em 0;
+  --shiki-foreground: var(--color-cream);
+  --shiki-background: transparent;
+  --shiki-token-keyword: var(--color-cream-bright);
+  --shiki-token-function: var(--color-cream-bright);
+  --shiki-token-constant: var(--color-cream-bright);
+  --shiki-token-parameter: var(--color-cream-bright);
+  --shiki-token-string: color-mix(in srgb, var(--color-cream) 82%, var(--color-cream-muted));
+  --shiki-token-string-expression: color-mix(
+    in srgb,
+    var(--color-cream) 82%,
+    var(--color-cream-muted)
+  );
+  --shiki-token-comment: var(--color-cream-muted);
+  --shiki-token-punctuation: var(--color-cream);
+  --shiki-token-link: var(--color-cream-bright);
+  margin: 1.1em 0;
   overflow: hidden;
   border: 1px solid var(--color-charcoal-border);
   border-radius: var(--radius-lg);
@@ -236,51 +244,10 @@
     overflow-wrap: anywhere;
     white-space: pre-wrap;
   }
-
-  /* Monochrome highlight.js theme. */
-  & .hljs {
-    color: var(--color-cream);
-  }
-  & :is(.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-type, .hljs-meta .hljs-keyword) {
-    color: var(--color-cream-bright);
-    font-weight: 600;
-  }
-  & :is(.hljs-title, .hljs-section, .hljs-name, .hljs-selector-id) {
-    color: var(--color-cream-bright);
-  }
-  &
-    :is(
-      .hljs-string,
-      .hljs-regexp,
-      .hljs-attr,
-      .hljs-attribute,
-      .hljs-symbol,
-      .hljs-template-variable
-    ) {
-    color: color-mix(in srgb, var(--color-cream) 82%, var(--color-cream-muted));
-  }
-  & :is(.hljs-number, .hljs-literal, .hljs-variable, .hljs-params) {
-    color: var(--color-cream-bright);
-  }
-  & :is(.hljs-comment, .hljs-quote, .hljs-meta, .hljs-doctag) {
-    color: var(--color-cream-muted);
-    font-style: italic;
-  }
-  & .hljs-deletion {
-    color: var(--color-cream-muted);
-    text-decoration: line-through;
-  }
-  & :is(.hljs-addition, .hljs-strong) {
-    font-weight: 600;
-  }
-  & .hljs-emphasis {
-    font-style: italic;
-  }
 }
 
-/* Callouts: the kind is an icon and a label; the surface stays monochrome. */
 .misty-prose-callout {
-  margin: 0.7em 0;
+  margin: 1.1em 0;
   padding: 0.6em 0.85em;
   border: 1px solid var(--color-charcoal-border);
   border-left-width: 0.1875rem;
@@ -305,7 +272,6 @@
   }
 }
 
-/* Text not parsed yet keeps its line breaks. */
 .misty-prose-plain {
   white-space: pre-wrap;
   overflow-wrap: anywhere;

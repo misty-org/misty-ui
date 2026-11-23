@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * The bar along the top of an overlay or a popup, the twin of `BottomBar`: the header's height
@@ -27,8 +27,6 @@ export function TopBar(props: {
       aria-label={props["aria-label"]}
       className={cn(
         "flex h-(--ui-header) min-w-0 shrink-0 items-center gap-2 px-3",
-        // Divided, it gets a step of room above and below, so its controls center between the
-        // surface's edge and the line.
         props.divider && "box-content border-b border-charcoal-border py-1",
       )}
     >

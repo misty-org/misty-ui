@@ -1,11 +1,11 @@
 import type { Ref } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import {
   OverflowFadeText,
   type OverflowFadeTextProps,
 } from "../layout/OverflowFadeText";
-import { artTextClass, type ArtColor } from "./artPalette";
+import { artTextClass, type ArtColor } from "./art_palette";
 import type { Tint } from "./Surface";
 
 /** The type roles a label can take (theme.css). Leave it out to keep the surrounding size. */
@@ -24,8 +24,6 @@ export type TextTone =
   | "muted"
   | "bright"
   | "danger"
-  // What a change or a run is, in the theme's state colors (theme.css --tone-*): lines and files
-  // added, removed or changed; an agent working, waiting on the person, failed or done.
   | "added"
   | "removed"
   | "changed"
@@ -33,8 +31,6 @@ export type TextTone =
   | "waiting"
   | "failed"
   | "done"
-  // The window chrome's own text and its quieter shade (theme.css --workspace-tab-*), which a
-  // theme can set apart from the page's: the sidebar's rows and headings.
   | "chrome"
   | "chrome-muted";
 export type TextWeight = "regular" | "medium" | "semibold";

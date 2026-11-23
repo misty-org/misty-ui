@@ -1,6 +1,7 @@
 import {
   AddAppTile,
   AgentTile,
+  AppLogoImage,
   AppTile,
   Avatar,
   AvatarFallback,
@@ -24,9 +25,9 @@ export default function Example() {
   return (
     <div className="grid gap-3">
       <div className="flex gap-3">
-        <AppTile app="docs" label="Docs" />
-        <AppTile app="calendar" label="Calendar" badge={2} />
-        <AppTile app="code" label="Code" />
+        <AppTile mark={<AppLogoImage name="Excalidraw" size="launcher" />} label="Excalidraw" />
+        <AppTile mark={<AppLogoImage name="Penpot" size="launcher" />} label="Penpot" badge={2} />
+        <AppTile mark={<AppLogoImage name="Kdenlive" size="launcher" />} label="Kdenlive" />
         <AddAppTile />
       </div>
       <div className="flex gap-3">

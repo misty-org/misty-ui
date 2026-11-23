@@ -1,8 +1,8 @@
 import { Eye, EyeOff } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
-import { controlFrame, fieldInset } from "./controlFrame";
+import { cn } from "../class_names";
+import { controlFrame, fieldInset } from "./control_frame";
 import { IconButton } from "./IconButton";
 
 /** Every framed field is 36px tall, the height of the buttons beside it, with 15px text. */
@@ -16,9 +16,6 @@ const inputVariants = {
     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
     "aria-invalid:border-danger",
   ],
-  // The browser address bar: a filled field, so it keeps its shape beside a bright page
-  // where a hairline alone fades out. The address sits centered at rest, as a browser's does,
-  // and moves to the start while it's being typed.
   address: [
     controlFrame.md,
     "w-full min-w-0 border border-transparent bg-cream/7 px-2 text-center focus:text-left",
@@ -26,7 +23,6 @@ const inputVariants = {
     "placeholder:text-cream-muted hover:bg-cream/10 focus:bg-cream/12",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
-  // Toolbar fields: a quiet field that lifts on hover and focus.
   toolbar: [
     controlFrame.md,
     "w-full min-w-0 border border-cream/7 bg-transparent px-2",
@@ -34,9 +30,6 @@ const inputVariants = {
     "hover:bg-cream/3 focus:bg-cream/4",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
-  // Renaming in place in a header: reads as the title itself (the page role, semibold), with no
-  // frame until it is hovered or focused. The negative margin keeps its text in line with the
-  // header around it while the frame's padding is invisible.
   title: [
     controlFrame.md,
     "-mx-2 w-[calc(100%+var(--spacing)*4)] min-w-0 border border-transparent bg-transparent px-2",
@@ -45,8 +38,6 @@ const inputVariants = {
     "focus:border-charcoal-border-strong focus:bg-charcoal-card",
     "disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-danger",
   ],
-  // A field on a smoke panel floating over the desktop (Surface tone="smoke"): a faint white
-  // frame and fill, outlined brighter while typing in it. It keeps the panel's text size.
   smoke: [
     controlFrame.md,
     fieldInset.md,
@@ -55,7 +46,6 @@ const inputVariants = {
     "focus:border-white/55",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
-  // A 27px field in a row of 27px chips or buttons, such as renaming a speaker in place.
   compact: [
     controlFrame.sm,
     fieldInset.sm,
@@ -64,7 +54,6 @@ const inputVariants = {
     "placeholder:text-cream-muted hover:border-charcoal-active focus:border-cream-muted",
     "disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-danger",
   ],
-  // No frame: for fields inside a container that already draws one (search pills, tab titles).
   bare: [
     "w-full min-w-0 bg-transparent text-control text-cream outline-none placeholder:text-cream-muted",
     "disabled:pointer-events-none disabled:opacity-50",
@@ -107,7 +96,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             variant="quiet"
             size="sm"
             disabled={props.disabled}
-            // Keeps the caret in the field while it switches.
             onMouseDown={(event) => event.preventDefault()}
             onClick={() => setRevealed(!revealed)}
           >

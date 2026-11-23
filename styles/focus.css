@@ -1,9 +1,3 @@
-/* Keyboard focus never draws a ring, an outline or a glow, on anything: not the browser's own and
-   not one of ours. A focused control shows the same wash it shows under the pointer (Pressable's
-   washes and Button's variants include :focus-visible), a field its edge and caret, a menu row
-   its highlight. In the base layer, so the browser's default ring is gone while a component's
-   own outline utilities (hairline-outline, popup-edge) still draw their edges.
-   tests/noFocusRing.contract.test.ts fails on any focus ring or outline added back. */
 @layer base {
   *,
   *:focus,

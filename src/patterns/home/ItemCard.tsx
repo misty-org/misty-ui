@@ -1,5 +1,5 @@
 import type { MouseEvent, ReactNode } from "react";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { Pressable } from "../../controls/Pressable";
 import { Surface } from "../../display/Surface";
 import { Text } from "../../display/Text";
@@ -56,18 +56,18 @@ export function ItemCard(props: {
         </Surface>
         <span className="block px-0.5 pt-2.5">
           <span className="flex min-w-0 items-center gap-2">
-            <span aria-hidden className="flex shrink-0 [&_svg]:size-4">
+            <span aria-hidden className="flex shrink-0">
               {props.glyph}
             </span>
-            <Text full tone="bright" className="min-w-0 text-base">
+            <Text full size="control" tone="bright" className="min-w-0">
               {props.title}
             </Text>
           </span>
-          <Text bare tone="muted" className="mt-1 flex items-center gap-1.5 text-sm">
+          <Text bare size="meta" tone="muted" className="mt-1 flex items-center gap-1.5">
             {props.meta}
           </Text>
           {props.footer ? (
-            <Text bare tone="muted" className="mt-1.5 flex min-h-5 items-center gap-1.5 text-sm">
+            <Text bare size="meta" tone="muted" className="mt-1.5 flex min-h-5 items-center gap-1.5">
               {props.footer}
             </Text>
           ) : null}

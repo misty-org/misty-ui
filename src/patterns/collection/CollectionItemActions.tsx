@@ -4,7 +4,7 @@ import {
   itemMenuLabel,
   itemMenuOpened,
   type CollectionItem,
-} from "./collectionItemTypes";
+} from "./collection_item_types";
 
 /**
  * An item's one place for its actions, last inside a row or card that carries `group/row`: the

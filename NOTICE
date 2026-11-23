@@ -1,0 +1,19 @@
+@misty/ui
+Copyright (c) Misty contributors. MIT License; see LICENSE.
+
+Third-party marks
+
+The artwork in src/icons/marks/ is each brand's own and only names its product. The marks belong to
+their owners; using one names the product and doesn't brand anything else. Where each came from is in
+src/icons/marks.json (`source`).
+
+lobe-icons (https://github.com/lobehub/lobe-icons)
+  The engine and provider marks whose `source` names lobe-icons are taken from
+  @lobehub/icons-static-svg 1.102.0, unchanged but for their file format, in each brand's colored
+  version where there is one. Hermes wears Hermes Agent's mark.
+  MIT License, Copyright (c) 2023 LobeHub
+
+Oh My Pi (https://github.com/can1357/oh-my-pi)
+  The `omp` mark is its own gradient π, from packages/collab-web/public/favicon.svg, without the
+  favicon's dark tile.
+  MIT License

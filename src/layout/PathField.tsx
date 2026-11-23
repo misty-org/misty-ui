@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
-import { controlFrame } from "../controls/controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "../controls/control_frame";
 import { renderIcon, type IconSource } from "./ActionBar";
 import { OverflowFadeText } from "./OverflowFadeText";
 import { SidewaysScroll } from "./SidewaysScroll";
@@ -68,7 +68,6 @@ export function PathField({
   const inputRef = React.useRef<HTMLInputElement>(null);
   const pathKey = segments.map((segment) => segment.label).join("\n");
 
-  // A long path keeps its end, the open folder, in view.
   React.useLayoutEffect(() => {
     const row = rowRef.current;
     if (row && !editing) row.scrollLeft = row.scrollWidth;
@@ -86,7 +85,6 @@ export function PathField({
     setEditing(true);
   }, [onSubmit, value]);
 
-  // Only a new request starts typing, never a new path, so `begin` is read through a ref.
   const beginRef = React.useRef(begin);
   beginRef.current = begin;
   const lastRequest = React.useRef(editRequest);

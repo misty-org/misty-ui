@@ -1,6 +1,3 @@
-// The one import path for Misty's components: everything imports from "@misty/ui", never a subfolder.
-
-// controls
 export * from "./controls/BackButton";
 export * from "./controls/Button";
 export * from "./controls/Checkbox";
@@ -28,12 +25,9 @@ export * from "./controls/SplitButton";
 export * from "./controls/Switch";
 export * from "./controls/Textarea";
 export * from "./controls/Pressable";
-// Only the group: rows set their controls' size themselves, never a feature.
 export { RowTools, type RowToolsReveal } from "./controls/RowTools";
-// The frame every control shares at each size, read by the control-frame contract test.
-export { controlFrame, type ControlFrameSize } from "./controls/controlFrame";
+export { controlFrame, type ControlFrameSize } from "./controls/control_frame";
 
-// overlays
 export * from "./overlays/FloatingPip";
 export * from "./overlays/OverlaySide";
 export * from "./overlays/AlertDialog";
@@ -58,7 +52,6 @@ export * from "./overlays/Tour";
 export * from "./overlays/ViewportLayer";
 export * from "./overlays/WorkspaceOverlay";
 
-// layout
 export * from "./layout/ActionBar";
 export * from "./layout/Collapsible";
 export * from "./layout/Disclosure";
@@ -74,6 +67,7 @@ export * from "./layout/PathLine";
 export * from "./layout/PathField";
 export * from "./layout/FramedPage";
 export * from "./layout/SectionHeading";
+export * from "./layout/RowGroup";
 export * from "./layout/SidePanel";
 export * from "./layout/PageStage";
 export * from "./layout/IconBarItem";
@@ -82,9 +76,8 @@ export * from "./layout/SidewaysScroll";
 export * from "./layout/SplitHandle";
 export * from "./layout/Separator";
 export * from "./layout/PaneFrame";
-export * from "./layout/windowToolbar";
+export * from "./layout/window_toolbar";
 
-// display
 export * from "./display/Avatar";
 export * from "./display/RoleName";
 export * from "./display/LivePointer";
@@ -105,14 +98,13 @@ export * from "./display/StateMark";
 export * from "./display/StepDot";
 export * from "./display/TagDot";
 export * from "./display/Table";
-export * from "./display/ScreenMarks";
+export * from "./display/screen_marks";
 export * from "./display/SceneLabel";
-export type { ArtColor } from "./display/artPalette";
+export type { ArtColor } from "./display/art_palette";
 export * from "./display/Surface";
 export * from "./display/Text";
 export * from "./display/TreeRow";
 
-// feedback
 export * from "./feedback/FlyingMisty";
 export * from "./feedback/QuietPane";
 export * from "./feedback/LoadingScreen";
@@ -125,33 +117,28 @@ export * from "./feedback/Skeleton";
 export * from "./feedback/Spinner";
 export * from "./feedback/StateView";
 export * from "./feedback/StepProgress";
-// Named; resetNotices is for tests, which import it through this barrel too.
 export {
   NoticeViewport,
   notify,
   resetNotices,
   useNotice,
   type NoticeAction,
-} from "./feedback/notices";
+} from "./feedback/Notices";
 
-// navigation
 export * from "./navigation/TabStrip";
 export * from "./navigation/NavRow";
 export * from "./navigation/VoicePerson";
-export { rowShape, rowShapeTwoLine, rowShapeWrap } from "./display/rowShape";
+export { rowShape, rowShapeTwoLine, rowShapeWrap } from "./display/row_shape";
 
-// icons
-export * from "./icons/BrandIcon";
+export * from "./icons/Mark";
 export * from "./icons/LogoFallbacks";
 export * from "./icons/MistyMark";
 export * from "./icons/PlaceholderIcon";
-export * from "./icons/appIcons";
+export * from "./icons/app_icons";
 export * from "./icons/AppLogos";
 export * from "./icons/PersonaLogo";
-export * from "./icons/brandIcons";
-export * from "./icons/itemTones";
+export * from "./icons/item_tones";
 
-// patterns
 export * from "./patterns/CatalogCard";
 export * from "./patterns/Shelf";
 export * from "./patterns/FeatureCard";
@@ -164,6 +151,9 @@ export * from "./patterns/RenameItemDialog";
 export * from "./patterns/MessageActions";
 export * from "./patterns/channel/ChannelLayout";
 export * from "./patterns/channel/MemberList";
+export * from "./patterns/people/PersonRow";
+export * from "./patterns/people/ProfileCard";
+export * from "./patterns/SettingsRow";
 export * from "./patterns/channel/PersonProfile";
 export * from "./patterns/channel/ChannelMessage";
 export * from "./patterns/call/CallStage";
@@ -174,7 +164,7 @@ export * from "./patterns/ImageCropFrame";
 export * from "./patterns/ShapeSelection";
 export * from "./patterns/ZoomControl";
 export * from "./patterns/MediaPlayerCard";
-export * from "./patterns/findHighlights";
+export * from "./patterns/find_highlights";
 export * from "./patterns/StarterPrompts";
 export * from "./patterns/ToolTimeline";
 export * from "./patterns/ModelPicker";
@@ -183,10 +173,10 @@ export * from "./patterns/HeroPage";
 export * from "./patterns/home/AppTile";
 export * from "./patterns/home/AppLauncher";
 export * from "./patterns/home/HomeSection";
-export * from "./patterns/home/homeLayout";
+export * from "./patterns/home/home_layout";
 export * from "./patterns/home/ItemCard";
 
-export * from "./classNames";
+export * from "./class_names";
 
 export {
   ComposerAttachment,
@@ -197,9 +187,8 @@ export {
   messageComposerTextClass,
 } from "./patterns/MessageComposer";
 
-// Helpers the components share with the apps that use them.
-export { setUiStorage, createUiMemory, type UiStorage } from "./lib/uiMemory";
-export * from "./lib/uiScale";
+export { setUiStorage, createUiMemory, type UiStorage } from "./lib/ui_memory";
+export * from "./lib/ui_scale";
 export * from "./lib/shortcuts";
-export * from "./hooks/usePointerReorder";
-export * from "./hooks/useNow";
+export * from "./hooks/use_pointer_reorder";
+export * from "./hooks/use_now";

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { ActionBar, type ActionBarItem } from "./ActionBar";
 import { OverflowFadeText } from "./OverflowFadeText";
 
@@ -46,7 +46,6 @@ export function PageHeader({
         className,
       )}
     >
-      {/* The title takes what the actions leave; it may not fade below 144px before they give way. */}
       {untitled ? null : typeof title === "string" || typeof title === "number" ? (
         <OverflowFadeText
           as="h1"
@@ -56,9 +55,6 @@ export function PageHeader({
           {title}
         </OverflowFadeText>
       ) : (
-        // A title that is a control (the Space switcher) keeps its whole width and is never
-        // clipped, so a button pulled to the header's edge isn't cut off. What it shows is capped
-        // where it is typed (a Space name is at most 64 characters).
         <h1 className="m-0 flex min-w-fit flex-1 items-center text-page font-medium text-cream-bright">
           {title}
         </h1>

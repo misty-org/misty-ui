@@ -2,6 +2,7 @@ import { useOverlaySide } from "./OverlaySide";
 import { OutOfRow } from "../controls/RowContext";
 import {
   MenuKindContext,
+  menuCardClass,
   menuContentClass,
   menuIndicatorClass,
   menuIndicatorItemClass,
@@ -10,18 +11,12 @@ import {
   menuSeparatorClass,
   menuWidthClass,
   type MenuWidth,
-} from "./popupStyles";
+} from "./popup_styles";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
-
-/*
- * Radix's dropdown parts with Misty's look. Features build rows with MenuItem, MenuCheckItem,
- * MenuRadioGroup/MenuRadioItem and MenuSubmenu (MenuItem.tsx); the raw Item, CheckboxItem,
- * RadioItem and SubTrigger below stay for those components and for code not yet moved.
- */
+import { cn } from "../class_names";
 
 const dropdownViewportClass =
   "max-h-[min(--spacing(96),var(--radix-dropdown-menu-content-available-height))] max-w-[var(--radix-dropdown-menu-content-available-width)]";
@@ -86,8 +81,15 @@ DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayNam
 
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> & { width?: MenuWidth }
->(({ className, align = "start", side, sideOffset = 4, width, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> & {
+    width?: MenuWidth;
+    /**
+     * `list` (the default) is a menu of rows. `card` is a menu laid out as a card, 324px wide with
+     * no padding of its own, for a header over its rows: the profile card (`ProfileCard`).
+     */
+    kind?: "list" | "card";
+  }
+>(({ className, align = "start", side, sideOffset = 4, width, kind = "list", children, ...props }, ref) => {
   const placement = useOverlaySide();
   return (
     <DropdownMenuPrimitive.Portal>
@@ -99,9 +101,9 @@ const DropdownMenuContent = React.forwardRef<
         align={align}
         collisionPadding={8}
         className={cn(
-          menuContentClass,
-          dropdownViewportClass,
-          width && menuWidthClass[width],
+          kind === "card" ? menuCardClass : menuContentClass,
+          kind === "card" ? null : dropdownViewportClass,
+          kind === "card" ? null : width && menuWidthClass[width],
           className,
         )}
         {...props}

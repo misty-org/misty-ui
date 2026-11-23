@@ -5,8 +5,8 @@ import { OutOfRow } from "../controls/RowContext";
 import * as React from "react";
 
 import { Button, type ButtonProps } from "../controls/Button";
-import { cn } from "../classNames";
-import { PageDimmedContext } from "./pageDimmed";
+import { cn } from "../class_names";
+import { PageDimmedContext } from "./page_dimmed";
 
 const AlertDialog = AlertDialogPrimitive.Root;
 
@@ -39,7 +39,6 @@ const AlertDialogContent = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content> & { size?: AlertDialogSize }
 >(({ className, size = "md", children, ...props }, ref) => {
-  // Over a dialog that already dims the page, an alert doesn't dim it (and that dialog) again.
   const dimmed = React.useContext(PageDimmedContext);
   return (
     <AlertDialogPortal>

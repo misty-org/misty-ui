@@ -85,8 +85,9 @@ describe("Avatar", () => {
     const tile = screen.getByTestId("tile");
     expect(tile.dataset.tone).toBe("teal");
     expect(tile.className).toContain("data-[size=xl]:size-16");
+    expect(tile.className).toContain("data-[tone=teal]:bg-tone-teal");
     expect(screen.getByText("DS").className).toContain(
-      "group-data-[tone=teal]/avatar:bg-tone-teal",
+      "group-data-[tone]/avatar:bg-transparent",
     );
   });
 });
@@ -104,13 +105,11 @@ describe("ChoiceGroup shortcut", () => {
         ]}
       />,
     );
-    // Radix tooltip triggers carry data-state; a plain option has none.
     expect(screen.getByRole("radio", { name: "Month" }).dataset.state).toBeDefined();
   });
 });
 
 describe("AlertDialogAction", () => {
-  // A button never shows loading (controls/Button.tsx): while the work runs it is only disabled.
   it("is disabled while its work runs, with no spinner", () => {
     render(
       <AlertDialog open>

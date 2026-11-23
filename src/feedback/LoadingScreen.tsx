@@ -1,5 +1,5 @@
 import { useEffect, useSyncExternalStore } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { QuietPane } from "./QuietPane";
 import { Skeleton, SkeletonList } from "./Skeleton";
 
@@ -53,7 +53,6 @@ export function LoadingScreen({
       className={cn(
         "h-full min-h-0 w-full flex-1 overflow-hidden bg-charcoal-bg",
         className,
-        // The lowest named layer: over the app's content, still under its floating chrome.
         fullScreen && "fixed inset-0 layer-agent-surface grid place-items-center",
         leaving && "misty-loading-screen-leaving",
       )}

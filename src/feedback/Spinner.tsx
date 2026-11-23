@@ -1,7 +1,7 @@
 import { LoaderCircle } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /** The one loading indicator. Spinning refresh or retry glyphs are icon states, not loaders. */
 function Spinner({ className, label = "Loading", size = "default", ...props }: SpinnerProps) {

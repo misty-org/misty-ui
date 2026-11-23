@@ -1,12 +1,12 @@
 import { ChevronRight } from "lucide-react";
 import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { ListRowSkeleton } from "../display/ListRow";
-import { rowShape } from "../display/rowShape";
+import { rowShape } from "../display/row_shape";
 import { Text } from "../display/Text";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../overlays/ContextMenu";
-import type { CollectionDragItemProps } from "./collection/collectionDrag";
+import type { CollectionDragItemProps } from "./collection/collection_drag";
 
 /** One item in a ColumnBrowser column: a file or a folder. */
 export type ColumnBrowserRow = {
@@ -71,7 +71,6 @@ function Row({
       className={cn(
         rowShape,
         "w-full cursor-default select-none text-control text-cream",
-        // The picked row takes the row wash; in the column that has focus, the control's stronger one.
         picked
           ? cn("bg-row-active", strong && "group-focus-within/columns:bg-control-active")
           : menuOpen
@@ -147,7 +146,6 @@ export function ColumnBrowserList({
   onMenu: (id: string, event: MouseEvent) => void;
 }) {
   const rows = column.rows;
-  // A right-click off the rows, or on a column with no menu, opens nothing.
   const openMenu = (event: MouseEvent) => {
     if (!hasMenu || !(event.target as Element).closest("[data-slot=column-browser-row]")) event.preventDefault();
   };

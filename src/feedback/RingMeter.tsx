@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * How full something is, as a ring at the glyph size: a faint track and an arc that brightens

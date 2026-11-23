@@ -10,7 +10,6 @@ afterEach(() => {
 });
 
 function bar() {
-  // An open menu hides the rest of the page from assistive technology, so ask with hidden on.
   return screen.getByRole("group", { name: "Message actions", hidden: true });
 }
 

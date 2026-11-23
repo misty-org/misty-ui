@@ -94,7 +94,6 @@ function ConfirmDeleteDialog({
     <AlertDialog
       open={open}
       onOpenChange={(next) => {
-        // A delete in flight finishes before the dialog can go.
         if (!next && running) return;
         onOpenChange(next);
       }}
@@ -116,7 +115,6 @@ function ConfirmDeleteDialog({
               Cancel
             </Button>
           </AlertDialogPrimitive.Cancel>
-          {/* Not an AlertDialog Action: that would close the dialog before the delete is done. */}
           <Button
             type="button"
             variant="danger"
@@ -154,7 +152,6 @@ function useConfirmDelete() {
   const pendingRef = React.useRef<PendingConfirm | null>(null);
   pendingRef.current = pending;
 
-  // A dialog left open when its owner goes away counts as cancelled.
   React.useEffect(() => () => pendingRef.current?.resolve(false), []);
 
   const confirm = React.useCallback((options: ConfirmDeleteOptions) => {

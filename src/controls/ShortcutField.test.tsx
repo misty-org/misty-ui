@@ -41,7 +41,6 @@ describe("ShortcutField", () => {
     expect(field.getAttribute("aria-pressed")).toBe("true");
     expect(field.textContent).toBe("Press keys");
     expect(document.querySelector('[data-slot="shortcut-field-dot"]')).not.toBeNull();
-    // A modifier alone waits for the rest of the chord.
     fireEvent.keyDown(window, { key: "Meta", code: "MetaLeft", metaKey: true });
     expect(onChange).not.toHaveBeenCalled();
     fireEvent.keyDown(window, { key: "k", code: "KeyK", metaKey: true, shiftKey: true });
@@ -55,7 +54,6 @@ describe("ShortcutField", () => {
     render(<ShortcutField label="New chat" value={null} platform="macos" onChange={() => {}} />);
     const field = screen.getByRole("button", { name: "New chat" });
     field.focus();
-    // A button turns Enter into a click.
     fireEvent.click(field);
     expect(document.activeElement).toBe(field);
     expect(field.textContent).toBe("Press keys");

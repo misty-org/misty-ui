@@ -4,7 +4,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Check, Search } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { MenuIconSlot, type MenuIcon } from "./MenuItem";
 import {
@@ -15,13 +15,8 @@ import {
   menuShortcutClass,
   pickerSearchInputClass,
   pickerSearchRowClass,
-} from "./popupStyles";
+} from "./popup_styles";
 import { Tooltip } from "./Tooltip";
-
-/*
- * A searchable list (cmdk) for pickers and palettes. Its rows are menu rows: an 18px icon, the
- * label, an optional shortcut, and a checkmark at the right edge for the current pick.
- */
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -86,7 +81,6 @@ const CommandGroup = React.forwardRef<
     ref={ref}
     className={cn(
       "overflow-hidden p-1 text-cream [&_[cmdk-group-items]]:grid [&_[cmdk-group-items]]:gap-1",
-      // The heading reads like a menu label (menuLabelClass).
       "[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1 [&_[cmdk-group-heading]]:text-meta",
       "[&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-cream-muted",
       className,
@@ -104,7 +98,6 @@ const CommandSeparator = React.forwardRef<
 ));
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName;
 
-// cmdk marks state with data-selected / data-disabled set to "true" or "false", not by presence.
 const commandItemClass = cn(
   menuRowClass,
   "data-[selected=true]:bg-charcoal-hover",

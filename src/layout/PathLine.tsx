@@ -1,6 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../overlays/DropdownMenu";
 import { SearchablePicker, type SearchablePickerProps } from "../overlays/SearchablePicker";
 import { renderIcon, type IconSource } from "./ActionBar";
@@ -64,7 +64,7 @@ export function pathLineLabelCap(natural: ReadonlyArray<number>, available: numb
 }
 
 const segmentClass = cn(
-  "flex min-w-0 shrink-0 items-center gap-1 rounded-sm",
+  "flex min-w-0 shrink-0 items-center gap-1 rounded-md",
   "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
 );
 
@@ -72,7 +72,6 @@ const segmentClass = cn(
 const openerClass = cn(
   segmentClass,
   "h-6 px-1 outline-none hover:bg-control-hover hover:text-cream",
-  // Focus rings are off app-wide, so keyboard focus shows as the hover wash.
   "focus-visible:bg-control-hover focus-visible:text-cream",
   "data-[state=open]:bg-control-active data-[state=open]:text-cream",
 );
@@ -95,8 +94,6 @@ export function PathLine({ segments, label, className }: PathLineProps) {
     const width = root.getBoundingClientRect().width;
     if (width === 0) return;
     const labels = Array.from(root.querySelectorAll<HTMLElement>("[data-path-label]"));
-    // A label's scrollWidth is its full text however it is capped; everything else in the line
-    // (icons, separators, gaps) keeps its width whatever the cap is.
     const natural = labels.map((element) => element.scrollWidth);
     const shown = labels.reduce((sum, element) => sum + element.getBoundingClientRect().width, 0);
     const children = Array.from(root.children) as HTMLElement[];

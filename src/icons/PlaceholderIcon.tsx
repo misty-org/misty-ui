@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * The one icon drawn larger than a glyph: what stands in for content that isn't there or can't be

@@ -1,11 +1,11 @@
 import type { MouseEvent } from "react";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { Pressable } from "../../controls/Pressable";
 import { StateMark } from "../../display/StateMark";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { CollectionItemActions } from "./CollectionItemActions";
-import type { CollectionDragItemProps } from "./collectionDrag";
-import { collectionIconTone, hasItemActions, type CollectionItem } from "./collectionItemTypes";
+import type { CollectionDragItemProps } from "./collection_drag";
+import { collectionIconTone, hasItemActions, type CollectionItem } from "./collection_item_types";
 
 /** How big an icon grid draws its items: 0 small, 1 the default, 2 large. */
 export type CollectionZoom = 0 | 1 | 2;
@@ -88,7 +88,6 @@ export function CollectionIconGrid({
               </span>
             </Pressable>
             {actions || item.sync ? (
-              // The sync mark and the ⋯ share the top right corner; the ⋯ takes the mark's place on hover.
               <div className="absolute right-1 top-1 grid place-items-center [&>*]:col-start-1 [&>*]:row-start-1">
                 {item.sync ? (
                   <span

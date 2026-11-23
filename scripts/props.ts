@@ -1,9 +1,3 @@
-// Writes docs/props.json: every component's own props (name, type, optional, default note, doc
-// comment), read from the TypeScript source with the compiler, for the docs site's props tables.
-// Props a component only passes through (a <button>'s attributes, Radix's) are left out.
-//
-//   npm run catalog
-
 import { writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";

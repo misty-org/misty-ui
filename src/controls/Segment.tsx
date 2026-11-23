@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "../classNames";
-import { controlFrame } from "./controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "./control_frame";
 import { Pressable, type PressableProps } from "./Pressable";
 
 /**

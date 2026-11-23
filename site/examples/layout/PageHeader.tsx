@@ -29,7 +29,6 @@ export default function Example() {
       <ResizableBox>
         <PageHeader title="Notes" actions={actions.slice(0, 3)} />
       </ResizableBox>
-      {/* Untitled: only the page's controls, at its end, with no hairline. */}
       <ResizableBox>
         <PageHeader actions={actions.slice(0, 2)} />
       </ResizableBox>

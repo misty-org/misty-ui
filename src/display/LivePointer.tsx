@@ -1,6 +1,6 @@
 import { MousePointer2 } from "lucide-react";
-import { cn } from "../classNames";
-import type { ItemTone } from "../icons/itemTones";
+import { cn } from "../class_names";
+import type { ItemTone } from "../icons/item_tones";
 import { Text } from "./Text";
 
 /** A tone as the pointer's fill and its name tag's, written out so Tailwind keeps the classes. */

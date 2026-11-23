@@ -1,15 +1,15 @@
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
-import { ChevronDown } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Pressable } from "../controls/Pressable";
-import { rowShape } from "../display/rowShape";
+import { rowShape } from "../display/row_shape";
+import { FoldChevron } from "../overlays/MenuChevron";
 import { CollapsibleContent } from "./Collapsible";
 
 /**
  * `section`: a question or heading in page text with room around it, such as a frequently asked
- * question or a release's notes, split from its neighbours by a DisclosureList's hairlines.
+ * question or a release's notes, one of a DisclosureList's rows on its group's fill.
  * `row`: a 36px row in a list of links, such as a group in a docs sidebar, washing on hover.
  */
 export type DisclosureKind = "section" | "row";
@@ -30,9 +30,9 @@ export type DisclosureProps = {
 
 /**
  * A heading that opens to more under it: a page's questions and answers, a release's notes, a
- * group of links in a docs sidebar. The whole heading is the button, with a chevron at its end
- * that turns over while open. Put several sections in a DisclosureList to split them by
- * hairlines. A "show more" under a list is DisclosureButton; a fold with a trigger of its own is
+ * group of links in a docs sidebar. The whole heading is the button, with a FoldChevron at its
+ * end that turns down while open. Put several sections in a DisclosureList, which sets them on
+ * one RowGroup's fill with no lines between them. A "show more" under a list is DisclosureButton; a fold with a trigger of its own is
  * Collapsible.
  *
  * ```tsx
@@ -66,18 +66,15 @@ function Disclosure({
             "w-full",
             kind === "row"
               ? cn(rowShape, "text-control text-cream-muted aria-expanded:text-cream")
-              : "flex items-center gap-4 py-4 text-page font-medium text-cream-bright",
+              : "flex min-h-10 items-center gap-4 rounded-lg px-3 py-2 text-control font-medium text-cream-bright",
           )}
         >
           <span className="min-w-0 flex-1">{title}</span>
-          <ChevronDown
-            aria-hidden="true"
-            className="shrink-0 text-cream-muted transition-transform group-data-[state=open]/disclosure:rotate-180"
-          />
+          <FoldChevron className="text-cream-muted" />
         </Pressable>
       </CollapsiblePrimitive.Trigger>
       <CollapsibleContent>
-        <div className={kind === "row" ? "pb-2" : "pb-6 text-page text-cream-muted"}>
+        <div className={kind === "row" ? "pb-2" : "px-3 pb-3 text-control text-cream-muted"}>
           {children}
         </div>
       </CollapsibleContent>
@@ -85,12 +82,12 @@ function Disclosure({
   );
 }
 
-/** Disclosure sections one under another, split by hairlines. */
+/** Disclosure sections one under another on one RowGroup's fill, with no lines between them. */
 function DisclosureList({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       data-slot="disclosure-list"
-      className={cn("flex flex-col divide-y divide-charcoal-border", className)}
+      className={cn("flex flex-col gap-0.5 rounded-xl bg-row-hover p-1", className)}
       {...props}
     />
   );

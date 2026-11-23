@@ -1,5 +1,5 @@
 import { Skeleton } from "../../feedback/Skeleton";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 
 const nameWidths = ["w-2/3", "w-1/2", "w-3/5", "w-2/5", "w-3/4"];
 

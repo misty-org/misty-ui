@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import type { MenuIcon } from "../overlays/MenuItem";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./Select";
 
@@ -33,7 +33,6 @@ type OptionSelectProps = {
   "aria-invalid"?: boolean;
 };
 
-// Radix Select reserves "" for "nothing selected", so an empty option gets a stand-in value.
 const emptyValue = "__option_select_empty__";
 const toItem = (value: string) => (value === "" ? emptyValue : value);
 const fromItem = (value: string) => (value === emptyValue ? "" : value);

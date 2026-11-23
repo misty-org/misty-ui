@@ -1,14 +1,15 @@
-import type { ComponentProps, ReactNode } from "react";
+import { useId, type ComponentProps, type ReactNode } from "react";
 import { Crown } from "lucide-react";
 
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { Pressable } from "../../controls/Pressable";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
+import type { AvatarSize } from "../../display/Avatar";
 import { RoleName } from "../../display/RoleName";
 import { Text } from "../../display/Text";
 import { Tooltip } from "../../overlays/Tooltip";
 
-/** The member list beside a channel's messages, on the channel's own fill, as Discord's. */
+/** The member list beside a channel's messages, on the channel's own fill. */
 export function MemberList(props: { label: string; children: ReactNode }) {
   return (
     <aside
@@ -30,61 +31,141 @@ export function MemberGroupHeading(props: { title: string; count: number }) {
 }
 
 /**
- * How someone shows: `online`, `idle` (no input for a while), `dnd` (do not disturb) and
- * `offline` are the person's own status; `working` and `waiting` say their agent is at work or
- * waits on them. `offline` draws no dot and dims a member row.
+ * How someone shows: `online`, `idle` (no input for a while), `dnd` (do not disturb), `invisible`
+ * (the person's own face while they hide) and `offline` are the person's own status; `working`
+ * and `waiting` say their agent is at work or waits on them. `offline` draws no dot and dims a
+ * member row.
  */
-export type MemberPresence = "online" | "idle" | "dnd" | "working" | "waiting" | "offline";
+export type MemberPresence =
+  | "online"
+  | "idle"
+  | "dnd"
+  | "invisible"
+  | "working"
+  | "waiting"
+  | "offline";
 
-const dotClass: Record<MemberPresence, string> = {
-  online: "bg-[var(--tone-done)]",
-  idle: "bg-[var(--tone-waiting)]",
-  dnd: "bg-[var(--tone-failed)]",
-  working: "bg-[var(--tone-working)]",
-  waiting: "bg-[var(--tone-waiting)]",
-  offline: "hidden",
+const dotColor: Record<MemberPresence, string> = {
+  online: "var(--tone-done)",
+  idle: "var(--tone-waiting)",
+  dnd: "var(--tone-failed)",
+  invisible: "var(--misty-theme-text-muted)",
+  working: "var(--tone-working)",
+  waiting: "var(--tone-waiting)",
+  offline: "transparent",
 };
 
 const presenceNames: Record<MemberPresence, string> = {
   online: "Online",
   idle: "Idle",
   dnd: "Do not disturb",
+  invisible: "Invisible",
   working: "Working",
   waiting: "Needs them",
   offline: "Offline",
 };
 
+/** The size of the face a presence dot sits on: the Avatar's own sizes. */
+export type PresenceFaceSize = AvatarSize;
+
+const dotGeometry: Record<PresenceFaceSize, { face: number; dot: number; cut: number; inset: number }> = {
+  xs: { face: 18, dot: 6.75, cut: 2.25, inset: 0 },
+  sm: { face: 27, dot: 9, cut: 2.25, inset: 0 },
+  default: { face: 36, dot: 11.25, cut: 2.25, inset: 0 },
+  lg: { face: 45, dot: 13.5, cut: 2.25, inset: 0 },
+  xl: { face: 72, dot: 18, cut: 4.5, inset: 4.5 },
+};
+
+/**
+ * A status drawn as its own shape as well as its color, so it reads without color: a full dot
+ * online (and for an agent at work), a crescent while idle, a bar through it on do not disturb,
+ * and a hollow ring while invisible. It fills its box; `PresenceFace` places it on a face and
+ * `PresenceDot` stands it alone.
+ */
+function PresenceShape({ presence }: { presence: MemberPresence }) {
+  const mask = useId();
+  const color = dotColor[presence];
+  const cut =
+    presence === "idle" ? (
+      <circle cx="2.6" cy="2.6" r="3.6" fill="black" />
+    ) : presence === "dnd" ? (
+      <rect x="2" y="3.85" width="6" height="2.3" rx="1.15" fill="black" />
+    ) : presence === "invisible" ? (
+      <circle cx="5" cy="5" r="2.35" fill="black" />
+    ) : null;
+  return (
+    <svg viewBox="0 0 10 10" aria-hidden="true" className="block size-full">
+      {cut ? (
+        <mask id={mask}>
+          <rect width="10" height="10" fill="white" />
+          {cut}
+        </mask>
+      ) : null}
+      <circle cx="5" cy="5" r="5" fill={color} mask={cut ? `url(#${mask})` : undefined} />
+    </svg>
+  );
+}
+
+/**
+ * A status on its own, where it names a choice rather than a face: before "Online" in the status
+ * menu, or the profile card's status row. It sits in the glyph's 18px box, the dot a step smaller,
+ * so it lines up with the icons of the rows around it.
+ */
+export function PresenceDot({ presence }: { presence: MemberPresence }) {
+  if (presence === "offline") return null;
+  return (
+    <span
+      role="img"
+      aria-label={presenceNames[presence]}
+      className="grid size-4 flex-none place-items-center"
+    >
+      <span className="size-2.5">
+        <PresenceShape presence={presence} />
+      </span>
+    </span>
+  );
+}
+
 /**
  * Someone's status as a small dot on the corner of their face, wherever a face shows (a member
- * row, a DM, a friend): green online, amber idle, red do not disturb, nothing offline. The face
- * and the dot sit in this box; the dot's ring is the surface's own color (`ring` is the sidebar
- * where the face sits on the sidebar). `size="lg"` is for a large face (an xl Avatar), such as a
- * profile's or a direct message's opening, whose dot grows with it.
+ * row, a DM, a friend, the profile card). The dot grows with the face (`face`, the Avatar's own
+ * size), sits inside the face's box at its bottom right, and is cut out of the face by a clear ring
+ * rather than painted over it, so it reads on any surface: the sidebar, a row's wash, a banner.
+ * Each status has its own shape as well as its color. `offline` draws nothing.
  */
 export function PresenceFace({
   presence,
-  ring = "pane",
-  size = "default",
+  face = "default",
   children,
 }: {
   presence: MemberPresence;
-  ring?: "pane" | "sidebar";
-  size?: "default" | "lg";
+  face?: PresenceFaceSize;
   children: ReactNode;
 }) {
+  const shape = dotGeometry[face];
+  const place = shape.face - shape.dot - shape.inset;
+  const middle = place + shape.dot / 2;
+  const reach = shape.dot / 2 + shape.cut;
+  const hole = `radial-gradient(circle at ${middle}px ${middle}px, transparent ${reach}px, black ${reach + 0.5}px)`;
+  const shown = presence !== "offline";
   return (
     <span className="relative inline-flex shrink-0">
-      {children}
       <span
-        role="img"
-        aria-label={presenceNames[presence]}
-        className={cn(
-          "absolute rounded-full",
-          size === "lg" ? "right-0.5 bottom-0.5 size-5 border-4" : "-right-0.5 -bottom-0.5 size-3 border-2",
-          ring === "sidebar" ? "border-sidebar" : "border-pane",
-          dotClass[presence],
-        )}
-      />
+        className="inline-flex"
+        style={shown ? { maskImage: hole, WebkitMaskImage: hole } : undefined}
+      >
+        {children}
+      </span>
+      {shown ? (
+        <span
+          role="img"
+          aria-label={presenceNames[presence]}
+          className="absolute"
+          style={{ left: place, top: place, width: shape.dot, height: shape.dot }}
+        >
+          <PresenceShape presence={presence} />
+        </span>
+      ) : null}
     </span>
   );
 }
@@ -130,7 +211,7 @@ export function MemberRow({
     >
       <PresenceFace presence={props.presence}>{props.avatar}</PresenceFace>
       <span className="flex min-w-0 flex-1 flex-col">
-        <span className="flex min-w-0 items-center gap-1 text-body">
+        <span className="flex min-w-0 items-center gap-1 text-control">
           <OverflowFadeText className="min-w-0">
             <RoleName color={props.presence === "offline" ? undefined : props.color}>
               {props.name}
@@ -138,7 +219,7 @@ export function MemberRow({
           </OverflowFadeText>
           {props.owner ? (
             <Tooltip content="Space owner">
-              <span className="shrink-0 text-[var(--tone-waiting)] [&_svg]:size-3.5">
+              <span className="flex shrink-0 text-[var(--tone-waiting)]">
                 <Crown aria-label="Space owner" />
               </span>
             </Tooltip>
@@ -147,7 +228,7 @@ export function MemberRow({
         {props.line ? (
           <span className="flex min-w-0 items-center gap-1">
             {props.lineMark}
-            <OverflowFadeText className="min-w-0 text-caption text-cream-muted">
+            <OverflowFadeText className="min-w-0 text-meta text-cream-muted">
               {props.line}
             </OverflowFadeText>
           </span>

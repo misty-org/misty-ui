@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { NavRow, NavRowLabel, type NavRowTone } from "./NavRow";
 
 export type VoicePersonProps = {
@@ -16,8 +16,8 @@ export type VoicePersonProps = {
 };
 
 /**
- * One person in a voice channel, listed under the channel's row in the sidebar as Discord does: their
- * face and name, set in past the channel's mark. While they speak, a ring in the done tone circles
+ * One person in a voice channel, listed under the channel's row in the sidebar: their face and
+ * name, set in past the channel's mark. While they speak, a ring in the done tone circles
  * their face. It shows who is there and is not a control: joining is the channel's own row.
  *
  * ```tsx

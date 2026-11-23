@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Spinner } from "./Spinner";
 
 /**

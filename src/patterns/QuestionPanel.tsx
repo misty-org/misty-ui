@@ -13,7 +13,10 @@ export type QuestionPanelProps = {
   end?: ReactNode;
   /** The answers: a ChoiceList, an Input for one's own words, or both. */
   children?: ReactNode;
-  /** The buttons in one 36px row: a BackButton, then the one primary action, then a quiet one. */
+  /**
+   * The buttons in one 36px row at the panel's end: a BackButton first where there is one, then
+   * quiet ones (Skip), then the one primary action last.
+   */
   actions?: ReactNode;
   /** Why answering failed, shown under the answers. */
   error?: string;
@@ -22,8 +25,9 @@ export type QuestionPanelProps = {
 };
 
 /**
- * A question or approval waiting on the person, flat between hairlines above the composer: what is
- * asked, the choices, then the buttons in one row. Questions from Misty, from an outside engine
+ * A question or approval waiting on the person, flat above the composer with no card or line
+ * around it: what is asked, the choices (a ChoiceList, on its group's fill), then the buttons in
+ * one row at its end. Questions from Misty, from an outside engine
  * and from an action that needs an OK all use it.
  *
  * ```tsx
@@ -40,11 +44,13 @@ export function QuestionPanel(props: QuestionPanelProps) {
       role="group"
       aria-label={props.label}
       data-slot="question-panel"
-      className="mb-2 grid gap-2 border-y border-charcoal-border py-3"
+      className="mb-2 grid gap-2 pt-1"
       onKeyDown={props.onKeyDown}
     >
       <div className="flex min-h-6 items-center gap-2">
-        <div className="min-w-0 flex-1 text-control">{props.title}</div>
+        <div className="min-w-0 flex-1 px-0.5 text-control font-medium text-cream-bright">
+          {props.title}
+        </div>
         {props.aside ? (
           <Text size="meta" tone="muted" className="shrink-0" aria-live="polite">
             {props.aside}
@@ -54,7 +60,7 @@ export function QuestionPanel(props: QuestionPanelProps) {
       </div>
       {props.children}
       <FieldError message={props.error} />
-      {props.actions ? <div className="flex h-8 items-center gap-2">{props.actions}</div> : null}
+      {props.actions ? <div className="flex h-8 items-center justify-end gap-2">{props.actions}</div> : null}
     </div>
   );
 }

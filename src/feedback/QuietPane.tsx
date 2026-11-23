@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { FlyingMisty } from "./FlyingMisty";
 
 /**
@@ -14,7 +14,7 @@ export function QuietPane(props: { className?: string }) {
       )}
     >
       <FlyingMisty />
-      <p className="relative z-10 m-0 text-base font-medium text-cream">A little quiet here…</p>
+      <p className="relative z-10 m-0 text-control font-medium text-cream">A little quiet here…</p>
     </div>
   );
 }

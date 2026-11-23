@@ -1,7 +1,7 @@
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
@@ -29,11 +29,12 @@ const Separator = React.forwardRef<
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
 /**
- * The hairline between two groups of controls in a bar, such as the view toggle and the sort and
- * filter buttons. Groups sit side by side, never each in a box of its own.
+ * The space between two groups of controls in a bar, such as the call buttons and the rest of a
+ * chat's header, or the view toggle and the sort and filter buttons. It draws no line: groups sit
+ * side by side, a step apart, never each in a box of its own.
  */
 function ToolbarDivider({ className }: { className?: string }) {
-  return <Separator orientation="vertical" className={cn("mx-1 h-4", className)} />;
+  return <span aria-hidden="true" className={cn("w-2 shrink-0", className)} />;
 }
 
 export { Separator, ToolbarDivider };

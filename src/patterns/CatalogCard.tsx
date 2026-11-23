@@ -1,18 +1,12 @@
 import { Check, Link2 } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Surface } from "../display/Surface";
 import { Text } from "../display/Text";
-import { BrandIcon } from "../icons/BrandIcon";
+import { Mark } from "../icons/Mark";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { RowActions } from "../overlays/RowActions";
-
-/*
- * A catalog of things to add, such as an engine's plugins or skills: a grid of cards, each with
- * its maker's logo, what it does, where it comes from, and the one action to take. Logos sit on
- * one neutral tile, so no maker's color decides how loud its card is.
- */
 
 const tileSize = {
   sm: "size-6 [&>*]:max-h-4.5 [&>*]:max-w-4.5",
@@ -86,7 +80,7 @@ function SourceLink({ source }: { source: CatalogSource }) {
       )}
     >
       {onGithub(source.href) ? (
-        <BrandIcon brand="github" size={12} aria-hidden />
+        <Mark of="github" size={12} aria-hidden />
       ) : (
         <Link2 aria-hidden="true" className="size-3 shrink-0" />
       )}

@@ -18,7 +18,8 @@
   "scripts": {
     "dev": "vite --config site/vite.config.mjs",
     "build:site": "vite build --config site/vite.config.mjs",
-    "catalog": "node scripts/design-catalog.ts && node scripts/props.ts",
+    "catalog": "node scripts/marks.ts && node scripts/design_catalog.ts && node scripts/props.ts",
+    "marks": "node scripts/marks.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

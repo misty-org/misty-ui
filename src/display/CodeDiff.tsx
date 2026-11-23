@@ -1,4 +1,4 @@
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /** What a diff line is: added, removed, unchanged context, or a hunk's `@@` header. */
 export type CodeDiffLineKind = "add" | "del" | "context" | "header";

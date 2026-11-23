@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
 import { renderIcon, type ActionBarItem, type IconSource } from "./ActionBar";
 import { OverflowFadeText } from "./OverflowFadeText";
@@ -53,7 +53,6 @@ export function ViewHeader({
         </h1>
       )}
       {actions?.length ? (
-        // Always icons, a step apart, as the mockup draws them; the label is the tooltip.
         <div role="toolbar" aria-label={actionsLabel} className="flex shrink-0 items-center gap-1">
           {actions.map((action) => (
             <IconButton

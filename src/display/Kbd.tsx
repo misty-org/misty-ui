@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 export interface KbdProps extends HTMLAttributes<HTMLElement> {
   /** The shortcut as it reads, such as "⌘N", "⇧⌘T" or "Ctrl+Alt". One cap holds the whole chord. */

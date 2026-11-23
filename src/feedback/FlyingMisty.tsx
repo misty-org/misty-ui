@@ -1,5 +1,5 @@
 import sprite from "../assets/misty-cloud-expression-cycle.webp?inline";
-import "./flyingMisty.css";
+import "./flying_misty.css";
 
 /**
  * Misty drifting around its box (the welcome screen, the startup splash, an empty pane): two

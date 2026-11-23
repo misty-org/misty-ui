@@ -20,7 +20,6 @@ export const meta = {
   order: 1,
 };
 
-/** A box to narrow by its corner, for pieces that give way as they shrink. */
 function ResizableBox(props: { children: React.ReactNode; className?: string }) {
   return (
     <div

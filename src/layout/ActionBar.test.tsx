@@ -9,7 +9,6 @@ import {
   type ActionBarPlan,
 } from "./ActionBar";
 
-// A composer-like bar: attach, a model name that may shorten, mode, engine and a send button.
 const items: ActionBarMeasure[] = [
   { id: "attach", priority: 3, full: 80, icon: 32 },
   { id: "model", priority: 4, shrink: true, full: 160, icon: 32, minWidth: 80 },
@@ -50,14 +49,10 @@ describe("ActionBar give-way order", () => {
 
 describe("planActionBar", () => {
   it("gives way in the fixed order: labels, then the shrink item, then folding", () => {
-    // Full row: 80 + 160 + 70 + 90 + 32 and four gaps of 4 = 448.
     expect(describePlan(planAt(448))).toBe("attach:full model:full mode:full engine:full shrink:-");
-    // Labels go lowest priority first; the shrink item keeps its label.
     expect(describePlan(planAt(447))).toBe("attach:full model:full mode:icon engine:full shrink:-");
     expect(describePlan(planAt(389))).toBe("attach:full model:full mode:icon engine:icon shrink:-");
     expect(describePlan(planAt(340))).toBe("attach:icon model:full mode:icon engine:icon shrink:-");
-    // Every label is gone but the shrink item's: it fades down to its minimum.
-    // Others: 32 * 3 + 32 + four gaps = 144.
     expect(describePlan(planAt(304))).toBe("attach:icon model:full mode:icon engine:icon shrink:-");
     expect(describePlan(planAt(303))).toBe(
       "attach:icon model:full mode:icon engine:icon shrink:159",
@@ -65,8 +60,6 @@ describe("planActionBar", () => {
     expect(describePlan(planAt(224))).toBe(
       "attach:icon model:full mode:icon engine:icon shrink:80",
     );
-    // Below that, items fold into ⋯ lowest priority first. Folding mode alone gains nothing,
-    // since ⋯ takes its place, so engine folds with it and the shrink item grows back.
     expect(describePlan(planAt(223))).toBe(
       "attach:icon model:full mode:folded engine:folded shrink:115",
     );
@@ -114,10 +107,8 @@ describe("planActionBar", () => {
     const plain = items.map((item) => ({ ...item, shrink: false }));
     const plan = planActionBar({ available: 140, items: plain, more, end: 0 });
     expect(plan.shrinkWidth).toBeNull();
-    // Icons: 32 * 4 + three gaps = 140.
     expect(Object.values(plan.placements)).toEqual(["icon", "icon", "icon", "icon"]);
     const folded = planActionBar({ available: 139, items: plain, more, end: 0 });
-    // Folding mode alone leaves the row as wide (⋯ replaces it), so engine goes too.
     expect(folded.placements).toEqual({
       attach: "icon",
       model: "icon",
@@ -198,13 +189,11 @@ describe("ActionBar", () => {
           bar.querySelector(`[data-action-bar-item="${id}"]`)?.getAttribute("data-mode") ??
           "folded",
       );
-    // 100 + 32 + 32 and two gaps fit in 200; a second label doesn't.
     expect(modes()).toEqual(["full", "icon", "icon"]);
     expect(screen.queryByRole("button", { name: "More" })).toBeNull();
 
     rowWidth = 90;
     act(() => observers.forEach((notify) => notify()));
-    // Three icons need 104; folding c alone gains nothing, so b goes too: a and ⋯ need 68.
     expect(modes()).toEqual(["icon", "folded", "folded"]);
     expect(screen.getByRole("button", { name: "More" })).toBeDefined();
     vi.unstubAllGlobals();

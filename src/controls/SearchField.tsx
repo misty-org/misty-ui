@@ -1,8 +1,8 @@
 import { Search, X } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
-import { controlFrame } from "./controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "./control_frame";
 import { IconButton } from "./IconButton";
 
 type SearchFieldProps = Omit<React.ComponentProps<"input">, "size" | "type"> & {
@@ -49,7 +49,6 @@ const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
         data-slot="search-field"
         className={cn(
           controlFrame.md,
-          // The clear button sits nearer the end than text would.
           "pl-2.5 pr-1",
           "group/search flex min-w-0 items-center gap-2 text-cream-muted",
           "border transition-colors",
@@ -91,7 +90,6 @@ const SearchField = React.forwardRef<HTMLInputElement, SearchFieldProps>(
             variant="quiet"
             label="Clear search"
             className="shrink-0"
-            // Keeps the caret in the box while it clears.
             onMouseDown={(event) => event.preventDefault()}
             onClick={clear}
           >

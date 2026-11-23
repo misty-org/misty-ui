@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /**
  * A button and the menu of its other choices joined into one control: the main action first (an

@@ -3,19 +3,19 @@ import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { CollectionCreator, CollectionItemsGrid } from "./CollectionCards";
 import { CollectionIconGrid, type CollectionZoom } from "./CollectionIconGrid";
 import { CollectionColumnsContext, useHiddenColumns } from "./CollectionColumns";
-import { collectionMemory, rememberCollection } from "./collectionMemory";
+import { collectionMemory, rememberCollection } from "./collection_memory";
 import {
   CollectionItemsTable,
   type CollectionColumnWidths,
   type CollectionSort,
 } from "./CollectionItemsTable";
-import { useCollectionDrag, type CollectionDrag } from "./collectionDrag";
+import { useCollectionDrag, type CollectionDrag } from "./collection_drag";
 import {
   compareCollectionValues,
   hasItemActions,
   type CollectionColumn,
   type CollectionItem,
-} from "./collectionItemTypes";
+} from "./collection_item_types";
 
 /**
  * A collection's items as a sortable table (`view="list"`) or a grid of cards, each opening on a
@@ -120,7 +120,6 @@ export function CollectionItems({
   } | null>(null);
   const remembered = collectionMemory.useEntry(remember);
   const savedSort = remembered?.tableSort ?? null;
-  // Every column's seam can be dragged; the widths are kept like the sort.
   const [localWidths, setLocalWidths] = useState<CollectionColumnWidths>({});
   const widths = remember ? (remembered?.widths ?? {}) : localWidths;
   const setWidths = (next: CollectionColumnWidths) => {
@@ -136,7 +135,6 @@ export function CollectionItems({
     else if (remember) rememberCollection(remember, { tableSort: next ?? undefined });
     else setLocalSort(next);
   };
-  // A saved sort picked under another menu order or table shape stays saved but doesn't apply.
   let activeSort = sort?.scope === scope ? sort : null;
   if (!controlled && !remember && sort && sort.scope !== scope) setSort(null);
   const baseColumns: CollectionColumn[] = columns ?? [
@@ -212,7 +210,6 @@ export function CollectionItems({
           ),
         )
       : items;
-  // With dragging, the items sit in a region that fills the pane, so its empty part takes a drop too.
   const region = (content: ReactNode) =>
     drag ? (
       <div {...listProps} className="flex min-h-full min-w-0 flex-1 flex-col">

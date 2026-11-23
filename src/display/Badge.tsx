@@ -2,10 +2,9 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 
-import { cn } from "../classNames";
-import type { ItemTone } from "../icons/itemTones";
+import { cn } from "../class_names";
+import type { ItemTone } from "../icons/item_tones";
 
-// A badge is a label, not a control, so it has no hover or focus look of its own.
 const badgeVariants = cva(
   [
     "group/badge inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden",
@@ -28,7 +27,6 @@ const badgeVariants = cva(
   },
 );
 
-// Literal class names so Tailwind picks them up: the tone's text over a faint fill of itself.
 const badgeToneClass: Record<ItemTone, string> = {
   blue: "bg-tone-blue/15 text-tone-blue",
   red: "bg-tone-red/15 text-tone-red",

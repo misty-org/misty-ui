@@ -1,7 +1,7 @@
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
@@ -13,7 +13,6 @@ const Switch = React.forwardRef<
       "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border",
       "border-cream/10 bg-charcoal-hover",
       "outline-none transition-colors duration-150 ease-out",
-      // Focus shows as a brighter edge; the app draws no focus rings.
       "focus-visible:border-cream disabled:cursor-not-allowed",
       "disabled:opacity-50 data-[state=checked]:border-cream-muted data-[state=checked]:bg-cream-muted",
       className,

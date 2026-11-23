@@ -1,29 +1,22 @@
 import type { ComponentProps, ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { ChevronDown } from "lucide-react";
 
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { IconButton } from "../../controls/IconButton";
-import { Pressable } from "../../controls/Pressable";
 import { ActionBar, renderIcon, type ActionBarItem } from "../../layout/ActionBar";
-import { Separator } from "../../layout/Separator";
+import { ToolbarDivider } from "../../layout/Separator";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";
 import { Text } from "../../display/Text";
-
-/*
- * A place where people talk, laid out as Discord lays it out: a column of channels on the
- * sidebar's fill, then the open channel on the page's own color, its header over the messages and,
- * beside them, the member list. Discord's lines too: one under both headers, one before the
- * member list. Sizes follow Discord's: a 49.5px header,
- * 36px channel rows, a 58.5px composer.
- */
 
 /** The whole page: the channel column, then the open channel. */
 export function ChannelPage({ className, ...props }: ComponentProps<"div">) {
   return <div className={cn("flex h-full min-h-0 min-w-0", className)} {...props} />;
 }
 
-/** The channel column, on the sidebar's fill: a header naming the place, then the list. */
+/**
+ * The channel column, on the sidebar's fill: a bar naming the place (`header`, a MenuTrigger
+ * `heading` that opens the place's menu), then the list.
+ */
 export function ChannelSidebar(props: {
   header: ReactNode;
   children: ReactNode;
@@ -34,7 +27,7 @@ export function ChannelSidebar(props: {
       aria-label={props["aria-label"]}
       className="flex h-full min-h-0 w-60 shrink-0 flex-col bg-charcoal-sidebar"
     >
-      {props.header}
+      <div className={cn(headerBar, "px-2")}>{props.header}</div>
       <div className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 pt-3 pb-2">
         {props.children}
       </div>
@@ -44,32 +37,6 @@ export function ChannelSidebar(props: {
 
 /** Both headers' height and the line under them, so the two read as one bar across the page. */
 const headerBar = "flex h-11 shrink-0 items-center border-b border-charcoal-border";
-
-/**
- * The top of the channel column: the place's name with its chevron right after it, as Discord
- * draws it, the whole bar one button that opens its menu (`asChild` trigger).
- */
-export function ChannelSidebarHeader({
-  name,
-  open,
-  ...props
-}: { name: string; open?: boolean } & Omit<ComponentProps<typeof Pressable>, "children">) {
-  return (
-    <Pressable
-      type="button"
-      wash="row"
-      className={cn(headerBar, "w-full gap-1 px-4 text-left")}
-      {...props}
-    >
-      <Text size="body" weight="semibold" tone="bright" className="min-w-0">
-        {name}
-      </Text>
-      <Text bare tone="muted" className={cn("transition-transform", open && "rotate-180")}>
-        <ChevronDown aria-hidden="true" />
-      </Text>
-    </Pressable>
-  );
-}
 
 /**
  * The open channel on the page's own color, as the tab row and bottom bar are: its header across the top, the chat, then `side` (the
@@ -111,8 +78,7 @@ function iconOnly(item: ActionBarItem): ActionBarItem {
 }
 
 /**
- * The open chat's own bar, under the window's tabs, as Discord draws a channel's or a direct
- * message's: its icon (or the person's face) and name, an optional topic, then its controls. Each
+ * The open chat's own bar, under the window's tabs, for a channel or a direct message: its icon (or the person's face) and name, an optional topic, then its controls. Each
  * pane draws its own, so a split never loses a chat's controls. `actions` are its icon buttons
  * (calls, Threads, Pinned, Members, a ⋯ of the rest), icons only with the label as the tooltip;
  * `end` is what stays last and never folds, such as the message search. The name fades first; then
@@ -152,7 +118,7 @@ export function ChannelHeader(props: {
       </Text>
       {props.topic ? (
         <>
-          <Separator orientation="vertical" className="mx-1 h-4" />
+          <ToolbarDivider />
           <OverflowFadeText className="min-w-0 flex-1 text-meta text-cream-muted">
             {props.topic}
           </OverflowFadeText>
@@ -175,7 +141,7 @@ export function ChannelHeader(props: {
 /**
  * The top of a channel's history, once the very first message is in view: a large mark, a
  * welcome and where this channel begins. A direct message opens the same way with the person's
- * face as its `mark` (an xl Avatar in a large PresenceFace, or a group's faces) and its name as the
+ * face as its `mark` (an xl Avatar in a PresenceFace with `face="xl"`, or a group's faces) and its name as the
  * title, and may offer a few buttons under the line (`actions`, such as Call).
  */
 export function ChannelWelcome(props: {

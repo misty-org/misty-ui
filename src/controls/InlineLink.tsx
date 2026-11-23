@@ -1,7 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Pressable } from "./Pressable";
 
 export type InlineLinkProps = React.ComponentPropsWithoutRef<"button"> & {

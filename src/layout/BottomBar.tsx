@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { CompactControls } from "../controls/RowContext";
 import { SidewaysScroll } from "./SidewaysScroll";
 
@@ -40,7 +40,6 @@ export function BottomBar(props: {
     >
       <CompactControls on={compact}>
         <SidewaysScroll className="flex-1 gap-2 self-stretch">
-          {/* Never narrower than its items: past that the row scrolls instead. */}
           {props.start ? (
             <div className="flex flex-[1_0_auto] items-center gap-2 self-stretch">
               {props.start}

@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import type { CSSProperties } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import type { AppLogoSize } from "./AppLogos";
 
 /** The tile colors a persona's logo may wear, so personas read as one family in Explore. */

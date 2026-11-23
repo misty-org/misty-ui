@@ -37,7 +37,6 @@ export function ZoomControl(props: {
         <ZoomOut />
       </IconButton>
       <DropdownMenu>
-        {/* Wide enough for "100%" so the arrows don't shift as the level changes. */}
         <MenuTrigger
           label="Zoom"
           value={props.value}

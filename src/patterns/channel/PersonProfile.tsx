@@ -4,7 +4,7 @@ import { Text } from "../../display/Text";
 
 /**
  * The other person's profile beside a one-to-one direct message, where a channel has its member
- * list, as Discord shows it: their face large (a `PresenceFace` with `size="lg"`), their name, their
+ * list: their face large (a `PresenceFace` with `face="xl"`), their name, their
  * own status line, then `PersonProfileSection`s about them. It sits in `ChannelMain`'s `side`, on
  * the chat's own fill, and carries no banner. A group's people are a `MemberList` instead.
  */

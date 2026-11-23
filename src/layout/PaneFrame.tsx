@@ -1,10 +1,7 @@
 import type { HTMLAttributes, Ref } from "react";
-import { cn } from "../classNames";
-import "./paneFrame.css";
+import { cn } from "../class_names";
+import "./pane_frame.css";
 
-// Each corner is a quarter circle cut out of a square of chrome, `--pane-corner-*` wide, and the
-// margin is each edge's own inset shadow: the edge a tab strip hangs from keeps just its seam, so
-// the toolbar there is not painted over. The seam line follows the rounded corners.
 const paneFrameClass = cn(
   "misty-pane-frame relative isolate overflow-clip",
   "[--pane-chrome:var(--misty-window-chrome,var(--misty-theme-workspace))]",

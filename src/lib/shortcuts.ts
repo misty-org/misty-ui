@@ -1,5 +1,3 @@
-// Keyboard shortcuts as text ("Cmd+Shift+K"): parsing, matching an event, and drawing keycaps.
-
 /** The system a shortcut is drawn for: ⌘ on macOS, Ctrl elsewhere. */
 export type ShortcutPlatform = "macos" | "windows" | "linux";
 

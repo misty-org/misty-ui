@@ -169,9 +169,6 @@ function ModelList(props: ModelPickerProps) {
                 <CommandEmpty>
                   {models.length ? "No models match" : "This engine doesn't list its models"}
                 </CommandEmpty>
-                {/* Just the names and a check, after OpenChamber's: the level has its own
-                    button, and a model picked runs at the engine's own level for it. The models
-                    the engine's menu keeps aside stay under "More models" here too. */}
                 {[
                   models.filter((model) => model.section !== "more"),
                   models.filter((model) => model.section === "more"),

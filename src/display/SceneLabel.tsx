@@ -1,13 +1,8 @@
 import type { ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Pressable, type PressableProps } from "../controls/Pressable";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { Kbd } from "./Kbd";
-
-/*
- * Labels laid over a full-color scene (the Studio's room): page text kept by what it names as the
- * scene moves, drawn in the art palette so it reads on any part of the picture in either theme.
- */
 
 /** What the figure a SceneNameTag names is doing: working, waiting on its person, or at rest. */
 export type SceneTagState = "working" | "waiting" | "resting";
@@ -63,7 +58,6 @@ export function SceneNameTag({
       className={cn(
         "group/scene-tag grid max-w-48 flex-none justify-items-center gap-px px-1 mb-1",
         "text-art-white select-none pointer-events-auto",
-        // A tight outline: a wide glow is cut into a box by the fade that shortens long names.
         "[text-shadow:0_1px_1px_rgb(0_0_0/85%),0_0_0.125rem_rgb(0_0_0/75%)]",
         className,
       )}
@@ -183,7 +177,6 @@ export function SceneSign({
  */
 export type SceneTint = "red" | "orange" | "yellow" | "green" | "blue" | "purple" | "sand";
 
-// Literal class names, so Tailwind finds them.
 const tintText: Record<SceneTint, string> = {
   red: "text-avatar-red",
   orange: "text-avatar-orange",
@@ -314,7 +307,6 @@ export function SceneSlot({
         </span>
       ) : null}
       {tint ? <SceneGlyph tint={tint}>{icon}</SceneGlyph> : icon}
-      {/* The word is kept short enough to fit whole: a slot's label is never cut. */}
       <span
         className={cn(
           "overflow-hidden whitespace-nowrap text-micro font-medium leading-none",

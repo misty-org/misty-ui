@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { LucideIcon } from "lucide-react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { asKbd } from "../display/Kbd";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import {
@@ -35,29 +35,17 @@ import {
   menuWidthClass,
   useMenuKind,
   type MenuWidth,
-} from "./popupStyles";
+} from "./popup_styles";
 import { Tooltip } from "./Tooltip";
-
-/*
- * Every menu row, in dropdowns and right-click menus alike: an 18px icon when it tells the row
- * apart, the label, an optional shortcut on an action, and a checkmark at the right edge when the
- * row is a selection. A list of like things (models, efforts, folders, agents, chats) is text
- * alone: the same icon on every row says nothing. A choice (MenuRadioItem) never shows a
- * shortcut, and a MenuRadioGroup drops its rows' icons unless every row has its own.
- *
- * The rows read which kind of menu they are in from DropdownMenuContent or ContextMenuContent, so
- * one tree of rows can be written once and shown in both (RowActions does exactly that).
- */
 
 /**
  * A row's leading 18px icon. Pass the icon itself (`icon={Pencil}`); an element such as a brand
- * mark (`icon={<EngineMark engine={id} />}`) works too.
+ * mark (`icon={<Mark of="engine:claude" />}`) works too.
  */
 type MenuIcon = LucideIcon | React.ComponentType<{ className?: string }> | React.ReactElement;
 
 function isIconComponent(icon: unknown): boolean {
   if (typeof icon === "function") return true;
-  // forwardRef and memo components (Lucide's icons among them) are objects, not functions.
   return (
     typeof icon === "object" &&
     icon !== null &&

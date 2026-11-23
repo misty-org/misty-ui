@@ -18,8 +18,8 @@ export default function Example() {
       <DropdownMenu>
         <MenuTrigger label="More export options" iconOnly />
         <DropdownMenuContent>
-          <MenuItem>Export as PDF</MenuItem>
-          <MenuItem>Export as Markdown</MenuItem>
+          <MenuItem label="Export as PDF" />
+          <MenuItem label="Export as Markdown" />
         </DropdownMenuContent>
       </DropdownMenu>
     </SplitButton>

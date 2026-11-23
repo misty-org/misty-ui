@@ -1,0 +1,8 @@
+::highlight(misty-find-match) {
+  background-color: color-mix(in srgb, var(--color-cream) 22%, transparent);
+  color: inherit;
+}
+::highlight(misty-find-current) {
+  background-color: color-mix(in srgb, var(--color-cream) 55%, transparent);
+  color: var(--color-charcoal-bg);
+}

@@ -11,11 +11,11 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
-import { HeaderSlot, InPanel } from "./sidePanelContext";
-import "./sidePanel.css";
-import { designPx, remCss, uiPx } from "../lib/uiScale";
+import { HeaderSlot, InPanel } from "./side_panel_context";
+import "./side_panel.css";
+import { designPx, remCss, uiPx } from "../lib/ui_scale";
 
 /** Width steps the keyboard takes on the resize edge. */
 const KEY_STEP = 16;
@@ -78,8 +78,6 @@ export function SidePanel(props: {
     ...data
   } = props;
   const [slot, setSlot] = useState<HTMLElement | null>(null);
-  // Widths, `minWidth` and `keep` are design pixels; the boxes are measured in CSS pixels, so the
-  // math runs in CSS pixels and the result goes back through designPx (shared/lib/uiScale.ts).
   const room = (panel: HTMLElement) => {
     const before = panel.previousElementSibling as HTMLElement | null;
     const spare = before ? before.getBoundingClientRect().width - uiPx(keep) : 0;
@@ -132,7 +130,6 @@ export function SidePanel(props: {
       }
       onKeyDown={(event) => {
         if (event.key !== "Escape" || event.defaultPrevented) return;
-        // A menu portaled out of the panel bubbles here too; its Escape only closes the menu.
         if (!event.currentTarget.contains(event.target as Node)) return;
         if ((event.target as HTMLElement).closest("input, textarea, [contenteditable], .xterm"))
           return;
@@ -247,7 +244,6 @@ export function SideCard(props: {
   const tucked = Boolean(props.floating && props.tucked);
   const [peek, setPeek] = useState(false);
   const [wasTucked, setWasTucked] = useState(tucked);
-  // Tucking or keeping it starts from the card at rest.
   if (wasTucked !== tucked) {
     setWasTucked(tucked);
     setPeek(false);
@@ -280,7 +276,6 @@ export function SideCard(props: {
           : undefined
       }
     >
-      {/* The edge it comes back from, and the gap between it and that edge while it peeks. */}
       {tucked ? <div aria-hidden="true" className="misty-side-card-edge" /> : null}
       {props.corner ? (
         <div className="misty-side-card-corner" inert={away || undefined}>

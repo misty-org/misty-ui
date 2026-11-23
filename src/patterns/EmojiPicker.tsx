@@ -7,7 +7,7 @@ import {
 } from "react";
 import type { LucideIcon } from "lucide-react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Pressable } from "../controls/Pressable";
 import { IconButton } from "../controls/IconButton";
 import { Text } from "../display/Text";

@@ -70,7 +70,6 @@ class ToolBoundary extends Component<
   render() {
     const { error } = this.state;
     if (error === null) return this.props.children;
-    // Only the tool's code failing to arrive is this boundary's; anything else goes on up.
     if (!(error && typeof error === "object" && loadErrors.has(error))) throw error;
     const { frame = (state: ReactNode) => state, ...setup } = this.props.setup;
     return frame(

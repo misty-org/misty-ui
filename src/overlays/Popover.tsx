@@ -14,28 +14,10 @@ import {
   popoverSizeClass,
   type PopoverKind,
   type PopoverSize,
-} from "./popupStyles";
-import { cn } from "../classNames";
+} from "./popup_styles";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
 import { Text } from "../display/Text";
-
-/*
- * The popover language. A popover is one of three kinds at one of the shared widths, and its
- * parts come from here, so no call site picks a width, padding, radius or type size:
- *
- * ```tsx
- * <PopoverContent size="sm">                      // a panel, 13.5px in
- *   <PopoverHeader title="Welcome tour" />        // the title and a close button
- *   <PopoverText>A short walk through what's here.</PopoverText>
- *   <PopoverActions><Button variant="secondary">Replay tour</Button></PopoverActions>
- * </PopoverContent>
- *
- * <PopoverContent kind="flush">                   // a picker: search on top, rows under it
- *   <PickerSearch aria-label="Search branches" placeholder="Search branches" … />
- *   <PickerList aria-label="Branches">…</PickerList>
- * </PopoverContent>
- * ```
- */
 
 const Popover = PopoverPrimitive.Root;
 

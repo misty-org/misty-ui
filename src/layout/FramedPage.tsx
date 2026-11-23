@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Surface } from "../display/Surface";
 import { Separator } from "./Separator";
 import { SplitHandle, SplitPane, SplitPanes } from "./SplitHandle";

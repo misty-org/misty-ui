@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
 import { Text } from "../display/Text";
 
@@ -57,10 +57,8 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
   const reported = props.position ?? null;
   const position = useRunningPosition(reported, length ?? null, playing);
   const bar = useRef<HTMLSpanElement>(null);
-  // A seek moves the clock at once; the next report replaces it.
   const [sought, setSought] = useState<number | null>(null);
   useEffect(() => setSought(null), [reported]);
-  // While the bar is dragged it follows the pointer instead of the reported position.
   const [scrub, setScrub] = useState<number | null>(null);
   const seek = (seconds: number) => {
     setSought(seconds);
@@ -101,7 +99,6 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
               {props.title}
             </Text>
             {props.detail ? (
-              // An 18px line, so the title and it stand as tall as the 40.5px artwork at rest.
               <Text size="meta" tone="muted" className="leading-4">
                 {props.detail}
               </Text>
@@ -110,9 +107,6 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
         </div>
         {props.actions ? <div className="flex shrink-0 items-center">{props.actions}</div> : null}
       </div>
-      {/* Folds to nothing while compact, out of reach of the keyboard too. Its gap is padding on
-          the box inside the clipped one: a grid row never shrinks below zero (so a negative margin
-          can't take a gap back), and a box is never shorter than its own padding. */}
       <div
         inert={props.compact || undefined}
         className={cn(
@@ -134,7 +128,6 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
                 <span
                   ref={bar}
                   role="slider"
-                  // Dragging the bar seeks; it never picks the card up in a dock.
                   data-reorder-ignore=""
                   aria-label="Playback position"
                   aria-valuemin={0}
@@ -189,9 +182,7 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
                 <span>{clock(length)}</span>
               </Text>
             ) : null}
-            {/* The source at the start, mute at the end, and the transport exactly in the middle. */}
             <div className="grid grid-cols-[1fr_auto_1fr] items-center">
-              {/* In a button's 36px square, so its inset matches the mute button's at the other end. */}
               <span className="grid size-8 place-items-center justify-self-start">
                 {props.source}
               </span>

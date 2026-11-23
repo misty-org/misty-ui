@@ -1,8 +1,8 @@
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import * as React from "react";
 
-import { cn } from "../classNames";
-import { controlFrame } from "./controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "./control_frame";
 import { useCompactControls } from "./RowContext";
 
 /**
@@ -83,8 +83,6 @@ const baseClass = cn(
   "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
 );
 
-// Focus rings are off app-wide (base.css), so keyboard focus shows as the hover fill.
-// Its fill reaches under the border, so it is as big as a bordered button beside it.
 const primaryClass = cn(
   "bg-cream-bright bg-clip-border text-charcoal-bg",
   "hover:bg-cream-action-hover focus-visible:bg-cream-action-hover",
@@ -93,23 +91,18 @@ const primaryClass = cn(
 
 const variantClass: Record<ButtonLook, string> = {
   primary: primaryClass,
-  // A soft fill with no outline: the control wash at rest, a step brighter under the pointer or
-  // while open. Its fill reaches under its unseen border, so it is as big as the buttons beside it.
   secondary: cn(
     "bg-control-hover bg-clip-border text-cream-bright",
     "hover:bg-control-active focus-visible:bg-control-active",
     "aria-expanded:bg-control-active aria-pressed:bg-control-active",
     "data-[state=open]:bg-control-active",
   ),
-  // Washing with the text color keeps it right on light themes too. Its fill reaches under its
-  // unseen border too, so a hovered or open quiet button is as big as the buttons beside it.
   quiet: cn(
     "bg-clip-border text-cream-muted hover:bg-control-hover hover:text-cream",
     "focus-visible:bg-control-hover focus-visible:text-cream",
     "aria-pressed:bg-control-active aria-pressed:text-cream",
     "aria-expanded:bg-control-active aria-expanded:text-cream",
     "data-[state=open]:bg-control-active data-[state=open]:text-cream",
-    // A menu trigger whose setting is on, such as agent access.
     "data-[active=true]:bg-control-active data-[active=true]:text-cream",
   ),
   danger: cn(
@@ -117,15 +110,12 @@ const variantClass: Record<ButtonLook, string> = {
     "hover:bg-danger-wash focus-visible:bg-danger-wash",
     "aria-expanded:bg-danger-wash data-[state=open]:bg-danger-wash",
   ),
-  // A solid square in a soft wash, as big as the button whose place it takes (MessageComposer).
   soft: cn(
     "bg-control-hover bg-clip-border text-cream hover:bg-control-active hover:text-cream-bright",
     "focus-visible:bg-control-active aria-pressed:text-cream-bright",
   ),
-  // Getting something from the store: the filled primary, white in the dark theme and black in the light one.
   get: primaryClass,
   "get-filled": primaryClass,
-  // Controls drawn over images and video: a dark translucent disc that reads on any media.
   overlay: cn(
     "border-cream/10 bg-charcoal-bg/75 text-cream backdrop-blur-sm",
     "hover:bg-charcoal-bg/90 hover:text-cream-bright",
@@ -133,7 +123,6 @@ const variantClass: Record<ButtonLook, string> = {
   ),
 };
 
-// A side with a glyph sits a little tighter, so the glyph and the label look centered.
 const sizeClass: Record<ButtonSize, string> = {
   sm: cn(
     controlFrame.sm,
@@ -152,7 +141,6 @@ const sizeClass: Record<ButtonSize, string> = {
   ),
 };
 
-// A snug button's picture sits close to its edges, the label a little further in.
 const snugClass: Record<ButtonSize, string> = {
   sm: "pr-1.5 has-data-[icon=inline-start]:pl-0.5",
   md: "pr-2 has-data-[icon=inline-start]:pl-1",
@@ -182,7 +170,6 @@ function buttonClassName(
   );
 }
 
-// forwardRef and memo components (every Lucide icon) are objects, not functions.
 function isIconComponent(icon: ButtonIcon): icon is IconComponent {
   if (typeof icon === "function") return true;
   return (
@@ -231,7 +218,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const Comp = asChild ? Slot : "button";
     const resolvedVariant = variant ?? "secondary";
-    // A compact bar (the bottom bar) makes its buttons 27px, whatever the feature passed.
     const compact = useCompactControls();
     const resolvedSize = compact ? "sm" : (size ?? "md");
     const resolvedJustify = justify ?? "center";
@@ -253,8 +239,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ),
         )}
         ref={ref}
-        // A plain button unless it says otherwise, so one inside a form never submits it by
-        // accident. With `asChild` the child (a link) keeps its own semantics.
         type={type ?? (asChild ? undefined : "button")}
         {...props}
       >

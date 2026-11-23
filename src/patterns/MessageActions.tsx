@@ -1,7 +1,7 @@
 import { MoreHorizontal } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { CopyButton } from "../controls/CopyButton";
 import { IconButton } from "../controls/IconButton";
 import { renderIcon, type IconSource } from "../layout/ActionBar";
@@ -64,12 +64,10 @@ function MessageActionButton({ action }: { action: MessageAction }) {
     "data-action": action.id,
     className: cn(
       action.danger && "text-danger hover:bg-danger-wash hover:text-danger",
-      // A toggle that is on fills its icon instead of sitting in a gray chip.
       "aria-pressed:bg-transparent aria-pressed:text-cream-bright aria-pressed:hover:bg-control-hover",
       "aria-pressed:[&_svg]:fill-current",
     ),
   } as const;
-  // Copy and other confirming actions are the shared CopyButton: a check for a moment, no words.
   if (action.confirms ?? action.id === "copy")
     return <CopyButton {...shared} icon={action.icon} onCopy={action.onSelect} />;
   return (
@@ -107,7 +105,6 @@ function MessageActions({
 }: MessageActionsProps) {
   const [menuOpen, setMenuOpen] = React.useState(false);
   if (actions.length === 0 && !overflow && !trailing && !facts) return null;
-  // The time sits on the far side, so the buttons stay at the message's edge.
   const trailingText = trailing ? (
     <span
       data-slot="message-actions-trailing"
@@ -126,11 +123,8 @@ function MessageActions({
       className={cn(
         "flex h-6 min-w-0 items-center gap-1",
         align === "end" ? "justify-end" : "justify-start",
-        // No fade: a fading bar gets its own WebKit layer, which snaps the icons' own layers
-        // (App.css) by a pixel each time it comes and goes, so they jiggle on hover.
         "opacity-0 focus-within:opacity-100 data-[visible]:opacity-100",
         "[[data-message]:hover_&]:opacity-100 [[data-message]:focus-within_&]:opacity-100",
-        // Without hover (touch screens) there is nothing to reveal it, so it stays.
         "[@media(hover:none)]:opacity-100",
         !facts && className,
       )}
@@ -155,7 +149,6 @@ function MessageActions({
     </div>
   );
   if (!facts) return bar;
-  // The facts hold the message's edge, so nothing floats at an offset while the buttons hide.
   const factsText = (
     <span
       data-slot="message-actions-facts"

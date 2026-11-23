@@ -40,7 +40,7 @@ export default function Example() {
         state={{ kind: "time", at: Date.now() - 30 * hour }}
         onOpen={() => undefined}
       />
-      <ListRowSkeleton />
+      <ListRowSkeleton label="Chats" />
     </div>
   );
 }

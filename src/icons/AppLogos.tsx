@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { LogoInitial } from "./LogoFallbacks";
+import { LogoInitial, LogoPlate } from "./LogoFallbacks";
+import type { MarkRender } from "./Mark";
 
 /** Where an app's logo shows: a sidebar row, the apps launcher, a directory card, a big tile. */
 export type AppLogoSize = "row" | "launcher" | "card" | "tile";
@@ -7,21 +8,25 @@ const sizePx: Record<AppLogoSize, number> = { row: 20, launcher: 56, card: 48, t
 
 /**
  * A third-party app's own icon, as its maker drew it (already on its own tile), at the size an app's logo has in
- * `AppLogoSize`. Until the icon is there, or if it can't load, the app's initial shows instead.
+ * `AppLogoSize`. `render` is the registry entry's `icon_render`, by the marks registry's rules: `color` (the
+ * default) as drawn, `theme` for a one-color icon that follows the theme, `plate-dark` or `plate-light` on a
+ * small plate where it would disappear. Until the icon is there, or if it can't load, the app's initial shows.
  */
 export function AppLogoImage({
   src,
   name,
   size = "row",
+  render = "color",
 }: {
   src?: string;
   name: string;
   size?: AppLogoSize;
+  render?: MarkRender;
 }) {
   const [failed, setFailed] = useState(false);
   const px = sizePx[size];
   if (!src || failed) return <LogoInitial name={name} size={px} />;
-  return (
+  const image = (
     <img
       src={src}
       alt=""
@@ -29,7 +34,28 @@ export function AppLogoImage({
       height={px}
       data-app-logo-image={name}
       onError={() => setFailed(true)}
-      style={{ display: "block", flexShrink: 0 }}
+      style={render === "theme" ? { display: "none" } : { display: "block", flexShrink: 0 }}
     />
   );
+  if (render === "theme") {
+    const mask = `url("${src}") center / contain no-repeat`;
+    return (
+      <span
+        data-app-logo-image={name}
+        style={{
+          display: "block",
+          flexShrink: 0,
+          width: px,
+          height: px,
+          WebkitMask: mask,
+          mask,
+          backgroundColor: "light-dark(#000, #fff)",
+        }}
+      >
+        {image}
+      </span>
+    );
+  }
+  if (render === "color") return image;
+  return <LogoPlate plate={render === "plate-dark" ? "dark" : "light"}>{image}</LogoPlate>;
 }

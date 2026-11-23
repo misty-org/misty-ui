@@ -1,0 +1,18 @@
+.misty-page-in {
+  animation: misty-page-in 360ms ease-out backwards;
+}
+@keyframes misty-page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .misty-page-in {
+    animation: none;
+  }
+}

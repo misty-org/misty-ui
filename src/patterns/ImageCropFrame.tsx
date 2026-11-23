@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 
 /** A crop, as fractions (0 to 1) of the image it sits on. */
 export type CropRect = { x: number; y: number; width: number; height: number };
@@ -44,21 +44,17 @@ export function dragCrop(
   if (handle.includes("s")) bottom = clamp(bottom + dy, top + minH, 1);
   if (!ratio) return { x: left, y: top, width: right - left, height: bottom - top };
 
-  // Held to a ratio: in fractions, width / height = ratio * frame height / frame width.
   const shape = (ratio * frame.height) / Math.max(1, frame.width);
   const horizontal = handle.includes("e") || handle.includes("w");
   const vertical = handle.includes("n") || handle.includes("s");
   let width = right - left;
   let height = bottom - top;
   if (horizontal && vertical) {
-    // A corner follows whichever side moved further, and keeps the opposite corner still.
     if (width / shape >= height) height = width / shape;
     else width = height * shape;
   } else if (horizontal) height = width / shape;
   else width = height * shape;
 
-  // The still point: the opposite corner, or the middle of the opposite edge, and the room the
-  // crop has from it to the image's edge.
   const west = handle.includes("w");
   const east = handle.includes("e");
   const north = handle.includes("n");
@@ -215,7 +211,6 @@ export function ImageCropFrame({
     <div
       ref={rootRef}
       data-slot="image-crop-frame"
-      // Clipped to the image, so the dimming stays on it.
       className="absolute inset-0 touch-none select-none overflow-hidden"
     >
       <div
@@ -226,7 +221,6 @@ export function ImageCropFrame({
         data-dragging={dragging || undefined}
         className={cn(
           "absolute cursor-move border border-cream-bright/90 outline-none",
-          // Everything outside the crop dims, from one shadow as wide as any image.
           "shadow-[0_0_0_100vmax_rgb(0_0_0/55%)]",
           "focus-visible:border-cream-bright",
         )}
@@ -266,7 +260,6 @@ export function ImageCropFrame({
             key={handle}
             aria-hidden="true"
             className={cn("absolute flex items-center justify-center p-1", handlePlace[handle])}
-            // Its moves and release bubble to the frame, which follows the drag.
             onPointerDown={begin(handle)}
           >
             <span className={cn("block rounded-xs border-cream-bright", handleShape[handle])} />

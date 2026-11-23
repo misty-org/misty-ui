@@ -1,6 +1,6 @@
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import { cn } from "../classNames";
-import { controlFrame } from "./controlFrame";
+import { cn } from "../class_names";
+import { controlFrame } from "./control_frame";
 import { renderIcon, type IconSource } from "../layout/ActionBar";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
 import { Tooltip } from "../overlays/Tooltip";
@@ -52,10 +52,8 @@ const itemSize = {
   md: "rounded-md px-2.5",
 } as const;
 
-// About square inside the track: 20.25px tall at sm, 29.25px at md.
 const iconOnlySize = { sm: "w-5 px-0", md: "w-7 px-0" } as const;
 
-// In a well the options fill the track edge to edge, a little wider than tall.
 const wellItemSize = { sm: "rounded-md px-2", md: "rounded-lg px-3" } as const;
 const wellIconOnlySize = { sm: "w-8 px-0", md: "w-10 px-0" } as const;
 
@@ -101,7 +99,6 @@ export function ChoiceGroup<T extends string>({
       )}
       onValueChange={(next) => onChange(next as T)}
       onKeyDown={(event) => {
-        // Arrow keys already choose as they move; Home and End choose the ends too.
         if (disabled || (event.key !== "Home" && event.key !== "End")) return;
         const available = options.filter((option) => !option.disabled);
         const edge = event.key === "Home" ? available[0] : available[available.length - 1];
@@ -121,18 +118,13 @@ export function ChoiceGroup<T extends string>({
               "text-control font-medium outline-none select-none",
               track === "well" ? "text-cream" : "text-cream-muted",
               "hover:bg-control-hover hover:text-cream",
-              // Focus rings are off app-wide, so keyboard focus shows as the hover wash.
               "focus-visible:bg-control-hover focus-visible:text-cream",
-              // The chosen option takes the pressed control wash, so it reads on any track. It keys
-              // off aria-checked: a Tooltip around an icon-only option writes its own data-state
-              // onto the same button, so data-state never says "checked" there.
               "aria-checked:bg-control-active aria-checked:text-cream-bright",
               "aria-checked:hover:bg-control-active",
               "disabled:pointer-events-none disabled:opacity-50",
               "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
               track === "well" ? wellItemSize[size] : itemSize[size],
               iconOnly && (track === "well" ? wellIconOnlySize[size] : iconOnlySize[size]),
-              // Filling, the options split the track evenly, whatever their labels' length.
               fill && !iconOnly && "flex-1 basis-0",
             )}
           >
@@ -140,7 +132,6 @@ export function ChoiceGroup<T extends string>({
             {iconOnly ? null : <OverflowFadeText>{option.label}</OverflowFadeText>}
           </RadioGroupPrimitive.Item>
         );
-        // A disabled button gets no pointer events, so the reason hangs on a wrapper around it.
         if (option.disabled && option.reason)
           return (
             <Tooltip key={option.value} content={option.reason}>

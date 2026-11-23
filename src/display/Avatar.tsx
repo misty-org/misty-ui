@@ -1,8 +1,8 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import * as React from "react";
 
-import { cn } from "../classNames";
-import type { ItemTone } from "../icons/itemTones";
+import { cn } from "../class_names";
+import type { ItemTone } from "../icons/item_tones";
 
 /** xs 18 (inline beside text), sm 27, default 36, lg 45, xl 72 (a profile or a Space's page). */
 export type AvatarSize = "xs" | "sm" | "default" | "lg" | "xl";
@@ -36,6 +36,9 @@ const Avatar = React.forwardRef<
       "group/avatar relative flex size-8 shrink-0 overflow-hidden rounded-full border border-charcoal-border bg-charcoal-card text-cream-bright select-none",
       "data-[size=xs]:size-4 data-[size=sm]:size-6 data-[size=lg]:size-10 data-[size=xl]:size-16",
       "data-[tone]:border-0",
+      "data-[tone=blue]:bg-tone-blue data-[tone=red]:bg-tone-red data-[tone=green]:bg-tone-green",
+      "data-[tone=orange]:bg-tone-orange data-[tone=violet]:bg-tone-violet data-[tone=pink]:bg-tone-pink",
+      "data-[tone=amber]:bg-tone-amber data-[tone=teal]:bg-tone-teal data-[tone=sand]:bg-tone-sand",
       "data-[shape=tile]:rounded-[28%] data-[shape=tile]:border-0 data-[shape=tile]:bg-transparent",
       "data-[shape=tile]:[container-type:size]",
       className,
@@ -72,14 +75,7 @@ const AvatarFallback = React.forwardRef<
       "flex size-full items-center justify-center rounded-full bg-charcoal-card",
       "text-control font-medium text-cream-bright group-data-[size=sm]/avatar:text-caption",
       "group-data-[size=xs]/avatar:text-micro group-data-[size=xl]/avatar:text-title",
-      // A tone fills the initials with its color and dark ink. Written out so Tailwind keeps them.
-      "group-data-[tone]/avatar:text-ink-on-color",
-      "group-data-[tone=blue]/avatar:bg-tone-blue group-data-[tone=red]/avatar:bg-tone-red",
-      "group-data-[tone=green]/avatar:bg-tone-green group-data-[tone=orange]/avatar:bg-tone-orange",
-      "group-data-[tone=violet]/avatar:bg-tone-violet group-data-[tone=pink]/avatar:bg-tone-pink",
-      "group-data-[tone=amber]/avatar:bg-tone-amber group-data-[tone=teal]/avatar:bg-tone-teal",
-      "group-data-[tone=sand]/avatar:bg-tone-sand",
-      // Tile initials scale with the tile instead of a fixed text size.
+      "group-data-[tone]/avatar:bg-transparent group-data-[tone]/avatar:text-ink-on-color",
       "group-data-[shape=tile]/avatar:rounded-[inherit] group-data-[shape=tile]/avatar:text-[length:42cqi] group-data-[shape=tile]/avatar:font-semibold",
       className,
     )}

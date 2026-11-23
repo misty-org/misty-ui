@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { Button } from "../controls/Button";
 import { Text } from "../display/Text";
 import { Spinner } from "./Spinner";

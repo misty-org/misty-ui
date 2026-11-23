@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { CopyButton } from "../controls/CopyButton";
-import { highlightCode, type CodeLanguage, type CodeTokenKind } from "./highlightCode";
+import { highlightCode, type CodeLanguage, type CodeTokenKind } from "./highlight_code";
 import { Text, type TextTone } from "./Text";
 
-export type { CodeLanguage } from "./highlightCode";
+export type { CodeLanguage } from "./highlight_code";
 
 /** Each kind of token wears a tone the theme already has: nothing here is a new color. */
 const tokenClass: Partial<Record<CodeTokenKind, string>> = {

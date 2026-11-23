@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import * as React from "react";
-import { cn } from "../classNames";
+import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
 import { OverflowFadeText } from "./OverflowFadeText";
 
@@ -57,18 +57,16 @@ export function FloatingPanel({
     <section
       aria-label={title}
       data-slot="floating-panel"
-      // Takes the popup edge from overlays.css, and its clipping to the rounded corners.
       data-popup-surface=""
       className={cn(
         anchorClass[anchor],
         widthClass[width],
         "flex max-h-[calc(100%-var(--spacing)*6)] max-w-[calc(100%-var(--spacing)*6)] flex-col",
-        "misty-scrollbar-rounded rounded-xl bg-charcoal-card/72 text-cream shadow-lg backdrop-blur-md",
+        "misty-scrollbar-rounded rounded-xl bg-charcoal-card/72 text-cream backdrop-blur-md",
         className,
       )}
       onKeyDown={(event) => {
         if (event.key !== "Escape" || !onClose || event.defaultPrevented) return;
-        // A menu portaled out of the panel bubbles here too; its Escape only closes the menu.
         if (!event.currentTarget.contains(event.target as Node)) return;
         event.stopPropagation();
         onClose();

@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import { cn } from "../../classNames";
+import { cn } from "../../class_names";
 import { Pressable } from "../../controls/Pressable";
 import { Text } from "../../display/Text";
 import { OverflowFadeText } from "../../layout/OverflowFadeText";

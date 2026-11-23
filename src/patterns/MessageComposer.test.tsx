@@ -45,7 +45,6 @@ it("shows where the chat works as a path line under the box", () => {
   );
   const path = screen.getByRole("group", { name: "Where this chat works" });
   expect(path.textContent).toBe("Designmistymain");
-  // The box keeps the ref and the caller's classes; the line sits outside it.
   expect(ref.current?.getAttribute("data-slot")).toBe("message-composer");
   expect(ref.current?.className).toContain("w-full");
   expect(ref.current?.contains(path)).toBe(false);
