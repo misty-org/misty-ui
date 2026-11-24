@@ -15,8 +15,8 @@ import { RowGroup } from "../../layout/RowGroup";
  * ```tsx
  * <DropdownMenuContent kind="card">
  *   <ProfileCardBanner src={banner} onChange={pickBanner} />
- *   <ProfileCardHeader face={…} status={<ProfileCardStatus … />} />
- *   <ProfileCardName name="ana" line="Misty Cloud" />
+ *   <ProfileCardHeader face={…} />
+ *   <ProfileCardName name="ana" line="Misty Cloud" status={<ProfileCardStatus … />} />
  *   <ProfileCardGroup><MenuItem … /></ProfileCardGroup>
  * </DropdownMenuContent>
  * ```
@@ -52,19 +52,19 @@ export function ProfileCardBanner({
 
 /**
  * Under the banner: the person's face, large (an xl Avatar in a `PresenceFace` with `face="xl"`),
- * set half into the banner on a plate of the card's own color, and beside it their status bubble.
+ * centered and set half into the banner on a plate of the card's own color. Their name, line and
+ * status follow in `ProfileCardName`, centered under it.
  */
-export function ProfileCardHeader({ face, status }: { face: ReactNode; status?: ReactNode }) {
+export function ProfileCardHeader({ face }: { face: ReactNode }) {
   return (
-    <div className="flex items-start gap-2 px-3">
+    <div className="flex justify-center px-3">
       <span className="-mt-9 inline-flex flex-none rounded-full bg-charcoal-card p-1">{face}</span>
-      {status ? <div className="flex min-w-0 flex-1 justify-start pt-2">{status}</div> : null}
     </div>
   );
 }
 
 /**
- * The person's custom status as a bubble beside their face: its emoji and words, or, with none
+ * The person's custom status as a bubble under their name: its emoji and words, or, with none
  * set, a muted "Set a status". Choosing it opens where the status is set. It is a row of the card's
  * menu, so the keyboard reaches it like the others.
  */
@@ -106,18 +106,30 @@ export function ProfileCardStatus({
   );
 }
 
-/** The person's name, then one quiet line under it (their server, or their handle). */
-export function ProfileCardName({ name, line }: { name: ReactNode; line?: ReactNode }) {
+/**
+ * The person's name, centered under their face, then one quiet line under it (their server, or
+ * their handle), then their status bubble (`ProfileCardStatus`).
+ */
+export function ProfileCardName({
+  name,
+  line,
+  status,
+}: {
+  name: ReactNode;
+  line?: ReactNode;
+  status?: ReactNode;
+}) {
   return (
-    <div className="grid gap-0.5 px-3 pt-2 pb-3">
-      <Text size="title" weight="semibold" tone="bright">
+    <div className="flex flex-col items-center gap-0.5 px-3 pt-2 pb-3 text-center">
+      <Text size="title" weight="semibold" tone="bright" className="max-w-full">
         {name}
       </Text>
       {line ? (
-        <Text size="meta" tone="muted">
+        <Text size="meta" tone="muted" className="max-w-full">
           {line}
         </Text>
       ) : null}
+      {status ? <div className="mt-2 flex max-w-full justify-center">{status}</div> : null}
     </div>
   );
 }

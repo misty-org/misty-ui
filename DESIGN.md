@@ -183,9 +183,9 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A notice | `notify` (bottom right, at most one action, leaves on its own) | Inline "Saved" text |
 | A file's sync state in a Space's drive | `StateMark` kinds `online-only` (cloud), `downloading` and `uploading` (the spinner), `not-synced` (crossed-out cloud), all muted; a grid card takes `sync` on its `CollectionItem`. A file in step shows no mark; a conflicting copy has no color of its own | A colored chip, a status word, the `online` (connected) kind |
 | Someone's status on their face (a member, a DM, a friend) | `PresenceFace` (`presence` online, idle, dnd, invisible, offline; `working` and `waiting` for their agent; `face` the Avatar's size, which the dot scales with); a status alone in a menu row is `PresenceDot` | A colored chip, a status word in the row, a dot painted over the face |
-| The person's own profile, opened from their name at the sidebar's foot: their banner, face, status and account | `DropdownMenuContent kind="card"` holding `ProfileCardBanner` (cropped to `profileBannerSize`), `ProfileCardHeader` (an xl face, `ProfileCardStatus`), `ProfileCardName`, then `ProfileCardGroup`s of `MenuItem`s and `MenuSubmenu`s (Status opens the statuses) | A separate status button, a menu headed by an email |
+| The person's own profile, opened from their name at the sidebar's foot: their banner, face, status and account | `DropdownMenuContent kind="card"` holding `ProfileCardBanner` (cropped to `profileBannerSize`), `ProfileCardHeader` (an xl face, centered), `ProfileCardName` (the name, a line and `ProfileCardStatus`, centered under it), then `ProfileCardGroup`s of `MenuItem`s and `MenuSubmenu`s (Status opens the statuses) | A separate status button, a menu headed by an email |
 | A list of people (Friends): face, name and a line about them now | `PersonRow` (`face` in a `PresenceFace`, `line`, `away` when offline; `actions` for a request's answers, `tools` on hover, `menu`), in `RowGroupSection`s | `ListRow` with an avatar squeezed in, a hand-made card per person |
-| The other person beside a one-to-one direct message | `PersonProfile` (`face`: an xl `Avatar` in a `PresenceFace face="xl"`, `name`, their status as `line`) with `PersonProfileSection`s; a group's people are a `MemberList` | A member list of two, a hand-made card |
+| The other person beside a one-to-one direct message | `PersonProfile` (`banner`, `face`: an xl `Avatar` in a `PresenceFace face="xl"` centered half into it, `name`, their status as `line`, Remove friend and Block in its `menu`) with `PersonProfileSection`s; a group's people are a `MemberList` | A member list of two, a hand-made card |
 | Switching between Personal and Spaces (the sidebar's top row) | `ChoiceGroup` (`track="well"`) with two `iconOnly` options: `spaceIcons.personal` for Personal, `spaceIcons.space` for Spaces, each with an `IndicatorDot` while something waits there | Two buttons, a tab strip |
 | Who is in a voice channel, under its row in the sidebar | `VoicePerson` (`avatar` at xs, `name`, `speaking` rings the face in the done tone, `muted`) | A list of names, a colored chip |
 | A call in full (a voice channel's page, a DM's call, full screen) | `CallStage` of `CallTile`s (`picture`, else `face`; `speaking`, `muted`, `deafened`; a shared screen as `focus`, `fit="contain"`), then a `CallBar`: the microphone and camera as `CallControl`s (filled while off, a chevron for their devices), reactions as `CallReactions`, the rest IconButtons, ending in a danger Leave; a raised hand is `hand` (with `handPlace` while several are up) and a sent reaction `reaction` on the tile, live captions a `CallCaptions` between the stage and the bar, a shared screen zooms with `zoom`; a weak connection is `weak` on its tile, a lost one `dimmed` on the stage; away from the call, `FloatingPip` | A grid of hand-made video boxes, a floating card of buttons |
@@ -209,7 +209,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A catalog of installables | `CatalogGrid` + `CatalogCard` (`logo`, `title`, `maker`, `description`, `tag`, `detail`, `action`, `menu`); what's already added is a `CatalogTileRow` of `CatalogTile`s | A long full-width list with per-row toggles |
 | A store page's shelves (Explore) | `Shelf` + `ShelfItem` (`logo` at `tile`, `title`, `line`, one `action`, `menu`); featured picks are `FeatureCard`s in a `FeatureRow`, shown only with a banner; picking one opens `StoreDetail` | A grid of cards per section, a list with per-row toggles |
 | A persona's logo | `PersonaLogo` (`icon` for what it does, `color` from `personaTone(id)`) | The catalog's emoji, a bare initial |
-| The top of a chat's history | `ChannelWelcome`: a channel's icon, or a direct message's face as `mark`, its title, one line, and a few buttons as `actions` (Call) | A hand-made avatar and heading |
+| The top of a chat's history | `ChannelWelcome`: a channel's icon, or a direct message's face as `mark` with `align="center"`, its title, one line, and a few buttons as `actions` (Wave while nothing has been said) | A hand-made avatar and heading |
 | A channel's messages (Space chat) | `ChannelMessage` with `ChannelMessageText`, `ChannelReply` over a reply, `ChannelReactions` of `ReactionChip`s, `ThreadRepliesButton`; days and unread with `ChannelDivider` | Hand-built message rows |
 | Picking an emoji | `EmojiPicker`, handed the caller's emoji (`sections`, `search`) | A grid of styled buttons in a popover |
 | A file waiting to go with a message | `ComposerAttachment` in the composer's `context` | A hand-made chip |
@@ -320,6 +320,9 @@ The everyday components, several of which have no doc comment in the catalog yet
   and close button, `PopoverText`, `PopoverBody`, then `PopoverActions` at the bottom right, quiet buttons before
   the action), a `list` of menu-like rows, or `flush`, for a picker whose search is its top row
   (`PickerSearch`, `PickerList`, or `Command`). A list of actions is a `DropdownMenu`.
+- A menu's rows sit flat on the popup, one layer: groups of rows are parted by a `MenuSeparator`'s hairline,
+  never set on fills or boxes of their own. Grouped fills are the profile card's alone, where a banner and a
+  face head them.
 - A menu row (dropdowns and right-click) has a 16px icon only when the icon tells it apart. A list of like
   things (models, efforts, folders, agents, chats, columns) is text alone, never one icon repeated down the
   list; a choice of a few different things (Build and Plan, sort orders) keeps its own icons. A choice shows no
@@ -359,7 +362,7 @@ The everyday components, several of which have no doc comment in the catalog yet
   `SetupState` ("Setting up the video editor"); a tool's lazily loaded code is a `lazyTool` inside
   `ToolSuspense`. A failed load shows an error, never the empty state, and a stalled setup says so with Try
   again. Data loading follows "Waiting for data" below.
-- An *agent* is what a person makes in Misty. Claude Code, Codex, Grok CLI and the rest are *engines*: an agent
+- An *agent* is what a person makes in Misty. Claude Code, Codex and Antigravity are *engines*: an agent
   runs on one, and plugins, skills and connectors belong to the engine. Ready-made instructions to start an agent
   from are *templates*. Copy never calls an engine an agent.
 - Apps connect through each maker's own sign-in.
@@ -392,6 +395,8 @@ Both hold to the same rules:
   is an `icon` in a round well over one muted line, with no title, as Kura's.
 - Section headings in a frame column (a tool page's sidebar: Spaces, Quick access, Tags) are bright and
   semibold (`SectionHeading strong`), leading their rows as Kura's do; elsewhere they stay muted.
+- A person's face at the head of what is about them (the profile card, a direct message's profile column and
+  its welcome) is centered over their name, never set at the start. Calls start only from the chat's bar.
 - The composer is one bar that never wraps, with nothing under the box: where the chat works (Space, folder,
   branch) is shown in the chat's context panel. Screen capture lives in the + menu.
 - Every message has the same action bar under it, aligned to its edge, shown only on hover. A toggle that is on

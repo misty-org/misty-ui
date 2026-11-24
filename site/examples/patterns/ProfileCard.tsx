@@ -42,9 +42,12 @@ export default function Example() {
               </Avatar>
             </PresenceFace>
           }
+        />
+        <ProfileCardName
+          name="ana"
+          line="Misty Cloud"
           status={<ProfileCardStatus emoji="🎧" text="Deep in the release" onSelect={() => undefined} />}
         />
-        <ProfileCardName name="ana" line="Misty Cloud" />
         <ProfileCardGroup>
           <MenuItem icon={<Pencil />} label="Edit profile" />
           <MenuSubmenu icon={<PresenceDot presence="online" />} label="Online">

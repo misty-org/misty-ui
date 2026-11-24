@@ -102,22 +102,32 @@ export function ChannelHeader(props: {
 
 /**
  * The top of a channel's history, once the very first message is in view: its icon, bare and
- * large (a PlaceholderIcon), a welcome and where this channel begins. A direct message opens the same way with the person's
- * face as its `mark` (an xl Avatar in a PresenceFace with `face="xl"`, or a group's faces) and its name as the
- * title, and may offer a few buttons under the line (`actions`, such as Call).
+ * large (a PlaceholderIcon), a welcome and where this channel begins. A direct message opens the
+ * same way with the person's face as its `mark` (an xl Avatar in a PresenceFace with `face="xl"`, or
+ * a group's faces) and its name as the title, and may offer a few buttons under the line
+ * (`actions`). A direct message's welcome is `align="center"`, its face centered over its name as
+ * every profile's is.
  */
 export function ChannelWelcome(props: {
   icon?: LucideIcon;
   /** A person's face for a direct message, in place of the icon. */
   mark?: ReactNode;
   title: string;
-  line: string;
+  line: ReactNode;
   /** A few secondary or quiet Buttons under the line, at the default size. */
   actions?: ReactNode;
+  /** "center" for a direct message: the face, name, line and buttons centered. */
+  align?: "start" | "center";
 }) {
   const Icon = props.icon;
+  const center = props.align === "center";
   return (
-    <div className="flex flex-col items-start gap-1 pt-4 pb-4">
+    <div
+      className={cn(
+        "flex flex-col gap-1 pt-4 pb-4",
+        center ? "items-center text-center" : "items-start",
+      )}
+    >
       {props.mark ? (
         <span className="mb-2 flex">{props.mark}</span>
       ) : Icon ? (
@@ -128,10 +138,14 @@ export function ChannelWelcome(props: {
       <Text as="h2" size="display" weight="semibold" tone="bright" wrap>
         {props.title}
       </Text>
-      <Text as="p" size="body" tone="muted" wrap>
+      <Text as="p" size="body" tone="muted" wrap className={cn(center && "max-w-prose")}>
         {props.line}
       </Text>
-      {props.actions ? <div className="mt-3 flex items-center gap-2">{props.actions}</div> : null}
+      {props.actions ? (
+        <div className={cn("mt-3 flex items-center gap-2", center && "justify-center")}>
+          {props.actions}
+        </div>
+      ) : null}
     </div>
   );
 }

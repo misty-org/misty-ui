@@ -188,7 +188,9 @@ const DialogContent = React.forwardRef<
             data-layout={scrolls ? "scroll" : "flow"}
             className={cn(
               "group/dialog pointer-events-auto relative",
-              scrolls ? "flex flex-col overflow-hidden" : "grid overflow-y-auto",
+              scrolls
+                ? "flex flex-col overflow-hidden"
+                : "grid grid-cols-[minmax(0,1fr)] overflow-y-auto",
               "max-h-[calc(100dvh-var(--spacing)*16-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*8)]",
               dialogSizeClass[size],
               "misty-scrollbar-rounded gap-4 rounded-xl p-6",

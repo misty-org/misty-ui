@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import {
   createDwell,
   reorderIds,
@@ -59,17 +59,20 @@ export interface TabStripProps {
   dragCarries?(id: string): Record<string, string> | undefined;
   /**
    * A drag paused over a tab for a moment, while still held: the window opens that tab, so the
-   * dragged page can be dropped into its panes. A tab makes room only once the dragged tab's pointer
-   * has crossed all of it, so it stays under the pointer while the drag rests on it. Drags from
+   * dragged page can be dropped into its panes. A tab makes room only once the dragged tab's
+   * pointer has crossed all of it, so it stays under the pointer while the drag rests on it,
+   * washed while it is the one the drag is over. Drags from
    * outside the row (a sidebar chat) that carry `workspace-tab-switch` pause the same way.
    */
   onDragDwell?(id: string): void;
   /**
    * Groups of tabs, as Chrome draws them: a chip in the group's color before its tabs (its name,
-   * or a dot when unnamed), and a line of that color under them. Pressing a chip folds its tabs
-   * away or brings them back (`onToggleGroup`); a right-click opens the group's `menu`.
+   * or a dot when unnamed), a line of that color under them, and a thin ring of it around the
+   * open tab. Pressing a chip folds its tabs away or brings them back (`onToggleGroup`), sliding
+   * them shut or open; a new tab slides in; a right-click opens the group's `menu`.
    */
   groups?: ReadonlyArray<TabStripGroup>;
+  /** Folds or unfolds a group: from its chip, or when a dragged tab pauses over a folded chip. */
   onToggleGroup?(id: string): void;
   /** A dragged tab let go on another tab: in Chrome's way, the two go into one group. */
   onDropOnTab?(id: string, target: string): void;
@@ -93,6 +96,12 @@ const chipGroup = (id: string) => id.slice(chipPrefix.length);
 const tabClass = cn(
   "group/tab @container/tab relative flex h-8 w-36 min-w-24 flex-initial items-center",
   "rounded-md hover:bg-row-hover data-[selected]:bg-row-active",
+  "data-[reorder-target]:bg-control-active",
+  "transition-[width,min-width,margin,opacity] duration-200 ease-out",
+  "motion-reduce:transition-none [html[data-pointer-dragging=true]_&]:transition-none",
+  "data-[folded]:-ml-1 data-[folded]:w-0 data-[folded]:min-w-0 data-[folded]:opacity-0",
+  "data-[entering]:starting:-ml-1 data-[entering]:starting:w-0",
+  "data-[entering]:starting:min-w-0 data-[entering]:starting:opacity-0",
 );
 
 /** The tab a key moves to from `index`, or -1 for a key the strip leaves alone. */
@@ -106,19 +115,40 @@ function nextTabIndex(key: string, index: number, count: number): number {
 
 type Entry =
   | { kind: "group"; group: TabStripGroup }
-  | { kind: "tab"; tab: TabStripTab; group?: TabStripGroup };
+  | { kind: "tab"; tab: TabStripTab; group?: TabStripGroup; folded?: boolean };
+
+function GroupRing(props: { group: TabStripGroup }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 size-full overflow-visible"
+      shapeRendering="geometricPrecision"
+    >
+      <rect
+        width="100%"
+        height="100%"
+        rx="8"
+        fill="none"
+        strokeWidth="1.5"
+        style={{ stroke: tabGroupTone(props.group.color) }}
+      />
+    </svg>
+  );
+}
 
 function GroupLine(props: { group: TabStripGroup; first: boolean; last: boolean }) {
   return (
     <span
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute -bottom-1 left-0 h-0.5",
+        "pointer-events-none absolute left-0",
         props.first && "rounded-l-full",
         props.last && "rounded-r-full",
       )}
       style={{
         backgroundColor: tabGroupTone(props.group.color),
+        height: "1.5px",
+        bottom: "calc((var(--hairline) + var(--spacing) * 8 - var(--ui-header)) / 2)",
         right: props.last ? 0 : "calc(var(--spacing) * -1)",
       }}
     />
@@ -155,11 +185,12 @@ export function TabStrip(props: TabStripProps) {
     const group = groupOf(tab);
     if (group && group.id !== open) entries.push({ kind: "group", group });
     open = group?.id;
-    if (!group?.collapsed) entries.push({ kind: "tab", tab, group });
+    entries.push({ kind: "tab", tab, group, folded: group?.collapsed });
   }
-  const shown = entries.map((entry) =>
-    entry.kind === "group" ? chipId(entry.group.id) : entry.tab.id,
+  const shown = entries.flatMap((entry) =>
+    entry.kind === "group" ? [chipId(entry.group.id)] : entry.folded ? [] : [entry.tab.id],
   );
+  const [present] = useState(() => new Set(ids));
   const visible = props.tabs.filter((tab) => !groupOf(tab)?.collapsed);
   const tabsOf = (group: string) => props.tabs.filter((tab) => tab.group === group);
   const shownTabsOf = (group: string) =>
@@ -224,7 +255,11 @@ export function TabStrip(props: TabStripProps) {
         : null;
     },
     onDwell: (id) => {
-      if (!isChip(id) && id !== props.active) props.onDragDwell?.(id);
+      if (isChip(id)) {
+        if (groupsById.get(chipGroup(id))?.collapsed) props.onToggleGroup?.(chipGroup(id));
+        return;
+      }
+      if (id !== props.active) props.onDragDwell?.(id);
     },
     onDrop: (drag, target, after, onto) => {
       if (isChip(drag.id)) {
@@ -293,7 +328,10 @@ export function TabStrip(props: TabStripProps) {
         data-reorder-item={chipId(group.id)}
         data-reorder-handle={props.onMoveGroup ? "" : undefined}
         data-reorder-preview=""
-        className="relative flex h-8 flex-none items-center"
+        className={cn(
+          "relative flex h-8 flex-none items-center rounded-md px-1",
+          "data-[reorder-target]:bg-control-active",
+        )}
       >
         <Pressable
           aria-expanded={!group.collapsed}
@@ -328,7 +366,12 @@ export function TabStrip(props: TabStripProps) {
     );
   };
 
-  const tabView = (tab: TabStripTab, group: TabStripGroup | undefined, index: number) => {
+  const tabView = (
+    tab: TabStripTab,
+    group: TabStripGroup | undefined,
+    index: number,
+    folded = false,
+  ) => {
     const selected = tab.id === props.active;
     const closable = Boolean(tab.closeLabel && props.onClose);
     const next = entries[index + 1];
@@ -336,47 +379,58 @@ export function TabStrip(props: TabStripProps) {
     const body = (
       <div
         data-selected={selected || undefined}
-        data-reorder-item={tab.id}
-        data-reorder-handle={props.onReorder ? "" : undefined}
+        data-folded={folded || undefined}
+        data-entering={!present.has(tab.id) || undefined}
+        data-reorder-item={folded ? undefined : tab.id}
+        data-reorder-handle={props.onReorder && !folded ? "" : undefined}
         data-reorder-preview=""
+        aria-hidden={folded || undefined}
+        inert={folded || undefined}
         className={tabClass}
         onAuxClick={(event) => {
           if (event.button === 1 && closable) props.onClose?.(tab.id);
         }}
       >
-        <Pressable
-          role="tab"
-          aria-selected={selected}
-          tabIndex={selected ? 0 : -1}
-          data-tab-id={tab.id}
-          className="flex h-full min-w-0 flex-1 items-center gap-2 pl-2 pr-1"
-          onClick={() => props.onSelect(tab.id)}
-          onKeyDown={(event) => onKeyDown(event, tab.id)}
+        <div
+          className="relative flex h-full min-w-0 flex-1 items-center overflow-hidden rounded-md"
         >
-          {tab.icon ? <span className="flex size-4 flex-none items-center">{tab.icon}</span> : null}
-          <Text
-            size="control"
-            tone={selected ? "bright" : "muted"}
-            className="min-w-0 flex-1 text-left"
-            full={tab.full ?? true}
+          <Pressable
+            role="tab"
+            aria-selected={selected}
+            tabIndex={selected ? 0 : -1}
+            data-tab-id={tab.id}
+            className="flex h-full min-w-0 flex-1 items-center gap-2 pl-2 pr-1"
+            onClick={() => props.onSelect(tab.id)}
+            onKeyDown={(event) => onKeyDown(event, tab.id)}
           >
-            {tab.label}
-          </Text>
-        </Pressable>
-        {closable ? (
-          <span className="flex flex-none @max-[5.5rem]/tab:hidden">
-            <IconButton
-              label={tab.closeLabel!}
-              size="sm"
-              className="mr-1"
-              data-reorder-ignore=""
-              onClick={() => props.onClose?.(tab.id)}
+            {tab.icon ? (
+              <span className="flex size-4 flex-none items-center">{tab.icon}</span>
+            ) : null}
+            <Text
+              size="control"
+              tone={selected ? "bright" : "muted"}
+              className="min-w-0 flex-1 text-left"
+              full={tab.full ?? true}
             >
-              <X />
-            </IconButton>
-          </span>
-        ) : null}
-        {group ? <GroupLine group={group} first={false} last={last} /> : null}
+              {tab.label}
+            </Text>
+          </Pressable>
+          {closable ? (
+            <span className="flex flex-none @max-[5.5rem]/tab:hidden">
+              <IconButton
+                label={tab.closeLabel!}
+                size="sm"
+                className="mr-1"
+                data-reorder-ignore=""
+                onClick={() => props.onClose?.(tab.id)}
+              >
+                <X />
+              </IconButton>
+            </span>
+          ) : null}
+        </div>
+        {group && !folded ? <GroupLine group={group} first={false} last={last} /> : null}
+        {group && selected && !folded ? <GroupRing group={group} /> : null}
       </div>
     );
     return tab.menu ? (
@@ -417,7 +471,7 @@ export function TabStrip(props: TabStripProps) {
           {entries.map((entry, index) =>
             entry.kind === "group"
               ? chip(entry.group, index)
-              : tabView(entry.tab, entry.group, index),
+              : tabView(entry.tab, entry.group, index, entry.folded),
           )}
         </div>
         {props.after ? <div className="flex flex-none items-center">{props.after}</div> : null}

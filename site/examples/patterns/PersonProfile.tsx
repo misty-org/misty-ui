@@ -1,6 +1,8 @@
+import { Ban, Trash2 } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
+  MenuItem,
   PersonProfile,
   PersonProfileSection,
   PresenceFace,
@@ -28,6 +30,12 @@ export default function Example() {
         }
         name="justnatureusa"
         line="Shipping the drive tonight"
+        menu={
+          <>
+            <MenuItem icon={Trash2} label="Remove friend" danger />
+            <MenuItem icon={Ban} label="Block" danger />
+          </>
+        }
       >
         <PersonProfileSection title="Friends since">
           <Text size="control">November 2, 2026</Text>

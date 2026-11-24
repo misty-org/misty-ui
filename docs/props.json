@@ -1165,7 +1165,7 @@
     },
     {
       "name": "line",
-      "type": "string",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
       "doc": ""
     },
@@ -1174,6 +1174,12 @@
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
       "doc": "A few secondary or quiet Buttons under the line, at the default size."
+    },
+    {
+      "name": "align",
+      "type": "\"center\" | \"start\"",
+      "optional": true,
+      "doc": "\"center\" for a direct message: the face, name, line and buttons centered."
     }
   ],
   "Checkbox": [],
@@ -4231,7 +4237,7 @@
     {
       "name": "presence",
       "type": "MemberPresence",
-      "optional": false,
+      "optional": true,
       "doc": ""
     },
     {
@@ -5460,6 +5466,12 @@
       "doc": "Accessible name of the panel, such as \"Profile\"."
     },
     {
+      "name": "banner",
+      "type": "string",
+      "optional": true,
+      "doc": "Their banner picture, cropped to `profileBannerSize`; without one it is a quiet fill."
+    },
+    {
       "name": "face",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
@@ -5476,6 +5488,12 @@
       "type": "string",
       "optional": true,
       "doc": "What the person says about themselves right now: their custom status."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Rows of the ⋯ menu over the banner (MenuItems)."
     },
     {
       "name": "children",
@@ -5767,12 +5785,6 @@
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
       "doc": ""
-    },
-    {
-      "name": "status",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": ""
     }
   ],
   "ProfileCardName": [
@@ -5784,6 +5796,12 @@
     },
     {
       "name": "line",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "status",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
       "doc": ""
@@ -7501,6 +7519,12 @@
       "type": "\"rows\" | \"chips\"",
       "optional": true,
       "doc": ""
+    },
+    {
+      "name": "align",
+      "type": "\"center\" | \"start\"",
+      "optional": true,
+      "doc": "rows only: centered under the heading (default), or at the start of the line."
     }
   ],
   "StateMark": [
@@ -7937,19 +7961,19 @@
       "name": "onDragDwell",
       "type": "(id: string) => void",
       "optional": true,
-      "doc": "A drag paused over a tab for a moment, while still held: the window opens that tab, so the dragged page can be dropped into its panes. A tab makes room only once the dragged tab's pointer has crossed all of it, so it stays under the pointer while the drag rests on it. Drags from outside the row (a sidebar chat) that carry `workspace-tab-switch` pause the same way."
+      "doc": "A drag paused over a tab for a moment, while still held: the window opens that tab, so the dragged page can be dropped into its panes. A tab makes room only once the dragged tab's pointer has crossed all of it, so it stays under the pointer while the drag rests on it, washed while it is the one the drag is over. Drags from outside the row (a sidebar chat) that carry `workspace-tab-switch` pause the same way."
     },
     {
       "name": "groups",
       "type": "readonly TabStripGroup[]",
       "optional": true,
-      "doc": "Groups of tabs, as Chrome draws them: a chip in the group's color before its tabs (its name, or a dot when unnamed), and a line of that color under them. Pressing a chip folds its tabs away or brings them back (`onToggleGroup`); a right-click opens the group's `menu`."
+      "doc": "Groups of tabs, as Chrome draws them: a chip in the group's color before its tabs (its name, or a dot when unnamed), a line of that color under them, and a thin ring of it around the open tab. Pressing a chip folds its tabs away or brings them back (`onToggleGroup`), sliding them shut or open; a new tab slides in; a right-click opens the group's `menu`."
     },
     {
       "name": "onToggleGroup",
       "type": "(id: string) => void",
       "optional": true,
-      "doc": ""
+      "doc": "Folds or unfolds a group: from its chip, or when a dragged tab pauses over a folded chip."
     },
     {
       "name": "onDropOnTab",

@@ -20,7 +20,7 @@ function DisclosureDemo() {
       </DisclosureButton>
       {open ? (
         <Text size="meta" tone="muted">
-          Gemini CLI, Grok, Hermes
+          Antigravity
         </Text>
       ) : null}
     </div>

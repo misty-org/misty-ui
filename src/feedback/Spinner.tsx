@@ -3,7 +3,11 @@ import * as React from "react";
 
 import { cn } from "../class_names";
 
-/** The one loading indicator. Spinning refresh or retry glyphs are icon states, not loaders. */
+/**
+ * The one loading indicator. Spinning refresh or retry glyphs are icon states, not loaders. Only
+ * its arc turns, around the glyph's own middle, while the glyph's box stays put, so it spins in
+ * place instead of wobbling as WebKit snaps a turning box to the pixel grid.
+ */
 function Spinner({ className, label = "Loading", size = "default", ...props }: SpinnerProps) {
   return (
     <span
@@ -21,7 +25,11 @@ function Spinner({ className, label = "Loading", size = "default", ...props }: S
     >
       <LoaderCircle
         aria-hidden="true"
-        className="size-full animate-spin motion-reduce:animate-none"
+        className={cn(
+          "size-full",
+          "[&>*]:origin-center [&>*]:[transform-box:view-box] [&>*]:animate-spin",
+          "motion-reduce:[&>*]:animate-none",
+        )}
       />
     </span>
   );

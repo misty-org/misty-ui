@@ -14,7 +14,8 @@ export type StarterPrompt = {
 /**
  * Ideas to start from under an empty chat, for someone who doesn't know what to ask yet: quiet
  * rows of an icon and a label in two columns as wide as their labels, the whole block centered
- * under the heading. It drops to one column before a label would be cut.
+ * under the heading, or with `align="start"` at the start of its line, under a heading set there
+ * (a chat's ChannelWelcome). It drops to one column before a label would be cut.
  * Picking one hands its prompt to the caller, which puts it in the composer unsent.
  *
  * `variant="chips"` lays them out instead as one centered row of pills, for under a composer.
@@ -29,6 +30,7 @@ export function StarterPrompts({
   onPick,
   className,
   variant = "rows",
+  align = "center",
 }: {
   /** The list's accessible name. */
   label: string;
@@ -36,6 +38,8 @@ export function StarterPrompts({
   onPick(prompt: StarterPrompt): void;
   className?: string;
   variant?: "rows" | "chips";
+  /** rows only: centered under the heading (default), or at the start of the line. */
+  align?: "center" | "start";
 }) {
   if (variant === "chips") {
     return <StarterChips label={label} prompts={prompts} onPick={onPick} className={className} />;
@@ -44,7 +48,10 @@ export function StarterPrompts({
     <div data-slot="starter-prompts" className={cn("@container/starter", className)}>
       <ul
         aria-label={label}
-        className="mx-auto grid w-fit grid-cols-[max-content] gap-x-6 gap-y-1 @md/starter:grid-cols-[repeat(2,max-content)]"
+        className={cn(
+          "grid w-fit grid-cols-[max-content] gap-x-6 gap-y-1 @md/starter:grid-cols-[repeat(2,max-content)]",
+          align === "center" && "mx-auto",
+        )}
       >
         {prompts.map((item) => {
           const Icon = item.icon;

@@ -1,4 +1,4 @@
-import { createDragPreview } from "./pointer_drag_preview";
+import { createDragPreview, createGroupDragPreview } from "./pointer_drag_preview";
 import { startReorderMotion, settleReorderMotion } from "./pointer_reorder_motion";
 import {
   contains,
@@ -262,6 +262,15 @@ export function startGesture(
         preview = createDragPreview(surface).preview;
       }
       const list = surface.closest<HTMLElement>('[data-reorder-animated="true"]');
+      const together =
+        list && drag.ids && drag.ids.length > 1
+          ? [...list.querySelectorAll<HTMLElement>("[data-reorder-item]")].filter(
+              (item) =>
+                item.closest("[data-reorder-list]") === list &&
+                drag.ids!.includes(item.dataset.reorderItem!),
+            )
+          : [];
+      if (together.length > 1) preview = createGroupDragPreview(together).preview;
       if (list) {
         motion = startReorderMotion(
           surface,
@@ -269,8 +278,9 @@ export function startGesture(
           list.dataset.reorderAxis === "y" ? "y" : "x",
         );
         preview.classList.add("pointer-reorder-tab-preview");
-        const lifted = preview.firstElementChild as HTMLElement | null;
-        if (lifted) lifted.style.backgroundColor = "var(--color-charcoal-bg)";
+        const lifted = together.length > 1 ? [...preview.children] : [preview.firstElementChild];
+        for (const item of lifted)
+          if (item instanceof HTMLElement) item.style.backgroundColor = "var(--color-charcoal-bg)";
       }
       restorePresentation = onLift?.();
       surface.dataset.reorderDragging = "true";

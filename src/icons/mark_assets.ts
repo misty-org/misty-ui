@@ -27,128 +27,120 @@ import mark25 from "./marks/citrix.svg?no-inline";
 import mark26 from "./marks/claude-color.svg?no-inline";
 import mark27 from "./marks/cloudflare-color.svg?no-inline";
 import mark28 from "./marks/cloudinary.svg?no-inline";
-import mark29 from "./marks/codebuddy.svg?no-inline";
-import mark30 from "./marks/codex.svg?no-inline";
-import mark31 from "./marks/cohere.svg?no-inline";
-import mark32 from "./marks/composio.svg?no-inline";
-import mark33 from "./marks/copilot-color.svg?no-inline";
-import mark34 from "./marks/crunchyroll.svg?no-inline";
-import mark35 from "./marks/deepseek.svg?no-inline";
-import mark36 from "./marks/deepseek-color.svg?no-inline";
-import mark37 from "./marks/discord.svg?no-inline";
-import mark38 from "./marks/dropbox.svg?no-inline";
-import mark39 from "./marks/figma.svg?no-inline";
-import mark40 from "./marks/file-io.svg?no-inline";
-import mark41 from "./marks/filen.svg?no-inline";
-import mark42 from "./marks/files-com.svg?no-inline";
-import mark43 from "./marks/filezilla.svg?no-inline";
-import mark44 from "./marks/firecrawl.svg?no-inline";
-import mark45 from "./marks/firefox.svg?no-inline";
-import mark46 from "./marks/fireworks.svg?no-inline";
-import mark47 from "./marks/fireworks-color.svg?no-inline";
-import mark48 from "./marks/fish-audio.svg?no-inline";
-import mark49 from "./marks/gemini.svg?no-inline";
-import mark50 from "./marks/gemini-color.svg?no-inline";
-import mark51 from "./marks/github.svg?no-inline";
-import mark52 from "./marks/gmail.svg?no-inline";
-import mark53 from "./marks/google-calendar.svg?no-inline";
-import mark54 from "./marks/google-cloud.svg?no-inline";
-import mark55 from "./marks/google-docs.svg?no-inline";
-import mark56 from "./marks/google-drive.svg?no-inline";
-import mark57 from "./marks/google-logo.svg?no-inline";
-import mark58 from "./marks/google-photos.svg?no-inline";
-import mark59 from "./marks/google-sheets.svg?no-inline";
-import mark60 from "./marks/google-tasks.svg?no-inline";
-import mark61 from "./marks/grok.svg?no-inline";
-import mark62 from "./marks/groq.svg?no-inline";
-import mark63 from "./marks/hadoop.svg?no-inline";
-import mark64 from "./marks/hermes.svg?no-inline";
-import mark65 from "./marks/huawei.svg?no-inline";
-import mark66 from "./marks/hubspot.svg?no-inline";
-import mark67 from "./marks/huggingface.svg?no-inline";
-import mark68 from "./marks/huggingface-color.svg?no-inline";
-import mark69 from "./marks/icloud.svg?no-inline";
-import mark70 from "./marks/inception.svg?no-inline";
-import mark71 from "./marks/instagram.svg?no-inline";
-import mark72 from "./marks/internet-archive.svg?no-inline";
-import mark73 from "./marks/jira.svg?no-inline";
-import mark74 from "./marks/kimi.svg?no-inline";
-import mark75 from "./marks/kimi-color.svg?no-inline";
-import mark76 from "./marks/linear.svg?no-inline";
-import mark77 from "./marks/ling-color.svg?no-inline";
-import mark78 from "./marks/linkedin.svg?no-inline";
-import mark79 from "./marks/longcat-color.svg?no-inline";
-import mark80 from "./marks/mail-ru.svg?no-inline";
-import mark81 from "./marks/mega.svg?no-inline";
-import mark82 from "./marks/meituan.svg?no-inline";
-import mark83 from "./marks/messenger.svg?no-inline";
-import mark84 from "./marks/meta.svg?no-inline";
-import mark85 from "./marks/microsoft-edge.svg?no-inline";
-import mark86 from "./marks/microsoft-logo.svg?no-inline";
-import mark87 from "./marks/microsoft-onenote.svg?no-inline";
-import mark88 from "./marks/microsoft-teams.svg?no-inline";
-import mark89 from "./marks/microsoft-todo.svg?no-inline";
-import mark90 from "./marks/microsoft-word.svg?no-inline";
-import mark91 from "./marks/minimax.svg?no-inline";
-import mark92 from "./marks/minimax-color.svg?no-inline";
-import mark93 from "./marks/mistral.svg?no-inline";
-import mark94 from "./marks/mistral-color.svg?no-inline";
-import mark95 from "./marks/moonshot.svg?no-inline";
-import mark96 from "./marks/netflix.svg?no-inline";
-import mark97 from "./marks/notion.svg?no-inline";
-import mark98 from "./marks/nvidia.svg?no-inline";
-import mark99 from "./marks/nvidia-color.svg?no-inline";
-import mark100 from "./marks/obsidian.svg?no-inline";
-import mark101 from "./marks/ollama.svg?no-inline";
-import mark102 from "./marks/omp.svg?no-inline";
-import mark103 from "./marks/onedrive.svg?no-inline";
-import mark104 from "./marks/openai.svg?no-inline";
-import mark105 from "./marks/opencode.svg?no-inline";
-import mark106 from "./marks/openrouter.svg?no-inline";
-import mark107 from "./marks/openrouter-color.svg?no-inline";
-import mark108 from "./marks/openstack.svg?no-inline";
-import mark109 from "./marks/opera.svg?no-inline";
-import mark110 from "./marks/outlook.svg?no-inline";
-import mark111 from "./marks/perplexity.svg?no-inline";
-import mark112 from "./marks/pi.svg?no-inline";
-import mark113 from "./marks/poolside.svg?no-inline";
-import mark114 from "./marks/prime-video.svg?no-inline";
-import mark115 from "./marks/proton-drive.svg?no-inline";
-import mark116 from "./marks/qoder.svg?no-inline";
-import mark117 from "./marks/qwen.svg?no-inline";
-import mark118 from "./marks/qwen-color.svg?no-inline";
-import mark119 from "./marks/reddit.svg?no-inline";
-import mark120 from "./marks/safari.svg?no-inline";
-import mark121 from "./marks/sakana.svg?no-inline";
-import mark122 from "./marks/seafile.svg?no-inline";
-import mark123 from "./marks/serpapi.svg?no-inline";
-import mark124 from "./marks/slack.svg?no-inline";
-import mark125 from "./marks/soundcloud.svg?no-inline";
-import mark126 from "./marks/spotify.svg?no-inline";
-import mark127 from "./marks/stepfun.svg?no-inline";
-import mark128 from "./marks/storj.svg?no-inline";
-import mark129 from "./marks/stripe.svg?no-inline";
-import mark130 from "./marks/supabase.svg?no-inline";
-import mark131 from "./marks/tencent.svg?no-inline";
-import mark132 from "./marks/todoist.svg?no-inline";
-import mark133 from "./marks/together-color.svg?no-inline";
-import mark134 from "./marks/trello.svg?no-inline";
-import mark135 from "./marks/twitch.svg?no-inline";
-import mark136 from "./marks/typeform.svg?no-inline";
-import mark137 from "./marks/vercel.svg?no-inline";
-import mark138 from "./marks/vivaldi.svg?no-inline";
-import mark139 from "./marks/wrike.svg?no-inline";
-import mark140 from "./marks/x.svg?no-inline";
-import mark141 from "./marks/xai.svg?no-inline";
-import mark142 from "./marks/xiaomi.svg?no-inline";
-import mark143 from "./marks/xiaomimimo.svg?no-inline";
-import mark144 from "./marks/yahoo.svg?no-inline";
-import mark145 from "./marks/yandex.svg?no-inline";
-import mark146 from "./marks/youtube.svg?no-inline";
-import mark147 from "./marks/youtube-music.svg?no-inline";
-import mark148 from "./marks/zai.svg?no-inline";
-import mark149 from "./marks/zhipu-color.svg?no-inline";
-import mark150 from "./marks/zoho.svg?no-inline";
+import mark29 from "./marks/codex.svg?no-inline";
+import mark30 from "./marks/cohere.svg?no-inline";
+import mark31 from "./marks/composio.svg?no-inline";
+import mark32 from "./marks/copilot-color.svg?no-inline";
+import mark33 from "./marks/crunchyroll.svg?no-inline";
+import mark34 from "./marks/deepseek.svg?no-inline";
+import mark35 from "./marks/deepseek-color.svg?no-inline";
+import mark36 from "./marks/discord.svg?no-inline";
+import mark37 from "./marks/dropbox.svg?no-inline";
+import mark38 from "./marks/figma.svg?no-inline";
+import mark39 from "./marks/file-io.svg?no-inline";
+import mark40 from "./marks/filen.svg?no-inline";
+import mark41 from "./marks/files-com.svg?no-inline";
+import mark42 from "./marks/filezilla.svg?no-inline";
+import mark43 from "./marks/firecrawl.svg?no-inline";
+import mark44 from "./marks/firefox.svg?no-inline";
+import mark45 from "./marks/fireworks.svg?no-inline";
+import mark46 from "./marks/fireworks-color.svg?no-inline";
+import mark47 from "./marks/fish-audio.svg?no-inline";
+import mark48 from "./marks/gemini.svg?no-inline";
+import mark49 from "./marks/github.svg?no-inline";
+import mark50 from "./marks/gmail.svg?no-inline";
+import mark51 from "./marks/google-calendar.svg?no-inline";
+import mark52 from "./marks/google-cloud.svg?no-inline";
+import mark53 from "./marks/google-docs.svg?no-inline";
+import mark54 from "./marks/google-drive.svg?no-inline";
+import mark55 from "./marks/google-logo.svg?no-inline";
+import mark56 from "./marks/google-photos.svg?no-inline";
+import mark57 from "./marks/google-sheets.svg?no-inline";
+import mark58 from "./marks/google-tasks.svg?no-inline";
+import mark59 from "./marks/groq.svg?no-inline";
+import mark60 from "./marks/hadoop.svg?no-inline";
+import mark61 from "./marks/huawei.svg?no-inline";
+import mark62 from "./marks/hubspot.svg?no-inline";
+import mark63 from "./marks/huggingface.svg?no-inline";
+import mark64 from "./marks/huggingface-color.svg?no-inline";
+import mark65 from "./marks/icloud.svg?no-inline";
+import mark66 from "./marks/inception.svg?no-inline";
+import mark67 from "./marks/instagram.svg?no-inline";
+import mark68 from "./marks/internet-archive.svg?no-inline";
+import mark69 from "./marks/jira.svg?no-inline";
+import mark70 from "./marks/kimi.svg?no-inline";
+import mark71 from "./marks/kimi-color.svg?no-inline";
+import mark72 from "./marks/linear.svg?no-inline";
+import mark73 from "./marks/ling-color.svg?no-inline";
+import mark74 from "./marks/linkedin.svg?no-inline";
+import mark75 from "./marks/longcat-color.svg?no-inline";
+import mark76 from "./marks/mail-ru.svg?no-inline";
+import mark77 from "./marks/mega.svg?no-inline";
+import mark78 from "./marks/meituan.svg?no-inline";
+import mark79 from "./marks/messenger.svg?no-inline";
+import mark80 from "./marks/meta.svg?no-inline";
+import mark81 from "./marks/microsoft-edge.svg?no-inline";
+import mark82 from "./marks/microsoft-logo.svg?no-inline";
+import mark83 from "./marks/microsoft-onenote.svg?no-inline";
+import mark84 from "./marks/microsoft-teams.svg?no-inline";
+import mark85 from "./marks/microsoft-todo.svg?no-inline";
+import mark86 from "./marks/microsoft-word.svg?no-inline";
+import mark87 from "./marks/minimax.svg?no-inline";
+import mark88 from "./marks/minimax-color.svg?no-inline";
+import mark89 from "./marks/mistral.svg?no-inline";
+import mark90 from "./marks/mistral-color.svg?no-inline";
+import mark91 from "./marks/moonshot.svg?no-inline";
+import mark92 from "./marks/netflix.svg?no-inline";
+import mark93 from "./marks/notion.svg?no-inline";
+import mark94 from "./marks/nvidia.svg?no-inline";
+import mark95 from "./marks/nvidia-color.svg?no-inline";
+import mark96 from "./marks/obsidian.svg?no-inline";
+import mark97 from "./marks/ollama.svg?no-inline";
+import mark98 from "./marks/onedrive.svg?no-inline";
+import mark99 from "./marks/openai.svg?no-inline";
+import mark100 from "./marks/opencode.svg?no-inline";
+import mark101 from "./marks/openrouter.svg?no-inline";
+import mark102 from "./marks/openrouter-color.svg?no-inline";
+import mark103 from "./marks/openstack.svg?no-inline";
+import mark104 from "./marks/opera.svg?no-inline";
+import mark105 from "./marks/outlook.svg?no-inline";
+import mark106 from "./marks/perplexity.svg?no-inline";
+import mark107 from "./marks/poolside.svg?no-inline";
+import mark108 from "./marks/prime-video.svg?no-inline";
+import mark109 from "./marks/proton-drive.svg?no-inline";
+import mark110 from "./marks/qwen.svg?no-inline";
+import mark111 from "./marks/reddit.svg?no-inline";
+import mark112 from "./marks/safari.svg?no-inline";
+import mark113 from "./marks/sakana.svg?no-inline";
+import mark114 from "./marks/seafile.svg?no-inline";
+import mark115 from "./marks/serpapi.svg?no-inline";
+import mark116 from "./marks/slack.svg?no-inline";
+import mark117 from "./marks/soundcloud.svg?no-inline";
+import mark118 from "./marks/spotify.svg?no-inline";
+import mark119 from "./marks/stepfun.svg?no-inline";
+import mark120 from "./marks/storj.svg?no-inline";
+import mark121 from "./marks/stripe.svg?no-inline";
+import mark122 from "./marks/supabase.svg?no-inline";
+import mark123 from "./marks/tencent.svg?no-inline";
+import mark124 from "./marks/todoist.svg?no-inline";
+import mark125 from "./marks/together-color.svg?no-inline";
+import mark126 from "./marks/trello.svg?no-inline";
+import mark127 from "./marks/twitch.svg?no-inline";
+import mark128 from "./marks/typeform.svg?no-inline";
+import mark129 from "./marks/vercel.svg?no-inline";
+import mark130 from "./marks/vivaldi.svg?no-inline";
+import mark131 from "./marks/wrike.svg?no-inline";
+import mark132 from "./marks/x.svg?no-inline";
+import mark133 from "./marks/xai.svg?no-inline";
+import mark134 from "./marks/xiaomi.svg?no-inline";
+import mark135 from "./marks/xiaomimimo.svg?no-inline";
+import mark136 from "./marks/yahoo.svg?no-inline";
+import mark137 from "./marks/yandex.svg?no-inline";
+import mark138 from "./marks/youtube.svg?no-inline";
+import mark139 from "./marks/youtube-music.svg?no-inline";
+import mark140 from "./marks/zai.svg?no-inline";
+import mark141 from "./marks/zhipu-color.svg?no-inline";
+import mark142 from "./marks/zoho.svg?no-inline";
 
 export const markAssets: Record<string, string> = {
   "agy": mark0,
@@ -180,126 +172,118 @@ export const markAssets: Record<string, string> = {
   "claude-color": mark26,
   "cloudflare-color": mark27,
   "cloudinary": mark28,
-  "codebuddy": mark29,
-  "codex": mark30,
-  "cohere": mark31,
-  "composio": mark32,
-  "copilot-color": mark33,
-  "crunchyroll": mark34,
-  "deepseek": mark35,
-  "deepseek-color": mark36,
-  "discord": mark37,
-  "dropbox": mark38,
-  "figma": mark39,
-  "file-io": mark40,
-  "filen": mark41,
-  "files-com": mark42,
-  "filezilla": mark43,
-  "firecrawl": mark44,
-  "firefox": mark45,
-  "fireworks": mark46,
-  "fireworks-color": mark47,
-  "fish-audio": mark48,
-  "gemini": mark49,
-  "gemini-color": mark50,
-  "github": mark51,
-  "gmail": mark52,
-  "google-calendar": mark53,
-  "google-cloud": mark54,
-  "google-docs": mark55,
-  "google-drive": mark56,
-  "google-logo": mark57,
-  "google-photos": mark58,
-  "google-sheets": mark59,
-  "google-tasks": mark60,
-  "grok": mark61,
-  "groq": mark62,
-  "hadoop": mark63,
-  "hermes": mark64,
-  "huawei": mark65,
-  "hubspot": mark66,
-  "huggingface": mark67,
-  "huggingface-color": mark68,
-  "icloud": mark69,
-  "inception": mark70,
-  "instagram": mark71,
-  "internet-archive": mark72,
-  "jira": mark73,
-  "kimi": mark74,
-  "kimi-color": mark75,
-  "linear": mark76,
-  "ling-color": mark77,
-  "linkedin": mark78,
-  "longcat-color": mark79,
-  "mail-ru": mark80,
-  "mega": mark81,
-  "meituan": mark82,
-  "messenger": mark83,
-  "meta": mark84,
-  "microsoft-edge": mark85,
-  "microsoft-logo": mark86,
-  "microsoft-onenote": mark87,
-  "microsoft-teams": mark88,
-  "microsoft-todo": mark89,
-  "microsoft-word": mark90,
-  "minimax": mark91,
-  "minimax-color": mark92,
-  "mistral": mark93,
-  "mistral-color": mark94,
-  "moonshot": mark95,
-  "netflix": mark96,
-  "notion": mark97,
-  "nvidia": mark98,
-  "nvidia-color": mark99,
-  "obsidian": mark100,
-  "ollama": mark101,
-  "omp": mark102,
-  "onedrive": mark103,
-  "openai": mark104,
-  "opencode": mark105,
-  "openrouter": mark106,
-  "openrouter-color": mark107,
-  "openstack": mark108,
-  "opera": mark109,
-  "outlook": mark110,
-  "perplexity": mark111,
-  "pi": mark112,
-  "poolside": mark113,
-  "prime-video": mark114,
-  "proton-drive": mark115,
-  "qoder": mark116,
-  "qwen": mark117,
-  "qwen-color": mark118,
-  "reddit": mark119,
-  "safari": mark120,
-  "sakana": mark121,
-  "seafile": mark122,
-  "serpapi": mark123,
-  "slack": mark124,
-  "soundcloud": mark125,
-  "spotify": mark126,
-  "stepfun": mark127,
-  "storj": mark128,
-  "stripe": mark129,
-  "supabase": mark130,
-  "tencent": mark131,
-  "todoist": mark132,
-  "together-color": mark133,
-  "trello": mark134,
-  "twitch": mark135,
-  "typeform": mark136,
-  "vercel": mark137,
-  "vivaldi": mark138,
-  "wrike": mark139,
-  "x": mark140,
-  "xai": mark141,
-  "xiaomi": mark142,
-  "xiaomimimo": mark143,
-  "yahoo": mark144,
-  "yandex": mark145,
-  "youtube": mark146,
-  "youtube-music": mark147,
-  "zai": mark148,
-  "zhipu-color": mark149,
-  "zoho": mark150,
+  "codex": mark29,
+  "cohere": mark30,
+  "composio": mark31,
+  "copilot-color": mark32,
+  "crunchyroll": mark33,
+  "deepseek": mark34,
+  "deepseek-color": mark35,
+  "discord": mark36,
+  "dropbox": mark37,
+  "figma": mark38,
+  "file-io": mark39,
+  "filen": mark40,
+  "files-com": mark41,
+  "filezilla": mark42,
+  "firecrawl": mark43,
+  "firefox": mark44,
+  "fireworks": mark45,
+  "fireworks-color": mark46,
+  "fish-audio": mark47,
+  "gemini": mark48,
+  "github": mark49,
+  "gmail": mark50,
+  "google-calendar": mark51,
+  "google-cloud": mark52,
+  "google-docs": mark53,
+  "google-drive": mark54,
+  "google-logo": mark55,
+  "google-photos": mark56,
+  "google-sheets": mark57,
+  "google-tasks": mark58,
+  "groq": mark59,
+  "hadoop": mark60,
+  "huawei": mark61,
+  "hubspot": mark62,
+  "huggingface": mark63,
+  "huggingface-color": mark64,
+  "icloud": mark65,
+  "inception": mark66,
+  "instagram": mark67,
+  "internet-archive": mark68,
+  "jira": mark69,
+  "kimi": mark70,
+  "kimi-color": mark71,
+  "linear": mark72,
+  "ling-color": mark73,
+  "linkedin": mark74,
+  "longcat-color": mark75,
+  "mail-ru": mark76,
+  "mega": mark77,
+  "meituan": mark78,
+  "messenger": mark79,
+  "meta": mark80,
+  "microsoft-edge": mark81,
+  "microsoft-logo": mark82,
+  "microsoft-onenote": mark83,
+  "microsoft-teams": mark84,
+  "microsoft-todo": mark85,
+  "microsoft-word": mark86,
+  "minimax": mark87,
+  "minimax-color": mark88,
+  "mistral": mark89,
+  "mistral-color": mark90,
+  "moonshot": mark91,
+  "netflix": mark92,
+  "notion": mark93,
+  "nvidia": mark94,
+  "nvidia-color": mark95,
+  "obsidian": mark96,
+  "ollama": mark97,
+  "onedrive": mark98,
+  "openai": mark99,
+  "opencode": mark100,
+  "openrouter": mark101,
+  "openrouter-color": mark102,
+  "openstack": mark103,
+  "opera": mark104,
+  "outlook": mark105,
+  "perplexity": mark106,
+  "poolside": mark107,
+  "prime-video": mark108,
+  "proton-drive": mark109,
+  "qwen": mark110,
+  "reddit": mark111,
+  "safari": mark112,
+  "sakana": mark113,
+  "seafile": mark114,
+  "serpapi": mark115,
+  "slack": mark116,
+  "soundcloud": mark117,
+  "spotify": mark118,
+  "stepfun": mark119,
+  "storj": mark120,
+  "stripe": mark121,
+  "supabase": mark122,
+  "tencent": mark123,
+  "todoist": mark124,
+  "together-color": mark125,
+  "trello": mark126,
+  "twitch": mark127,
+  "typeform": mark128,
+  "vercel": mark129,
+  "vivaldi": mark130,
+  "wrike": mark131,
+  "x": mark132,
+  "xai": mark133,
+  "xiaomi": mark134,
+  "xiaomimimo": mark135,
+  "yahoo": mark136,
+  "yandex": mark137,
+  "youtube": mark138,
+  "youtube-music": mark139,
+  "zai": mark140,
+  "zhipu-color": mark141,
+  "zoho": mark142,
 };

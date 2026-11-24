@@ -10,10 +10,5 @@ src/icons/marks.json (`source`).
 lobe-icons (https://github.com/lobehub/lobe-icons)
   The engine and provider marks whose `source` names lobe-icons are taken from
   @lobehub/icons-static-svg 1.102.0, unchanged but for their file format, in each brand's colored
-  version where there is one. Hermes wears Hermes Agent's mark.
+  version where there is one.
   MIT License, Copyright (c) 2023 LobeHub
-
-Oh My Pi (https://github.com/can1357/oh-my-pi)
-  The `omp` mark is its own gradient π, from packages/collab-web/public/favicon.svg, without the
-  favicon's dark tile.
-  MIT License

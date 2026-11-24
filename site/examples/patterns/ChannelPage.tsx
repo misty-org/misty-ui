@@ -69,6 +69,16 @@ function ChannelDemo() {
                 name="Grace"
                 presence="waiting"
               />
+              <MemberGroupHeading title="Integrations" count={1} />
+              <MemberRow
+                avatar={
+                  <Avatar size="sm">
+                    <AvatarFallback>D</AvatarFallback>
+                  </Avatar>
+                }
+                name="Deploy bot"
+                line="Reads and writes rooms"
+              />
             </MemberList>
           ),
         }}

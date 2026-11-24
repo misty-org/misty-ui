@@ -207,7 +207,9 @@ export function PresenceFace({
 
 /**
  * One person: their face with a presence dot, their name in their role's color with a crown
- * for the Space's owner, and a quiet second line (what their agent is doing).
+ * for the Space's owner, and a quiet second line (what their agent is doing). A member that
+ * isn't a person, such as a Space's integration, leaves `presence` out: its face shows bare,
+ * with no dot, and the row is never dimmed as an offline person's is.
  */
 export function MemberRow({
   avatar,
@@ -225,7 +227,7 @@ export function MemberRow({
   name: string;
   color?: string;
   owner?: boolean;
-  presence: MemberPresence;
+  presence?: MemberPresence;
   /** A small mark before the line, such as the agent's engine. */
   lineMark?: ReactNode;
   line?: string;
@@ -244,7 +246,11 @@ export function MemberRow({
         className,
       )}
     >
-      <PresenceFace presence={props.presence}>{props.avatar}</PresenceFace>
+      {props.presence ? (
+        <PresenceFace presence={props.presence}>{props.avatar}</PresenceFace>
+      ) : (
+        props.avatar
+      )}
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="flex min-w-0 items-center gap-1 text-control">
           <OverflowFadeText className="min-w-0">

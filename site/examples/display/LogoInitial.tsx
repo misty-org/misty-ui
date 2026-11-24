@@ -13,8 +13,8 @@ const row = "flex flex-wrap items-center gap-3";
 export default function Example() {
   return (
     <div className={row}>
-      <LogoInitial name="Hermes" />
-      <LogoInitial name="Grok" size={24} />
+      <LogoInitial name="Antigravity" />
+      <LogoInitial name="Codex" size={24} />
       <LogoPlate plate="dark">
         <Mark of="github" label="github" />
       </LogoPlate>

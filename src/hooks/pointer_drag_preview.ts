@@ -55,3 +55,28 @@ export function createDragPreview(surface: HTMLElement) {
   preview.append(copy);
   return { preview, rect };
 }
+
+/** Several items dragged as one (a tab group by its chip): each frozen in place, side by side. */
+export function createGroupDragPreview(items: HTMLElement[]) {
+  const rects = items.map((item) => item.getBoundingClientRect());
+  const left = Math.min(...rects.map((rect) => rect.left));
+  const top = Math.min(...rects.map((rect) => rect.top));
+  const width = Math.max(...rects.map((rect) => rect.right)) - left;
+  const height = Math.max(...rects.map((rect) => rect.bottom)) - top;
+  const preview = document.createElement("div");
+  preview.className = "pointer-reorder-preview";
+  preview.setAttribute("aria-hidden", "true");
+  preview.inert = true;
+  preview.style.width = `${width}px`;
+  preview.style.height = `${height}px`;
+  items.forEach((item, index) => {
+    const copy = createDragPreview(item).preview.firstElementChild as HTMLElement;
+    Object.assign(copy.style, {
+      position: "absolute",
+      left: `${rects[index].left - left}px`,
+      top: `${rects[index].top - top}px`,
+    });
+    preview.append(copy);
+  });
+  return { preview, rect: new DOMRect(left, top, width, height) };
+}

@@ -9,7 +9,10 @@ export function settleReorderMotion() {
   settleCurrent?.();
 }
 
-/** The tab a dragged tab's pointer is over: the one a pause opens. */
+/**
+ * The tab a dragged tab's pointer is over: the one a pause opens and a drop goes into. It wears
+ * `data-reorder-target` while it is, so the row can show it.
+ */
 export function reorderHoveredItem(): string | null {
   return hoveredItem;
 }
@@ -31,10 +34,12 @@ export function reorderLayoutRect(element: HTMLElement): DOMRect {
 export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x" | "y") {
   const list = surface.closest<HTMLElement>('[data-reorder-animated="true"]');
   if (!list) return;
-  const items = [...list.querySelectorAll<HTMLElement>("[data-reorder-item]")].filter(
-    (item) => item.closest("[data-reorder-list]") === list,
-  );
-  const moving = items.filter((item) => ids.includes(item.dataset.reorderItem!));
+  const listItems = () =>
+    [...list.querySelectorAll<HTMLElement>("[data-reorder-item]")].filter(
+      (item) => item.closest("[data-reorder-list]") === list,
+    );
+  let items = listItems();
+  let moving = items.filter((item) => ids.includes(item.dataset.reorderItem!));
   const animations = new Map<HTMLElement, Animation>();
   const original = new Map(items.map((item) => [item, item.style.transform]));
   let lastOrder = items;
@@ -49,6 +54,14 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
       item.style.transform = original.get(item) ?? "";
       layouts.delete(item);
       delete item.dataset.reorderLifted;
+      delete item.dataset.reorderTarget;
+    }
+  };
+  const markTarget = () => {
+    for (const item of items) {
+      const target = Boolean(hoveredItem) && item.dataset.reorderItem === hoveredItem;
+      if (target) item.dataset.reorderTarget = "true";
+      else delete item.dataset.reorderTarget;
     }
   };
   const cleanup = () => {
@@ -60,15 +73,45 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
     if (settleCurrent === cleanup) settleCurrent = undefined;
   };
   settleCurrent = cleanup;
-  for (const item of items) {
-    layouts.set(item, {
-      rect: item.getBoundingClientRect(),
-      list,
-      x: list.scrollLeft,
-      y: list.scrollTop,
-    });
-  }
-  for (const item of moving) item.dataset.reorderLifted = "true";
+  const measure = () => {
+    for (const item of items) {
+      layouts.set(item, {
+        rect: item.getBoundingClientRect(),
+        list,
+        x: list.scrollLeft,
+        y: list.scrollTop,
+      });
+    }
+    for (const item of moving) item.dataset.reorderLifted = "true";
+  };
+  measure();
+  const sync = () => {
+    const now = listItems();
+    if (now.length === items.length && now.every((item, index) => item === items[index])) return;
+    for (const item of items) {
+      animations.get(item)?.cancel();
+      item.style.transform = original.get(item) ?? "";
+      layouts.delete(item);
+    }
+    for (const item of now) if (!original.has(item)) original.set(item, item.style.transform);
+    items = now;
+    moving = items.filter((item) => ids.includes(item.dataset.reorderItem!));
+    measure();
+    lastOrder = items;
+    shown = undefined;
+    offsets.clear();
+  };
+  const blockRect = () => {
+    const rects = (moving.length ? moving : [surface]).map(reorderLayoutRect);
+    const left = Math.min(...rects.map((rect) => rect.left));
+    const top = Math.min(...rects.map((rect) => rect.top));
+    return new DOMRect(
+      left,
+      top,
+      Math.max(...rects.map((rect) => rect.right)) - left,
+      Math.max(...rects.map((rect) => rect.bottom)) - top,
+    );
+  };
   const start = (rect: DOMRect) => (axis === "x" ? rect.left : rect.top);
   const size = (rect: DOMRect) => (axis === "x" ? rect.width : rect.height);
   const transform = (delta: number) =>
@@ -134,7 +177,7 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
     list,
     placement(point: { x: number; y: number }, offset: { x: number; y: number }) {
       const bounds = list.getBoundingClientRect();
-      const source = reorderLayoutRect(surface);
+      const source = blockRect();
       const horizontal = axis === "x";
       const along = horizontal ? point.x : point.y;
       const across = horizontal ? point.y : point.x;
@@ -171,6 +214,7 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
       };
     },
     follow(target: string | undefined, _after: boolean, point: { x: number; y: number }) {
+      sync();
       const along = axis === "x" ? point.x : point.y;
       const across = axis === "x" ? point.y : point.x;
       const rest = lastOrder.filter((item) => !moving.includes(item));
@@ -181,6 +225,7 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
       };
       hoveredItem = null;
       if (target === undefined) {
+        markTarget();
         paint(items);
         return;
       }
@@ -190,6 +235,7 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
         if (along >= from && along <= to && across >= low - 40 && across <= high + 40)
           hoveredItem = item.dataset.reorderItem ?? null;
       }
+      markTarget();
       let at = lastOrder.indexOf(moving[0]);
       while (at < rest.length && along > shownAt(rest[at]).to) at++;
       while (at > 0 && along < shownAt(rest[at - 1]).from) at--;
