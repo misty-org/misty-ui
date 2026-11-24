@@ -209,7 +209,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A catalog of installables | `CatalogGrid` + `CatalogCard` (`logo`, `title`, `maker`, `description`, `tag`, `detail`, `action`, `menu`); what's already added is a `CatalogTileRow` of `CatalogTile`s | A long full-width list with per-row toggles |
 | A store page's shelves (Explore) | `Shelf` + `ShelfItem` (`logo` at `tile`, `title`, `line`, one `action`, `menu`); featured picks are `FeatureCard`s in a `FeatureRow`, shown only with a banner; picking one opens `StoreDetail` | A grid of cards per section, a list with per-row toggles |
 | A persona's logo | `PersonaLogo` (`icon` for what it does, `color` from `personaTone(id)`) | The catalog's emoji, a bare initial |
-| The top of a chat's history | `ChannelWelcome`: a channel's icon, or a direct message's face as `mark` with `align="center"`, its title, one line, and a few buttons as `actions` (Wave while nothing has been said) | A hand-made avatar and heading |
+| The top of a chat's history | `ChannelWelcome`: a channel's icon, or a direct message's face as `mark`, its title, one line, and a few buttons as `actions` (Wave while nothing has been said) | A hand-made avatar and heading |
 | A channel's messages (Space chat) | `ChannelMessage` with `ChannelMessageText`, `ChannelReply` over a reply, `ChannelReactions` of `ReactionChip`s, `ThreadRepliesButton`; days and unread with `ChannelDivider` | Hand-built message rows |
 | Picking an emoji | `EmojiPicker`, handed the caller's emoji (`sections`, `search`) | A grid of styled buttons in a popover |
 | A file waiting to go with a message | `ComposerAttachment` in the composer's `context` | A hand-made chip |
@@ -362,9 +362,9 @@ The everyday components, several of which have no doc comment in the catalog yet
   `SetupState` ("Setting up the video editor"); a tool's lazily loaded code is a `lazyTool` inside
   `ToolSuspense`. A failed load shows an error, never the empty state, and a stalled setup says so with Try
   again. Data loading follows "Waiting for data" below.
-- An *agent* is what a person makes in Misty. Claude Code, Codex and Antigravity are *engines*: an agent
-  runs on one, and plugins, skills and connectors belong to the engine. Ready-made instructions to start an agent
-  from are *templates*. Copy never calls an engine an agent.
+- An *agent* is what a person makes in Misty. Claude Code, Codex, Antigravity, Gemini CLI and the rest are
+  *engines*: an agent runs on one, and plugins, skills and connectors belong to the engine. Ready-made instructions
+  to start an agent from are *templates*. Copy never calls an engine an agent.
 - Apps connect through each maker's own sign-in.
 
 ### Waiting for data
@@ -395,9 +395,9 @@ Both hold to the same rules:
   is an `icon` in a round well over one muted line, with no title, as Kura's.
 - Section headings in a frame column (a tool page's sidebar: Spaces, Quick access, Tags) are bright and
   semibold (`SectionHeading strong`), leading their rows as Kura's do; elsewhere they stay muted.
-- A person's face at the head of what is about them (the profile card, a direct message's profile column and
-  its welcome) is centered over their name, never set at the start. Calls start only from the chat's bar.
-- The composer is one bar that never wraps, with nothing under the box: where the chat works (Space, folder,
+- A person's face at the head of what is about them (the profile card, a direct message's profile column) is
+  centered over their name, never set at the start. A chat's welcome, direct or not, sits at the start. Calls start only from the chat's bar.
+- The composer is one card that never wraps, the same in every chat, with nothing under it: where the chat works (Space, folder,
   branch) is shown in the chat's context panel. Screen capture lives in the + menu.
 - Every message has the same action bar under it, aligned to its edge, shown only on hover. A toggle that is on
   (a thumbs up given) fills its icon, never a gray chip. Replies have no avatar beside them.

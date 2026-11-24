@@ -436,6 +436,17 @@
     ],
     "source": "The brand's own artwork"
   },
+  "gemini-color": {
+    "name": "Gemini",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:gemini"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
   "github": {
     "name": "GitHub",
     "kinds": [
@@ -542,6 +553,17 @@
     ],
     "source": "The brand's own artwork"
   },
+  "grok": {
+    "name": "Grok",
+    "kinds": [
+      "engine"
+    ],
+    "render": "theme",
+    "aliases": [
+      "engine:grok"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
   "groq": {
     "name": "Groq",
     "kinds": [
@@ -560,6 +582,17 @@
       "hdfs"
     ],
     "source": "The brand's own artwork"
+  },
+  "hermes": {
+    "name": "Hermes Agent",
+    "kinds": [
+      "engine"
+    ],
+    "render": "theme",
+    "aliases": [
+      "engine:hermes"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
   },
   "huawei": {
     "name": "Huawei",
@@ -653,9 +686,13 @@
   "kimi-color": {
     "name": "Kimi",
     "kinds": [
-      "provider"
+      "provider",
+      "engine"
     ],
     "render": "color",
+    "aliases": [
+      "engine:kimi"
+    ],
     "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
   },
   "linear": {
@@ -801,9 +838,13 @@
   "minimax-color": {
     "name": "MiniMax",
     "kinds": [
-      "provider"
+      "provider",
+      "engine"
     ],
     "render": "color",
+    "aliases": [
+      "engine:minimax"
+    ],
     "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
   },
   "mistral": {
@@ -994,12 +1035,36 @@
     ],
     "source": "The brand's own artwork"
   },
+  "qoder": {
+    "name": "Qoder",
+    "kinds": [
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:qoder",
+      "engine:qoder-cn"
+    ],
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
   "qwen": {
     "name": "Qwen",
     "kinds": [
       "brand"
     ],
     "render": "color",
+    "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
+  },
+  "qwen-color": {
+    "name": "Qwen",
+    "kinds": [
+      "provider",
+      "engine"
+    ],
+    "render": "color",
+    "aliases": [
+      "engine:qwen"
+    ],
     "source": "lobe-icons (MIT), @lobehub/icons-static-svg 1.102.0"
   },
   "reddit": {

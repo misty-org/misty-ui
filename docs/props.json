@@ -1179,7 +1179,7 @@
       "name": "align",
       "type": "\"center\" | \"start\"",
       "optional": true,
-      "doc": "\"center\" for a direct message: the face, name, line and buttons centered."
+      "doc": "\"center\" only for a place that is not a chat; every chat's welcome sits at the start."
     }
   ],
   "Checkbox": [],

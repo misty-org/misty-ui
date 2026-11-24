@@ -58,7 +58,7 @@ describe("TabStrip", () => {
     const { rerender } = render(
       <TabStrip label="Open files" tabs={tabs} active="a" onSelect={vi.fn()} />,
     );
-    const row = () => screen.getByRole("tab", { name: "b.ts" }).parentElement!;
+    const row = () => screen.getByRole("tab", { name: "b.ts" }).closest<HTMLElement>("[data-reorder-preview]")!;
     expect(row().hasAttribute("data-reorder-handle")).toBe(false);
     rerender(
       <TabStrip

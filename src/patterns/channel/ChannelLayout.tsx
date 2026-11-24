@@ -105,8 +105,8 @@ export function ChannelHeader(props: {
  * large (a PlaceholderIcon), a welcome and where this channel begins. A direct message opens the
  * same way with the person's face as its `mark` (an xl Avatar in a PresenceFace with `face="xl"`, or
  * a group's faces) and its name as the title, and may offer a few buttons under the line
- * (`actions`). A direct message's welcome is `align="center"`, its face centered over its name as
- * every profile's is.
+ * (`actions`). Every welcome sits at the start, as an agent's thread does, so a Space chat and a
+ * personal one open alike; `align="center"` is only for a place that is not a chat.
  */
 export function ChannelWelcome(props: {
   icon?: LucideIcon;
@@ -116,7 +116,7 @@ export function ChannelWelcome(props: {
   line: ReactNode;
   /** A few secondary or quiet Buttons under the line, at the default size. */
   actions?: ReactNode;
-  /** "center" for a direct message: the face, name, line and buttons centered. */
+  /** "center" only for a place that is not a chat; every chat's welcome sits at the start. */
   align?: "start" | "center";
 }) {
   const Icon = props.icon;
