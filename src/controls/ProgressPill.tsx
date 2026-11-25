@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { cn } from "../class_names";
 import { controlFrame } from "./control_frame";
 import { useCompactControls } from "./RowContext";
