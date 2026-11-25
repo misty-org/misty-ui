@@ -159,12 +159,11 @@ export function NavList({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 }
 
 /**
- * Rows that belong to the row above them, hung from it on branch lines so the tree reads at a
- * glance: a hairline runs down from under the parent's mark, and each row branches off it with a
- * rounded elbow that stops just short of the row, so a row's fill never covers a line, the last
- * one ending the line. Put it right after the parent row,
- * and give each child `NavRow` `nested` (or `nested="face"`, matching `under`). `under="face"`
- * hangs the lines from a face (a thread under its agent) rather than a glyph (a section of the open
+ * Rows that belong to the row above them, set in under it beside one straight hairline, as a docs
+ * sidebar's pages sit under their section: the line runs down from under the parent's mark, past
+ * every row, ending with the last one, with no elbows or branches. Put it right after the parent
+ * row, and give each child `NavRow` `nested` (or `nested="face"`, matching `under`). `under="face"`
+ * runs the line under a face (a thread under its agent) rather than a glyph (a section of the open
  * Settings page). The rows keep NavList's 6.75px between them.
  */
 export function NavBranch({

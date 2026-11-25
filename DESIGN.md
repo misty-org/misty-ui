@@ -177,7 +177,7 @@ The everyday components, several of which have no doc comment in the catalog yet
 | A toolbar | `ActionBar` (gives way: labels → icons → fade → ⋯), groups set a step apart by `ToolbarDivider`, which draws no line | A flex row that wraps or scrolls |
 | Related rows that belong together (a settings section, Friends' Online, a store item's facts) | `RowGroupSection` (a `RowGroupLabel` over one `RowGroup`), sections one under another in a `RowGroupStack`; facts as `PropertyList layout="grouped"` | A bordered card, a hairline between rows, a heading a row's height above its rows |
 | A setting | `SettingsSection` of `SettingsRow`s (`label`, a `description` only where it explains, the control as children, `sub`, `disabled`) | Hand-built rows, bright medium labels, a card per section |
-| Rows that belong to the row above them (a thread under its agent, a section of the open Settings page) | `NavBranch` (`under` glyph or face) right after the parent `NavRow`, its rows `nested` (`nested="face"` under a face): hung on branch lines from the parent's mark | Rows indented with nothing joining them, a fold of their own |
+| Rows that belong to the row above them (a thread under its agent, a section of the open Settings page) | `NavBranch` (`under` glyph or face) right after the parent `NavRow`, its rows `nested` (`nested="face"` under a face): set in under it beside one straight hairline from the parent's mark, as a docs sidebar's pages are | Rows indented with nothing joining them, elbows or tree branches, a fold of their own |
 | A list of things | `ListRow` (`label`, `description`, `badge`, `state`, `menu`, `trailing`); `TreeRow` for trees | Hand-built rows |
 | A row's own buttons | `RowTools` (`reveal` hover / cover); a row's ⋯ is `RowActions` / `ListRow menu` | Stray icons beside the row |
 | A menu of actions | `DropdownMenu` + `MenuTrigger` with `MenuItem`, `MenuCheckItem`, `MenuRadioItem`, `MenuSubmenu`; right-click is `ContextMenu` with the same items | A `Popover` listing actions, raw menu items |
@@ -425,9 +425,10 @@ Both hold to the same rules:
   semibold (`SectionHeading strong`), leading their rows as Kura's do; elsewhere they stay muted.
 - A person's face at the head of what is about them (the profile card, a direct message's profile column) is
   centered over their name, never set at the start; a direct message's and an agent chat's welcome are centered the same way. A channel's welcome sits at the start. Calls start only from the chat's bar.
-- The profile row is one bar along the foot of the `SpaceRail` and the sidebar together, its 36px row 27px above
-  the window's bottom: the line every chat's composer bar sits on (the composer 18px in from its pane's edge, its
-  bar 9px inside the card), so the two read as one line across the window.
+- The profile row is one bar along the foot of the `SpaceRail` and the sidebar together, its 36px row 13.5px above
+  the window's bottom, with 13.5px over it under its hairline: the line every chat's composer bar sits on (the
+  composer 18px in from its pane's sides and 4.5px up from its bottom, its bar 9px inside the card), so the two read as one line across the window. Its
+  buttons stand 9px apart, measured between what each one draws.
 - The composer is one card that never wraps, the same in every chat, with nothing under it: where the chat works (Space, folder,
   branch) is shown in the chat's context panel. Screen capture lives in the + menu.
 - Every message has the same action bar under it, aligned to its edge, shown only on hover. A toggle that is on
