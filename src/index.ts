@@ -26,6 +26,7 @@ export * from "./controls/SplitButton";
 export * from "./controls/Switch";
 export * from "./controls/Textarea";
 export * from "./controls/Pressable";
+export * from "./controls/ProgressPill";
 export { RowTools, type RowToolsReveal } from "./controls/RowTools";
 export { controlFrame, type ControlFrameSize } from "./controls/control_frame";
 

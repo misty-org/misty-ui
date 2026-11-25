@@ -1,13 +1,18 @@
-import { ArrowLeft, ArrowRight, Search, type LucideIcon } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { ArrowLeft, ArrowRight, Menu, Search, type LucideIcon } from "lucide-react";
+import { Slot } from "@radix-ui/react-slot";
+import { forwardRef, useEffect, useState, type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 import { cn } from "../class_names";
+import { Button } from "../controls/Button";
 import { Pressable } from "../controls/Pressable";
+import { MistyMark } from "../icons/MistyMark";
+import { Sheet, SheetContent, SheetTitle } from "../overlays/Sheet";
 import { Kbd } from "../display/Kbd";
 import { CommandEmpty } from "../overlays/Command";
 import { Dialog, DialogContent, DialogTitle } from "../overlays/Dialog";
-import { DropdownMenu, DropdownMenuContent } from "../overlays/DropdownMenu";
-import { MenuTrigger } from "../overlays/MenuTrigger";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../overlays/DropdownMenu";
+import { FoldChevron, MenuChevron } from "../overlays/MenuChevron";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./Collapsible";
 import { MenuRadioGroup, MenuRadioItem } from "../overlays/MenuItem";
 import {
   CommandPalette,
@@ -22,20 +27,23 @@ import { OverflowFadeText } from "./OverflowFadeText";
 import { Separator } from "./Separator";
 
 /**
- * A documentation site's page in three panels, as Vercel's docs are: the section's navigation on
- * the left, the article in the middle and "On this page" on the right, under a header that stays
- * put. The two side panels stay in view while the article scrolls; under 52rem the navigation goes
- * (the header's own menu takes over) and under 62rem the contents do. `header` is a
- * `DocsHeader`, `nav` the rows of the open section, `toc` a `DocsToc`, and the article's own
- * footer (a `DocsPager`) goes last in `children`. The page is `--docs-max` wide (90rem) with
- * `--docs-gutter` at its sides (none), so a site sets them to match its own pages. Everything that stays in view sits below
- * `--docs-bar` too (the header's height by default, 0 where the site's own bar replaces it), and below
- * `--docs-top` (0 by default), so a site with its own bar above (a navbar) sets it to that bar's
- * height. Only for a docs site; the app's pages use
- * their own layouts.
+ * A documentation site's page in three panels, as Vercel's docs are: the section's pages in a
+ * column at the start (243px, 297px from 80rem), the article (768px at most, set against that column rather than
+ * centered) and "On this page" in a column at the end (216px, 270px from 80rem), under a header that stays put. The
+ * side columns stay in view while the article scrolls, and all three start on one line. Under
+ * 52rem the pages move into a sheet opened from a Menu bar under the header (`navLabel` names it,
+ * usually the open page's title, and it closes when `page` changes); under 62rem the contents go.
+ * `header` is a `DocsHeader`, `nav` the open docs' `DocsNavGroup`s, `toc` a `DocsToc`, and the
+ * article's footer (a `DocsPager`) goes last in `children`. The page is `--docs-max` wide (90rem)
+ * with `--docs-gutter` at its sides (none). Everything that stays in view sits below `--docs-bar`
+ * (the header's height, 0 where the site's own bar replaces it) and `--docs-top` (0, or the
+ * height of a site's own navbar above). Only for a docs site; the app's pages use their own
+ * layouts. The article's running text sits a step below the text color, between it and the muted
+ * text, so its headings, bold terms and links read brighter than the prose around them and the
+ * muted lead and captions a step below it.
  *
  * ```tsx
- * <DocsLayout header={<DocsHeader … />} nav={<NavList>…</NavList>} toc={<DocsToc … />}>
+ * <DocsLayout header={<DocsHeader … />} nav={<DocsNavGroup … />} toc={<DocsToc … />} page={route}>
  *   <article>…</article>
  *   <DocsPager previous={…} next={…} />
  * </DocsLayout>
@@ -45,32 +53,131 @@ export function DocsLayout({
   header,
   nav,
   toc,
+  page,
+  navLabel = "Menu",
   children,
 }: {
   header?: ReactNode;
   nav?: ReactNode;
   toc?: ReactNode;
+  /** The open page, so the narrow screen's sheet of pages closes once another is picked. */
+  page?: string;
+  navLabel?: string;
   children: ReactNode;
 }) {
+  const [navOpen, setNavOpen] = useState(false);
+  useEffect(() => setNavOpen(false), [page]);
   return (
     <div data-slot="docs-layout">
       {header}
+      {nav ? (
+        <Surface
+          tone="page"
+          className="sticky top-[calc(var(--docs-top,0px)+var(--docs-bar,var(--ui-header)))] z-(--stack-sticky) flex h-10 items-center border-b border-charcoal-border px-3 min-[52rem]:hidden"
+        >
+          <Sheet open={navOpen} onOpenChange={setNavOpen}>
+            <Button variant="quiet" size="sm" icon={Menu} onClick={() => setNavOpen(true)} className="min-w-0">
+              {navLabel}
+            </Button>
+            <SheetContent side="left" className="grid content-start gap-1 overflow-y-auto px-3 pt-14 pb-10">
+              <SheetTitle className="sr-only">Pages</SheetTitle>
+              {nav}
+            </SheetContent>
+          </Sheet>
+        </Surface>
+      ) : null}
       <div
         className={cn(
-          "mx-auto grid max-w-(--docs-max,90rem) px-(--docs-gutter,0px) min-[52rem]:grid-cols-[--spacing(64)_minmax(0,1fr)]",
-          toc && "min-[62rem]:grid-cols-[--spacing(64)_minmax(0,1fr)_--spacing(52)]",
+          "mx-auto grid max-w-(--docs-max,90rem) px-(--docs-gutter,0px)",
+          nav && "min-[52rem]:grid-cols-[--spacing(54)_minmax(0,1fr)] min-[80rem]:grid-cols-[--spacing(66)_minmax(0,1fr)]",
+          toc && nav && "min-[62rem]:grid-cols-[--spacing(54)_minmax(0,1fr)_--spacing(48)] min-[80rem]:grid-cols-[--spacing(66)_minmax(0,1fr)_--spacing(60)]",
+          toc && !nav && "min-[62rem]:grid-cols-[minmax(0,1fr)_--spacing(48)] min-[80rem]:grid-cols-[minmax(0,1fr)_--spacing(60)]",
         )}
       >
-        <aside
-          aria-label="Section"
-          className="sticky top-[calc(var(--docs-top,0px)+var(--docs-bar,var(--ui-header)))] hidden h-[calc(100vh-var(--docs-top,0px)-var(--docs-bar,var(--ui-header)))] content-start gap-5 overflow-y-auto pt-4 pr-4 pb-6 min-[52rem]:grid"
-        >
-          {nav}
-        </aside>
-        <main className="flex min-w-0 flex-col px-8 pt-4">{children}</main>
-        {toc ? <div className="hidden min-[62rem]:block">{toc}</div> : null}
+        {nav ? (
+          <aside
+            aria-label="Pages"
+            className={cn(
+              "sticky hidden content-start gap-1 overflow-y-auto overscroll-contain px-3 pt-8 pb-12 min-[52rem]:grid",
+              "top-[calc(var(--docs-top,0px)+var(--docs-bar,var(--ui-header)))]",
+              "h-[calc(100dvh-var(--docs-top,0px)-var(--docs-bar,var(--ui-header)))]",
+            )}
+          >
+            {nav}
+          </aside>
+        ) : null}
+        <main className="flex min-w-0 flex-col px-5 pt-8 pb-16 min-[52rem]:px-10">
+          <div className="flex w-full max-w-3xl flex-1 flex-col text-[color-mix(in_srgb,var(--misty-theme-text)_62%,var(--misty-theme-text-muted))]">
+            {children}
+          </div>
+        </main>
+        {toc ? <div className="hidden pr-5 min-[62rem]:block">{toc}</div> : null}
       </div>
     </div>
+  );
+}
+
+/**
+ * One section of a docs sidebar that folds open and shut: its name as a row with a FoldChevron at its
+ * end, turning down while open, and its pages under it, set in a step. `defaultOpen` opens it at
+ * first, usually for the section holding the open page; it opens again whenever `open` turns true
+ * (another of its pages is picked). Without `title` it is just its rows, such as Overview at the top.
+ * Its rows are `NavRow tone="page"`s; sections go one under another, 4.5px apart.
+ */
+export function DocsNavGroup({
+  title,
+  defaultOpen = false,
+  open: holdsOpenPage,
+  children,
+}: {
+  title?: string;
+  defaultOpen?: boolean;
+  /** It holds the open page; it opens whenever this turns true. */
+  open?: boolean;
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen || !!holdsOpenPage);
+  useEffect(() => {
+    if (holdsOpenPage) setOpen(true);
+  }, [holdsOpenPage]);
+  if (!title) return <div className="grid gap-0.5">{children}</div>;
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <CollapsibleTrigger asChild>
+        <Pressable
+          wash="row"
+          className="flex h-8 w-full min-w-0 items-center gap-2 rounded-md px-2 text-control font-medium text-cream-bright"
+        >
+          <OverflowFadeText className="min-w-0 flex-1">{title}</OverflowFadeText>
+          <FoldChevron className="text-cream-muted" />
+        </Pressable>
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <div className="ms-3 grid gap-0.5 border-l border-charcoal-border ps-1.5 pt-0.5 pb-1.5">{children}</div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+/**
+ * A heading in a docs article, anchored by its `id` so "On this page" can bring it into view:
+ * a section (`level` 2, 24px) or a part of one (`level` 3, 19px), set tight as the title is.
+ * Docs only: its sizes are the docs' own.
+ */
+export function DocsHeading({ id, level = 2, children }: { id?: string; level?: 2 | 3; children: ReactNode }) {
+  const Tag = level === 2 ? "h2" : "h3";
+  return (
+    <Tag
+      id={id}
+      className={cn(
+        "m-0 scroll-mt-[calc(var(--docs-top,0px)+var(--docs-bar,var(--ui-header))+--spacing(6))] font-semibold text-cream-bright",
+        level === 2
+          ? "mt-6 text-[1.5rem] leading-[1.33] tracking-[-0.04em]"
+          : "mt-2 text-[1.1875rem] leading-[1.37] tracking-[-0.02em]",
+      )}
+    >
+      {children}
+    </Tag>
   );
 }
 
@@ -79,22 +186,64 @@ export interface DocsHeaderSection {
   label: string;
 }
 
+export interface DocsHome {
+  /** Where the site's own home is, such as https://mistysys.com. */
+  href: string;
+  /** Its name beside Misty's mark ("Misty"), also the link's accessible name with "home". */
+  label: string;
+}
+
+/** One crumb of the docs' trail: every name in it is the same size, weight and spacing. */
+const crumb =
+  "inline-flex h-9 min-w-0 flex-none items-center gap-3 rounded-md px-2 text-page font-semibold tracking-[-0.02em] text-cream-bright no-underline";
+const crumbControl = "h-8 gap-1.5 text-control tracking-[-0.01em]";
+
 /**
- * The docs site's top band: its name, a slash, and the name of the docs you are in as a menu that
- * switches between them (Guides, SDK, Design system…), with the open one checked; `children`
- * (search, theme, links) sit at the end. It stays at the top while the page scrolls, on the page's
- * own color with a hairline under it. `title` names the docs when none is open, such as on the
- * front page.
+ * One name in a docs trail that leads somewhere: Misty's mark and name back to the site's home, or the
+ * docs' name to their front page. It has the trail's size and weight and takes the control wash under
+ * the pointer, as `DocsSwitcher`'s menu does, so every name in the trail answers the pointer alike.
+ * With `asChild` it styles a router link; `flush` starts its content on the line its own box starts on,
+ * for the first name in a bar whose padding the trail should line up with. A name that opens a menu is
+ * `DocsSwitcher` instead.
+ */
+export const DocsCrumb = forwardRef<
+  HTMLAnchorElement,
+  Omit<ComponentPropsWithoutRef<"a">, "className"> & { asChild?: boolean; flush?: boolean }
+>(({ asChild = false, flush = false, ...props }, ref) => {
+  const Component = asChild ? Slot : "a";
+  return <Component ref={ref} data-wash="control" className={cn(crumb, flush && "-ml-2")} {...props} />;
+});
+DocsCrumb.displayName = "DocsCrumb";
+
+function CrumbSlash() {
+  return (
+    <Text size="page" tone="muted" aria-hidden="true">
+      /
+    </Text>
+  );
+}
+
+/**
+ * The docs site's top band, as Vercel's: a trail of Misty's mark and name leading back to the site's
+ * own home (`home`), the docs' name (`name`, which opens the docs' front page through `onName`) and
+ * the docs you are in as a menu that switches between them (App, SDK, Design…), with the open one
+ * checked, each a slash apart and all at one size and weight; `children` (theme, GitHub, a
+ * Download button) sit at its end. It stays at the top while the page scrolls, on the page's own
+ * color with a hairline under it.
  */
 export function DocsHeader({
-  brand,
+  home,
+  name,
+  onName,
   sections,
   current,
   onSelect,
   title = "Browse",
   children,
 }: {
-  brand: ReactNode;
+  home?: DocsHome;
+  name: string;
+  onName: () => void;
   sections: DocsHeaderSection[];
   current: string | undefined;
   onSelect: (id: string) => void;
@@ -106,19 +255,33 @@ export function DocsHeader({
       as="header"
       tone="page"
       data-slot="docs-header"
-      className="sticky top-(--docs-top,0px) z-(--stack-sticky) flex h-(--ui-header) items-center gap-3 border-b border-charcoal-border px-6"
+      className="sticky top-(--docs-top,0px) z-(--stack-sticky) flex h-(--ui-header) items-center gap-3 border-b border-charcoal-border px-3"
     >
-      <div className="flex shrink-0 items-center">{brand}</div>
-      <DocsSwitcher sections={sections} current={current} onSelect={onSelect} title={title} />
-      <div className="ml-auto flex shrink-0 items-center gap-2">{children}</div>
+      <div className="flex min-w-0 items-center gap-0.5">
+        {home ? (
+          <>
+            <DocsCrumb href={home.href} aria-label={`${home.label} home`}>
+              <MistyMark className="size-7" />
+              <span className="max-[30rem]:hidden">{home.label}</span>
+            </DocsCrumb>
+            <CrumbSlash />
+          </>
+        ) : null}
+        <Pressable wash="control" onClick={onName} className={crumb}>
+          {name}
+        </Pressable>
+        <DocsSwitcher sections={sections} current={current} onSelect={onSelect} title={title} />
+      </div>
+      <div className="ml-auto flex shrink-0 items-center gap-1.5">{children}</div>
     </Surface>
   );
 }
 
 /**
  * A slash and the name of the docs you are in as a menu that switches between them, with the open
- * one checked. `DocsHeader` holds it; a site whose own bar carries the docs' controls (a navbar)
- * puts it there instead.
+ * one checked, at the size and weight of the names before it. `DocsHeader` holds it; a site whose
+ * own bar carries the docs' trail (a navbar) puts it there instead, with `size` matching its names
+ * and `flush` when they have no padding of their own.
  */
 export function DocsSwitcher({
   sections,
@@ -126,6 +289,8 @@ export function DocsSwitcher({
   onSelect,
   title = "Browse",
   slash = true,
+  size = "page",
+  flush = false,
 }: {
   sections: DocsHeaderSection[];
   current: string | undefined;
@@ -133,17 +298,22 @@ export function DocsSwitcher({
   title?: string;
   /** The slash before it, which follows a name in a bar; leave it off where the menu stands first. */
   slash?: boolean;
+  /** The names' size in the trail it joins: `page`, as Misty's name is set beside its logo, or `control` in a tighter bar. */
+  size?: "control" | "page";
+  /** Its name starts on the line its own box starts on (the hover wash reaching past it), for a trail whose other names have no padding. */
+  flush?: boolean;
 }) {
   const open = sections.find((section) => section.id === current);
   return (
     <>
-      {slash ? (
-        <Text size="control" tone="muted">
-          /
-        </Text>
-      ) : null}
+      {slash ? <CrumbSlash /> : null}
       <DropdownMenu>
-        <MenuTrigger label="Choose the docs" value={open?.label ?? title} heading className="-ml-2" />
+        <DropdownMenuTrigger asChild>
+          <Pressable wash="control" aria-label="Choose the docs" className={cn(crumb, size === "control" && crumbControl, flush && "-ml-2", "data-[state=open]:bg-control-active")}>
+            <OverflowFadeText>{open?.label ?? title}</OverflowFadeText>
+            <MenuChevron />
+          </Pressable>
+        </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <MenuRadioGroup value={current ?? ""} onValueChange={onSelect}>
             {sections.map((section) => (
@@ -157,22 +327,23 @@ export function DocsSwitcher({
 }
 
 /**
- * The top of a docs page: an eyebrow (its section), the title large and tightly set, and the
- * lead under it. Docs only: its sizes are the docs' own, bigger than the app's `display` role.
+ * The top of a docs page, as Vercel's: an eyebrow (its section), the title at 40px set tight,
+ * and the lead under it in the article's own text, 27px below which the article starts. Docs only:
+ * its sizes are the docs' own, bigger than the app's `display` role.
  */
 export function DocsTitle({ title, eyebrow, lead }: { title: string; eyebrow?: string; lead?: string }) {
   return (
-    <header className="grid gap-3">
+    <header className="mb-6 grid gap-2.5">
       {eyebrow ? (
         <Text size="meta" weight="medium" tone="muted">
           {eyebrow}
         </Text>
       ) : null}
-      <h1 className="m-0 text-[clamp(1.75rem,3vw,2.25rem)] leading-[1.1] font-semibold tracking-[-0.04em] text-cream-bright">
+      <h1 className="m-0 text-[clamp(2rem,4vw,2.5rem)] leading-[1.2] font-semibold tracking-[-0.05em] text-cream-bright">
         {title}
       </h1>
       {lead ? (
-        <Text size="page" tone="muted" wrap className="max-w-2xl text-[1rem] leading-7">
+        <Text size="body" tone="muted" wrap className="leading-[1.7]">
           {lead}
         </Text>
       ) : null}
@@ -182,7 +353,8 @@ export function DocsTitle({ title, eyebrow, lead }: { title: string; eyebrow?: s
 
 /**
  * A docs site's front page opening: a very large title, the lead, its buttons (`actions`), and
- * a panel beside it on wide screens (`aside`, usually a `CodeBlock` with a `header`). Docs only.
+ * a panel under them (`aside`, usually a `CodeBlock` with a `header`), all on the article's line.
+ * Docs only.
  */
 export function DocsHero({
   title,
@@ -196,24 +368,24 @@ export function DocsHero({
   aside?: ReactNode;
 }) {
   return (
-    <section className="grid items-start gap-10 pb-12 xl:grid-cols-[minmax(0,1fr)_minmax(0,--spacing(104))]">
-      <div className="grid gap-6">
-        <h1 className="m-0 text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.02] font-semibold tracking-[-0.05em] text-cream-bright">
+    <section className="grid gap-8 pb-14">
+      <div className="grid gap-5">
+        <h1 className="m-0 text-[clamp(2.5rem,5vw,3.5rem)] leading-[1.05] font-semibold tracking-[-0.055em] text-cream-bright">
           {title}
         </h1>
-        <Text size="page" tone="muted" wrap className="max-w-xl text-[1.125rem] leading-7">
+        <Text size="page" tone="muted" wrap className="max-w-xl leading-[1.65]">
           {lead}
         </Text>
         {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
       </div>
-      {aside ? <div className="min-w-0 xl:pt-4">{aside}</div> : null}
+      {aside ? <div className="min-w-0 max-w-xl">{aside}</div> : null}
     </section>
   );
 }
 
 /**
  * One card on a docs page that links somewhere: its icon over a title and a line, on a hairline
- * edge that washes under the pointer. Put them in a grid, two to a row.
+ * edge that washes under the pointer. Put them in a grid, three to a row on a wide article.
  */
 export function DocsCard({
   icon: Icon,
@@ -234,13 +406,13 @@ export function DocsCard({
       radius="xl"
       wash="card"
       onClick={onSelect}
-      className="grid content-start gap-3 p-6 text-left"
+      className="grid content-start gap-2 p-5 text-left"
     >
-      {Icon ? <Icon className="text-cream" /> : null}
-      <Text size="title" weight="semibold" tone="bright">
+      {Icon ? <Icon className="mb-2 text-cream" /> : null}
+      <Text size="body" weight="semibold" tone="bright">
         {title}
       </Text>
-      <Text size="control" tone="muted" wrap>
+      <Text size="meta" tone="muted" wrap className="leading-[1.6]">
         {children}
       </Text>
     </Surface>
@@ -268,13 +440,13 @@ export function DocsToc({
   onSelect: (id: string) => void;
   label?: string;
 }) {
-  if (items.length < 2) return null;
+  if (items.length === 0) return null;
   return (
     <nav
       aria-label={label}
-      className="sticky top-[calc(var(--docs-top,0px)+var(--docs-bar,var(--ui-header)))] grid max-h-[calc(100vh-var(--docs-top,0px)-var(--docs-bar,var(--ui-header)))] content-start gap-4 overflow-y-auto pt-4 pl-4"
+      className="sticky top-[calc(var(--docs-top,0px)+var(--docs-bar,var(--ui-header)))] grid max-h-[calc(100dvh-var(--docs-top,0px)-var(--docs-bar,var(--ui-header)))] content-start gap-3 overflow-y-auto pt-8 pb-12"
     >
-      <Text size="meta" weight="medium" tone="bright">
+      <Text size="meta" tone="muted" className="flex h-7 items-center">
         {label}
       </Text>
       <div className="grid border-l border-charcoal-border">
@@ -285,11 +457,11 @@ export function DocsToc({
             aria-current={active === item.id ? "location" : undefined}
             onClick={() => onSelect(item.id)}
             className={cn(
-              "-ml-px border-l py-2 pl-4 text-left",
+              "-ml-px border-l py-1.5 pl-3.5 text-left",
               active === item.id ? "border-cream-bright" : "border-transparent",
             )}
           >
-            <Text size="meta" tone={active === item.id ? "bright" : "muted"} wrap>
+            <Text size="meta" weight={active === item.id ? "medium" : undefined} tone={active === item.id ? "bright" : "muted"} wrap>
               {item.text}
             </Text>
           </Pressable>
@@ -306,10 +478,40 @@ export interface DocsPagerLink {
   onSelect: () => void;
 }
 
+function DocsPagerCard({ link, side }: { link: DocsPagerLink; side: "previous" | "next" }) {
+  const Arrow = side === "previous" ? ArrowLeft : ArrowRight;
+  return (
+    <Surface
+      as={Pressable}
+      tone="page"
+      edge="hairline"
+      radius="xl"
+      wash="card"
+      onClick={link.onSelect}
+      className={cn(
+        "flex min-w-0 items-center gap-3 px-4 py-3.5",
+        side === "next" ? "flex-row-reverse text-right sm:col-start-2" : "text-left",
+      )}
+    >
+      <Arrow className="shrink-0 text-cream-muted" />
+      <span className="grid min-w-0 flex-1 gap-0.5">
+        <Text size="meta" tone="muted">
+          {link.group ?? (side === "previous" ? "Previous" : "Next")}
+        </Text>
+        <Text size="control" weight="medium" tone="bright">
+          {link.label}
+        </Text>
+      </span>
+    </Surface>
+  );
+}
+
 /**
- * The links to the pages either side of this one, along the article's bottom edge: they stay on
- * screen as the page scrolls, over a fade of the page's own color, so the next page is always one
- * press away. Put it last in the `DocsLayout`'s children.
+ * The links to the pages either side of this one: two cards with a hairline edge along the
+ * article's bottom edge, the previous one at the start and the next at the end, each saying which
+ * section it is in when that isn't this page's own. They stay on screen as the page scrolls, over a
+ * fade of the page's own color, so the next page is always one press away. Put it last in the
+ * `DocsLayout`'s children.
  */
 export function DocsPager({ previous, next }: { previous?: DocsPagerLink; next?: DocsPagerLink }) {
   if (!previous && !next) return null;
@@ -317,39 +519,13 @@ export function DocsPager({ previous, next }: { previous?: DocsPagerLink; next?:
     <nav
       aria-label="Pages"
       className={cn(
-        "sticky bottom-0 mt-16 flex gap-4 bg-(--misty-theme-bg) py-4",
+        "sticky bottom-0 mt-16 grid gap-3 bg-(--misty-theme-bg) py-4 sm:grid-cols-2",
         "before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-8",
         "before:bg-linear-to-t before:from-(--misty-theme-bg) before:to-transparent",
       )}
     >
-      {previous ? (
-        <Pressable wash="text" onClick={previous.onSelect} className="flex min-w-0 max-w-[48%] items-end gap-2 text-left">
-          <ArrowLeft className="mb-1 text-cream-muted" />
-          <span className="grid min-w-0">
-            <Text size="caption" tone="muted">
-              Previous
-            </Text>
-            <Text size="control" tone="bright">
-              {previous.group ? `${previous.group} / ` : ""}
-              {previous.label}
-            </Text>
-          </span>
-        </Pressable>
-      ) : null}
-      {next ? (
-        <Pressable wash="text" onClick={next.onSelect} className="ml-auto flex min-w-0 max-w-[48%] flex-row-reverse items-end gap-2 text-right">
-          <ArrowRight className="mb-1 text-cream-muted" />
-          <span className="grid min-w-0">
-            <Text size="caption" tone="muted">
-              Next
-            </Text>
-            <Text size="control" tone="bright">
-              {next.group ? `${next.group} / ` : ""}
-              {next.label}
-            </Text>
-          </span>
-        </Pressable>
-      ) : null}
+      {previous ? <DocsPagerCard link={previous} side="previous" /> : null}
+      {next ? <DocsPagerCard link={next} side="next" /> : null}
     </nav>
   );
 }
@@ -395,7 +571,7 @@ export function DocsSearch({
       <Pressable
         wash="control"
         onClick={() => setOpen(true)}
-        className="flex h-10 w-full items-center gap-2 rounded-lg border border-charcoal-border px-3 text-left"
+        className="flex h-8 w-full items-center gap-2 rounded-md border border-charcoal-border px-2 text-left"
       >
         <Search className="text-cream-muted" />
         <Text size="control" tone="muted" className="min-w-0 flex-1">

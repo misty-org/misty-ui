@@ -1,19 +1,20 @@
 import { useState } from "react";
 import {
   DocsHeader,
+  DocsHeading,
   DocsLayout,
+  DocsNavGroup,
   DocsPager,
+  DocsTitle,
   DocsToc,
-  NavList,
   NavRow,
   NavRowLabel,
-  Text,
 } from "../../../src";
 
 export const meta = {
-  name: "DocsLayout · DocsHeader · DocsToc · DocsPager",
+  name: "DocsLayout · DocsHeader · DocsNavGroup · DocsHeading · DocsToc · DocsPager",
   file: "layout/DocsLayout.tsx",
-  about: "A docs site's page in three panels: the section's pages, the article, and its contents.",
+  about: "A docs site's page in three panels, as Vercel's: the section's pages, the article, and its contents.",
   wide: true,
   order: 21,
 };
@@ -37,27 +38,30 @@ export default function Example() {
       <DocsLayout
         header={
           <DocsHeader
-            brand={<Text weight="semibold" tone="bright">Misty docs</Text>}
+            home={{ href: "#", label: "Misty" }}
+            name="Docs"
+            onName={() => {}}
             sections={sections}
             current={section}
             onSelect={setSection}
           />
         }
         nav={
-          <NavList>
-            <NavRow current>
-              <NavRowLabel bright>Getting started</NavRowLabel>
+          <DocsNavGroup title="Getting started">
+            <NavRow tone="page" current>
+              <NavRowLabel bright>Quickstart</NavRowLabel>
             </NavRow>
-            <NavRow>
+            <NavRow tone="page">
               <NavRowLabel>Live rooms</NavRowLabel>
             </NavRow>
-          </NavList>
+          </DocsNavGroup>
         }
+        page="quickstart"
+        navLabel="Quickstart"
         toc={<DocsToc items={headings} active={active} onSelect={setActive} />}
       >
-        <Text as="h1" size="display" weight="semibold" tone="bright">
-          Getting started
-        </Text>
+        <DocsTitle eyebrow="Getting started" title="Quickstart" lead="Install the SDK and open your app in a Space." />
+        <DocsHeading id="install">Install</DocsHeading>
         <DocsPager next={{ label: "Live rooms", onSelect: () => {} }} />
       </DocsLayout>
     </div>

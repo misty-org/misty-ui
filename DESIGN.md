@@ -205,7 +205,8 @@ The everyday components, several of which have no doc comment in the catalog yet
 | First load of content you can draw before it arrives (rows, cards, settings rows, shelves, a tree) | A `Skeleton` shaped like it (`ListRowSkeleton`, `SkeletonList`, `CollectionSkeleton`, `ShelfSkeleton`) | "Loading…" text |
 | First load whose layout depends on the data (a chat's messages, a thread, a document or file preview, a diff, an item's details) | `PaneLoading`, one spinner in the pane's middle; `inline` for one part of a loaded page | A skeleton guessing the shape, "Loading…" text |
 | Work in progress | `Spinner` or `Progress` where the work happens | A spinner in a button |
-| A documentation site (guides, SDK, design system) | `DocsLayout` in three panels: `DocsHeader` (sections as chips), the section's `NavList`, the article, `DocsToc` ("On this page") and a sticky `DocsPager`; only for a docs site | The app's page layouts, a hand-built sidebar and rail |
+| A store action while what it gets downloads (Get, Update) | `ProgressPill` in the button's place, at its size with the same `widthOf`, filling as the download goes, the percentage its label | A Get button left pressable, a "Downloading 42%" line beside it, a spinner in the button |
+| A documentation site (guides, SDK, design system) | `DocsLayout` in three panels, as Vercel's: `DocsHeader` (Misty's mark back to the site's `home`, the docs' name, the docs switcher), the docs' `DocsNavGroup`s (sections that fold) of `NavRow tone="page"`, the article (`DocsTitle`, `DocsHeading`s), `DocsToc` ("On this page") and the `DocsPager` cards; only for a docs site | The app's page layouts, a hand-built sidebar and rail |
 | A page's frame: toolbar rows, a rail or sidebar, side panels, the work between | `FramedPage` (`toolbar` rows across the page, the work's own `header`, `start` and `end` columns in design px with an optional `header` each, `autoSaveId`, `footer`), as Kura's window | A page that lays out its own fills, lines and columns; percent widths; a fixed-width side column |
 | One toolbar row, or the header of the work or a column | `FramedBar` (`size` main 54 or tools 45, `start`, its actions as children); a channel's or DM's is `ChannelHeader`, built on it | A hand-made bar with its own height, padding or hairline |
 | A side view beside a chat (members, a thread, search, pinned, a profile, an agent's files or terminal) | One FramedPage `end` column whose `id` is the open view, so each keeps its own width; a closable panel with its own header is a `SidePanel` as the column's content | A fixed-width div with a border beside the chat |
@@ -325,7 +326,8 @@ The everyday components, several of which have no doc comment in the catalog yet
   dark theme and black in the light one: `variant="get"` on shelf items, `variant="get-filled"` as the one action
   of an item's details. Buttons are never blue.
 - A button never shows loading: while its work runs it is just disabled, and progress shows where the work
-  happens (the row, item or content it changes).
+  happens (the row, item or content it changes). A store action that downloads gives its place to a `ProgressPill`
+  until the download is done.
 - A button whose label changes with its state (Invite, then Sent) keeps one width: `widthOf` lists every
   label it shows, so it never jumps and a column of them stays even. Keep state words short.
 
@@ -440,18 +442,32 @@ Both hold to the same rules:
 
 ### Docs sites
 
-A docs site (`DocsLayout`) is the one place with three panels. Its rules, so a docs page is never tuned by eye:
+A docs site (`DocsLayout`) is the one place with three panels, laid out as Vercel's docs. Its rules, so a docs
+page is never tuned by eye:
 
-- Panels: the section's pages on the left, the article, "On this page" on the right. They have no divider
-  lines between them; the page's only lines are the footer's top edge, the contents column's trail (a
-  hairline with the section being read marked bright) and the fields' own edges.
+- Panels: the docs' sections in a column at the start, the article (768px at most, set 45px past that column
+  rather than centered) and "On this page", the contents, in a column at the end; the side columns are 243 and
+  216px, then 297 and 270px from 80rem. They have no divider lines
+  between them; the page's only lines are the header's bottom edge, the contents column's trail (a hairline
+  with the section being read marked bright) and the fields' and cards' own edges.
+- The header always leads back to the site's own home: Misty's mark and name, a slash, the docs' name, a slash,
+  then the docs switcher, every name in the trail at one size and weight, each taking the control wash under
+  the pointer (`DocsCrumb`, `DocsSwitcher`). A docs page is never a dead end.
 - All three panels start at the same height: they share one top padding, so the search field, the article's
-  eyebrow and the contents heading begin on the same line, and the site's navbar above them is the only band.
-- Lists breathe: a sidebar group's pages sit a step below its heading, groups are 8px apart, and a contents
-  entry is 32px tall with its trail beside it, never packed tighter than a row.
+  eyebrow and the contents heading begin on the same line, under the header.
+- The sidebar's sections fold: each is a row with its name and a FoldChevron that opens to its pages, set in a
+  step on a hairline. The section holding the open page is open.
+- Type: the title 40px set tight, a section's heading 24px and a part's 19px, the lead and the text 16px at an
+  easy line height; headings sit 45px under what comes before them and 18px over what follows.
+- Three steps of text, so a page reads at a glance: the title, headings, bold terms and links bright; the running
+  text a step down, between the text color and the muted one; the eyebrow, lead and captions muted.
+- Under 52rem the sections move into a sheet opened from a bar under the header that names the open page; under
+  62rem the contents go. Every page with sections has its contents, component pages too.
+- The previous and next pages are two cards along the article's bottom edge that stay on screen as it scrolls,
+  over a fade of the page's color.
 - The page is as wide as the site around it and has its side padding (`--docs-max`, `--docs-gutter`); things
   that stay in view sit below the site's bar (`--docs-top`).
-- The docs' own sizes (the large title, the hero) exist only here.
+- The docs' own sizes (the title, the headings, the hero) exist only here.
 
 ### Where stylesheets are allowed
 
@@ -467,8 +483,9 @@ Misty's `src/tests/architecture/ui_rule_definitions.ts`). Feature stylesheets ne
 Laid out as the Mac App Store, from the registry's signed index only.
 
 - A `FramedPage` whose start column is the rail (search, then All, Apps, Templates, Skills, Plugins, MCP,
-  Engines, Speech, a hairline, then Updates with its count) on the frame's color, rows as `NavRow`; the
-  shelves sit on the page's color beside it, under the work's own `FramedBar` with the page's controls.
+  Engines, Speech, a hairline, then My apps with its count of downloads and updates) on the frame's color,
+  rows as `NavRow`; the shelves sit on the page's color beside it, under the work's own `FramedBar` with the
+  page's controls.
   Engines and Speech wear `appIcons.engines` and `appIcons.speech`.
 - All opens with a `FeatureRow` of picks that have banners, then a `Shelf` per kind, each the kind's most
   popular, with See all opening the kind.
@@ -484,7 +501,9 @@ Laid out as the Mac App Store, from the registry's signed index only.
 - A name, a logo or Manage opens the item's `ProductPage` in the work column (never a dialog), with a
   `ProductBar` (Back, then the name and action once the hero scrolls away); its first load is
   `PaneLoading`.
-- Updates is a shelf per kind with Update all in the bar.
+- My apps is the one place for what the person has and what is on its way: a Downloading shelf first, every
+  transfer in progress with its `ProgressPill`, then a shelf of updates per kind with Update all in the bar,
+  then the apps on this computer with Open.
 
 ### A catalog page (the apps catalog)
 

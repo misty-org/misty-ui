@@ -125,6 +125,13 @@
     "wide": false,
     "order": 8
   },
+  "controls/ProgressPill": {
+    "name": "ProgressPill",
+    "file": "controls/ProgressPill.tsx",
+    "about": "",
+    "wide": false,
+    "order": 3
+  },
   "controls/RowTools": {
     "name": "RowTools",
     "file": "controls/RowTools.tsx",
@@ -580,10 +587,16 @@
     "wide": false,
     "order": 10
   },
-  "layout/DocsLayout": {
-    "name": "DocsLayout · DocsHeader · DocsToc · DocsPager",
+  "layout/DocsCrumb": {
+    "name": "DocsCrumb",
     "file": "layout/DocsLayout.tsx",
-    "about": "A docs site's page in three panels: the section's pages, the article, and its contents.",
+    "about": "A name in a docs trail that leads somewhere, washing under the pointer as the docs' menu does.",
+    "order": 22
+  },
+  "layout/DocsLayout": {
+    "name": "DocsLayout · DocsHeader · DocsNavGroup · DocsHeading · DocsToc · DocsPager",
+    "file": "layout/DocsLayout.tsx",
+    "about": "A docs site's page in three panels, as Vercel's: the section's pages, the article, and its contents.",
     "wide": true,
     "order": 21
   },

@@ -2644,10 +2644,36 @@
       "doc": ""
     }
   ],
+  "DocsCrumb": [
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "flush",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "DocsHeader": [
     {
-      "name": "brand",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "name": "home",
+      "type": "DocsHome",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onName",
+      "type": "() => void",
       "optional": false,
       "doc": ""
     },
@@ -2679,6 +2705,26 @@
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
+      "doc": ""
+    }
+  ],
+  "DocsHeading": [
+    {
+      "name": "id",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "level",
+      "type": "2 | 3",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
       "doc": ""
     }
   ],
@@ -2726,6 +2772,44 @@
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
       "doc": ""
+    },
+    {
+      "name": "page",
+      "type": "string",
+      "optional": true,
+      "doc": "The open page, so the narrow screen's sheet of pages closes once another is picked."
+    },
+    {
+      "name": "navLabel",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "DocsNavGroup": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true,
+      "doc": "It holds the open page; it opens whenever this turns true."
     },
     {
       "name": "children",
@@ -2798,6 +2882,18 @@
       "type": "boolean",
       "optional": true,
       "doc": "The slash before it, which follows a name in a bar; leave it off where the menu stands first."
+    },
+    {
+      "name": "size",
+      "type": "\"control\" | \"page\"",
+      "optional": true,
+      "doc": "The names' size in the trail it joins: `page`, as Misty's name is set beside its logo, or `control` in a tighter bar."
+    },
+    {
+      "name": "flush",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Its name starts on the line its own box starts on (the hover wash reaching past it), for a trail whose other names have no padding."
     }
   ],
   "DocsTitle": [
@@ -6419,6 +6515,32 @@
       "type": "ProgressVariant",
       "optional": true,
       "doc": ""
+    }
+  ],
+  "ProgressPill": [
+    {
+      "name": "value",
+      "type": "number",
+      "optional": true,
+      "doc": "How far it has got, 0 to 1; left out while that isn't known."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "What is happening, for assistive technology."
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "optional": true,
+      "doc": "The size of the button it stands in for: sm 27, md 36, lg 40.5."
+    },
+    {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button it stands in for shows, so the pill keeps that button's width."
     }
   ],
   "PropertyList": [
