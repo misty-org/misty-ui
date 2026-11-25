@@ -195,7 +195,7 @@ export interface DocsHome {
 
 /** One crumb of the docs' trail: every name in it is the same size, weight and spacing. */
 const crumb =
-  "inline-flex h-9 min-w-0 flex-none items-center gap-3 rounded-md px-2 text-page font-semibold tracking-[-0.02em] text-cream-bright no-underline";
+  "inline-flex h-8 min-w-0 flex-none items-center gap-3 rounded-md px-2 text-page font-semibold tracking-[-0.02em] text-cream-bright no-underline";
 const crumbControl = "h-8 gap-1.5 text-control tracking-[-0.01em]";
 
 /**
