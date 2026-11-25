@@ -261,7 +261,7 @@ export function DocsHeader({
         {home ? (
           <>
             <DocsCrumb href={home.href} aria-label={`${home.label} home`}>
-              <MistyMark className="size-7" />
+              <MistyMark className="size-5" />
               <span className="max-[30rem]:hidden">{home.label}</span>
             </DocsCrumb>
             <CrumbSlash />

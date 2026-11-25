@@ -19,7 +19,7 @@ export default function Example() {
   return (
     <div className="flex items-center gap-0.5">
       <DocsCrumb href="#" flush aria-label="Misty home">
-        <MistyMark className="size-7" />
+        <MistyMark className="size-5" />
         <span>Misty</span>
       </DocsCrumb>
       <Text size="page" tone="muted" aria-hidden="true">
