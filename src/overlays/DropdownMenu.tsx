@@ -19,7 +19,7 @@ import * as React from "react";
 import { cn } from "../class_names";
 
 const dropdownViewportClass =
-  "max-h-[min(--spacing(96),var(--radix-dropdown-menu-content-available-height))] max-w-[var(--radix-dropdown-menu-content-available-width)]";
+  "max-h-[var(--radix-dropdown-menu-content-available-height)] max-w-[var(--radix-dropdown-menu-content-available-width)]";
 
 /** `danger` paints the row red, for deleting. */
 type MenuItemVariant = "default" | "danger";

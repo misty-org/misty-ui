@@ -35,6 +35,19 @@
   background-color: var(--color-charcoal-hover);
 }
 
+[data-wash="row"]:has(~ [data-slot="row-tools"]:is(:hover, :focus-within)):not(
+    :disabled,
+    [aria-current="page"],
+    [aria-current="true"],
+    [data-selected]
+  ) {
+  background-color: var(--color-row-hover);
+  color: var(--color-cream);
+}
+:is([aria-current="page"], [aria-current="true"], [data-selected]) ~ [data-slot="row-tools"] > * {
+  background-color: var(--color-row-active);
+}
+
 [data-wash="row"][data-selected],
 [data-wash="row"][data-selected]:is(:hover, :focus-visible, :focus-within, [data-hover]) {
   background-color: var(--color-row-active);

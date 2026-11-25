@@ -13,6 +13,8 @@ const tileSize = {
   md: "size-8 [&>*]:max-h-6 [&>*]:max-w-6",
   /** A store shelf's 72px slot (`ShelfItem`): a mark sits inset, a picture fills it with the tile's corners. */
   tile: "size-16 [&>*]:max-h-10 [&>*]:max-w-10",
+  /** A product page's hero (`ProductPage`): the same, twice as large. */
+  hero: "size-28 [&>*]:max-h-20 [&>*]:max-w-20",
 } as const;
 
 /**
@@ -37,7 +39,12 @@ export function LogoTile({
         tileSize[size],
         cover &&
           "overflow-hidden [&>*]:size-full [&>*]:max-h-none [&>*]:max-w-none [&>img]:object-cover",
-        cover && (size === "tile" ? "rounded-[calc(var(--spacing)*3.75)]" : "rounded-md"),
+        cover &&
+          (size === "hero"
+            ? "rounded-[calc(var(--spacing)*6.5)]"
+            : size === "tile"
+              ? "rounded-[calc(var(--spacing)*3.75)]"
+              : "rounded-md"),
       )}
     >
       {children}

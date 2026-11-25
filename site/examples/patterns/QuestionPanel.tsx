@@ -17,8 +17,8 @@ function QuestionDemo() {
       title="Which branch should I work on?"
       actions={
         <>
-          <Button variant="quiet">Skip</Button>
           <Button variant="primary">Answer</Button>
+          <Button variant="quiet">Skip</Button>
         </>
       }
     >

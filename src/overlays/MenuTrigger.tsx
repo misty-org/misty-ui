@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FaceEdit } from "../controls/FaceEdit";
 import { Button, type ButtonIcon, type ButtonProps } from "../controls/Button";
 import { IconButton, type IconButtonProps } from "../controls/IconButton";
 import { Pressable } from "../controls/Pressable";
@@ -48,14 +49,24 @@ type MenuTriggerProps = Omit<
   fit?: boolean;
   /**
    * The name of a place that opens its menu, set as a name rather than a control: a sidebar's
-   * Space, a docs site's section, a channel column's place. Semibold and bright, with `mark` before
-   * it and the chevron right after, as one compact button only as wide as what it holds. The name
-   * is shown whole, never faded: a long one wraps onto a second line. It stands alone in its row;
-   * the place's actions (Invite people) live in its menu.
+   * Space, a docs site's section, a channel column's place. Semibold and bright, the chevron right
+   * after it, as one compact button only as wide as what it holds. The name is shown whole, never
+   * faded: a long one wraps onto a second line. It stands alone in its row; the place's actions
+   * (Invite people) live in its menu.
    */
   heading?: boolean;
-  /** With `heading`: the place's own mark before the name, such as the Space's avatar. */
+  /**
+   * With `heading`: the place's own picture before the button, such as the Space's avatar, 45px.
+   * It stands outside the button, so the button's wash covers only the name and chevron, and its
+   * left edge sits 9px in, on the line the 18px glyph boxes of the NavRows under it start on.
+   */
   mark?: React.ReactNode;
+  /**
+   * With `mark`, for a place whose picture the person may change: a `FaceEdit` laid over the mark,
+   * so hovering the picture shows the pencil and pressing it calls `onEdit`. `shape` is the mark's
+   * own (`tile` for a Space's picture).
+   */
+  markEdit?: { onEdit: () => void; label?: string; shape?: "circle" | "tile" };
 };
 
 /**
@@ -88,6 +99,7 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
       fit = false,
       heading = false,
       mark,
+      markEdit,
       ...props
     },
     ref,
@@ -116,7 +128,7 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
     }
     if (heading) {
       const { justify: _justify, ...rest } = props;
-      return (
+      const trigger = (
         <Trigger asChild>
           <Pressable
             ref={ref}
@@ -131,13 +143,24 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
             )}
             {...rest}
           >
-            {mark ? <span className="mr-1 grid size-4 flex-none place-items-center">{mark}</span> : null}
             <Text tone="bright" size="body" weight="semibold" wrap className="min-w-0 break-words">
               {value ?? label}
             </Text>
             <MenuChevron />
           </Pressable>
         </Trigger>
+      );
+      if (!mark) return trigger;
+      return (
+        <span className="flex max-w-full min-w-0 items-center gap-1 pl-2">
+          <span className="relative grid size-10 flex-none place-items-center">
+            {mark}
+            {markEdit ? (
+              <FaceEdit onEdit={markEdit.onEdit} label={markEdit.label} shape={markEdit.shape} />
+            ) : null}
+          </span>
+          {trigger}
+        </span>
       );
     }
     if (iconOnly) {

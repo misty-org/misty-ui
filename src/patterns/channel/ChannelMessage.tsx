@@ -76,7 +76,7 @@ export function ChannelMessage({
       aria-label={`Message from ${name}`}
       className={cn(
         "group/message relative grid grid-cols-[--spacing(10)_minmax(0,1fr)] gap-x-4 px-4 py-0.5 outline-none",
-        !grouped && "mt-4 first:mt-0",
+        grouped ? "items-baseline" : "mt-4 first:mt-0",
         "hover:bg-row-hover focus-within:bg-row-hover data-[active]:bg-row-hover",
         mentioned &&
           "bg-[color-mix(in_srgb,var(--tone-waiting)_8%,transparent)]",
@@ -87,7 +87,7 @@ export function ChannelMessage({
     >
       {mentioned ? <MentionMark /> : null}
       {reply ? <div className="col-span-2 min-w-0">{reply}</div> : null}
-      <div className="flex justify-center">
+      <div className="flex min-w-0 justify-center">
         {grouped ? (
           <Text
             as="time"
@@ -95,7 +95,7 @@ export function ChannelMessage({
             size="micro"
             tone="muted"
             dateTime={dateTime}
-            className="pt-1 tabular-nums opacity-0 group-hover/message:opacity-100 group-data-[active]/message:opacity-100"
+            className="whitespace-nowrap tabular-nums opacity-0 group-hover/message:opacity-100 group-data-[active]/message:opacity-100"
           >
             {shortTime ?? time}
           </Text>
@@ -105,7 +105,7 @@ export function ChannelMessage({
       </div>
       <div className={cn("min-w-0", pending && "opacity-60")}>
         {grouped ? null : (
-          <div className="flex min-w-0 items-baseline gap-2">
+          <div className="flex min-w-0 items-center gap-2">
             <OverflowFadeText className="min-w-0 shrink text-body">
               <RoleName color={color} weight="semibold">
                 {name}

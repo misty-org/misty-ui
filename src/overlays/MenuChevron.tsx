@@ -4,7 +4,9 @@ import { cn } from "../class_names";
 /**
  * The chevron on anything that opens a menu or popover: one glyph, one size, muted. It turns over
  * while its trigger is open (the trigger carries `data-state="open"`), so every dropdown moves the
- * same way. Only MenuTrigger and Select's field draw it; a feature never does.
+ * same way. Only its stroke turns, around the glyph's middle, while its box stays put, so WebKit
+ * never snaps a turning box and the controls beside it hold still as the menu opens. Only
+ * MenuTrigger and Select's field draw it; a feature never does.
  */
 export function MenuChevron({ className }: { className?: string }) {
   return (

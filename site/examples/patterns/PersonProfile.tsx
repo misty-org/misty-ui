@@ -1,7 +1,9 @@
-import { Ban, Trash2 } from "lucide-react";
+import { Ban, MessageCircle, Phone, Trash2, Video } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
+  Button,
+  IconButton,
   MenuItem,
   PersonProfile,
   PersonProfileSection,
@@ -30,6 +32,17 @@ export default function Example() {
         }
         name="justnatureusa"
         line="Shipping the drive tonight"
+        actions={
+          <>
+            <Button icon={MessageCircle}>Message</Button>
+            <IconButton label="Voice call" variant="secondary">
+              <Phone />
+            </IconButton>
+            <IconButton label="Video call" variant="secondary">
+              <Video />
+            </IconButton>
+          </>
+        }
         menu={
           <>
             <MenuItem icon={Trash2} label="Remove friend" danger />

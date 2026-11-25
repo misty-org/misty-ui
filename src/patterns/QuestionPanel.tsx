@@ -1,5 +1,6 @@
 import type { KeyboardEvent, ReactNode, Ref } from "react";
 import { FieldError } from "../controls/Field";
+import { Surface } from "../display/Surface";
 import { Text } from "../display/Text";
 
 export type QuestionPanelProps = {
@@ -14,8 +15,8 @@ export type QuestionPanelProps = {
   /** The answers: a ChoiceList, an Input for one's own words, or both. */
   children?: ReactNode;
   /**
-   * The buttons in one 36px row at the panel's end: a BackButton first where there is one, then
-   * quiet ones (Skip), then the one primary action last.
+   * The buttons in one 36px row along the card's foot, from its start: a BackButton first where
+   * there is one, then the one primary action, then the rest (Always allow, Skip, Deny).
    */
   actions?: ReactNode;
   /** Why answering failed, shown under the answers. */
@@ -25,10 +26,11 @@ export type QuestionPanelProps = {
 };
 
 /**
- * A question or approval waiting on the person, flat above the composer with no card or line
- * around it: what is asked, the choices (a ChoiceList, on its group's fill), then the buttons in
- * one row at its end. Questions from Misty, from an outside engine
- * and from an action that needs an OK all use it.
+ * A question or approval waiting on the person, as one card with a hairline edge: what is asked
+ * with a close or hide button at its end (`end`), the details and choices under it (a ChoiceList,
+ * on its group's fill), then the buttons along its foot from the start, the primary action first.
+ * Questions from Misty, from an outside engine and from an action that needs an OK all use it,
+ * in the chat where they were asked or above the composer.
  *
  * ```tsx
  * <QuestionPanel label="Misty is asking" title={question.text} aside="1 of 3"
@@ -39,12 +41,15 @@ export type QuestionPanelProps = {
  */
 export function QuestionPanel(props: QuestionPanelProps) {
   return (
-    <div
-      ref={props.panelRef}
+    <Surface
+      ref={props.panelRef as Ref<HTMLElement> | undefined}
       role="group"
       aria-label={props.label}
       data-slot="question-panel"
-      className="mb-2 grid gap-2 pt-1"
+      tone="none"
+      edge="hairline"
+      radius="xl"
+      className="mb-2 grid gap-3 p-4"
       onKeyDown={props.onKeyDown}
     >
       <div className="flex min-h-6 items-center gap-2">
@@ -60,7 +65,7 @@ export function QuestionPanel(props: QuestionPanelProps) {
       </div>
       {props.children}
       <FieldError message={props.error} />
-      {props.actions ? <div className="flex h-8 items-center justify-end gap-2">{props.actions}</div> : null}
-    </div>
+      {props.actions ? <div className="flex h-8 items-center gap-2">{props.actions}</div> : null}
+    </Surface>
   );
 }

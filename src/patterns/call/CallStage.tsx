@@ -1,4 +1,4 @@
-import { Hand, HeadphoneOff, MicOff, SignalLow, Smile } from "lucide-react";
+import { Hand, HeadphoneOff, MicOff, Phone, SignalLow, Smile } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "../../class_names";
@@ -58,10 +58,10 @@ export function CallStage({ focus, children, dimmed = false, className }: CallSt
         data-slot="call-stage"
         data-dimmed={dimmed || undefined}
         aria-busy={dimmed || undefined}
-        className={cn("grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_13rem] gap-2", dim, className)}
+        className={cn("grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_13rem] gap-3", dim, className)}
       >
         <div className="grid min-h-0 [&>*]:h-full">{focus}</div>
-        <div className="flex min-h-0 flex-col gap-2 overflow-y-auto [scrollbar-width:none] [&>*]:aspect-video [&>*]:flex-none">
+        <div className="flex min-h-0 flex-col gap-3 overflow-y-auto [scrollbar-width:none] [&>*]:aspect-video [&>*]:flex-none">
           {children}
         </div>
       </div>
@@ -72,7 +72,7 @@ export function CallStage({ focus, children, dimmed = false, className }: CallSt
       data-dimmed={dimmed || undefined}
       aria-busy={dimmed || undefined}
       className={cn(
-        "grid min-h-0 flex-1 auto-rows-fr gap-2",
+        "grid min-h-0 flex-1 auto-rows-fr gap-3",
         dim,
         columns(count),
         count > 1 && count <= 4 && "[&>*:last-child:nth-child(odd)]:col-span-2",
@@ -87,7 +87,10 @@ export function CallStage({ focus, children, dimmed = false, className }: CallSt
 export interface CallTileProps {
   /** Who it is, at its foot. */
   name: string;
-  /** Their camera or a shared screen: a `video` element, filling the tile. */
+  /**
+   * Their camera or a shared screen, a `video` element, or for an agent the page it is working on
+   * now, an `img`: either fills the tile.
+   */
   picture?: React.ReactNode;
   /** Shown in the middle when there is no picture: their avatar, at `lg`. */
   face?: React.ReactNode;
@@ -95,6 +98,12 @@ export interface CallTileProps {
   children?: React.ReactNode;
   /** How the picture fills the tile: a camera covers it, a screen is shown whole. */
   fit?: "cover" | "contain";
+  /**
+   * The picture is the person's own camera: shown mirrored, as a mirror shows them and as every
+   * call app shows its self-view, while everyone else sees it the right way round. Never for a
+   * shared screen or anyone else's camera.
+   */
+  mirror?: boolean;
   /** Talking now: a ring in the done tone, as `VoicePerson` draws it in the sidebar. */
   speaking?: boolean;
   /** Their microphone is off: a crossed-out microphone by the name. */
@@ -144,6 +153,7 @@ export function CallTile({
   face,
   children,
   fit = "cover",
+  mirror = false,
   speaking = false,
   muted = false,
   deafened = false,
@@ -168,8 +178,9 @@ export function CallTile({
         "data-[speaking]:outline-2 data-[speaking]:-outline-offset-2 data-[speaking]:outline-[var(--tone-done)]",
         "data-[hand]:outline-2 data-[hand]:-outline-offset-2 data-[hand]:outline-[var(--tone-waiting)]",
         fit === "cover"
-          ? "[&>video]:size-full [&>video]:object-cover"
-          : "[&>video]:size-full [&>video]:object-contain",
+          ? "[&>:is(video,img)]:size-full [&>:is(video,img)]:object-cover"
+          : "[&>:is(video,img)]:size-full [&>:is(video,img)]:object-contain",
+        mirror && "[&>video]:-scale-x-100",
         className,
       )}
     >
@@ -300,8 +311,8 @@ export interface CallBarProps {
 
 /**
  * A call's controls in one centered row under its `CallStage`, the same in every place the call
- * shows (a voice channel's page, a DM, full screen). It never wraps; Leave, the one danger button,
- * comes last.
+ * shows (a voice channel's page, a DM, full screen). It never wraps; Leave, a `CallLeave`, comes
+ * last.
  */
 export function CallBar({ label = "Call controls", children, className }: CallBarProps) {
   return (
@@ -313,6 +324,42 @@ export function CallBar({ label = "Call controls", children, className }: CallBa
     >
       {children}
     </div>
+  );
+}
+
+export interface CallLeaveProps {
+  onClick: () => void;
+  /** Its tooltip and accessible name. Defaults to "Leave". */
+  label?: string;
+  disabled?: boolean;
+}
+
+/**
+ * The hang-up glyph: a phone laid on its side, as every call app ends or declines a call. `CallLeave`
+ * draws it; a labeled Decline takes it as its `icon` with `variant="hang-up"`. Never a crossed-out
+ * phone.
+ */
+export function HangUpGlyph({
+  className,
+  ...props
+}: {
+  className?: string;
+  "aria-hidden"?: boolean | "true" | "false";
+}) {
+  return <Phone {...props} className={cn("rotate-[135deg]", className)} />;
+}
+
+/**
+ * Hanging up: the last button of a `CallBar`, and the one a call's dock and mini player offer. A phone
+ * laid on its side, white on the window's close red, as every call app ends a call, so it reads
+ * apart from the call's other buttons at a glance. Never a crossed-out phone, and never anywhere
+ * but a call.
+ */
+export function CallLeave({ onClick, label = "Leave", disabled }: CallLeaveProps) {
+  return (
+    <IconButton label={label} variant="hang-up" disabled={disabled} onClick={onClick}>
+      <HangUpGlyph />
+    </IconButton>
   );
 }
 

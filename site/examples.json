@@ -69,6 +69,13 @@
     "wide": false,
     "order": 6
   },
+  "controls/FaceEdit": {
+    "name": "FaceEdit",
+    "file": "controls/FaceEdit.tsx",
+    "about": "",
+    "wide": false,
+    "order": 11
+  },
   "controls/Field": {
     "name": "Field · Label · FieldError",
     "file": "controls/Field.tsx",
@@ -181,6 +188,13 @@
     "wide": false,
     "order": 11
   },
+  "display/AgentFace": {
+    "name": "AgentFace",
+    "file": "display/AgentFace.tsx",
+    "about": "An agent's face, round at an Avatar's size: its engine's mark, a persona's glyph or an emoji.",
+    "wide": false,
+    "order": 11
+  },
   "display/AppIcons": {
     "name": "appIcons",
     "file": "icons/app_icons.ts",
@@ -229,6 +243,13 @@
     "about": "",
     "wide": false,
     "order": 17
+  },
+  "display/CountMark": {
+    "name": "CountMark",
+    "file": "display/CountMark.tsx",
+    "about": "",
+    "wide": false,
+    "order": 8
   },
   "display/IndicatorDot": {
     "name": "IndicatorDot",
@@ -427,7 +448,7 @@
     "order": 12
   },
   "feedback/NavRow": {
-    "name": "NavRow · NavRowLabel · NavList · NavGroupHeading",
+    "name": "NavRow · NavRowLabel · NavList · NavBranch · NavGroupHeading",
     "file": "navigation/NavRow.tsx",
     "about": "",
     "wide": false,
@@ -496,6 +517,13 @@
     "wide": false,
     "order": 4
   },
+  "feedback/SpaceRail": {
+    "name": "SpaceRail",
+    "file": "navigation/SpaceRail.tsx",
+    "about": "",
+    "wide": false,
+    "order": 16
+  },
   "feedback/Spinner": {
     "name": "Spinner",
     "file": "feedback/Spinner.tsx",
@@ -513,7 +541,7 @@
   "feedback/TabStrip": {
     "name": "TabStrip",
     "file": "navigation/TabStrip.tsx",
-    "about": "Close, drag to reorder, drop a tab on another to group them, press a group's chip to fold it.",
+    "about": "Close, drag to reorder, drop a tab on another to group them, press a group's chip to fold it. Open many tabs: they shrink to their icons, then scroll, and Search tabs lists them all.",
     "wide": true,
     "order": 13
   },
@@ -832,6 +860,13 @@
     "wide": false,
     "order": 13
   },
+  "patterns/AnnotationCanvas": {
+    "name": "AnnotationCanvas",
+    "file": "patterns/AnnotationCanvas.tsx",
+    "about": "",
+    "wide": false,
+    "order": 21
+  },
   "patterns/AppLauncher": {
     "name": "AppLauncher",
     "file": "patterns/home/AppLauncher.tsx",
@@ -937,6 +972,12 @@
     "wide": false,
     "order": 16
   },
+  "patterns/FaceStack": {
+    "name": "FaceStack",
+    "file": "patterns/people/FaceStack.tsx",
+    "about": "",
+    "order": 17
+  },
   "patterns/FeatureCard": {
     "name": "FeatureCard · FeatureRow",
     "file": "patterns/FeatureCard.tsx",
@@ -1019,12 +1060,26 @@
     "about": "",
     "order": 16
   },
+  "patterns/PictureEditorDialog": {
+    "name": "PictureEditorDialog",
+    "file": "patterns/PictureEditorDialog.tsx",
+    "about": "",
+    "wide": false,
+    "order": 22
+  },
   "patterns/PlaceChip": {
     "name": "PlaceChip",
     "file": "patterns/home/HomeSection.tsx",
     "about": "",
     "wide": false,
     "order": 6
+  },
+  "patterns/ProductPage": {
+    "name": "ProductPage · ProductBar · ProductSection",
+    "file": "patterns/ProductPage.tsx",
+    "about": "A store item's own page, as the App Store's: hero, facts, Manage, About, what's inside and information.",
+    "wide": true,
+    "order": 0
   },
   "patterns/ProfileCard": {
     "name": "ProfileCardBanner · ProfileCardHeader · ProfileCardStatus · ProfileCardName · ProfileCardGroup",
@@ -1063,7 +1118,7 @@
   "patterns/Shelf": {
     "name": "Shelf · ShelfItem",
     "file": "patterns/Shelf.tsx",
-    "about": "Explore's rows: a heading with See all, then items in two columns.",
+    "about": "Explore's rows, as the App Store's: a heading with See all, then items in up to three columns, each ending in its one action.",
     "wide": true,
     "order": 0
   },
@@ -1081,15 +1136,8 @@
     "wide": true,
     "order": 22
   },
-  "patterns/StoreDetail": {
-    "name": "StoreDetail · StoreDetailSection",
-    "file": "patterns/StoreDetail.tsx",
-    "about": "What opens on Get: the banner, the app, its facts and previews.",
-    "wide": false,
-    "order": 0
-  },
   "patterns/TurnFold": {
-    "name": "TurnFold · ToolList · ToolRow · ToolPath · ToolLines · ToolBody · ToolNote · TurnStatus · TurnChanges",
+    "name": "TurnFold · TurnPictures · ToolList · ToolRow · ToolPath · ToolLines · ToolBody · ToolNote · TurnTasks · TurnStatus · TurnChanges",
     "file": "patterns/ToolTimeline.tsx",
     "about": "",
     "wide": true,

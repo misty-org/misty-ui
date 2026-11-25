@@ -1,4 +1,5 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import { FaceEdit } from "../../controls/FaceEdit";
 import { ImagePlus, Pencil, Plus } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -53,12 +54,30 @@ export function ProfileCardBanner({
 /**
  * Under the banner: the person's face, large (an xl Avatar in a `PresenceFace` with `face="xl"`),
  * centered and set half into the banner on a plate of the card's own color. Their name, line and
- * status follow in `ProfileCardName`, centered under it.
+ * status follow in `ProfileCardName`, centered under it. `onFaceEdit` lays a `FaceEdit` over the
+ * face, so hovering it shows the pencil that changes the picture.
  */
-export function ProfileCardHeader({ face }: { face: ReactNode }) {
+export function ProfileCardHeader({
+  face,
+  onFaceEdit,
+  faceEditLabel,
+}: {
+  face: ReactNode;
+  onFaceEdit?: () => void;
+  faceEditLabel?: string;
+}) {
   return (
     <div className="flex justify-center px-3">
-      <span className="-mt-9 inline-flex flex-none rounded-full bg-charcoal-card p-1">{face}</span>
+      <span className="-mt-10 inline-flex flex-none rounded-full bg-charcoal-card p-1">
+        {onFaceEdit ? (
+          <span className="relative inline-flex">
+            {face}
+            <FaceEdit onEdit={onFaceEdit} label={faceEditLabel} />
+          </span>
+        ) : (
+          face
+        )}
+      </span>
     </div>
   );
 }

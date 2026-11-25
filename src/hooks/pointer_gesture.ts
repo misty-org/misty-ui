@@ -13,11 +13,17 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 
 let cancelCurrent: (() => void) | undefined;
 
+/**
+ * `outlivesSource` keeps the drag going when the pressed element leaves the page, as the items
+ * of a folder do when the drag opens another folder or tab under the pointer.
+ */
 export function startGesture(
   event: ReactPointerEvent<HTMLElement>,
   drag: ReorderDrag,
   onLift?: () => () => void,
+  options?: { outlivesSource?: boolean },
 ) {
+  const outlives = options?.outlivesSource === true;
   let restorePresentation: (() => void) | undefined;
   let motion: ReturnType<typeof startReorderMotion>;
   cancelCurrent?.();
@@ -68,7 +74,7 @@ export function startGesture(
     window.removeEventListener("blur", cancel);
     window.removeEventListener("keydown", key, true);
     document.removeEventListener("visibilitychange", visibility);
-    source.removeEventListener("lostpointercapture", cancel);
+    source.removeEventListener("lostpointercapture", lost);
     source.removeEventListener("dragstart", preventNative);
     try {
       if (source.hasPointerCapture?.(pointerId)) source.releasePointerCapture(pointerId);
@@ -105,6 +111,9 @@ export function startGesture(
       current.target.drop(dropped, current.hit);
   };
   const cancel = () => stop();
+  const lost = () => {
+    if (!outlives || source.isConnected) cancel();
+  };
   const preventNative = (e: Event) => {
     e.preventDefault();
   };
@@ -119,7 +128,7 @@ export function startGesture(
     if (document.hidden) cancel();
   };
   const update = () => {
-    if (!source.isConnected) return cancel();
+    if (!source.isConnected && !outlives) return cancel();
     current = undefined;
     const placement = motion?.placement(point, offset);
     const hitPoint = (target: DropTarget) =>
@@ -317,7 +326,7 @@ export function startGesture(
   window.addEventListener("blur", cancel);
   window.addEventListener("keydown", key, true);
   document.addEventListener("visibilitychange", visibility);
-  source.addEventListener("lostpointercapture", cancel);
+  source.addEventListener("lostpointercapture", lost);
   source.addEventListener("dragstart", preventNative);
   cancelCurrent = cancel;
   return cancel;

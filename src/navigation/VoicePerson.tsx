@@ -4,7 +4,7 @@ import { cn } from "../class_names";
 import { NavRow, NavRowLabel, type NavRowTone } from "./NavRow";
 
 export type VoicePersonProps = {
-  /** Their face, at the 18px glyph size (an `Avatar size="xs"`). */
+  /** Their face, at 22.5px (an `Avatar size="xs"`). */
   avatar: ReactNode;
   name: string;
   /** Talking now: a ring in the done tone circles their face. */
@@ -36,7 +36,7 @@ export function VoicePerson({ avatar, name, speaking, muted, tone, className }: 
       <span
         data-speaking={speaking || undefined}
         className={cn(
-          "flex size-4 flex-none items-center justify-center rounded-full",
+          "flex size-5 flex-none items-center justify-center rounded-full",
           "data-[speaking]:outline-2 data-[speaking]:outline-offset-1 data-[speaking]:outline-solid",
           "data-[speaking]:outline-[var(--tone-done)]",
         )}

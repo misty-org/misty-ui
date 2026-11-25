@@ -8,6 +8,7 @@ import {
   MenuTrigger,
   MenuCheckItem,
   MenuItem,
+  NavBranch,
   NavGroupHeading,
   NavList,
   NavRow,
@@ -16,7 +17,7 @@ import {
 } from "../../../src";
 
 export const meta = {
-  name: "NavRow · NavRowLabel · NavList · NavGroupHeading",
+  name: "NavRow · NavRowLabel · NavList · NavBranch · NavGroupHeading",
   file: "navigation/NavRow.tsx",
   about: "",
   wide: false,
@@ -24,12 +25,12 @@ export const meta = {
 };
 
 function NavDemo() {
-  const [current, setCurrent] = React.useState("home");
+  const [current, setCurrent] = React.useState("settings");
   const [open, setOpen] = React.useState(true);
   const places = [
     { id: "home", label: "Home", icon: Home },
     { id: "search", label: "Search", icon: Search },
-    { id: "chats", label: "Direct messages", icon: MessageSquare },
+    { id: "chats", label: "Chats", icon: MessageSquare },
     { id: "settings", label: "Settings", icon: Settings },
   ];
   return (
@@ -57,13 +58,15 @@ function NavDemo() {
               <Icon />
               <NavRowLabel bright={current === id}>{label}</NavRowLabel>
             </NavRow>
-            {id === "settings" && current === "settings"
-              ? ["General", "Appearance", "Shortcuts"].map((section) => (
+            {id === "settings" && current === "settings" ? (
+              <NavBranch>
+                {["General", "Appearance", "Shortcuts"].map((section) => (
                   <NavRow key={section} nested>
                     <NavRowLabel>{section}</NavRowLabel>
                   </NavRow>
-                ))
-              : null}
+                ))}
+              </NavBranch>
+            ) : null}
           </React.Fragment>
         ))}
       </NavList>

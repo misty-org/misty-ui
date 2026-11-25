@@ -100,15 +100,15 @@ const presenceNames: Record<MemberPresence, string> = {
   offline: "Offline",
 };
 
-/** The size of the face a presence dot sits on: the Avatar's own sizes. */
-export type PresenceFaceSize = AvatarSize;
+/** The size of the face a presence dot sits on: the Avatar's own sizes, except a glyph-sized face, which carries none. */
+export type PresenceFaceSize = Exclude<AvatarSize, "glyph">;
 
 const dotGeometry: Record<PresenceFaceSize, { face: number; dot: number; cut: number; inset: number }> = {
-  xs: { face: 18, dot: 6.75, cut: 2.25, inset: 0 },
-  sm: { face: 27, dot: 9, cut: 2.25, inset: 0 },
-  default: { face: 36, dot: 11.25, cut: 2.25, inset: 0 },
+  xs: { face: 22.5, dot: 6.75, cut: 2.25, inset: 0 },
+  sm: { face: 31.5, dot: 9, cut: 2.25, inset: 0 },
+  default: { face: 40.5, dot: 11.25, cut: 2.25, inset: 0 },
   lg: { face: 45, dot: 13.5, cut: 2.25, inset: 0 },
-  xl: { face: 72, dot: 18, cut: 4.5, inset: 4.5 },
+  xl: { face: 81, dot: 20.25, cut: 4.5, inset: 4.5 },
 };
 
 /**

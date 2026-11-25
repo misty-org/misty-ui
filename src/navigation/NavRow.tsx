@@ -1,10 +1,18 @@
-import type { ComponentPropsWithoutRef, HTMLAttributes, ReactNode, Ref } from "react";
+import {
+  Children,
+  isValidElement,
+  type ComponentPropsWithoutRef,
+  type HTMLAttributes,
+  type ReactNode,
+  type Ref,
+} from "react";
 
 import { cn } from "../class_names";
 import { rowShape, rowShapeTwoLine } from "../display/row_shape";
 import { Pressable } from "../controls/Pressable";
 import { OverflowFadeText, type OverflowFadeTextProps } from "../layout/OverflowFadeText";
 import { FoldChevron } from "../overlays/MenuChevron";
+import "./nav_branch.css";
 
 /**
  * How a sidebar row answers the pointer:
@@ -34,15 +42,25 @@ export type NavRowProps = Omit<ComponentPropsWithoutRef<"button">, "ref"> & {
    */
   still?: boolean;
   /**
-   * A part of the row above it, such as a section of the open Settings page: no mark of its own,
-   * its label set in to line up with the label of the row it belongs to. Never a row of chips.
+   * A part of the row above it, such as a section of the open Settings page, inside a NavBranch:
+   * no mark of its own, its label lined up with the label of the row it belongs to. The row and
+   * its fill start past the branch's lines, so the open row's fill never covers them. Never a row
+   * of chips.
+   * `"face"` is for a row under one that leads with a face rather than a glyph (a thread under its
+   * agent in the sidebar), so its label lines up past the wider face instead of sitting under it.
    */
-  nested?: boolean;
+  nested?: boolean | "face";
   /**
    * At least 54px, for a row whose label has more under it, such as a file manager's drive with its
    * capacity and a Meter (Kura's Devices). The caller stacks the lines beside the mark.
    */
   tall?: boolean;
+  /**
+   * Its notifications are off (a muted channel or conversation): the row dims, as Discord greys a
+   * muted channel, and comes back to full strength under the pointer and while open. A muted row
+   * shows no unread count.
+   */
+  muted?: boolean;
   ref?: Ref<HTMLButtonElement>;
 };
 
@@ -71,18 +89,20 @@ export function NavRow({
   still,
   nested,
   tall,
+  muted,
   className,
   ref,
   ...props
 }: NavRowProps) {
   const filled = current || selected;
   const classes = cn(
-    "group/nav-row w-full flex-none",
+    "group/nav-row flex-none",
+    nested === "face" ? "ms-9 w-auto" : nested ? "ms-6 w-auto" : "w-full",
     tall ? rowShapeTwoLine : rowShape,
     "text-left text-control",
     hover === "wash" && current ? toneText[tone].bright : toneText[tone].quiet,
-    nested && "pl-8",
     filled && "bg-row-active",
+    muted && !filled && "opacity-55 hover:opacity-100 focus-visible:opacity-100",
     !still && !filled && hover === "fill" && "hover:bg-row-hover focus-visible:bg-row-hover",
     className,
   );
@@ -138,6 +158,37 @@ export function NavList({ className, ...props }: HTMLAttributes<HTMLDivElement>)
   return <div data-slot="nav-list" {...props} className={cn("grid gap-1.5", className)} />;
 }
 
+/**
+ * Rows that belong to the row above them, hung from it on branch lines so the tree reads at a
+ * glance: a hairline runs down from under the parent's mark, and each row branches off it with a
+ * rounded elbow that stops just short of the row, so a row's fill never covers a line, the last
+ * one ending the line. Put it right after the parent row,
+ * and give each child `NavRow` `nested` (or `nested="face"`, matching `under`). `under="face"`
+ * hangs the lines from a face (a thread under its agent) rather than a glyph (a section of the open
+ * Settings page). The rows keep NavList's 6.75px between them.
+ */
+export function NavBranch({
+  under = "glyph",
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement> & { under?: "glyph" | "face" }) {
+  const rows = Children.toArray(children).filter(Boolean);
+  if (!rows.length) return null;
+  return (
+    <div role="group" data-slot="nav-branch" data-under={under} {...props} className={className}>
+      {rows.map((row, index) => (
+        <div
+          key={isValidElement(row) && row.key != null ? row.key : index}
+          data-slot="nav-branch-item"
+        >
+          {row}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export interface NavGroupHeadingProps extends HTMLAttributes<HTMLDivElement> {
   /** The group's name. Without it the heading holds its `children` alone (a placeholder). */
   name?: ReactNode;
@@ -148,8 +199,9 @@ export interface NavGroupHeadingProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * The heading over a group of sidebar rows (Pinned, a section, Archived): 31.5px, the caption role
- * at medium weight, in the chrome's quiet text, brightening under the pointer.
+ * The heading over a group of sidebar rows (Pinned, Direct Messages, Archived), its name in title
+ * case: 31.5px, the caption role at medium weight, in the chrome's quiet text, brightening under the
+ * pointer.
  */
 export function NavGroupHeading({
   name,

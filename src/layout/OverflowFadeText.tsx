@@ -9,7 +9,7 @@ import {
   type RefObject,
 } from "react";
 import { cn } from "../class_names";
-import { Tooltip } from "../overlays/Tooltip";
+import { Tooltip, type TooltipSide } from "../overlays/Tooltip";
 
 /** The elements a label can be. A label is one line of text, or two with `lines={2}`. */
 export type OverflowFadeElement =
@@ -51,6 +51,12 @@ export interface OverflowFadeTextProps extends HTMLAttributes<HTMLElement> {
    */
   full?: boolean | string;
   /**
+   * Which side of the label that tooltip opens on. Defaults to top, flipping when there's no room;
+   * a label in a bar along the window's top, such as a tab, opens beside it so the tooltip never
+   * drops over a native page under the bar.
+   */
+  fullSide?: TooltipSide;
+  /**
    * How many lines the text may take before its last line fades. Text over more than one line
    * wraps between words; a caller's `whitespace-pre-wrap` keeps its own line breaks.
    */
@@ -80,6 +86,7 @@ export function OverflowFadeText({
   className,
   children,
   full,
+  fullSide,
   lines = 1,
   ref,
   ...props
@@ -159,7 +166,11 @@ export function OverflowFadeText({
 
   const tooltip = typeof full === "string" ? full : full ? text : "";
   if (!overflowing || !tooltip) return label;
-  return <Tooltip content={tooltip}>{label}</Tooltip>;
+  return (
+    <Tooltip content={tooltip} side={fullSide}>
+      {label}
+    </Tooltip>
+  );
 }
 
 function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {

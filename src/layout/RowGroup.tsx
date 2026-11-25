@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { ComponentProps, HTMLAttributes, ReactNode } from "react";
 
 import { cn } from "../class_names";
 import { SectionHeading, type SectionHeadingAction } from "./SectionHeading";
@@ -61,7 +61,8 @@ export function RowGroupSection({
   children,
   as,
   className,
-}: {
+  ...props
+}: Omit<HTMLAttributes<HTMLElement>, "title" | "children"> & {
   title?: string;
   count?: number;
   action?: SectionHeadingAction;
@@ -76,6 +77,7 @@ export function RowGroupSection({
     <section
       aria-label={title}
       data-slot="row-group-section"
+      {...props}
       className={cn("grid min-w-0 gap-1.5", className)}
     >
       {title || description ? (
@@ -92,7 +94,7 @@ export function RowGroupSection({
 }
 
 /** Groups one under another, 22.5px apart, on a page, in a side column or in a dialog. */
-export function RowGroupStack({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function RowGroupStack({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="row-group-stack"

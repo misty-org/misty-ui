@@ -32,6 +32,11 @@ export type FramedPageColumn = {
   maxWidth?: number;
   /** A FramedBar at the column's top, closed by a hairline that lines up with the work's header. */
   header?: ReactNode;
+  /**
+   * Leaves the hairline under `header` out, for a header that leads straight into the column's
+   * own rows, such as the search over Settings' sections.
+   */
+  headerLine?: boolean;
   /** End column only: it covers the work (kept mounted, hidden) until restored. */
   expanded?: boolean;
   /**
@@ -104,7 +109,7 @@ function FramedColumn(props: {
       {column.header ? (
         <>
           <div className="min-w-0 shrink-0">{column.header}</div>
-          <Separator />
+          {column.headerLine === false ? null : <Separator />}
         </>
       ) : null}
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">{column.content}</div>

@@ -89,6 +89,12 @@
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
     },
     {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
+    },
+    {
       "name": "asChild",
       "type": "boolean",
       "optional": true,
@@ -117,6 +123,56 @@
       "type": "number",
       "optional": true,
       "doc": "A count over the icon's corner, such as a view's changed files; nothing at zero."
+    }
+  ],
+  "AgentFace": [
+    {
+      "name": "size",
+      "type": "AvatarSize",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "mark",
+      "type": "string",
+      "optional": true,
+      "doc": "The engine's mark, as `Mark`'s `of`."
+    },
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": true,
+      "doc": "A persona's glyph."
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "optional": true,
+      "doc": "A persona's color, from `personaTone(id)`: the face is filled with it and its glyph is white."
+    },
+    {
+      "name": "tone",
+      "type": "ItemTone",
+      "optional": true,
+      "doc": "The agent's own pastel behind its mark, emoji or initial, picked per agent as a person's is. Not with `color` or `picture`, which fill the face themselves."
+    },
+    {
+      "name": "picture",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The children are a picture that fills the whole face."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
     }
   ],
   "AgentTile": [
@@ -186,6 +242,62 @@
   "AlertDialogFooter": [],
   "AlertDialogHeader": [],
   "AlertDialogTitle": [],
+  "AnnotationCanvas": [
+    {
+      "name": "picture",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "tool",
+      "type": "AnnotationTool",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "color",
+      "type": "AnnotationColor",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "marks",
+      "type": "AnnotationMark[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onMarksChange",
+      "type": "(marks: AnnotationMark[]) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "AppLauncher": [
     {
       "name": "open",
@@ -294,6 +406,18 @@
       "type": "ItemTone",
       "optional": true,
       "doc": "Paints the fallback (the initials) in this tone. A picture, once loaded, covers it."
+    },
+    {
+      "name": "edge",
+      "type": "boolean",
+      "optional": true,
+      "doc": "A subtle hairline just inside the face's edge, following its shape, so a picture as dark as the sidebar still reads as its own tile. A Space's picture wears it."
+    },
+    {
+      "name": "outline",
+      "type": "string",
+      "optional": true,
+      "doc": "The ring the person chose for their face or their Space's (their avatar decoration's outline): any `#rrggbb`, drawn just inside the face's edge, following its shape, 2.25px wide (4.5px at `xl`). It takes the place of `edge`."
     }
   ],
   "AvatarFallback": [],
@@ -346,6 +470,12 @@
       "type": "boolean",
       "optional": true,
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
+    },
+    {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
     },
     {
       "name": "asChild",
@@ -456,6 +586,12 @@
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
     },
     {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
+    },
+    {
       "name": "asChild",
       "type": "boolean",
       "optional": true,
@@ -558,6 +694,26 @@
       "doc": ""
     }
   ],
+  "CallLeave": [
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": "Its tooltip and accessible name. Defaults to \"Leave\"."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "CallLobby": [
     {
       "name": "preview",
@@ -653,7 +809,7 @@
       "name": "picture",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "Their camera or a shared screen: a `video` element, filling the tile."
+      "doc": "Their camera or a shared screen, a `video` element, or for an agent the page it is working on now, an `img`: either fills the tile."
     },
     {
       "name": "face",
@@ -672,6 +828,12 @@
       "type": "\"cover\" | \"contain\"",
       "optional": true,
       "doc": "How the picture fills the tile: a camera covers it, a screen is shown whole."
+    },
+    {
+      "name": "mirror",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The picture is the person's own camera: shown mirrored, as a mirror shows them and as every call app shows its self-view, while everyone else sees it the right way round. Never for a shared screen or anyone else's camera."
     },
     {
       "name": "speaking",
@@ -1179,7 +1341,7 @@
       "name": "align",
       "type": "\"center\" | \"start\"",
       "optional": true,
-      "doc": "\"center\" only for a place that is not a chat; every chat's welcome sits at the start."
+      "doc": "\"center\" for a direct message or an agent chat: the face, name, line and buttons centered."
     }
   ],
   "Checkbox": [],
@@ -2148,6 +2310,12 @@
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
     },
     {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
+    },
+    {
       "name": "asChild",
       "type": "boolean",
       "optional": true,
@@ -2200,6 +2368,32 @@
       "type": "IconSource",
       "optional": true,
       "doc": "Defaults to the Copy glyph."
+    }
+  ],
+  "CountMark": [
+    {
+      "name": "count",
+      "type": "number",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "waiting",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only: margins or placement."
     }
   ],
   "CustomColorSwatch": [
@@ -2316,7 +2510,7 @@
       "name": "tone",
       "type": "\"card\" | \"page\"",
       "optional": true,
-      "doc": "`page` fills the panel with the page's color, for a viewer whose content is the page."
+      "doc": "`card` (the default) is a dialog of its own: a form or a question, set in from its edges. `page` makes the dialog one sheet in the page's color for content that is a page (a viewer, a file browser, a collection): no inset, a DialogHeader as a 54px bar with a hairline under it and the close button in it, and the DialogBody edge to edge under it. `media` is always `page`."
     }
   ],
   "DialogDescription": [],
@@ -2403,6 +2597,12 @@
       "type": "boolean",
       "optional": true,
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
+    },
+    {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
     },
     {
       "name": "asChild",
@@ -2702,6 +2902,12 @@
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
     },
     {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
+    },
+    {
       "name": "hint",
       "type": "string",
       "optional": true,
@@ -2890,6 +3096,58 @@
       "type": "boolean",
       "optional": true,
       "doc": "Sits in the flow instead of filling the pane: inside a dialog, a list or a section, with its own room above and below. Don't wrap it in a sized box."
+    }
+  ],
+  "FaceEdit": [
+    {
+      "name": "onEdit",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": "Its tooltip and accessible name."
+    },
+    {
+      "name": "shape",
+      "type": "\"circle\" | \"tile\"",
+      "optional": true,
+      "doc": "The face's own shape: an Avatar's `circle`, or `tile` for a Space's picture."
+    }
+  ],
+  "FaceStack": [
+    {
+      "name": "people",
+      "type": "FaceStackPerson[]",
+      "optional": false,
+      "doc": "Who is around, in the order to show them."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "What the faces add up to, after them: \"7 online\". Shown alone while `people` is empty."
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) => void",
+      "optional": true,
+      "doc": "Picks one of them, such as opening their profile beside the list."
+    },
+    {
+      "name": "most",
+      "type": "number",
+      "optional": true,
+      "doc": "How many faces show before the rest are only counted in `label`. Default 5."
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
     }
   ],
   "FeatureCard": [
@@ -3321,6 +3579,20 @@
       "doc": "Layout only: size and placement."
     }
   ],
+  "HangUpGlyph": [
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "aria-hidden",
+      "type": "boolean | \"true\" | \"false\"",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "HeroPage": [
     {
       "name": "backdrop",
@@ -3485,6 +3757,12 @@
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
     },
     {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
+    },
+    {
       "name": "asChild",
       "type": "boolean",
       "optional": true,
@@ -3566,6 +3844,12 @@
     }
   ],
   "IndicatorDot": [
+    {
+      "name": "count",
+      "type": "number",
+      "optional": true,
+      "doc": ""
+    },
     {
       "name": "className",
       "type": "string",
@@ -3998,7 +4282,7 @@
   "LogoTile": [
     {
       "name": "size",
-      "type": "\"sm\" | \"md\" | \"tile\"",
+      "type": "\"sm\" | \"md\" | \"tile\" | \"hero\"",
       "optional": true,
       "doc": ""
     },
@@ -4160,7 +4444,7 @@
       "name": "compact",
       "type": "boolean",
       "optional": true,
-      "doc": "Just the track, 40.5px tall (54 in a card padded 6.75px): the position bar and the transport fold away, and open again when this goes false (the holder opens them on hover or focus)."
+      "doc": "Just the track and its position bar: the transport folds away, and opens again when this goes false (the holder opens it on hover or focus)."
     },
     {
       "name": "className",
@@ -4488,6 +4772,12 @@
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
     },
     {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
+    },
+    {
       "name": "label",
       "type": "string",
       "optional": false,
@@ -4557,13 +4847,19 @@
       "name": "heading",
       "type": "boolean",
       "optional": true,
-      "doc": "The name of a place that opens its menu, set as a name rather than a control: a sidebar's Space, a docs site's section, a channel column's place. Semibold and bright, with `mark` before it and the chevron right after, as one compact button only as wide as what it holds. The name is shown whole, never faded: a long one wraps onto a second line. It stands alone in its row; the place's actions (Invite people) live in its menu."
+      "doc": "The name of a place that opens its menu, set as a name rather than a control: a sidebar's Space, a docs site's section, a channel column's place. Semibold and bright, the chevron right after it, as one compact button only as wide as what it holds. The name is shown whole, never faded: a long one wraps onto a second line. It stands alone in its row; the place's actions (Invite people) live in its menu."
     },
     {
       "name": "mark",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "With `heading`: the place's own mark before the name, such as the Space's avatar."
+      "doc": "With `heading`: the place's own picture before the button, such as the Space's avatar, 45px. It stands outside the button, so the button's wash covers only the name and chevron, and its left edge sits 9px in, on the line the 18px glyph boxes of the NavRows under it start on."
+    },
+    {
+      "name": "markEdit",
+      "type": "{ onEdit: () => void; label?: string | undefined; shape?: \"circle\" | \"tile\" | undefined; }",
+      "optional": true,
+      "doc": "With `mark`, for a place whose picture the person may change: a `FaceEdit` laid over the mark, so hovering the picture shows the pencil and pressing it calls `onEdit`. `shape` is the mark's own (`tile` for a Space's picture)."
     }
   ],
   "MessageActions": [
@@ -4752,6 +5048,12 @@
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
     },
     {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
+    },
+    {
       "name": "asChild",
       "type": "boolean",
       "optional": true,
@@ -4830,6 +5132,12 @@
       "type": "boolean",
       "optional": true,
       "doc": "Hugs a picture at its start (a Space's mark, a person's face), as a breadcrumb's place does: the picture sits near the button's edge, so the button's edge lines up with the page's gutter."
+    },
+    {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows as its state changes (Invite, then Sent): it keeps the width of the widest, so it never jumps and a column of them stays even. Not with `asChild`."
     },
     {
       "name": "asChild",
@@ -5006,6 +5314,14 @@
       "doc": "For the composer's tour."
     }
   ],
+  "NavBranch": [
+    {
+      "name": "under",
+      "type": "\"glyph\" | \"face\"",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "NavGroupHeading": [
     {
       "name": "name",
@@ -5066,15 +5382,21 @@
     },
     {
       "name": "nested",
-      "type": "boolean",
+      "type": "boolean | \"face\"",
       "optional": true,
-      "doc": "A part of the row above it, such as a section of the open Settings page: no mark of its own, its label set in to line up with the label of the row it belongs to. Never a row of chips."
+      "doc": "A part of the row above it, such as a section of the open Settings page, inside a NavBranch: no mark of its own, its label lined up with the label of the row it belongs to. The row and its fill start past the branch's lines, so the open row's fill never covers them. Never a row of chips. `\"face\"` is for a row under one that leads with a face rather than a glyph (a thread under its agent in the sidebar), so its label lines up past the wider face instead of sitting under it."
     },
     {
       "name": "tall",
       "type": "boolean",
       "optional": true,
       "doc": "At least 54px, for a row whose label has more under it, such as a file manager's drive with its capacity and a Meter (Kura's Devices). The caller stacks the lines beside the mark."
+    },
+    {
+      "name": "muted",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Its notifications are off (a muted channel or conversation): the row dims, as Discord greys a muted channel, and comes back to full strength under the pointer and while open. A muted row shows no unread count."
     },
     {
       "name": "ref",
@@ -5101,6 +5423,12 @@
       "type": "string | boolean",
       "optional": true,
       "doc": "Shows the whole text in a tooltip, only while it doesn't fit. `true` uses the label's own text; a string is shown instead, for a label whose children aren't plain text."
+    },
+    {
+      "name": "fullSide",
+      "type": "TooltipSide",
+      "optional": true,
+      "doc": "Which side of the label that tooltip opens on. Defaults to top, flipping when there's no room; a label in a bar along the window's top, such as a tab, opens beside it so the tooltip never drops over a native page under the bar."
     },
     {
       "name": "lines",
@@ -5227,6 +5555,12 @@
       "type": "string | boolean",
       "optional": true,
       "doc": "Shows the whole text in a tooltip, only while it doesn't fit. `true` uses the label's own text; a string is shown instead, for a label whose children aren't plain text."
+    },
+    {
+      "name": "fullSide",
+      "type": "TooltipSide",
+      "optional": true,
+      "doc": "Which side of the label that tooltip opens on. Defaults to top, flipping when there's no room; a label in a bar along the window's top, such as a tab, opens beside it so the tooltip never drops over a native page under the bar."
     },
     {
       "name": "lines",
@@ -5496,6 +5830,12 @@
       "doc": "Rows of the ⋯ menu over the banner (MenuItems)."
     },
     {
+      "name": "actions",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "What can be done with them now, as one centered row under their name: a secondary `Button` (Message) and secondary `IconButton`s (Voice call, Video call), all `md`. Leave it off beside their own direct message, whose bar already has them."
+    },
+    {
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
@@ -5551,7 +5891,13 @@
       "name": "onOpen",
       "type": "() => void",
       "optional": true,
-      "doc": "Opens them, such as their direct message."
+      "doc": "Opens them, such as their direct message, or picks them for a profile shown beside the list."
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The one picked in the list, such as the friend whose profile is open beside it: the pressed wash."
     },
     {
       "name": "actions",
@@ -5585,6 +5931,50 @@
       "type": "string",
       "optional": false,
       "doc": "Defines a string value that labels the current element."
+    }
+  ],
+  "PictureEditorDialog": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true,
+      "doc": "\"Edit picture\" by default; a Space's says \"Edit Space picture\"."
+    },
+    {
+      "name": "shape",
+      "type": "\"circle\" | \"tile\"",
+      "optional": true,
+      "doc": "The face's shape, so the crop and the outline are drawn as it will show."
+    },
+    {
+      "name": "src",
+      "type": "string",
+      "optional": false,
+      "doc": "The current picture's address, or null when there is none yet."
+    },
+    {
+      "name": "outline",
+      "type": "string",
+      "optional": false,
+      "doc": "The current outline, `#rrggbb`, or null for none."
+    },
+    {
+      "name": "accept",
+      "type": "string",
+      "optional": true,
+      "doc": "Which files may be picked."
+    },
+    {
+      "name": "onSave",
+      "type": "(result: PictureEditorResult) => Promise<unknown>",
+      "optional": false,
+      "doc": "Saves the result. If it throws, its message shows above the buttons and the dialog stays."
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
     }
   ],
   "PlaceChip": [
@@ -5726,7 +6116,7 @@
     },
     {
       "name": "face",
-      "type": "AvatarSize",
+      "type": "PresenceFaceSize",
       "optional": true,
       "doc": ""
     },
@@ -5749,6 +6139,184 @@
       "type": "boolean",
       "optional": true,
       "doc": "The item shown now in a list of them (the step whose picture is on screen): it keeps its wash's pressed fill, hovered or not. For `row`, `control` and `panel` washes."
+    }
+  ],
+  "ProductBar": [
+    {
+      "name": "back",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "A BackButton."
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "pinned",
+      "type": "boolean",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "ProductFacts": [
+    {
+      "name": "facts",
+      "type": "readonly ProductFact[]",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "ProductInfo": [
+    {
+      "name": "items",
+      "type": "readonly ProductInfoItem[]",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "ProductPage": [
+    {
+      "name": "logo",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "maker",
+      "type": "string",
+      "optional": true,
+      "doc": "Who made it, under the line."
+    },
+    {
+      "name": "onMaker",
+      "type": "() => void",
+      "optional": true,
+      "doc": "Opens more from the maker; without it the maker is plain text."
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Its one action."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "MenuItems for the ⋯ beside the action: everything else it can do."
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "facts",
+      "type": "readonly ProductFact[]",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onHeroOut",
+      "type": "(out: boolean) => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "ProductPreviews": [
+    {
+      "name": "previews",
+      "type": "readonly { src: string; alt: string; }[]",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "ProductSection": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "optional": true,
+      "doc": "Lets the page scroll to it, such as Manage from a shelf's Manage button."
+    }
+  ],
+  "ProductTile": [
+    {
+      "name": "icon",
+      "type": "LucideIcon",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "value",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "ProductTiles": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
     }
   ],
   "ProfileCardBanner": [
@@ -5784,6 +6352,18 @@
       "name": "face",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onFaceEdit",
+      "type": "() => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "faceEditLabel",
+      "type": "string",
+      "optional": true,
       "doc": ""
     }
   ],
@@ -5976,7 +6556,7 @@
       "name": "actions",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "The buttons in one 36px row at the panel's end: a BackButton first where there is one, then quiet ones (Skip), then the one primary action last."
+      "doc": "The buttons in one 36px row along the card's foot, from its start: a BackButton first where there is one, then the one primary action, then the rest (Always allow, Skip, Deny)."
     },
     {
       "name": "error",
@@ -6237,6 +6817,12 @@
   ],
   "RowGroupSection": [
     {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    },
+    {
       "name": "title",
       "type": "string",
       "optional": true,
@@ -6271,12 +6857,6 @@
       "type": "\"div\" | \"ul\"",
       "optional": true,
       "doc": ""
-    },
-    {
-      "name": "className",
-      "type": "string",
-      "optional": true,
-      "doc": "Layout only."
     }
   ],
   "RowGroupStack": [],
@@ -6880,6 +7460,12 @@
   ],
   "SettingsSection": [
     {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": "Layout only."
+    },
+    {
       "name": "title",
       "type": "string",
       "optional": true,
@@ -6902,12 +7488,6 @@
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
       "doc": ""
-    },
-    {
-      "name": "className",
-      "type": "string",
-      "optional": true,
-      "doc": "Layout only."
     }
   ],
   "SetupState": [
@@ -6916,6 +7496,12 @@
       "type": "string",
       "optional": false,
       "doc": "What is getting ready, as it reads after \"Setting up the\": \"video editor\", \"terminal\"."
+    },
+    {
+      "name": "named",
+      "type": "boolean",
+      "optional": true,
+      "doc": "`tool` is a name of its own, such as an app's (\"CyberChef\"), so it reads without \"the\": \"Setting up CyberChef\", \"CyberChef couldn't start\"."
     },
     {
       "name": "label",
@@ -7042,9 +7628,9 @@
     },
     {
       "name": "columns",
-      "type": "2 | 1",
+      "type": "2 | 1 | 3",
       "optional": true,
-      "doc": "Two columns once the pane is wide (default), or always one, such as an updates list."
+      "doc": "The most columns it takes once the pane is wide: three (default), two, or always one, such as an updates list."
     },
     {
       "name": "children",
@@ -7061,6 +7647,12 @@
       "doc": "Its own logo; left off when it would only repeat its neighbours'."
     },
     {
+      "name": "lead",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A control in the logo's place, such as a voice's play button: drawn as given, never inside the button that opens the item. Takes the place of `logo`."
+    },
+    {
       "name": "title",
       "type": "string",
       "optional": false,
@@ -7070,13 +7662,13 @@
       "name": "line",
       "type": "string",
       "optional": true,
-      "doc": "One line about it, under its name."
+      "doc": "One line about it, under its name, wrapping onto a second before it fades."
     },
     {
       "name": "action",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
-      "doc": "Its one action, under the line."
+      "doc": "Its one action, at the row's right end."
     },
     {
       "name": "menu",
@@ -7094,7 +7686,7 @@
       "name": "onOpen",
       "type": "() => void",
       "optional": true,
-      "doc": "Opens its details."
+      "doc": "Opens its page."
     }
   ],
   "ShelfSkeleton": [
@@ -7307,7 +7899,20 @@
       "doc": ""
     }
   ],
-  "SidewaysScroll": [],
+  "SidewaysScroll": [
+    {
+      "name": "fade",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Fades the row's edge wherever its items carry on past it, so an item cut there reads as more this way rather than as broken. An edge with nothing past it stays sharp."
+    },
+    {
+      "name": "onOverflowChange",
+      "type": "(overflowing: boolean) => void",
+      "optional": true,
+      "doc": "Told whenever the row starts or stops having more items than fit."
+    }
+  ],
   "Skeleton": [
     {
       "name": "as",
@@ -7427,6 +8032,76 @@
     }
   ],
   "Slider": [],
+  "SpaceRail": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "start",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "SpaceRailItem": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "waiting",
+      "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onSelect",
+      "type": "() => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onContextMenu",
+      "type": "MouseEventHandler<HTMLButtonElement>",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
   "Spinner": [
     {
       "name": "label",
@@ -7641,88 +8316,6 @@
       "type": "string",
       "optional": true,
       "doc": "Layout only."
-    }
-  ],
-  "StoreDetail": [
-    {
-      "name": "open",
-      "type": "boolean",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "onOpenChange",
-      "type": "(open: boolean) => void",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "banner",
-      "type": "string",
-      "optional": true,
-      "doc": "The banner the item exports, if it has one."
-    },
-    {
-      "name": "logo",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "title",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "line",
-      "type": "string",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "action",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "Its one action, under its name: `get-filled` to get it, or `CatalogDone` once it's in."
-    },
-    {
-      "name": "menu",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "Everything else it can do (Turn off, Open its page, Remove), as MenuItems in a ⋯ beside the action, so the one action stays alone."
-    },
-    {
-      "name": "facts",
-      "type": "readonly StoreFact[]",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "previews",
-      "type": "readonly StorePreview[]",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "children",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": ""
-    }
-  ],
-  "StoreDetailSection": [
-    {
-      "name": "title",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "children",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
     }
   ],
   "SuggestionItem": [
@@ -8090,6 +8683,12 @@
       "doc": "Shows the whole text in a tooltip, only while it doesn't fit. `true` uses the label's own text; a string is shown instead, for a label whose children aren't plain text."
     },
     {
+      "name": "fullSide",
+      "type": "TooltipSide",
+      "optional": true,
+      "doc": "Which side of the label that tooltip opens on. Defaults to top, flipping when there's no room; a label in a bar along the window's top, such as a tab, opens beside it so the tooltip never drops over a native page under the bar."
+    },
+    {
       "name": "lines",
       "type": "number",
       "optional": true,
@@ -8238,6 +8837,12 @@
       "type": "string",
       "optional": true,
       "doc": "The id of the body it opens."
+    },
+    {
+      "name": "pictures",
+      "type": "TurnPicture[]",
+      "optional": true,
+      "doc": "Pictures the step took, as thumbnails after a bare row (never inside a ToolList)."
     }
   ],
   "ToolSuspense": [
@@ -8264,6 +8869,12 @@
       "type": "string",
       "optional": false,
       "doc": "What is getting ready, as it reads after \"Setting up the\": \"video editor\", \"terminal\"."
+    },
+    {
+      "name": "named",
+      "type": "boolean",
+      "optional": true,
+      "doc": "`tool` is a name of its own, such as an app's (\"CyberChef\"), so it reads without \"the\": \"Setting up CyberChef\", \"CyberChef couldn't start\"."
     },
     {
       "name": "stallAfterMs",
@@ -8572,6 +9183,20 @@
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
       "doc": "At its end, such as how long the turn worked."
+    },
+    {
+      "name": "pictures",
+      "type": "TurnPicture[]",
+      "optional": true,
+      "doc": "Pictures the run's steps took (screenshots), as thumbnails after the line."
+    }
+  ],
+  "TurnPictures": [
+    {
+      "name": "pictures",
+      "type": "TurnPicture[]",
+      "optional": false,
+      "doc": ""
     }
   ],
   "TurnStatus": [
@@ -8596,6 +9221,50 @@
     {
       "name": "waiting",
       "type": "boolean",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Given with onToggle, the line opens what is running now."
+    },
+    {
+      "name": "onToggle",
+      "type": "() => void",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "controls",
+      "type": "string",
+      "optional": true,
+      "doc": "The id of what it opens."
+    }
+  ],
+  "TurnTasks": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "tasks",
+      "type": "TurnTask[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "head",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "foot",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": true,
       "doc": ""
     }
@@ -8659,7 +9328,7 @@
       "name": "avatar",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
-      "doc": "Their face, at the 18px glyph size (an `Avatar size=\"xs\"`)."
+      "doc": "Their face, at 22.5px (an `Avatar size=\"xs\"`)."
     },
     {
       "name": "name",

@@ -8,6 +8,9 @@ import { RowGroupSection } from "../layout/RowGroup";
  * A section of a settings page: its label over one RowGroup of SettingsRows, as the profile card
  * groups its rows. No card edge and no line between rows; sections sit 22.5px apart in a
  * RowGroupStack. Leave `title` off where the page's own title already names the only section.
+ * A section whose rows all render nothing (a setting this computer doesn't have) hides,
+ * heading and all, so a page never shows an empty fill under a label. Other attributes pass
+ * on to the section, so a settings page can mark it for its navigation.
  *
  * ```tsx
  * <SettingsSection title="Startup">
@@ -21,7 +24,8 @@ export function SettingsSection({
   action,
   children,
   className,
-}: {
+  ...props
+}: Omit<HTMLAttributes<HTMLElement>, "title" | "children"> & {
   title?: string;
   /** A muted line about the whole section, only where it explains something its rows don't. */
   description?: ReactNode;
@@ -32,10 +36,11 @@ export function SettingsSection({
 }) {
   return (
     <RowGroupSection
+      {...props}
       title={title}
       description={description}
       action={action}
-      className={cn("@container/settings", className)}
+      className={cn("@container/settings has-[>[data-slot=row-group]:empty]:hidden", className)}
     >
       {children}
     </RowGroupSection>

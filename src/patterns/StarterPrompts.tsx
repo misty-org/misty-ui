@@ -15,7 +15,7 @@ export type StarterPrompt = {
  * Ideas to start from under an empty chat, for someone who doesn't know what to ask yet: quiet
  * rows of an icon and a label in two columns as wide as their labels, the whole block centered
  * under the heading, or with `align="start"` at the start of its line, under a heading set there
- * (a chat's ChannelWelcome). It drops to one column before a label would be cut.
+ * (a channel's ChannelWelcome). It drops to one column before a label would be cut.
  * Picking one hands its prompt to the caller, which puts it in the composer unsent.
  *
  * `variant="chips"` lays them out instead as one centered row of pills, for under a composer.

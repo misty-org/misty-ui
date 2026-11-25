@@ -38,8 +38,8 @@ export interface MediaPlayerCardProps {
   onSeek?(seconds: number): void;
   onToggleMute?(): void;
   /**
-   * Just the track, 40.5px tall (54 in a card padded 6.75px): the position bar and the transport fold away, and open again
-   * when this goes false (the holder opens them on hover or focus).
+   * Just the track and its position bar: the transport folds away, and opens again when this goes
+   * false (the holder opens it on hover or focus).
    */
   compact?: boolean;
   className?: string;
@@ -49,7 +49,8 @@ export interface MediaPlayerCardProps {
  * A media player, laid out like Zen's: the track's artwork and title with the card's own buttons
  * at the top, a position bar that can be dragged, and the transport in the middle beneath it,
  * between the source's mark and a mute button. Previous restarts the track when the source has
- * no previous one; the bar shows only for a finite length. `compact` folds all but the track away.
+ * no previous one; the bar shows only for a finite length. `compact` folds the transport away and
+ * keeps the track and its position bar.
  * Monochrome: the only color is the artwork and the source's mark.
  */
 export function MediaPlayerCard(props: MediaPlayerCardProps) {
@@ -107,6 +108,72 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
         </div>
         {props.actions ? <div className="flex shrink-0 items-center">{props.actions}</div> : null}
       </div>
+      {length && shown != null ? (
+        <Text
+          bare
+          as="div"
+          size="caption"
+          tone="muted"
+          className="flex items-center gap-2 pt-2 tabular-nums"
+        >
+          <span>{clock(shown)}</span>
+          <span
+            ref={bar}
+            role="slider"
+            data-reorder-ignore=""
+            aria-label="Playback position"
+            aria-valuemin={0}
+            aria-valuemax={Math.round(length)}
+            aria-valuenow={Math.round(shown)}
+            aria-valuetext={`${clock(shown)} of ${clock(length)}`}
+            tabIndex={seekable ? 0 : undefined}
+            data-scrubbing={scrub !== null ? "" : undefined}
+            className={cn(
+              "group/bar relative h-1 flex-1 rounded-full bg-cream/15 outline-none",
+              seekable &&
+                "cursor-pointer touch-none after:absolute after:inset-x-0 after:-inset-y-2 after:content-['']",
+              seekable && "hover:h-1.5 focus-visible:h-1.5 data-[scrubbing]:h-1.5",
+            )}
+            onKeyDown={(event: KeyboardEvent<HTMLSpanElement>) => {
+              if (!seekable) return;
+              const step = event.shiftKey ? 30 : 5;
+              const target =
+                event.key === "ArrowLeft"
+                  ? shown - step
+                  : event.key === "ArrowRight"
+                    ? shown + step
+                    : event.key === "Home"
+                      ? 0
+                      : event.key === "End"
+                        ? length
+                        : null;
+              if (target === null) return;
+              event.preventDefault();
+              seek(Math.min(length, Math.max(0, target)));
+            }}
+            onPointerDown={(event) => {
+              if (!seekable || event.button !== 0) return;
+              event.currentTarget.setPointerCapture(event.pointerId);
+              setScrub(at(event));
+            }}
+            onPointerMove={(event) => {
+              if (scrub !== null) setScrub(at(event));
+            }}
+            onPointerUp={(event) => {
+              if (scrub === null) return;
+              seek(at(event));
+              setScrub(null);
+            }}
+            onPointerCancel={() => setScrub(null)}
+          >
+            <span
+              className="absolute inset-y-0 left-0 rounded-full bg-cream-muted group-data-[scrubbing]/bar:bg-cream-bright"
+              style={{ width: `${(Math.min(shown, length) / length) * 100}%` }}
+            />
+          </span>
+          <span>{clock(length)}</span>
+        </Text>
+      ) : null}
       <div
         inert={props.compact || undefined}
         className={cn(
@@ -116,72 +183,6 @@ export function MediaPlayerCard(props: MediaPlayerCardProps) {
       >
         <div className="min-h-0 overflow-hidden">
           <div className="grid gap-2 pt-2">
-            {length && shown != null ? (
-              <Text
-                bare
-                as="div"
-                size="caption"
-                tone="muted"
-                className="flex items-center gap-2 tabular-nums"
-              >
-                <span>{clock(shown)}</span>
-                <span
-                  ref={bar}
-                  role="slider"
-                  data-reorder-ignore=""
-                  aria-label="Playback position"
-                  aria-valuemin={0}
-                  aria-valuemax={Math.round(length)}
-                  aria-valuenow={Math.round(shown)}
-                  aria-valuetext={`${clock(shown)} of ${clock(length)}`}
-                  tabIndex={seekable ? 0 : undefined}
-                  data-scrubbing={scrub !== null ? "" : undefined}
-                  className={cn(
-                    "group/bar relative h-1 flex-1 rounded-full bg-cream/15 outline-none",
-                    seekable &&
-                      "cursor-pointer touch-none after:absolute after:inset-x-0 after:-inset-y-2 after:content-['']",
-                    seekable && "hover:h-1.5 focus-visible:h-1.5 data-[scrubbing]:h-1.5",
-                  )}
-                  onKeyDown={(event: KeyboardEvent<HTMLSpanElement>) => {
-                    if (!seekable) return;
-                    const step = event.shiftKey ? 30 : 5;
-                    const target =
-                      event.key === "ArrowLeft"
-                        ? shown - step
-                        : event.key === "ArrowRight"
-                          ? shown + step
-                          : event.key === "Home"
-                            ? 0
-                            : event.key === "End"
-                              ? length
-                              : null;
-                    if (target === null) return;
-                    event.preventDefault();
-                    seek(Math.min(length, Math.max(0, target)));
-                  }}
-                  onPointerDown={(event) => {
-                    if (!seekable || event.button !== 0) return;
-                    event.currentTarget.setPointerCapture(event.pointerId);
-                    setScrub(at(event));
-                  }}
-                  onPointerMove={(event) => {
-                    if (scrub !== null) setScrub(at(event));
-                  }}
-                  onPointerUp={(event) => {
-                    if (scrub === null) return;
-                    seek(at(event));
-                    setScrub(null);
-                  }}
-                  onPointerCancel={() => setScrub(null)}
-                >
-                  <span
-                    className="absolute inset-y-0 left-0 rounded-full bg-cream-muted group-data-[scrubbing]/bar:bg-cream-bright"
-                    style={{ width: `${(Math.min(shown, length) / length) * 100}%` }}
-                  />
-                </span>
-                <span>{clock(length)}</span>
-              </Text>
-            ) : null}
             <div className="grid grid-cols-[1fr_auto_1fr] items-center">
               <span className="grid size-8 place-items-center justify-self-start">
                 {props.source}

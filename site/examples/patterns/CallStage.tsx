@@ -1,5 +1,6 @@
-import { MicOff, MonitorUp, PhoneOff, Video } from "lucide-react";
+import { MicOff, MonitorUp, Video } from "lucide-react";
 import {
+  CallLeave,
   Avatar,
   AvatarFallback,
   CallBar,
@@ -84,9 +85,7 @@ export default function Example() {
           <MonitorUp />
         </IconButton>
         <ToolbarDivider />
-        <IconButton label="Leave" variant="danger">
-          <PhoneOff />
-        </IconButton>
+        <CallLeave onClick={() => {}} />
       </CallBar>
     </div>
   );

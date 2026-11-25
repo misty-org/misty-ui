@@ -1,0 +1,44 @@
+[data-slot="nav-branch"] {
+  --branch-x: calc(var(--spacing) * 4);
+  --branch-indent: calc(var(--spacing) * 6);
+  --branch-reach: calc(var(--branch-indent) - var(--branch-x) - var(--spacing) * 0.5);
+  --branch-gap: calc(var(--spacing) * 1.5);
+  --branch-bend: var(--spacing);
+  --branch-line: var(--hairline) solid var(--color-charcoal-border-strong);
+  display: flex;
+  flex-direction: column;
+  gap: var(--branch-gap);
+}
+[data-slot="nav-branch"][data-under="face"] {
+  --branch-x: calc(var(--spacing) * 5.5);
+  --branch-indent: calc(var(--spacing) * 9);
+}
+[data-slot="nav-branch-item"] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+[data-slot="nav-branch-item"]::before {
+  content: "";
+  position: absolute;
+  left: var(--branch-x);
+  top: calc(50% - var(--branch-bend));
+  width: var(--branch-reach);
+  height: var(--branch-bend);
+  border-left: var(--branch-line);
+  border-bottom: var(--branch-line);
+  border-bottom-left-radius: var(--branch-bend);
+  pointer-events: none;
+}
+[data-slot="nav-branch-item"]::after {
+  content: "";
+  position: absolute;
+  left: var(--branch-x);
+  top: calc(var(--branch-gap) * -1);
+  bottom: 0;
+  border-left: var(--branch-line);
+  pointer-events: none;
+}
+[data-slot="nav-branch-item"]:last-child::after {
+  bottom: calc(50% + var(--branch-bend));
+}

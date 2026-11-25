@@ -1,5 +1,13 @@
-import { X } from "lucide-react";
-import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { Search, Volume2, VolumeX, X } from "lucide-react";
+import {
+  isValidElement,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import {
   createDwell,
   reorderIds,
@@ -9,15 +17,33 @@ import {
 import { cn } from "../class_names";
 import { IconButton } from "../controls/IconButton";
 import { Pressable } from "../controls/Pressable";
+import { RowTools } from "../controls/RowTools";
 import { Text } from "../display/Text";
 import { SidewaysScroll } from "../layout/SidewaysScroll";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../overlays/Command";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "../overlays/ContextMenu";
+import { MenuTrigger } from "../overlays/MenuTrigger";
+import { Popover, PopoverContent } from "../overlays/Popover";
+import { Tooltip } from "../overlays/Tooltip";
 import { tabGroupTone, type TabStripGroup } from "./TabGroup";
 
 export interface TabStripTab {
   id: string;
   label: string;
-  /** An 18px mark before the label: a file's icon, a site's, a spinner while it loads. */
+  /**
+   * What the tab shows, as its own icon: the one its row in the sidebar wears, in the glyph's
+   * 18px box. A place's glyph (`spaceIcons`), a channel's #, a person's face or an agent's face at
+   * the Avatar's `glyph` size (no presence dot), an app's `AppLogoImage` at `glyph`, a file's icon.
+   * Never a stand-in for a page it can't name, and never a state: leave it off instead. A glyph
+   * takes the tab's own tone, muted, bright while the tab is open.
+   */
   icon?: ReactNode;
   /** The whole name, shown in a tooltip when the label is cut. Defaults to the label. */
   full?: string;
@@ -27,6 +53,17 @@ export interface TabStripTab {
   menu?: ReactNode;
   /** The id of the group in `groups` the tab belongs to. A group's tabs sit next to each other. */
   group?: string;
+  /**
+   * The tab's page is playing sound, as Chrome marks it: a speaker after the name, crossed out
+   * while `muted`, that mutes or unmutes the page. Leave it off while the page is silent.
+   */
+  sound?: TabStripSound;
+}
+
+/** A tab's sound mark: whether its page is muted, and the press that mutes or unmutes it. */
+export interface TabStripSound {
+  muted: boolean;
+  onToggle(): void;
 }
 
 export interface TabStripProps {
@@ -94,7 +131,7 @@ const isChip = (id: string | undefined): boolean => Boolean(id?.startsWith(chipP
 const chipGroup = (id: string) => id.slice(chipPrefix.length);
 
 const tabClass = cn(
-  "group/tab @container/tab relative flex h-8 w-36 min-w-24 flex-initial items-center",
+  "group/tab @container/tab relative flex h-8 w-52 flex-initial snap-start items-center",
   "rounded-md hover:bg-row-hover data-[selected]:bg-row-active",
   "data-[reorder-target]:bg-control-active",
   "transition-[width,min-width,margin,opacity] duration-200 ease-out",
@@ -103,6 +140,70 @@ const tabClass = cn(
   "data-[entering]:starting:-ml-1 data-[entering]:starting:w-0",
   "data-[entering]:starting:min-w-0 data-[entering]:starting:opacity-0",
 );
+
+/**
+ * How narrow a tab may get, in spacing steps: down to its icon alone (40.5px) for a tab that has
+ * one and isn't open, while the open tab and a tab with no icon keep room for their name.
+ */
+const tabFloor = (tab: TabStripTab, selected: boolean) => (tab.icon && !selected ? 9 : 24);
+
+/**
+ * Every open tab in one searchable list, from a button at the row's end while the tabs don't all
+ * fit, as Chrome's tab search: each tab with its own icon, the open one checked, its closer on
+ * hover.
+ */
+function TabSearch(props: {
+  label: string;
+  tabs: ReadonlyArray<TabStripTab>;
+  active: string | null;
+  onSelect(id: string): void;
+  onClose?(id: string): void;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <MenuTrigger kind="popover" iconOnly label="Search tabs" icon={Search} />
+      <PopoverContent align="end" kind="flush">
+        <Command label={props.label}>
+          <CommandInput placeholder="Search tabs" aria-label="Search tabs" />
+          <CommandList>
+            <CommandEmpty>No tabs match</CommandEmpty>
+            <CommandGroup>
+              {props.tabs.map((tab) => (
+                <CommandItem
+                  key={tab.id}
+                  value={tab.id}
+                  keywords={[tab.full ?? tab.label]}
+                  icon={isValidElement(tab.icon) ? tab.icon : undefined}
+                  label={tab.full ?? tab.label}
+                  checked={tab.id === props.active}
+                  className="group/row"
+                  end={
+                    tab.closeLabel && props.onClose ? (
+                      <RowTools reveal="hover">
+                        <IconButton
+                          label={tab.closeLabel}
+                          size="sm"
+                          onClick={() => props.onClose?.(tab.id)}
+                        >
+                          <X />
+                        </IconButton>
+                      </RowTools>
+                    ) : undefined
+                  }
+                  onSelect={() => {
+                    setOpen(false);
+                    props.onSelect(tab.id);
+                  }}
+                />
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 /** The tab a key moves to from `index`, or -1 for a key the strip leaves alone. */
 function nextTabIndex(key: string, index: number, count: number): number {
@@ -158,14 +259,18 @@ function GroupLine(props: { group: TabStripGroup; first: boolean; last: boolean 
 /**
  * A row of tabs over a pane: 36px tabs with an icon and a label that fades when long, a closer
  * that shows on hover and on the open tab, arrows and Home/End to move between them, a middle
- * click or the closer to close, dragging (or Alt+Shift and an arrow) to reorder, and the tab's
+ * click or the closer to close, a speaker on a tab whose page plays sound (`sound`) that mutes
+ * it, dragging (or Alt+Shift and an arrow) to reorder, and the tab's
  * menu on a right-click. Tabs may sit in Chrome's tab groups (`groups`): a colored chip before
  * them that folds them away, a line of its color under them, a tab dropped on another tab or on a
- * chip going into that group, and a group dragged by its chip. Tabs share one width and shrink
- * together when they don't fit, never wrapping; once they reach their least width the tabs and
- * `after` scroll sideways (a wheel or a swipe, with no scrollbar), the open tab kept in view.
- * `after` holds a control right after the last tab, and `end` controls at the far end that never
- * scroll away.
+ * chip going into that group, and a group dragged by its chip. Tabs share one width, as wide as
+ * Chrome's while there's room, and shrink together once more tabs don't fit, never wrapping: the
+ * closer goes first, then the name, down to the tab's icon alone, while the open tab and a tab with
+ * no icon keep room for their name. Every tab names itself in a tooltip. Past that, the tabs and
+ * `after` scroll sideways (a wheel or a swipe, with no scrollbar), resting on a tab's edge, the
+ * open tab kept in view and the row's edge fading where tabs carry on past it; a Search tabs
+ * button then shows at the row's end, listing every tab to pick or close. `after` holds a control
+ * right after the last tab, and `end` controls at the far end that never scroll away.
  *
  * ```tsx
  * <TabStrip label="Terminals" tabs={tabs} active={activeId} onSelect={select} onClose={close}
@@ -174,6 +279,7 @@ function GroupLine(props: { group: TabStripGroup; first: boolean; last: boolean 
  */
 export function TabStrip(props: TabStripProps) {
   const list = useRef<HTMLDivElement | null>(null);
+  const [overflowing, setOverflowing] = useState(false);
   const ids = props.tabs.map((tab) => tab.id);
   const groupsById = new Map((props.groups ?? []).map((group) => [group.id, group]));
   const groupOf = (tab: TabStripTab | undefined) =>
@@ -192,6 +298,7 @@ export function TabStrip(props: TabStripProps) {
   );
   const [present] = useState(() => new Set(ids));
   const visible = props.tabs.filter((tab) => !groupOf(tab)?.collapsed);
+  const floors = visible.reduce((sum, tab) => sum + tabFloor(tab, tab.id === props.active), 0);
   const tabsOf = (group: string) => props.tabs.filter((tab) => tab.group === group);
   const shownTabsOf = (group: string) =>
     groupsById.get(group)?.collapsed ? [] : tabsOf(group).map((tab) => tab.id);
@@ -329,7 +436,7 @@ export function TabStrip(props: TabStripProps) {
         data-reorder-handle={props.onMoveGroup ? "" : undefined}
         data-reorder-preview=""
         className={cn(
-          "relative flex h-8 flex-none items-center rounded-md px-1",
+          "relative flex h-8 flex-none snap-start items-center rounded-md px-1",
           "data-[reorder-target]:bg-control-active",
         )}
       >
@@ -386,7 +493,7 @@ export function TabStrip(props: TabStripProps) {
         data-reorder-preview=""
         aria-hidden={folded || undefined}
         inert={folded || undefined}
-        className={tabClass}
+        className={cn(tabClass, tabFloor(tab, selected) === 9 ? "min-w-9" : "min-w-24")}
         onAuxClick={(event) => {
           if (event.button === 1 && closable) props.onClose?.(tab.id);
         }}
@@ -394,31 +501,57 @@ export function TabStrip(props: TabStripProps) {
         <div
           className="relative flex h-full min-w-0 flex-1 items-center overflow-hidden rounded-md"
         >
-          <Pressable
-            role="tab"
-            aria-selected={selected}
-            tabIndex={selected ? 0 : -1}
-            data-tab-id={tab.id}
-            className="flex h-full min-w-0 flex-1 items-center gap-2 pl-2 pr-1"
-            onClick={() => props.onSelect(tab.id)}
-            onKeyDown={(event) => onKeyDown(event, tab.id)}
-          >
-            {tab.icon ? (
-              <span className="flex size-4 flex-none items-center">{tab.icon}</span>
-            ) : null}
-            <Text
-              size="control"
-              tone={selected ? "bright" : "muted"}
-              className="min-w-0 flex-1 text-left"
-              full={tab.full ?? true}
+          <Tooltip content={tab.full ?? tab.label} side="bottom">
+            <Pressable
+              role="tab"
+              aria-selected={selected}
+              aria-label={tab.full ?? tab.label}
+              tabIndex={selected ? 0 : -1}
+              data-tab-id={tab.id}
+              className={cn(
+                "flex h-full min-w-0 flex-1 items-center gap-2 pl-2 pr-1",
+                tab.icon && "@max-[4.5rem]/tab:justify-center @max-[4.5rem]/tab:px-0",
+              )}
+              onClick={() => props.onSelect(tab.id)}
+              onKeyDown={(event) => onKeyDown(event, tab.id)}
             >
-              {tab.label}
-            </Text>
-          </Pressable>
+              {tab.icon ? (
+                <Text
+                  bare
+                  aria-hidden="true"
+                  tone={selected ? "bright" : "muted"}
+                  className="grid size-4 flex-none place-items-center"
+                >
+                  {tab.icon}
+                </Text>
+              ) : null}
+              <Text
+                size="control"
+                tone={selected ? "bright" : "muted"}
+                className={cn("min-w-0 flex-1 text-left", tab.icon && "@max-[4.5rem]/tab:hidden")}
+              >
+                {tab.label}
+              </Text>
+            </Pressable>
+          </Tooltip>
+          {tab.sound ? (
+            <span className="flex flex-none @max-[4rem]/tab:hidden">
+              <IconButton
+                label={tab.sound.muted ? "Unmute tab" : "Mute tab"}
+                tooltipSide="right"
+                size="sm"
+                data-reorder-ignore=""
+                onClick={tab.sound.onToggle}
+              >
+                {tab.sound.muted ? <VolumeX /> : <Volume2 />}
+              </IconButton>
+            </span>
+          ) : null}
           {closable ? (
             <span className="flex flex-none @max-[5.5rem]/tab:hidden">
               <IconButton
                 label={tab.closeLabel!}
+                tooltipSide="right"
                 size="sm"
                 className="mr-1"
                 data-reorder-ignore=""
@@ -454,7 +587,14 @@ export function TabStrip(props: TabStripProps) {
         props.windowEdge ? "pr-3" : "pr-4",
       )}
     >
-      <SidewaysScroll className="flex-[0_1_auto] gap-1 self-stretch">
+      <SidewaysScroll
+        fade
+        onOverflowChange={setOverflowing}
+        className={cn(
+          "flex-[0_1_auto] snap-x snap-mandatory scroll-px-4 gap-1 self-stretch",
+          "[html[data-pointer-dragging=true]_&]:snap-none",
+        )}
+      >
         <div
           {...reorder}
           ref={(element) => {
@@ -463,9 +603,12 @@ export function TabStrip(props: TabStripProps) {
           }}
           role="tablist"
           aria-label={props.label}
-          className="flex min-w-0 flex-[0_1_auto] items-center gap-1"
+          className={cn(
+            "flex min-w-0 flex-[0_1_auto] items-center gap-1",
+            !props.after && "snap-end",
+          )}
           style={{
-            minWidth: `calc(${visible.length} * var(--spacing) * 24 + ${Math.max(0, visible.length - 1)} * var(--spacing))`,
+            minWidth: `calc(${floors} * var(--spacing) + ${Math.max(0, visible.length - 1)} * var(--spacing))`,
           }}
         >
           {entries.map((entry, index) =>
@@ -474,10 +617,23 @@ export function TabStrip(props: TabStripProps) {
               : tabView(entry.tab, entry.group, index, entry.folded),
           )}
         </div>
-        {props.after ? <div className="flex flex-none items-center">{props.after}</div> : null}
+        {props.after ? (
+          <div className="flex flex-none snap-end items-center">{props.after}</div>
+        ) : null}
       </SidewaysScroll>
-      {props.end ? (
-        <div className="ml-auto flex flex-none items-center gap-1">{props.end}</div>
+      {overflowing || props.end ? (
+        <div className="ml-auto flex flex-none items-center gap-1">
+          {overflowing ? (
+            <TabSearch
+              label={props.label}
+              tabs={props.tabs}
+              active={props.active}
+              onSelect={props.onSelect}
+              onClose={props.onClose}
+            />
+          ) : null}
+          {props.end}
+        </div>
       ) : null}
     </div>
   );

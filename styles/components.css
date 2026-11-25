@@ -137,6 +137,32 @@
   }
 }
 
+@utility fade-sides {
+  --fade-from: 0rem;
+  --fade-to: 0rem;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black var(--fade-from),
+    black calc(100% - var(--fade-to)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black var(--fade-from),
+    black calc(100% - var(--fade-to)),
+    transparent
+  );
+
+  &[data-fade-start] {
+    --fade-from: 1.125rem;
+  }
+  &[data-fade-end] {
+    --fade-to: 1.125rem;
+  }
+}
+
 @utility fade-end-lines {
   -webkit-mask-image:
     linear-gradient(black, black),

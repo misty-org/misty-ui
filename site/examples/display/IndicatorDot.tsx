@@ -1,4 +1,4 @@
-import { Folder } from "lucide-react";
+import { Folder, User } from "lucide-react";
 import { IndicatorDot } from "../../../src";
 
 export const meta = {
@@ -11,9 +11,15 @@ export const meta = {
 
 export default function Example() {
   return (
-    <span className="relative inline-flex">
-      <Folder />
-      <IndicatorDot />
-    </span>
+    <div className="flex items-center gap-4">
+      <span className="relative inline-flex">
+        <Folder />
+        <IndicatorDot />
+      </span>
+      <span className="relative inline-flex">
+        <User />
+        <IndicatorDot count={4} />
+      </span>
+    </div>
   );
 }

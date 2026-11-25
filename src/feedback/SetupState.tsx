@@ -9,6 +9,11 @@ export type SetupStateProps = {
   /** What is getting ready, as it reads after "Setting up the": "video editor", "terminal". */
   tool: string;
   /**
+   * `tool` is a name of its own, such as an app's ("CyberChef"), so it reads without "the":
+   * "Setting up CyberChef", "CyberChef couldn't start".
+   */
+  named?: boolean;
+  /**
    * The line in place of "Setting up the …", for a setup that is better named by what it does:
    * "Joining the drawing", "Checking Claude Code", "Connecting to the database".
    */
@@ -50,6 +55,7 @@ const message = (error: string | Error) => (typeof error === "string" ? error : 
  */
 export function SetupState({
   tool,
+  named = false,
   label,
   error,
   onRetry,
@@ -69,7 +75,9 @@ export function SetupState({
   const retry = onRetry
     ? { label: "Try again", variant: "secondary" as const, onClick: onRetry }
     : undefined;
-  const line = label ?? `Setting up the ${tool}`;
+  const subject = named ? tool : `the ${tool}`;
+  const opening = named ? tool : `The ${tool}`;
+  const line = label ?? `Setting up ${subject}`;
 
   if (size === "row") {
     return (
@@ -81,7 +89,7 @@ export function SetupState({
         {failed || stalled ? (
           <>
             <Text size="meta" tone={failed ? "danger" : "muted"} className="min-w-0">
-              {failed ? message(error!) : `The ${tool} is taking a while`}
+              {failed ? message(error!) : `${opening} is taking a while`}
             </Text>
             {retry ? (
               <Button type="button" size="sm" variant="quiet" onClick={retry.onClick}>
@@ -107,7 +115,7 @@ export function SetupState({
     return (
       <ErrorState
         inline={size === "inline"}
-        title={`The ${tool} couldn't start`}
+        title={`${opening} couldn't start`}
         line={message(error!)}
         action={retry}
       />
@@ -116,7 +124,7 @@ export function SetupState({
     return (
       <ErrorState
         inline={size === "inline"}
-        title={`The ${tool} is taking a while`}
+        title={`${opening} is taking a while`}
         line={onRetry ? "It may still finish, or you can try again." : "It may still finish."}
         action={retry}
       />

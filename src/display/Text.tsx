@@ -144,6 +144,7 @@ export function Text({
     const {
       as: Tag = "span",
       full: _full,
+      fullSide: _fullSide,
       lines: _lines,
       ref,
       ...rest
@@ -158,7 +159,14 @@ export function Text({
     );
   }
   if (wrap) {
-    const { as: Tag = "p", full: _full, lines: _lines, ref, ...rest } = props;
+    const {
+      as: Tag = "p",
+      full: _full,
+      fullSide: _fullSide,
+      lines: _lines,
+      ref,
+      ...rest
+    } = props;
     return (
       <Tag
         {...rest}

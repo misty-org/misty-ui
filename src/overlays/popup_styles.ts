@@ -29,7 +29,7 @@ export const popupMotionClass = "misty-popup-motion";
 export const menuListClass = "grid grid-cols-[minmax(0,1fr)] gap-1 p-1";
 
 export const menuContentClass = cn(
-  "relative layer-menu max-h-[min(--spacing(96),calc(100dvh-var(--spacing)*8))] w-auto min-w-32",
+  "relative layer-menu max-h-[calc(100dvh-var(--spacing)*8)] w-auto min-w-32",
   "overflow-x-hidden overflow-y-auto data-[state=closed]:overflow-hidden",
   menuListClass,
   popupSurfaceClass,
@@ -72,7 +72,7 @@ export const popoverSizeClass: Record<PopoverSize, string> = {
 export type PopoverKind = "panel" | "list" | "flush";
 export const popoverKindClass: Record<PopoverKind, string> = {
   panel: "grid max-h-[min(--spacing(144),calc(100dvh-var(--spacing)*8))] gap-1 overflow-y-auto p-3",
-  list: cn(menuListClass, "max-h-[min(--spacing(96),calc(100dvh-var(--spacing)*8))] overflow-y-auto"),
+  list: cn(menuListClass, "max-h-[calc(100dvh-var(--spacing)*8)] overflow-y-auto"),
   flush: "flex max-h-[min(--spacing(112),calc(100dvh-var(--spacing)*8))] flex-col overflow-hidden p-0",
 };
 

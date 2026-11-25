@@ -21,8 +21,10 @@ export interface PersonRowProps {
   line?: string;
   /** Offline: the row dims until it is hovered. */
   away?: boolean;
-  /** Opens them, such as their direct message. */
+  /** Opens them, such as their direct message, or picks them for a profile shown beside the list. */
   onOpen?: () => void;
+  /** The one picked in the list, such as the friend whose profile is open beside it: the pressed wash. */
+  selected?: boolean;
   /**
    * Buttons that always show at the row's end, for something waiting on the person (Accept and
    * Ignore on a friend request): labeled `Button`s at `sm`.
@@ -40,7 +42,8 @@ export interface PersonRowProps {
  * One person in a list of people, such as Friends: their face with its presence dot, their name,
  * and one quiet line about them under it, on a 54px row with no hairlines between rows. A request
  * keeps its answers in view (`actions`); otherwise the row's buttons show on hover (`tools`) before
- * one ⋯ (`menu`). A list of them goes in RowGroupSections (Requests, Online, Offline). A Space's
+ * one ⋯ (`menu`). A list of them sits straight on the page under a SectionHeading per group
+ * (Requests, Online, Offline), with no fill behind the rows. A Space's
  * member list is `MemberRow`; a DM's sidebar row is a `NavRow`.
  */
 export function PersonRow({
@@ -50,6 +53,7 @@ export function PersonRow({
   line,
   away = false,
   onOpen,
+  selected = false,
   actions,
   tools,
   menu,
@@ -58,9 +62,12 @@ export function PersonRow({
   return (
     <div
       data-slot="person-row"
+      data-selected={selected || undefined}
       className={cn(
         "group/row relative flex h-12 min-w-0 items-center gap-1 rounded-lg pr-1.5",
-        "hover:bg-control-hover has-[[data-state=open]]:bg-control-hover",
+        selected
+          ? "bg-control-active"
+          : "hover:bg-control-hover has-[[data-state=open]]:bg-control-hover",
         away && "opacity-55 hover:opacity-100 has-[[data-state=open]]:opacity-100",
         className,
       )}
@@ -69,6 +76,7 @@ export function PersonRow({
         className="flex h-full min-w-0 flex-1 items-center gap-3 rounded-lg pl-2 text-left"
         onClick={onOpen}
         disabled={!onOpen}
+        aria-current={selected || undefined}
       >
         {face}
         <span className="flex min-w-0 flex-1 flex-col">

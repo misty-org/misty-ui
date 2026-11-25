@@ -28,10 +28,12 @@ export type ButtonSize = "sm" | "md" | "lg";
  * in a soft wash, for a button that stands in another's place in a slot (Stop in Send's place
  * while a reply runs); and the store's own two for getting something (Get, Install, Make agent,
  * Update): `get` on every item of a shelf and `get-filled` as the one action of an item's details,
- * both the filled primary look (white in the dark theme, black in the light one).
+ * both the filled primary look (white in the dark theme, black in the light one); and `hang-up`, a
+ * call's Leave, filled in the window's close red with a white glyph so ending a call reads at a
+ * glance, as every call app's does. Only a call's Leave (`CallLeave`) and Decline wear it.
  */
 export type ButtonLook =
-  ButtonVariant | "overlay" | "soft" | "get" | "get-filled";
+  ButtonVariant | "overlay" | "soft" | "get" | "get-filled" | "hang-up";
 
 export type ButtonJustify = "center" | "start" | "end" | "between" | "none";
 
@@ -69,6 +71,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    * the picture sits near the button's edge, so the button's edge lines up with the page's gutter.
    */
   snug?: boolean;
+  /**
+   * Every label the button shows as its state changes (Invite, then Sent): it keeps the width of
+   * the widest, so it never jumps and a column of them stays even. Not with `asChild`.
+   */
+  widthOf?: readonly string[];
   /** Styles its one child instead, such as a router Link. */
   asChild?: boolean;
   /** Defaults to "button": a form's submit button says `type="submit"`. */
@@ -116,6 +123,10 @@ const variantClass: Record<ButtonLook, string> = {
   ),
   get: primaryClass,
   "get-filled": primaryClass,
+  "hang-up": cn(
+    "bg-window-close bg-clip-border text-white",
+    "hover:bg-window-close/85 focus-visible:bg-window-close/85",
+  ),
   overlay: cn(
     "border-cream/10 bg-charcoal-bg/75 text-cream backdrop-blur-sm",
     "hover:bg-charcoal-bg/90 hover:text-cream-bright",
@@ -209,6 +220,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       caption,
       shrink = false,
       snug = false,
+      widthOf,
       asChild = false,
       children,
       type,
@@ -217,6 +229,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const Comp = asChild ? Slot : "button";
+    const label =
+      widthOf?.length && !asChild ? (
+        <span className="grid justify-items-center">
+          {widthOf.map((each) => (
+            <span key={each} aria-hidden="true" className="invisible col-start-1 row-start-1">
+              {each}
+            </span>
+          ))}
+          <span className="col-start-1 row-start-1">{children}</span>
+        </span>
+      ) : (
+        children
+      );
     const resolvedVariant = variant ?? "secondary";
     const compact = useCompactControls();
     const resolvedSize = compact ? "sm" : (size ?? "md");
@@ -243,7 +268,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {renderIcon(icon, "inline-start")}
-        <Slottable>{children}</Slottable>
+        <Slottable>{label}</Slottable>
         {caption != null ? (
           <span className="text-caption text-cream-muted">{caption}</span>
         ) : null}

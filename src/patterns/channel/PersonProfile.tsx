@@ -12,7 +12,8 @@ import { ProfileCardBanner } from "../people/ProfileCard";
  * face large (a `PresenceFace` with `face="xl"`) centered and set half into it on a plate of the
  * column's color, their name and their own status line centered under it, then
  * `PersonProfileSection`s about them. `menu` puts a ⋯ over the banner's corner with what can be
- * done about the person (Remove friend, Block). It fills the column it is given (a FramedPage's end
+ * done about the person (Remove friend, Block); `actions` puts what can be done with them (Message,
+ * calls) in a row under their name, where it stands beside a list rather than their own chat. It fills the column it is given (a FramedPage's end
  * column), on that column's fill. A group's people are a `MemberList` instead.
  */
 export function PersonProfile(props: {
@@ -26,6 +27,12 @@ export function PersonProfile(props: {
   line?: string;
   /** Rows of the ⋯ menu over the banner (MenuItems). */
   menu?: ReactNode;
+  /**
+   * What can be done with them now, as one centered row under their name: a secondary `Button`
+   * (Message) and secondary `IconButton`s (Voice call, Video call), all `md`. Leave it off beside
+   * their own direct message, whose bar already has them.
+   */
+  actions?: ReactNode;
   /** `PersonProfileSection`s. */
   children?: ReactNode;
 }) {
@@ -48,7 +55,7 @@ export function PersonProfile(props: {
         ) : null}
       </div>
       <div className="flex flex-col items-center px-4 pb-3 text-center">
-        <span className="-mt-9 inline-flex flex-none rounded-full bg-charcoal-sidebar p-1">
+        <span className="-mt-10 inline-flex flex-none rounded-full bg-charcoal-sidebar p-1">
           {props.face}
         </span>
         <Text as="h2" size="title" weight="semibold" tone="bright" full className="mt-2 max-w-full">
@@ -58,6 +65,11 @@ export function PersonProfile(props: {
           <Text as="p" size="control" wrap className="mt-1 max-w-full">
             {props.line}
           </Text>
+        ) : null}
+        {props.actions ? (
+          <div className="mt-3 flex max-w-full items-center justify-center gap-2">
+            {props.actions}
+          </div>
         ) : null}
       </div>
       {props.children}

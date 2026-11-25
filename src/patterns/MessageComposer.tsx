@@ -358,9 +358,7 @@ export function ComposerStatusRow(props: {
     >
       <Icon aria-hidden className="shrink-0" />
       {props.label ? <span className="shrink-0">{props.label}</span> : null}
-      <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap text-cream [mask-image:linear-gradient(to_right,black_calc(100%-1.25rem),transparent)]">
-        {props.children}
-      </span>
+      <OverflowFadeText className="flex-1 text-cream">{props.children}</OverflowFadeText>
       {props.actions ? (
         <span className="flex shrink-0 items-center gap-0.5">
           <CompactControls>{props.actions}</CompactControls>

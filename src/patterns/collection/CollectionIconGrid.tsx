@@ -31,13 +31,13 @@ const tileWidth: Record<CollectionZoom, string> = {
 const tileSteps: Record<CollectionZoom, number> = { 0: 22, 1: 26, 2: 34 };
 
 /** A tile's height with the gap under it, before a drawn one is measured. */
-const tileEstimate: Record<CollectionZoom, number> = { 0: 121, 1: 139, 2: 166 };
+const tileEstimate: Record<CollectionZoom, number> = { 0: 124, 1: 151, 2: 187 };
 
 /** The picture's box at each zoom: an icon fills it, a thumbnail is cropped to it. */
 const pictureBox: Record<CollectionZoom, string> = {
-  0: "size-10",
-  1: "size-14",
-  2: "size-20",
+  0: "size-14",
+  1: "size-20",
+  2: "size-28",
 };
 
 /**
@@ -112,7 +112,7 @@ export function CollectionIconGrid({
           >
             <Pressable
               aria-label={item.title}
-              className="flex w-full min-w-0 flex-col items-center gap-2 px-2 pt-3 pb-2"
+              className="flex w-full min-w-0 flex-col items-center gap-1 px-1 pt-2 pb-1"
               onClick={open}
             >
               <span

@@ -8,7 +8,7 @@ const settingsOverlayLayerClass = [
 ].join(" ");
 const settingsOverlayPanelClass = [
   "h-[min(--spacing(225),calc(100dvh-var(--spacing)*6-max(var(--spacing)*6,var(--misty-modal-inset-top,0px))))] w-[min(--spacing(300),calc(100dvw-var(--spacing)*24))]",
-  "min-w-0 overflow-hidden rounded-xl bg-charcoal-card",
+  "min-w-0 overflow-hidden rounded-xl bg-charcoal-bg",
   "misty-dialog-motion",
 ].join(" ");
 

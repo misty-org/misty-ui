@@ -72,7 +72,7 @@ describe("Text", () => {
 });
 
 describe("Avatar", () => {
-  it("takes the 16 and 64 sizes and a tone for its initials", () => {
+  it("takes the 22.5 and 81 sizes and a tone for its initials", () => {
     render(
       <>
         <Avatar size="xs" data-testid="small" />
@@ -81,10 +81,10 @@ describe("Avatar", () => {
         </Avatar>
       </>,
     );
-    expect(screen.getByTestId("small").className).toContain("data-[size=xs]:size-4");
+    expect(screen.getByTestId("small").className).toContain("data-[size=xs]:size-5");
     const tile = screen.getByTestId("tile");
     expect(tile.dataset.tone).toBe("teal");
-    expect(tile.className).toContain("data-[size=xl]:size-16");
+    expect(tile.className).toContain("data-[size=xl]:size-18");
     expect(tile.className).toContain("data-[tone=teal]:bg-tone-teal");
     expect(screen.getByText("DS").className).toContain(
       "group-data-[tone]/avatar:bg-transparent",

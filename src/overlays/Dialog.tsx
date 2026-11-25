@@ -111,7 +111,8 @@ const dialogSizeClass: Record<DialogSize, string> = {
   md: "max-w-lg",
   lg: "max-w-2xl",
   xl: "max-w-4xl",
-  media: "h-[calc(100dvh-var(--spacing)*16-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*16)] max-w-6xl",
+  media:
+    "h-[calc(100dvh-var(--spacing)*8-var(--misty-modal-inset-top,0px))] max-h-[calc(100dvh-var(--spacing)*8-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*8)] max-w-7xl",
 };
 
 const DialogContent = React.forwardRef<
@@ -128,13 +129,19 @@ const DialogContent = React.forwardRef<
     backdrop?: boolean;
     /** Omits the corner close button, for dialogs that only their own buttons may dismiss. */
     hideClose?: boolean;
-    /** `page` fills the panel with the page's color, for a viewer whose content is the page. */
+    /**
+     * `card` (the default) is a dialog of its own: a form or a question, set in from its edges.
+     * `page` makes the dialog one sheet in the page's color for content that is a page (a viewer,
+     * a file browser, a collection): no inset, a DialogHeader as a 54px bar with a hairline under
+     * it and the close button in it, and the DialogBody edge to edge under it. `media` is always
+     * `page`.
+     */
     tone?: "card" | "page";
   }
 >(
   (
     {
-      tone = "card",
+      tone,
       className,
       children,
       container,
@@ -151,6 +158,7 @@ const DialogContent = React.forwardRef<
     ref,
   ) => {
     const scrolls = layout === "scroll" || size === "media";
+    const sheet = (tone ?? (size === "media" ? "page" : "card")) === "page";
     const dimmed = React.useContext(PageDimmedContext);
     const fromTour = (event: Event) =>
       event.target instanceof Element && event.target.closest('[data-slot="tour"]') !== null;
@@ -186,15 +194,18 @@ const DialogContent = React.forwardRef<
             data-slot="dialog-content"
             data-size={size}
             data-layout={scrolls ? "scroll" : "flow"}
+            data-sheet={sheet ? "" : undefined}
             className={cn(
               "group/dialog pointer-events-auto relative",
               scrolls
                 ? "flex flex-col overflow-hidden"
                 : "grid grid-cols-[minmax(0,1fr)] overflow-y-auto",
               "max-h-[calc(100dvh-var(--spacing)*16-var(--misty-modal-inset-top,0px))] w-[calc(100%-var(--spacing)*8)]",
+              "misty-scrollbar-rounded rounded-xl",
+              sheet
+                ? "gap-0 bg-charcoal-bg [--dialog-inset:0px]"
+                : "gap-4 bg-charcoal-card p-(--dialog-inset) [--dialog-inset:--spacing(6)]",
               dialogSizeClass[size],
-              "misty-scrollbar-rounded gap-4 rounded-xl p-6",
-              tone === "page" ? "bg-charcoal-bg" : "bg-charcoal-card",
               "text-body text-cream misty-dialog-motion",
               "data-[state=closed]:pointer-events-none",
               className,
@@ -222,7 +233,10 @@ const DialogContent = React.forwardRef<
                   label="Close"
                   variant="quiet"
                   data-slot="dialog-close"
-                  className="absolute right-4 top-4"
+                  className={cn(
+                    "absolute",
+                    sheet ? "right-3 top-2" : "right-4 top-4",
+                  )}
                 >
                   <X />
                 </IconButton>
@@ -239,7 +253,13 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     data-slot="dialog-header"
-    className={cn("flex shrink-0 flex-col gap-1.5 pr-8 text-left", className)}
+    className={cn(
+      "flex shrink-0 flex-col gap-1.5 pr-8 text-left",
+      "group-data-[sheet]/dialog:h-(--ui-header) group-data-[sheet]/dialog:flex-row",
+      "group-data-[sheet]/dialog:items-center group-data-[sheet]/dialog:pl-3 group-data-[sheet]/dialog:pr-14",
+      "group-data-[sheet]/dialog:border-b group-data-[sheet]/dialog:border-charcoal-border",
+      className,
+    )}
     {...props}
   />
 );
@@ -248,7 +268,8 @@ DialogHeader.displayName = "DialogHeader";
 /**
  * The dialog's content between its header and footer. With `layout="scroll"` (and always at
  * `size="media"`) it takes the height that's left and scrolls on its own, edge to edge, while the
- * header and footer stay put. In the default flow it is a plain block.
+ * header and footer stay put. In a `page` sheet it has no inset: the page it holds sits flush under
+ * the header's hairline. In the default flow it is a plain block.
  *
  * ```tsx
  * <DialogContent size="lg" layout="scroll">
@@ -263,8 +284,8 @@ const DialogBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement
     data-slot="dialog-body"
     className={cn(
       "min-h-0 min-w-0",
-      "group-data-[layout=scroll]/dialog:-mx-6 group-data-[layout=scroll]/dialog:flex-1",
-      "group-data-[layout=scroll]/dialog:overflow-y-auto group-data-[layout=scroll]/dialog:px-6",
+      "group-data-[layout=scroll]/dialog:-mx-(--dialog-inset) group-data-[layout=scroll]/dialog:flex-1",
+      "group-data-[layout=scroll]/dialog:overflow-y-auto group-data-[layout=scroll]/dialog:px-(--dialog-inset)",
       className,
     )}
     {...props}
@@ -276,7 +297,12 @@ DialogBody.displayName = "DialogBody";
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     data-slot="dialog-footer"
-    className={cn("flex shrink-0 items-center justify-end gap-2", className)}
+    className={cn(
+      "flex shrink-0 items-center justify-end gap-2",
+      "group-data-[sheet]/dialog:border-t group-data-[sheet]/dialog:border-charcoal-border",
+      "group-data-[sheet]/dialog:px-3 group-data-[sheet]/dialog:py-2",
+      className,
+    )}
     {...props}
   />
 );

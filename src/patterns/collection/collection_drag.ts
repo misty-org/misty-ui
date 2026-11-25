@@ -1,11 +1,15 @@
 import "../pointer_reorder.css";
 import {
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
   type PointerEvent as ReactPointerEvent,
+  type RefObject,
 } from "react";
+import { createDwell } from "../../hooks/pointer_dwell";
 import { startGesture } from "../../hooks/pointer_gesture";
 import {
   usePointerDropTarget,
@@ -25,6 +29,23 @@ export type CollectionDrag = {
   onDrop(target: string | null, ids: string[], copy: boolean): void;
   /** Whether a folder takes the items now being dragged; a refused folder doesn't light up. */
   canDrop?(target: string): boolean;
+  /**
+   * The open folder, as a key. The items may be let go anywhere the drag reaches, including this
+   * collection after it has moved on to another folder: they land back in the folder they came
+   * from only as a copy.
+   */
+  where?: string;
+  /**
+   * A drag rested on a folder for a moment, still held: open it, as Finder's spring-loaded
+   * folders do, so the items can be dropped inside. The drag carries on as the folder opens.
+   */
+  onDwell?(target: string): void;
+  /**
+   * What the dragged items are to drop targets beyond collections, by scope, asked as the drag
+   * starts: the window's tabs open under a resting drag (`workspace-tab-switch`), a composer
+   * attaches the files.
+   */
+  carries?(ids: ReadonlyArray<string>): Record<string, string> | undefined;
 };
 
 /** Every collection that moves items by dragging shares one scope, so items move between them. */
@@ -39,6 +60,27 @@ export type CollectionDragItemProps = {
 };
 
 let copyHeld = false;
+
+/** The items being dragged now and where they came from, across every collection. */
+let lifted: { ids: ReadonlyArray<string>; from: string } | null = null;
+const liftedListeners = new Set<() => void>();
+const NOTHING: ReadonlyArray<string> = [];
+function setLifted(next: typeof lifted) {
+  lifted = next;
+  for (const listener of liftedListeners) listener();
+}
+function useLiftedIds(): ReadonlyArray<string> {
+  return useSyncExternalStore(
+    (listener) => {
+      liftedListeners.add(listener);
+      return () => liftedListeners.delete(listener);
+    },
+    () => lifted?.ids ?? NOTHING,
+    () => NOTHING,
+  );
+}
+const fromKey = (where: string, zone: string) => `${where}\u0000${zone}`;
+
 let tracking = false;
 function trackCopyKey() {
   if (tracking || typeof window === "undefined") return;
@@ -63,7 +105,8 @@ const ignored =
  * root (`listProps`) is the drop region: the item under the pointer, when it is marked with
  * `data-collection-drop` (a folder), takes the drop first, then the `data-collection-zone` under the pointer (a column), then the root
  * itself as the open folder. Dropping back into the zone the items came from does nothing unless
- * ⌥ makes it a copy.
+ * ⌥ makes it a copy. A drag rested on a folder opens it (`onDwell`), and the drag outlives the
+ * pressed item, so it carries on into the folder, another collection or another tab.
  */
 export function useCollectionDrag(
   drag: CollectionDrag | undefined,
@@ -72,15 +115,22 @@ export function useCollectionDrag(
 ) {
   const [element, setElement] = useState<HTMLElement | null>(null);
   const ref = useMemo(() => ({ current: element }), [element]);
-  const [dragging, setDragging] = useState<ReadonlyArray<string>>([]);
+  const dragging = useLiftedIds();
+  const instance = useId();
   const latest = useRef({ drag, selected, labelOf });
   latest.current = { drag, selected, labelOf };
-  const source = useRef<string | null>(null);
   const cancel = useRef<(() => void) | undefined>(undefined);
+  const pressed = useRef(false);
+  const dwell = useRef(createDwell());
   useEffect(() => {
     if (drag) trackCopyKey();
   }, [drag]);
-  useEffect(() => () => cancel.current?.(), []);
+  useEffect(
+    () => () => {
+      if (pressed.current) cancel.current?.();
+    },
+    [],
+  );
 
   usePointerDropTarget(ref, {
     scope: collectionDragScope,
@@ -100,7 +150,9 @@ export function useCollectionDrag(
       const folder = own(top?.closest<HTMLElement>("[data-collection-drop]"));
       if (folder) {
         const id = folder.dataset.collectionDrop!;
-        if (ids.includes(id) || current.canDrop?.(id) === false) return null;
+        if (ids.includes(id)) return null;
+        dwell.current(id, (target) => latest.current.drag?.onDwell?.(target));
+        if (current.canDrop?.(id) === false) return null;
         return {
           id,
           after: false,
@@ -109,9 +161,10 @@ export function useCollectionDrag(
           box: true,
         };
       }
+      dwell.current(null, () => undefined);
       const zone = own(top?.closest<HTMLElement>("[data-collection-zone]"));
       const id = zone?.dataset.collectionZone ?? "";
-      if (source.current === id && !copyHeld) return null;
+      if (lifted?.from === fromKey(current.where ?? instance, id) && !copyHeld) return null;
       if (id && current.canDrop?.(id) === false) return null;
       return {
         id,
@@ -157,18 +210,24 @@ export function useCollectionDrag(
     const zone =
       event.currentTarget.closest<HTMLElement>("[data-collection-zone]")
         ?.dataset.collectionZone ?? "";
+    const from = fromKey(latest.current.drag.where ?? instance, zone);
     cancel.current?.();
+    pressed.current = true;
     cancel.current = startGesture(
       event,
-      { id, ids, label, scope: collectionDragScope },
-      () => {
-        source.current = zone;
-        setDragging(ids);
-        return () => {
-          source.current = null;
-          setDragging([]);
-        };
+      {
+        id,
+        ids,
+        label,
+        scope: collectionDragScope,
+        carries: latest.current.drag.carries?.(ids),
       },
+      () => {
+        pressed.current = false;
+        setLifted({ ids, from });
+        return () => setLifted(null);
+      },
+      { outlivesSource: true },
     );
   };
 
@@ -192,4 +251,56 @@ export function useCollectionDrag(
       : undefined;
 
   return { listProps, itemProps };
+}
+
+/**
+ * Places outside a collection that take its dragged items, such as a sidebar's folders or the
+ * open folder's whole pane (which takes them even while it is empty or still loading). Each
+ * place inside `ref` is an element marked `data-collection-place` with its key; a collection's
+ * own items under the pointer take the drop first. A drag rested on a place calls `onDwell`, so
+ * it can open while still held.
+ */
+export function useCollectionDropPlaces(
+  ref: RefObject<HTMLElement | null>,
+  options: {
+    /** Whether `place` takes the items, ⌥ held when `copy`; a refused place doesn't light up. */
+    canDrop?(place: string, ids: ReadonlyArray<string>, copy: boolean): boolean;
+    onDrop(place: string, ids: ReadonlyArray<string>, copy: boolean): void;
+    onDwell?(place: string): void;
+  },
+) {
+  const latest = useRef(options);
+  latest.current = options;
+  const dwell = useRef(createDwell());
+  useEffect(() => {
+    trackCopyKey();
+  }, []);
+  usePointerDropTarget(ref, {
+    scope: collectionDragScope,
+    hit(x, y, moving): ReorderHit | null {
+      const root = ref.current;
+      if (!root) return null;
+      const top = document
+        .elementsFromPoint(x, y)
+        .find((node): node is HTMLElement => node instanceof HTMLElement && root.contains(node));
+      const list = top?.closest<HTMLElement>(`[data-reorder-list="${collectionDragScope}"]`);
+      if (!top || (list && root.contains(list) && list !== root)) {
+        dwell.current(null, () => undefined);
+        return null;
+      }
+      const place = top.closest<HTMLElement>("[data-collection-place]");
+      if (!place || !root.contains(place)) {
+        dwell.current(null, () => undefined);
+        return null;
+      }
+      const key = place.dataset.collectionPlace!;
+      dwell.current(key, (id) => latest.current.onDwell?.(id));
+      const ids = moving.ids ?? [moving.id];
+      if (latest.current.canDrop?.(key, ids, copyHeld) === false) return null;
+      return { id: key, after: false, rect: visibleRect(place), axis: "y", box: true };
+    },
+    drop(moving, hit) {
+      latest.current.onDrop(hit.id, moving.ids ?? [moving.id], copyHeld);
+    },
+  });
 }
