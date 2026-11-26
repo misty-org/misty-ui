@@ -52,15 +52,19 @@ const iconRowClass = "h-auto [&>td]:h-auto [&>td]:py-0";
 
 /**
  * A column's seam carried down through its rows: a hairline at each body cell's right edge, under
- * the header's seam, shown while the table is hovered or a seam is dragged. It reaches up through
+ * the header's seam, shown while that seam is hovered or dragged. It reaches up through
  * the row's clear top edge, so the line runs unbroken from the header to the last row; the cell
  * doesn't clip it, so a column narrower than its value relies on its content's own fade.
  */
-const columnLineClass = cn(
-  "relative after:pointer-events-none after:absolute after:-top-0.5 after:bottom-0 after:right-0",
+const lineClass = cn(
+  "relative after:pointer-events-none after:absolute after:bottom-0 after:right-0",
   "after:w-px after:content-[''] after:bg-transparent",
-  "group-hover/table:after:bg-charcoal-border group-data-[resizing]/table:after:bg-charcoal-border",
 );
+/** A column's line shows only while its seam is under the pointer or being dragged. */
+const litLineClass = "after:bg-charcoal-border";
+const columnLineClass = cn(lineClass, "after:-top-[2px]");
+/** The same line through a row with no gap above it: a scroll spacer, or the rest of the pane. */
+const restLineClass = cn(lineClass, "after:top-0");
 
 /** Column widths the person dragged, in pixels, by column key. */
 export type CollectionColumnWidths = Record<string, number>;
@@ -91,9 +95,11 @@ function ColumnSeam({
   onPointerDown,
   onKeyDown,
   onReset,
+  onNear,
 }: {
   label: string;
   active: boolean;
+  onNear: (near: boolean) => void;
   onPointerDown: (event: PointerEvent<HTMLSpanElement>) => void;
   onKeyDown: (event: KeyboardEvent<HTMLSpanElement>) => void;
   onReset: () => void;
@@ -107,10 +113,14 @@ function ColumnSeam({
       data-active={active || undefined}
       className={cn(
         "absolute right-0 top-0 z-10 h-full w-2 cursor-col-resize touch-none outline-none",
-        "after:absolute after:inset-y-0 after:right-0 after:w-px after:content-['']",
-        "after:bg-transparent group-hover/table:after:bg-charcoal-border",
+        "after:pointer-events-none after:absolute after:inset-y-0 after:right-0 after:w-px after:content-['']",
+        "after:bg-transparent hover:after:bg-charcoal-border",
         "focus-visible:after:bg-charcoal-border-strong data-[active]:after:bg-charcoal-border-strong",
       )}
+      onPointerEnter={() => onNear(true)}
+      onPointerLeave={() => onNear(false)}
+      onFocus={() => onNear(true)}
+      onBlur={() => onNear(false)}
       onPointerDown={onPointerDown}
       onKeyDown={onKeyDown}
       onDoubleClick={onReset}
@@ -246,6 +256,10 @@ export function CollectionItemsTable({
   const cells = useRef(new Map<string, HTMLTableCellElement>());
   const [draft, setDraft] = useState<CollectionColumnWidths | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
+  const [near, setNear] = useState<string | null>(null);
+  const shownLine = dragging ?? near;
+  const lineOf = (key: string, base: string) =>
+    resizable && cn(base, shownLine === key && litLineClass);
   const resizable = onWidthsChange !== undefined;
   const held = draft ?? widths ?? {};
   const fixed =
@@ -326,6 +340,11 @@ export function CollectionItemsTable({
         onPointerDown={(event) => startResize(column.key, event)}
         onKeyDown={(event) => nudge(column.key, event)}
         onReset={() => onWidthsChange?.({})}
+        onNear={(isNear) =>
+          setNear((current) =>
+            isNear ? column.key : current === column.key ? null : current,
+          )
+        }
       />
     ) : null;
   const filler = fixed ? (
@@ -337,27 +356,35 @@ export function CollectionItemsTable({
   const rowGutter = (
     <TableCell aria-hidden="true" data-gutter="" className="w-2 p-0" />
   );
-  const span = columns.length + 2 + (fixed ? 1 : 0) + (hasActions ? 1 : 0);
-  const spacer = (height: number) =>
-    height > 0 ? (
-      <tr aria-hidden="true">
-        <td colSpan={span} style={{ height, padding: 0 }} />
-      </tr>
-    ) : null;
+  const restRow = (height: number | "100%", key: string) => (
+    <tr key={key} aria-hidden="true" style={{ height }}>
+      <td className="p-0" />
+      {columns.map((column) => (
+        <td key={column.key} className={cn("p-0", lineOf(column.key, restLineClass))} />
+      ))}
+      {fixed ? <td className="p-0" /> : null}
+      {hasActions ? <td className="p-0" /> : null}
+      <td className="p-0" />
+    </tr>
+  );
+  const spacer = (height: number, key: string) =>
+    height > 0 ? restRow(height, key) : null;
 
   return (
-    <div className="min-w-0 shrink-0 overflow-x-auto">
+    <div
+      data-resizing={dragging !== null || undefined}
+      className="group/table flex min-h-full min-w-0 flex-1 flex-col overflow-x-auto overflow-y-hidden"
+    >
       <Table
         unwrapped
-        data-resizing={dragging !== null || undefined}
         className={cn(
-          "group/table border-separate border-spacing-0",
+          "flex-1 border-separate border-spacing-0",
           fixed && "table-fixed",
         )}
         style={
           fixed
             ? {
-                width: `max(100%, calc(${Math.ceil(total)}px + var(--spacing) * 4))`,
+                width: `max(100%, calc(${Math.ceil(total)}px + var(--spacing) * ${hasActions ? 14 : 4}))`,
               }
             : undefined
         }
@@ -408,7 +435,7 @@ export function CollectionItemsTable({
           </TableRow>
         </TableHeader>
         <TableBody ref={virtual.ref}>
-          {spacer(virtual.before)}
+          {spacer(virtual.before, "before")}
           {shownItems.map((item) => {
             const open = (event: MouseEvent) => {
               if (item.selectable && onSelect)
@@ -427,7 +454,7 @@ export function CollectionItemsTable({
                 }}
               >
                 {rowGutter}
-                <TableCell className={cn(resizable && columnLineClass)}>
+                <TableCell className={cn(lineOf(columns[0]?.key ?? "", columnLineClass))}>
                   <Pressable
                     aria-label={item.title}
                     className={cn(
@@ -487,7 +514,7 @@ export function CollectionItemsTable({
                     key={column.key}
                     className={cn(
                       "whitespace-nowrap text-cream-muted",
-                      resizable && columnLineClass,
+                      lineOf(column.key, columnLineClass),
                     )}
                   >
                     {fixed ? (
@@ -520,7 +547,8 @@ export function CollectionItemsTable({
               </TableRow>
             );
           })}
-          {spacer(virtual.after)}
+          {spacer(virtual.after, "after")}
+          {restRow("100%", "rest")}
         </TableBody>
       </Table>
     </div>
