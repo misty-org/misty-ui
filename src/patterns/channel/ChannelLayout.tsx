@@ -33,7 +33,8 @@ function iconOnly(item: ActionBarItem): ActionBarItem {
 
 /**
  * The open chat's own bar, for a channel or a direct message: its icon (or the person's face) and
- * name, an optional topic, then its controls. It is a FramedBar (54px, one gutter, no fill or line
+ * name, an agent chat's open `thread` after it ("Scout – Pricing audit"), an optional topic, then
+ * its controls. It is a FramedBar (54px, one gutter, no fill or line
  * of its own), so it goes in a FramedPage's `header`, which paints the frame behind it and the
  * hairline under it. Each pane draws its own, so a split never loses a chat's controls. `actions`
  * are every control that may fold (calls, Threads, Pinned, Members, a ⋯ of the rest), icons only
@@ -46,6 +47,11 @@ export function ChannelHeader(props: {
   /** A person's face for a direct message, in place of an icon. */
   leading?: ReactNode;
   name: string;
+  /**
+   * The open thread of an agent's chat, after the name as "Name – Thread": the dash muted, the
+   * thread's name in the default text, fading first when room runs out.
+   */
+  thread?: string;
   topic?: string;
   /** The chat's icon buttons, which fold into ⋯ as room runs out; a toggle that is on is `pressed`. */
   actions?: ReadonlyArray<ActionBarItem>;
@@ -72,10 +78,22 @@ export function ChannelHeader(props: {
               weight="semibold"
               tone="bright"
               full
-              className={props.topic ? "min-w-32 shrink" : "min-w-32 flex-1"}
+              className={props.topic || props.thread ? "min-w-16 shrink-0" : "min-w-32 flex-1"}
             >
               {props.name}
             </Text>
+            {props.thread ? (
+              <>
+                <Text bare size="body" tone="muted" aria-hidden="true" className="shrink-0">
+                  –
+                </Text>
+                <OverflowFadeText
+                  className={cn("min-w-0 text-body text-cream", props.topic ? "shrink" : "flex-1")}
+                >
+                  {props.thread}
+                </OverflowFadeText>
+              </>
+            ) : null}
             {props.topic ? (
               <>
                 <ToolbarDivider />
@@ -152,11 +170,12 @@ export function ChannelWelcome(props: {
 
 /**
  * A line across the history with a label in it: a day (`date`), or where the messages the
- * person hasn't read begin (`new`), drawn in the danger color with a "New" tag at its end.
+ * person hasn't read begin (`new`): a quiet "New" in the muted text on the strong edge's line, so
+ * it marks the place without shouting.
  */
 export function ChannelDivider(props: { label?: string; kind?: "date" | "new" }) {
   const isNew = props.kind === "new";
-  const line = cn("h-px flex-1", isNew ? "bg-danger/50" : "bg-charcoal-border");
+  const line = cn("h-px flex-1", isNew ? "bg-charcoal-border-strong" : "bg-charcoal-border");
   return (
     <div
       role="separator"
@@ -165,13 +184,15 @@ export function ChannelDivider(props: { label?: string; kind?: "date" | "new" })
     >
       <span className={line} />
       {props.label ? (
-        <Text bare size="caption" weight="semibold" tone={isNew ? "danger" : "muted"}>
+        <Text bare size="caption" weight="medium" tone="muted">
           {props.label}
         </Text>
       ) : null}
       {props.label || !isNew ? <span className={line} /> : null}
       {isNew ? (
-        <span className="rounded-sm bg-danger px-1 text-micro font-semibold text-white">New</span>
+        <Text bare size="caption" weight="medium" tone="muted">
+          New
+        </Text>
       ) : null}
     </div>
   );

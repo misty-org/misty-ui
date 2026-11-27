@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { cn } from "../class_names";
 import { Button } from "../controls/Button";
 import { Text } from "../display/Text";
-import { Spinner } from "./Spinner";
 import { ErrorState } from "./StateView";
 
 export type SetupStateProps = {
@@ -98,14 +97,9 @@ export function SetupState({
             ) : null}
           </>
         ) : (
-          <>
-            <Text bare tone="muted" className="inline-flex">
-              <Spinner size="sm" label={false} />
-            </Text>
-            <Text size="meta" tone="muted" className="min-w-0">
-              {line}
-            </Text>
-          </>
+          <Text size="meta" tone="muted" className="min-w-0">
+            {line}
+          </Text>
         )}
       </span>
     );
@@ -140,14 +134,9 @@ export function SetupState({
         className,
       )}
     >
-      <div className="flex items-center gap-2">
-        <Text bare tone="muted" className="inline-flex">
-          <Spinner label={false} />
-        </Text>
-        <Text size="body" tone="muted">
-          {line}
-        </Text>
-      </div>
+      <Text size="body" tone="muted">
+        {line}
+      </Text>
     </div>
   );
 }

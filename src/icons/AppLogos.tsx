@@ -2,14 +2,17 @@ import { useState } from "react";
 import { LogoInitial, LogoPlate } from "./LogoFallbacks";
 import type { MarkRender } from "./Mark";
 
-/** Where an app's logo shows: a tab (the glyph's size), a sidebar row, the apps launcher, a directory card, a big tile, a product page's hero. */
-export type AppLogoSize = "glyph" | "row" | "launcher" | "card" | "tile" | "hero";
+/** Where an app's logo shows: a tab (the glyph's size), a sidebar row, the apps launcher, a directory card or store tile, a store row or card (`item`, 45px), a big tile, a store item's details (`sheet`, 72px), a hero. */
+export type AppLogoSize =
+  "glyph" | "row" | "launcher" | "card" | "item" | "tile" | "sheet" | "hero";
 const sizePx: Record<AppLogoSize, number> = {
   glyph: 18,
   row: 20,
   launcher: 56,
   card: 48,
+  item: 45,
   tile: 64,
+  sheet: 72,
   hero: 126,
 };
 

@@ -214,6 +214,12 @@
       "type": "boolean",
       "optional": true,
       "doc": "Working on the click: the button is disabled until it finishes."
+    },
+    {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows, so it keeps one width as its label changes."
     }
   ],
   "AlertDialogCancel": [
@@ -228,6 +234,12 @@
       "type": "boolean",
       "optional": true,
       "doc": "Working on the click: the button is disabled until it finishes."
+    },
+    {
+      "name": "widthOf",
+      "type": "readonly string[]",
+      "optional": true,
+      "doc": "Every label the button shows, so it keeps one width as its label changes."
     }
   ],
   "AlertDialogContent": [
@@ -1100,6 +1112,12 @@
       "doc": ""
     },
     {
+      "name": "thread",
+      "type": "string",
+      "optional": true,
+      "doc": "The open thread of an agent's chat, after the name as \"Name – Thread\": the dash muted, the thread's name in the default text, fading first when room runs out."
+    },
+    {
       "name": "topic",
       "type": "string",
       "optional": true,
@@ -1623,7 +1641,7 @@
     },
     {
       "name": "lines",
-      "type": "2 | 1",
+      "type": "1 | 2",
       "optional": true,
       "doc": ""
     }
@@ -1775,7 +1793,7 @@
     },
     {
       "name": "cardTitleLines",
-      "type": "2 | 1",
+      "type": "1 | 2",
       "optional": true,
       "doc": "How many lines a compact card's title may take before it fades."
     },
@@ -2384,12 +2402,6 @@
       "doc": ""
     },
     {
-      "name": "waiting",
-      "type": "boolean",
-      "optional": true,
-      "doc": ""
-    },
-    {
       "name": "className",
       "type": "string",
       "optional": true,
@@ -2455,7 +2467,7 @@
     },
     {
       "name": "arrangement",
-      "type": "\"row\" | \"dock\"",
+      "type": "\"dock\" | \"row\"",
       "optional": true,
       "doc": "`row` (the default) packs the items in order; `dock` places them at start, middle and end."
     },
@@ -2717,7 +2729,7 @@
     },
     {
       "name": "level",
-      "type": "2 | 3",
+      "type": "3 | 2",
       "optional": true,
       "doc": ""
     },
@@ -3068,6 +3080,20 @@
     }
   ],
   "DropdownMenuTrigger": [],
+  "Emoji": [
+    {
+      "name": "emoji",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "EmojiPicker": [
     {
       "name": "children",
@@ -3127,6 +3153,14 @@
       "name": "align",
       "type": "\"end\" | \"center\" | \"start\"",
       "optional": true,
+      "doc": ""
+    }
+  ],
+  "EmojiText": [
+    {
+      "name": "children",
+      "type": "string",
+      "optional": false,
       "doc": ""
     }
   ],
@@ -3947,6 +3981,18 @@
       "doc": ""
     },
     {
+      "name": "state",
+      "type": "\"results\" | \"working\" | \"waiting\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "ring",
+      "type": "\"chrome\" | \"card\" | \"page\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
       "name": "className",
       "type": "string",
       "optional": true,
@@ -4110,6 +4156,26 @@
     }
   ],
   "Label": [],
+  "LetterTile": [
+    {
+      "name": "name",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "size",
+      "type": "\"tile\" | \"hero\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
   "ListCard": [],
   "ListRow": [
     {
@@ -4272,7 +4338,7 @@
     },
     {
       "name": "lines",
-      "type": "2 | 1",
+      "type": "1 | 2",
       "optional": true,
       "doc": "2 for rows with a description line."
     },
@@ -4312,6 +4378,18 @@
       "name": "top",
       "type": "number",
       "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "doing",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "face",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
       "doc": ""
     }
   ],
@@ -4378,7 +4456,7 @@
   "LogoTile": [
     {
       "name": "size",
-      "type": "\"sm\" | \"md\" | \"tile\" | \"hero\"",
+      "type": "\"sm\" | \"md\" | \"tile\" | \"hero\" | \"item\" | \"sheet\"",
       "optional": true,
       "doc": ""
     },
@@ -4736,6 +4814,12 @@
       "type": "string",
       "optional": true,
       "doc": "Why a disabled row can't be used, shown in a tooltip while it is hovered."
+    },
+    {
+      "name": "count",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "A mark at the row's end, such as the `CountMark` of what waits behind it (Friends' requests)."
     },
     {
       "name": "ref",
@@ -5480,13 +5564,19 @@
       "name": "nested",
       "type": "boolean | \"face\"",
       "optional": true,
-      "doc": "A part of the row above it, such as a section of the open Settings page, inside a NavBranch: no mark of its own, its label lined up with the label of the row it belongs to. The row and its fill start past the branch's lines, so the open row's fill never covers them. Never a row of chips. `\"face\"` is for a row under one that leads with a face rather than a glyph (a thread under its agent in the sidebar), so its label lines up past the wider face instead of sitting under it."
+      "doc": "A part of the row above it that opens a page of its own, such as a thread under its agent, inside a NavBranch: no mark of its own, its label lined up with the label of the row it belongs to. The row and its fill start past the branch's lines, so the open row's fill never covers them. Never a row of chips. `\"face\"` is for a row under one that leads with a face rather than a glyph (a thread under its agent in the sidebar), so its label lines up past the wider face instead of sitting under it."
     },
     {
       "name": "tall",
       "type": "boolean",
       "optional": true,
       "doc": "At least 54px, for a row whose label has more under it, such as a file manager's drive with its capacity and a Meter (Kura's Devices). The caller stacks the lines beside the mark."
+    },
+    {
+      "name": "face",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The row leads with a face (a direct message, an agent) rather than a glyph: 45px tall, so the face has room around it. Rows of glyphs and the rows nested under a face stay 36px."
     },
     {
       "name": "muted",
@@ -6061,6 +6151,12 @@
       "doc": "Which files may be picked."
     },
     {
+      "name": "onChoose",
+      "type": "() => Promise<File | null | undefined>",
+      "optional": true,
+      "doc": "Picks the picture with the host's own file picker (Misty's), resolving to the chosen file or nothing when the person cancels. Without it, the system's file dialog opens."
+    },
+    {
       "name": "onSave",
       "type": "(result: PictureEditorResult) => Promise<unknown>",
       "optional": false,
@@ -6105,6 +6201,84 @@
       "type": "string",
       "optional": true,
       "doc": "Placement and color only; the size is fixed."
+    }
+  ],
+  "PlaceSwitch": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "value",
+      "type": "T",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "options",
+      "type": "[PlaceSwitchOption<T>, PlaceSwitchOption<T>]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onChange",
+      "type": "(value: T) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "PlaceTile": [
+    {
+      "name": "selected",
+      "type": "boolean",
+      "optional": true,
+      "doc": "The item shown now in a list of them (the step whose picture is on screen): it keeps its wash's pressed fill, hovered or not. For `row`, `control` and `panel` washes. The place's page is the one open (or its launcher is)."
+    },
+    {
+      "name": "wash",
+      "type": "PressableWash",
+      "optional": true,
+      "doc": "The shared hover look. Without it the content draws its own."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "The place's name: its tooltip and accessible name."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": "The place's glyph, from `spaceIcons`."
+    }
+  ],
+  "PlaceTiles": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
     }
   ],
   "Popover": [],
@@ -6235,184 +6409,6 @@
       "type": "boolean",
       "optional": true,
       "doc": "The item shown now in a list of them (the step whose picture is on screen): it keeps its wash's pressed fill, hovered or not. For `row`, `control` and `panel` washes."
-    }
-  ],
-  "ProductBar": [
-    {
-      "name": "back",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": "A BackButton."
-    },
-    {
-      "name": "title",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "action",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "pinned",
-      "type": "boolean",
-      "optional": false,
-      "doc": ""
-    }
-  ],
-  "ProductFacts": [
-    {
-      "name": "facts",
-      "type": "readonly ProductFact[]",
-      "optional": false,
-      "doc": ""
-    }
-  ],
-  "ProductInfo": [
-    {
-      "name": "items",
-      "type": "readonly ProductInfoItem[]",
-      "optional": false,
-      "doc": ""
-    }
-  ],
-  "ProductPage": [
-    {
-      "name": "logo",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "title",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "line",
-      "type": "string",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "maker",
-      "type": "string",
-      "optional": true,
-      "doc": "Who made it, under the line."
-    },
-    {
-      "name": "onMaker",
-      "type": "() => void",
-      "optional": true,
-      "doc": "Opens more from the maker; without it the maker is plain text."
-    },
-    {
-      "name": "action",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "Its one action."
-    },
-    {
-      "name": "menu",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": "MenuItems for the ⋯ beside the action: everything else it can do."
-    },
-    {
-      "name": "menuLabel",
-      "type": "string",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "facts",
-      "type": "readonly ProductFact[]",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "onHeroOut",
-      "type": "(out: boolean) => void",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "children",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": ""
-    }
-  ],
-  "ProductPreviews": [
-    {
-      "name": "previews",
-      "type": "readonly { src: string; alt: string; }[]",
-      "optional": false,
-      "doc": ""
-    }
-  ],
-  "ProductSection": [
-    {
-      "name": "title",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "action",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "children",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "id",
-      "type": "string",
-      "optional": true,
-      "doc": "Lets the page scroll to it, such as Manage from a shelf's Manage button."
-    }
-  ],
-  "ProductTile": [
-    {
-      "name": "icon",
-      "type": "LucideIcon",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "value",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "label",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    }
-  ],
-  "ProductTiles": [
-    {
-      "name": "label",
-      "type": "string",
-      "optional": true,
-      "doc": ""
-    },
-    {
-      "name": "children",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": false,
-      "doc": ""
     }
   ],
   "ProfileCardBanner": [
@@ -6986,6 +6982,12 @@
     {
       "name": "reveal",
       "type": "RowToolsReveal",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "ground",
+      "type": "RowToolsGround",
       "optional": true,
       "doc": ""
     },
@@ -7750,7 +7752,7 @@
     },
     {
       "name": "columns",
-      "type": "2 | 1 | 3",
+      "type": "3 | 1 | 2",
       "optional": true,
       "doc": "The most columns it takes once the pane is wide: three (default), two, or always one, such as an updates list."
     },
@@ -7941,12 +7943,6 @@
       "type": "boolean",
       "optional": true,
       "doc": ""
-    },
-    {
-      "name": "tucked",
-      "type": "boolean",
-      "optional": true,
-      "doc": "Floating only: off the column's edge, back while the pointer rests on it."
     }
   ],
   "SidePanel": [
@@ -7985,6 +7981,18 @@
       "type": "() => void",
       "optional": false,
       "doc": ""
+    },
+    {
+      "name": "floating",
+      "type": "boolean",
+      "optional": true,
+      "doc": "Floats over the work as a card instead of filling a column: at the work's top right, as tall as the work, `width` design px wide (440 by default), the whole work's width while `expanded`. Its parent is the positioned work it floats over. A chat's tools (steps, changes, files, terminal, browser, memory, the agent's profile) open this way, so the chat never gives up its width."
+    },
+    {
+      "name": "width",
+      "type": "number",
+      "optional": true,
+      "doc": "Floating only: its width in design px."
     },
     {
       "name": "children",
@@ -8130,7 +8138,7 @@
     },
     {
       "name": "lines",
-      "type": "2 | 1",
+      "type": "1 | 2",
       "optional": true,
       "doc": ""
     },
@@ -8154,17 +8162,11 @@
     }
   ],
   "Slider": [],
-  "SpaceRail": [
+  "SpaceDock": [
     {
       "name": "label",
       "type": "string",
       "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "start",
-      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
-      "optional": true,
       "doc": ""
     },
     {
@@ -8180,40 +8182,40 @@
       "doc": ""
     }
   ],
-  "SpaceRailItem": [
-    {
-      "name": "label",
-      "type": "string",
-      "optional": false,
-      "doc": ""
-    },
+  "SpaceDockItem": [
     {
       "name": "selected",
       "type": "boolean",
       "optional": true,
-      "doc": ""
+      "doc": "The item shown now in a list of them (the step whose picture is on screen): it keeps its wash's pressed fill, hovered or not. For `row`, `control` and `panel` washes. The Space the window shows, or the list's button while its list is open."
+    },
+    {
+      "name": "wash",
+      "type": "PressableWash",
+      "optional": true,
+      "doc": "The shared hover look. Without it the content draws its own."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": "The Space's name: its tooltip and accessible name."
     },
     {
       "name": "count",
       "type": "number",
       "optional": true,
-      "doc": ""
+      "doc": "How many messages wait there (mentions and unread): a grey tag on the picture's corner."
     },
     {
-      "name": "waiting",
-      "type": "boolean",
+      "name": "state",
+      "type": "\"results\" | \"working\" | \"waiting\"",
       "optional": true,
-      "doc": ""
+      "doc": "A state waiting there, as a dot on the corner when there is no count."
     },
     {
       "name": "onSelect",
       "type": "() => void",
-      "optional": false,
-      "doc": ""
-    },
-    {
-      "name": "onContextMenu",
-      "type": "MouseEventHandler<HTMLButtonElement>",
       "optional": true,
       "doc": ""
     },
@@ -8221,7 +8223,7 @@
       "name": "children",
       "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
       "optional": false,
-      "doc": ""
+      "doc": "The Space's picture (an `Avatar shape=\"tile\"`), or a glyph for the button that lists them all."
     }
   ],
   "Spinner": [
@@ -8438,6 +8440,314 @@
       "type": "string",
       "optional": true,
       "doc": "Layout only."
+    }
+  ],
+  "StoreCard": [
+    {
+      "name": "logo",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": "Its state or a line about it, in words."
+    },
+    {
+      "name": "state",
+      "type": "StoreCardState",
+      "optional": true,
+      "doc": "Draws the dot before `line` in the state's color; leave it off for a plain line."
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "StoreCards": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "StoreFacts": [
+    {
+      "name": "facts",
+      "type": "readonly StoreFact[]",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "StoreInfo": [
+    {
+      "name": "items",
+      "type": "readonly StoreFact[]",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "StoreList": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "StorePreviews": [
+    {
+      "name": "previews",
+      "type": "readonly { src: string; alt: string; }[]",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "StoreRow": [
+    {
+      "name": "logo",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": "One line about it, fading at its end."
+    },
+    {
+      "name": "maker",
+      "type": "string",
+      "optional": true,
+      "doc": "Who made it, drawn as \"By …\" under the line."
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Its one action."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "MenuItems for the ⋯ on hover and on a right-click."
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": true,
+      "doc": "Opens its details."
+    }
+  ],
+  "StoreSection": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "detail",
+      "type": "string",
+      "optional": true,
+      "doc": "A muted word or two beside the title, such as a count or why the list is in this order."
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "One control at the heading's end."
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "StoreSheet": [
+    {
+      "name": "open",
+      "type": "boolean",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "logo",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "maker",
+      "type": "string",
+      "optional": true,
+      "doc": "Who made it, drawn as \"By …\" under the name."
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "Its one action."
+    },
+    {
+      "name": "menu",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": "MenuItems for the ⋯ beside the action."
+    },
+    {
+      "name": "menuLabel",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "facts",
+      "type": "readonly StoreFact[]",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "StoreSheetSection": [
+    {
+      "name": "title",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "StoreSkeleton": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "look",
+      "type": "\"rows\" | \"cards\" | \"tiles\"",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "items",
+      "type": "number",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "StoreTile": [
+    {
+      "name": "logo",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "line",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "action",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "onOpen",
+      "type": "() => void",
+      "optional": true,
+      "doc": ""
+    }
+  ],
+  "StoreTiles": [
+    {
+      "name": "label",
+      "type": "string",
+      "optional": true,
+      "doc": ""
+    },
+    {
+      "name": "children",
+      "type": "string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstruct…",
+      "optional": false,
+      "doc": ""
     }
   ],
   "SuggestionItem": [
@@ -8664,7 +8974,7 @@
       "name": "windowEdge",
       "type": "boolean",
       "optional": true,
-      "doc": "The window's own tab row ends 13.5px in, like the sidebar's rows at the window's other side, so the window has one margin on both edges and the end button lines up with the chat's panel rail under it. A page's tab row keeps the page header's 18px."
+      "doc": "The window's own tab row, standing on the window's color over the inset panel: no hairline under it, and its ends set in by the panel's own margin (`--pane-seam-left`/`-right`), so the first tab's edge lines up with the panel's edge under it. A page's tab row keeps its hairline and the page header's gutters."
     },
     {
       "name": "dragCarries",
@@ -8682,7 +8992,7 @@
       "name": "groups",
       "type": "readonly TabStripGroup[]",
       "optional": true,
-      "doc": "Groups of tabs, as Chrome draws them: a chip in the group's color before its tabs (its name, or a dot when unnamed), a line of that color under them, and a thin ring of it around the open tab. Pressing a chip folds its tabs away or brings them back (`onToggleGroup`), sliding them shut or open; a new tab slides in; a right-click opens the group's `menu`."
+      "doc": "Groups of tabs, as Chrome draws them: a chip in the group's color before its tabs (its name, or a dot when unnamed), a faint line of that color under them, and a faint ring of it around the open tab. Pressing a chip folds its tabs away or brings them back (`onToggleGroup`), sliding them shut or open; a new tab slides in; a right-click opens the group's `menu`."
     },
     {
       "name": "onToggleGroup",
@@ -8834,7 +9144,7 @@
       "name": "variant",
       "type": "\"code\" | \"default\" | \"composer\"",
       "optional": true,
-      "doc": "default for prose, code for config and command editors, composer inside a composer."
+      "doc": "default for prose, code for config and command editors, composer inside a MessageComposer, whose placeholder stays while it has focus and goes only once something is typed."
     }
   ],
   "ThreadRepliesButton": [
@@ -9434,7 +9744,7 @@
   "ViewportLayer": [
     {
       "name": "layer",
-      "type": "\"agent-surface\" | \"chrome\" | \"workspace-overlay\" | \"blocking-popup\"",
+      "type": "\"chrome\" | \"agent-surface\" | \"workspace-overlay\" | \"blocking-popup\"",
       "optional": false,
       "doc": "Which named stacking layer the surface sits on."
     },
@@ -9443,6 +9753,20 @@
       "type": "boolean",
       "optional": true,
       "doc": "Click-through: only children that opt back in with pointer-events-auto receive input."
+    }
+  ],
+  "VoiceFaces": [
+    {
+      "name": "people",
+      "type": "VoiceFace[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "optional": true,
+      "doc": ""
     }
   ],
   "VoicePerson": [

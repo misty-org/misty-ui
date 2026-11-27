@@ -19,12 +19,16 @@ const textareaVariants = {
   ],
   composer: [
     "w-full resize-none overflow-x-hidden bg-transparent text-cream caret-cream outline-none",
-    "placeholder:text-cream-muted disabled:cursor-not-allowed disabled:opacity-50",
+    "placeholder:text-cream-muted",
+    "disabled:cursor-not-allowed disabled:opacity-50",
   ],
 } as const;
 
 type TextareaProps = React.ComponentProps<"textarea"> & {
-  /** default for prose, code for config and command editors, composer inside a composer. */
+  /**
+   * default for prose, code for config and command editors, composer inside a MessageComposer,
+   * whose placeholder stays while it has focus and goes only once something is typed.
+   */
   variant?: keyof typeof textareaVariants;
 };
 

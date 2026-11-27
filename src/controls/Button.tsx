@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { cn } from "../class_names";
 import { controlFrame } from "./control_frame";
-import { useCompactControls } from "./RowContext";
+import { useCompactControls, useFooterControls } from "./RowContext";
 
 /**
  * The four roles. primary is the one filled call to action on a surface (at most one);
@@ -244,7 +244,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       );
     const resolvedVariant = variant ?? "secondary";
     const compact = useCompactControls();
-    const resolvedSize = compact ? "sm" : (size ?? "md");
+    const inFooter = useFooterControls();
+    const resolvedSize = compact ? "sm" : inFooter ? "lg" : (size ?? "md");
     const resolvedJustify = justify ?? "center";
     return (
       <Comp

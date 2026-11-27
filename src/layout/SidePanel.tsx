@@ -1,8 +1,9 @@
 // Layout adapted from OpenChamber (MIT, Copyright (c) 2025 Bohdan Triapitsyn).
 import { Maximize2, Minimize2, X, type LucideIcon } from "lucide-react";
-import { useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { useContext, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../class_names";
+import { remCss } from "../lib/ui_scale";
 import { IconButton } from "../controls/IconButton";
 import { FramedBar } from "./FramedBar";
 import { Separator } from "./Separator";
@@ -45,6 +46,15 @@ export function SidePanel(props: {
   expanded?: boolean;
   onToggleExpanded?(): void;
   onClose(): void;
+  /**
+   * Floats over the work as a card instead of filling a column: at the work's top right, as tall as
+   * the work, `width` design px wide (440 by default), the whole work's width while `expanded`. Its
+   * parent is the positioned work it floats over. A chat's tools (steps, changes, files, terminal,
+   * browser, memory, the agent's profile) open this way, so the chat never gives up its width.
+   */
+  floating?: boolean;
+  /** Floating only: its width in design px. */
+  width?: number;
   children: ReactNode;
   /** Layout only. */
   className?: string;
@@ -57,6 +67,8 @@ export function SidePanel(props: {
     expanded = false,
     onToggleExpanded,
     onClose,
+    floating = false,
+    width,
     children,
     className,
     ...data
@@ -68,7 +80,11 @@ export function SidePanel(props: {
       aria-label={label}
       data-slot="side-panel"
       data-expanded={expanded || undefined}
+      data-floating={floating || undefined}
       className={cn("misty-side-panel", className)}
+      style={
+        floating && width ? ({ "--side-panel-width": remCss(width) } as CSSProperties) : undefined
+      }
       onKeyDown={(event) => {
         if (event.key !== "Escape" || event.defaultPrevented) return;
         if (!event.currentTarget.contains(event.target as Node)) return;
@@ -154,17 +170,11 @@ export function SidePanelLead({ children }: { children: ReactNode }) {
   );
 }
 
-/** How long the pointer may stray from a peeking card before it tucks away again. */
-const TUCK_DELAY = 300;
-
 /**
  * A narrow glance column, as wide as a phone's sidebar. Docked, it is a side column on the frame's
  * color parted by a seam; `floating`, it is the one card left over the work: at the column's top
  * right corner (clear of its scrollbar), only as tall as what it holds, scrolling past the window,
  * taking none of the column's width. A floating card's parent is the positioned column it floats in.
- *
- * A floating card can be `tucked`: slid off the column's right edge, it peeks back while the
- * pointer rests on that edge beside where it sits, and slides away again once the pointer leaves.
  */
 export function SideCard(props: {
   label: string;
@@ -173,51 +183,16 @@ export function SideCard(props: {
   children: ReactNode;
   className?: string;
   floating?: boolean;
-  /** Floating only: off the column's edge, back while the pointer rests on it. */
-  tucked?: boolean;
 }) {
-  const tucked = Boolean(props.floating && props.tucked);
-  const [peek, setPeek] = useState(false);
-  const [wasTucked, setWasTucked] = useState(tucked);
-  if (wasTucked !== tucked) {
-    setWasTucked(tucked);
-    setPeek(false);
-  }
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  useEffect(() => () => clearTimeout(timer.current), []);
-  const away = tucked && !peek;
   return (
     <aside
       aria-label={props.label}
       data-slot="side-card"
       data-floating={props.floating || undefined}
-      data-tucked={tucked || undefined}
-      data-away={away || undefined}
       className={cn("misty-side-card", props.className)}
-      onPointerEnter={
-        tucked
-          ? () => {
-              clearTimeout(timer.current);
-              setPeek(true);
-            }
-          : undefined
-      }
-      onPointerLeave={
-        tucked
-          ? () => {
-              clearTimeout(timer.current);
-              timer.current = setTimeout(() => setPeek(false), TUCK_DELAY);
-            }
-          : undefined
-      }
     >
-      {tucked ? <div aria-hidden="true" className="misty-side-card-edge" /> : null}
-      {props.corner ? (
-        <div className="misty-side-card-corner" inert={away || undefined}>
-          {props.corner}
-        </div>
-      ) : null}
-      <div className="misty-side-card-body" inert={away || undefined}>
+      {props.corner ? <div className="misty-side-card-corner">{props.corner}</div> : null}
+      <div className="misty-side-card-body">
         {props.children}
       </div>
     </aside>

@@ -6,7 +6,7 @@ import { Skeleton } from "../feedback/Skeleton";
 import { RowActions } from "../overlays/RowActions";
 
 /**
- * A shelf of things to add, as the App Store's: its heading (with one action at the end, such as See
+ * A shelf of things to connect or add outside Explore (an app's sign-ins), as the App Store's: its heading (with one action at the end, such as See
  * all), then ShelfItems in as many columns as the pane holds, up to three (`columns` caps it), one on a
  * narrow pane. Hairlines run between the rows of each column, never over the first row or under the
  * last.
@@ -56,10 +56,9 @@ export function Shelf({
 /**
  * One item on a Shelf, as an App Store row: its logo (an `AppLogoImage`, `PersonaLogo` or `LogoTile`
  * at the `tile` size), its name and a line of up to two lines, and its one action at the row's right
- * end: Get, Update, Open, or Manage once the person has it (a secondary button that opens the item's
- * Manage section, never a check mark or a status word). Pressing the logo or the name opens its page;
- * the rest of its actions sit in its ⋯ menu, shown on hover. Leave `logo` off where the items would
- * all wear the same one: they start with their name.
+ * end: Get, Update or Open, never a check mark or a status word. Pressing the logo or the name opens
+ * it; the rest of its actions sit in its ⋯ menu, shown on hover. Leave `logo` off where the items
+ * would all wear the same one: they start with their name. Explore's own rows are `StoreRow`s.
  */
 export function ShelfItem({
   logo,

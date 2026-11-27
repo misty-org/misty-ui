@@ -33,7 +33,9 @@ const tile: Record<PersonaLogoSize, string> = {
   row: "size-5 rounded-[calc(var(--spacing)*1.25)] [&>svg]:size-3",
   launcher: "size-14 rounded-[calc(var(--spacing)*3.25)] [&>svg]:size-7",
   card: "size-12 rounded-[calc(var(--spacing)*2.75)] [&>svg]:size-6",
+  item: "size-10 rounded-[calc(var(--spacing)*2.5)] [&>svg]:size-5",
   tile: "size-16 rounded-[calc(var(--spacing)*3.75)] [&>svg]:size-8",
+  sheet: "size-16 rounded-[calc(var(--spacing)*3.75)] [&>svg]:size-8",
   hero: "size-28 rounded-[calc(var(--spacing)*6.5)] [&>svg]:size-14",
 };
 

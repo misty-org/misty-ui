@@ -1,5 +1,5 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { OutOfRow } from "../controls/RowContext";
+import { FooterControls, OutOfRow } from "../controls/RowContext";
 import { X } from "lucide-react";
 import * as React from "react";
 
@@ -293,8 +293,11 @@ const DialogBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement
 );
 DialogBody.displayName = "DialogBody";
 
-/** The dialog's buttons, right-aligned at 36px: a quiet Cancel, then its one primary action. */
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+/**
+ * The dialog's buttons, right-aligned: a quiet Cancel, then its one primary action. Every button in
+ * it is the footer's one size (40.5px), whatever size it asks for.
+ */
+const DialogFooter = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     data-slot="dialog-footer"
     className={cn(
@@ -304,7 +307,9 @@ const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
       className,
     )}
     {...props}
-  />
+  >
+    <FooterControls>{children}</FooterControls>
+  </div>
 );
 DialogFooter.displayName = "DialogFooter";
 

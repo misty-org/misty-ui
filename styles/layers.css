@@ -31,6 +31,9 @@
 @utility layer-popover {
   z-index: 2147483420;
 }
+@utility layer-caret {
+  z-index: 2147483450;
+}
 @utility layer-tooltip {
   z-index: 2147483500;
 }

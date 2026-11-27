@@ -70,7 +70,7 @@ CollectionSearch.displayName = "CollectionSearch";
 /**
  * A collection's control row: its utilities (filter menu, column chooser, sort, refresh) and
  * actions (view toggle) at the end. It holds no section tabs: a collection's groups are stacked
- * shelves or headed groups on the page, and a page's sections are rows in its rail or sidebar,
+ * shelves or headed groups on the page, and a page's sections are headed groups down the page,
  * never a row of chips. It is one ActionBar, so it never wraps.
  */
 export function CollectionControls({

@@ -214,6 +214,17 @@ const placeVarClass: Record<PlaceColor, string> = {
   amber: "[--surface-place:var(--color-tone-amber)]",
   red: "[--surface-place:var(--color-tone-red)]",
 };
+/**
+ * The window's own color washed faintly with a place's (a shared Space's) color, as a CSS color
+ * for `--misty-window-chrome`: the shell sets it while a shared Space is open, so the sidebar, the
+ * title bar and the margin around the inset panel all take the Space's tint together, and the
+ * panel itself stays neutral. Personal and no place give the window's plain color.
+ */
+export function placeChrome(place: PlaceColor | undefined): string {
+  if (!place) return "var(--misty-theme-workspace)";
+  return `color-mix(in srgb, var(--color-tone-${place}) 9%, var(--misty-theme-workspace))`;
+}
+
 const placeSidebarFill =
   "bg-[color:color-mix(in_srgb,var(--surface-place)_7%,var(--color-charcoal-sidebar))]";
 

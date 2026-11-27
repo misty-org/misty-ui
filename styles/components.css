@@ -236,3 +236,8 @@
   background: color-mix(in srgb, var(--color-charcoal-hover) 60%, transparent);
   pointer-events: none;
 }
+
+html[data-misty-caret] :focus,
+html[data-misty-caret] :focus * {
+  caret-color: transparent !important;
+}

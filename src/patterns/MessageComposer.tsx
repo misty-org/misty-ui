@@ -41,27 +41,35 @@ const channelTextClass = "px-1 py-1.5 text-body leading-5";
 /**
  * plain: a bordered box that sits in its pane. card: the box floats as one roomy rounded card
  * on its raised fill alone (no edge, no shadow), the text and its bar inset alike
- * so the + glyph lines up with the text above it. channel: one bar that never wraps, as a Space
- * chat's: the leading `items` (the + menu), the text, then `end` (emoji, Send), all in one row;
- * as the text grows to more lines the buttons stay on its last line's row.
+ * so the + glyph lines up with the text above it. dock: every chat's composer, as the chat's own
+ * foot rather than a box in it: flush across the pane from edge to edge on the pane's color, with
+ * one hairline along its top, edge to edge, so where the chat ends and the composer begins reads at
+ * a glance; one line of text over its bar at rest, growing upward as the text does; its
+ * bar sits 9px up from the pane's bottom, on the line of the profile row at the sidebar's foot.
+ * It sits in `composerDockClass`. channel: one bar that never wraps: the leading `items` (the +
+ * menu), the text, then `end` (emoji, Send), all in one row; as the text grows to more lines the
+ * buttons stay on its last line's row.
  */
-export type MessageComposerVariant = "plain" | "card" | "channel";
+export type MessageComposerVariant = "plain" | "card" | "dock" | "channel";
 
 const boxClass = {
   plain: "rounded-xl border",
   card: "relative rounded-xl",
+  dock: "relative -mx-4 flex flex-col border-t border-charcoal-border px-2 pt-1.5 pb-2",
   channel: "relative rounded-xl",
 } as const;
 /** The box's edge and fill while nothing is dragged over it. */
 const restingClass = {
   plain: "border-charcoal-border bg-charcoal-card",
   card: "bg-charcoal-card",
+  dock: "",
   channel: "bg-charcoal-hover",
 } as const;
 /** Files dragged over the box. */
 const draggingClass = {
   plain: "border-cream-muted bg-charcoal-hover",
   card: "bg-charcoal-hover hairline-outline outline-charcoal-border-strong",
+  dock: "bg-charcoal-hover",
   channel: "bg-charcoal-active hairline-outline outline-charcoal-border-strong",
 } as const;
 
@@ -70,6 +78,9 @@ const cardTextClass = {
   compact: "min-h-11 px-0.5 py-1 text-control leading-5.5",
   roomy: "min-h-16 px-0.5 py-1.5 text-body",
 } as const;
+
+/** The dock's text: one line at rest, 15px in a 24.75px line, the height of a control. */
+const dockTextClass = "min-h-8 px-0.5 py-1.5 text-control leading-5.5";
 
 export type MessageComposerProps = Omit<ComponentProps<"div">, "children"> & {
   inputProps: ComponentProps<typeof Textarea> & {
@@ -118,6 +129,13 @@ export type MessageComposerProps = Omit<ComponentProps<"div">, "children"> & {
   /** Layout classes for the wrapper that holds the box and its path line, when there is one. */
   frameClassName?: string;
 };
+
+/**
+ * The foot of a chat's pane that holds its `dock` composer, with what goes just above it (who is
+ * typing, an error, the context bar) set 18px in from the pane's sides. The composer itself runs
+ * edge to edge, flush with the pane's bottom. Wrap the composer in an element with this class.
+ */
+export const composerDockClass = "w-full shrink-0 px-4";
 
 /**
  * The message box every chat uses. Layout only: feature adapters keep drafts, uploads, mentions
@@ -196,7 +214,8 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
     }, [textareaRef, resize]);
 
     const hasBar = Boolean(items?.length || end);
-    const card = variant === "card" || variant === "channel";
+    const docked = variant === "dock";
+    const card = variant === "card" || variant === "channel" || docked;
     const box = (
       <div
         ref={ref}
@@ -234,18 +253,28 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
             "flex min-w-0 items-end gap-1",
             oneBar
               ? "p-1"
-              : card
-                ? hasBar
-                  ? "px-3 pt-2.5"
-                  : "px-3 py-2.5"
-                : hasBar
-                  ? "px-2 pt-1.5"
-                  : "p-1.5",
+              : docked
+                ? "px-3"
+                : card
+                  ? hasBar
+                    ? "px-3 pt-2.5"
+                    : "px-3 py-2.5"
+                  : hasBar
+                    ? "px-2 pt-1.5"
+                    : "p-1.5",
           )}
         >
           {oneBar && items?.length ? (
-            <div data-slot="message-composer-start" className="flex h-8 shrink-0 items-center">
-              <ActionBar label={barLabel} size={barSize} width="content" items={items} />
+            <div
+              data-slot="message-composer-start"
+              className="flex h-8 shrink-0 items-center"
+            >
+              <ActionBar
+                label={barLabel}
+                size={barSize}
+                width="content"
+                items={items}
+              />
             </div>
           ) : null}
           <div className="relative min-w-0 flex-1">
@@ -258,15 +287,23 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
               className={cn(
                 oneBar
                   ? [textBaseClass, channelTextClass]
-                  : card
-                    ? [textBaseClass, cardTextClass[roomy ? "roomy" : "compact"]]
-                    : messageComposerTextClass,
+                  : docked
+                    ? [textBaseClass, dockTextClass]
+                    : card
+                      ? [
+                          textBaseClass,
+                          cardTextClass[roomy ? "roomy" : "compact"],
+                        ]
+                      : messageComposerTextClass,
                 inputProps.className,
               )}
             />
           </div>
           {oneBar && end ? (
-            <div data-slot="message-composer-end" className="flex h-8 shrink-0 items-center gap-1">
+            <div
+              data-slot="message-composer-end"
+              className="flex h-8 shrink-0 items-center gap-1"
+            >
               {end}
             </div>
           ) : null}
@@ -276,7 +313,7 @@ export const MessageComposer = forwardRef<HTMLDivElement, MessageComposerProps>(
             data-slot="message-composer-bar"
             className={cn(
               "flex min-w-0",
-              card ? "px-2 pt-1 pb-2" : "px-1.5 pb-1.5",
+              docked ? "px-2" : card ? "px-2 pt-1 pb-2" : "px-1.5 pb-1.5",
             )}
           >
             <ActionBar
@@ -358,7 +395,9 @@ export function ComposerStatusRow(props: {
     >
       <Icon aria-hidden className="shrink-0" />
       {props.label ? <span className="shrink-0">{props.label}</span> : null}
-      <OverflowFadeText className="flex-1 text-cream">{props.children}</OverflowFadeText>
+      <OverflowFadeText className="flex-1 text-cream">
+        {props.children}
+      </OverflowFadeText>
       {props.actions ? (
         <span className="flex shrink-0 items-center gap-0.5">
           <CompactControls>{props.actions}</CompactControls>

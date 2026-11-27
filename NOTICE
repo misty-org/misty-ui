@@ -12,3 +12,12 @@ lobe-icons (https://github.com/lobehub/lobe-icons)
   @lobehub/icons-static-svg 1.102.0, unchanged but for their file format, in each brand's colored
   version where there is one. Hermes wears Hermes Agent's mark.
   MIT License, Copyright (c) 2023 LobeHub
+
+Third-party artwork
+
+Twemoji (https://github.com/jdecked/twemoji)
+  The emoji drawings in assets/twemoji/ are Twemoji's, by Twitter, Inc and other contributors,
+  maintained by jdecked, as optimized by @twemoji/svg 15.0.0 and copied in unchanged by
+  scripts/twemoji.ts. Licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+  @twemoji/parser, which finds emoji in text, is MIT licensed, Copyright (c) Twitter, Inc and
+  other contributors.

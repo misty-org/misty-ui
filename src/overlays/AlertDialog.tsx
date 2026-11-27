@@ -5,6 +5,7 @@ import { OutOfRow } from "../controls/RowContext";
 import * as React from "react";
 
 import { Button, type ButtonProps } from "../controls/Button";
+import { FooterControls } from "../controls/RowContext";
 import { cn } from "../class_names";
 import { PageDimmedContext } from "./page_dimmed";
 
@@ -80,13 +81,22 @@ const AlertDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDiv
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
-/** Buttons at the end of the dialog, right-aligned: Cancel, then the action. */
-const AlertDialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+/**
+ * Buttons at the end of the dialog, right-aligned: Cancel, then the action. Every button in it is
+ * the footer's one size (40.5px), whatever size it asks for.
+ */
+const AlertDialogFooter = ({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     data-slot="alert-dialog-footer"
     className={cn("flex items-center justify-end gap-2", className)}
     {...props}
-  />
+  >
+    <FooterControls>{children}</FooterControls>
+  </div>
 );
 AlertDialogFooter.displayName = "AlertDialogFooter";
 
@@ -121,31 +131,45 @@ type AlertDialogButtonProps = React.ComponentPropsWithoutRef<typeof AlertDialogP
   variant?: ButtonProps["variant"];
   /** Working on the click: the button is disabled until it finishes. */
   loading?: boolean;
+  /** Every label the button shows, so it keeps one width as its label changes. */
+  widthOf?: ButtonProps["widthOf"];
 };
 
 /**
- * The dialog's action, a 36px button. A delete uses ConfirmDeleteDialog instead of building
- * one from these parts.
+ * The dialog's action, at the footer's size (40.5px). A delete uses ConfirmDeleteDialog instead of
+ * building one from these parts.
  */
 const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
   AlertDialogButtonProps
->(({ className, variant = "primary", loading, disabled, children, ...props }, ref) => (
+>(({ className, variant = "primary", loading, disabled, widthOf, children, ...props }, ref) => (
   <AlertDialogPrimitive.Action ref={ref} data-slot="alert-dialog-action" {...props} asChild>
-    <Button variant={variant} size="lg" disabled={disabled || loading} className={className}>
+    <Button
+      variant={variant}
+      size="lg"
+      disabled={disabled || loading}
+      widthOf={widthOf}
+      className={className}
+    >
       {children}
     </Button>
   </AlertDialogPrimitive.Action>
 ));
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 
-/** Cancel: a quiet 36px button. */
+/** Cancel: a quiet button at the footer's size (40.5px). */
 const AlertDialogCancel = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
   AlertDialogButtonProps
->(({ className, variant = "quiet", loading, disabled, children, ...props }, ref) => (
+>(({ className, variant = "quiet", loading, disabled, widthOf, children, ...props }, ref) => (
   <AlertDialogPrimitive.Cancel ref={ref} data-slot="alert-dialog-cancel" {...props} asChild>
-    <Button variant={variant} size="lg" disabled={disabled || loading} className={className}>
+    <Button
+      variant={variant}
+      size="lg"
+      disabled={disabled || loading}
+      widthOf={widthOf}
+      className={className}
+    >
       {children}
     </Button>
   </AlertDialogPrimitive.Cancel>

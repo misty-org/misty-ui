@@ -84,9 +84,10 @@ export interface TabStripProps {
   /** Controls at the row's far end that never scroll away. */
   end?: ReactNode;
   /**
-   * The window's own tab row ends 13.5px in, like the sidebar's rows at the window's other side, so
-   * the window has one margin on both edges and the end button lines up with the chat's panel
-   * rail under it. A page's tab row keeps the page header's 18px.
+   * The window's own tab row, standing on the window's color over the inset panel: no hairline
+   * under it, and its ends set in by the panel's own margin (`--pane-seam-left`/`-right`), so the
+   * first tab's edge lines up with the panel's edge under it. A page's tab row keeps its hairline
+   * and the page header's gutters.
    */
   windowEdge?: boolean;
   /**
@@ -104,7 +105,7 @@ export interface TabStripProps {
   onDragDwell?(id: string): void;
   /**
    * Groups of tabs, as Chrome draws them: a chip in the group's color before its tabs (its name,
-   * or a dot when unnamed), a line of that color under them, and a thin ring of it around the
+   * or a dot when unnamed), a faint line of that color under them, and a faint ring of it around the
    * open tab. Pressing a chip folds its tabs away or brings them back (`onToggleGroup`), sliding
    * them shut or open; a new tab slides in; a right-click opens the group's `menu`.
    */
@@ -133,7 +134,7 @@ const chipGroup = (id: string) => id.slice(chipPrefix.length);
 const tabClass = cn(
   "group/tab @container/tab relative flex h-8 w-52 flex-initial snap-start items-center",
   "rounded-md hover:bg-row-hover data-[selected]:bg-row-active",
-  "data-[reorder-target]:bg-control-active",
+  "data-[reorder-target]:bg-control-active data-[reorder-target]:ring-1 data-[reorder-target]:ring-inset data-[reorder-target]:ring-cream-muted",
   "transition-[width,min-width,margin,opacity] duration-200 ease-out",
   "motion-reduce:transition-none [html[data-pointer-dragging=true]_&]:transition-none",
   "data-[folded]:-ml-1 data-[folded]:w-0 data-[folded]:min-w-0 data-[folded]:opacity-0",
@@ -218,6 +219,9 @@ type Entry =
   | { kind: "group"; group: TabStripGroup }
   | { kind: "tab"; tab: TabStripTab; group?: TabStripGroup; folded?: boolean };
 
+const groupEdge = (group: TabStripGroup) =>
+  `color-mix(in srgb, ${tabGroupTone(group.color)} 45%, transparent)`;
+
 function GroupRing(props: { group: TabStripGroup }) {
   return (
     <svg
@@ -230,8 +234,8 @@ function GroupRing(props: { group: TabStripGroup }) {
         height="100%"
         rx="8"
         fill="none"
-        strokeWidth="1.5"
-        style={{ stroke: tabGroupTone(props.group.color) }}
+        strokeWidth="1"
+        style={{ stroke: groupEdge(props.group) }}
       />
     </svg>
   );
@@ -247,8 +251,8 @@ function GroupLine(props: { group: TabStripGroup; first: boolean; last: boolean 
         props.last && "rounded-r-full",
       )}
       style={{
-        backgroundColor: tabGroupTone(props.group.color),
-        height: "1.5px",
+        backgroundColor: groupEdge(props.group),
+        height: "1px",
         bottom: "calc((var(--hairline) + var(--spacing) * 8 - var(--ui-header)) / 2)",
         right: props.last ? 0 : "calc(var(--spacing) * -1)",
       }}
@@ -263,7 +267,10 @@ function GroupLine(props: { group: TabStripGroup; first: boolean; last: boolean 
  * it, dragging (or Alt+Shift and an arrow) to reorder, and the tab's
  * menu on a right-click. Tabs may sit in Chrome's tab groups (`groups`): a colored chip before
  * them that folds them away, a line of its color under them, a tab dropped on another tab or on a
- * chip going into that group, and a group dragged by its chip. Tabs share one width, as wide as
+ * chip going into that group, and a group dragged by its chip. A dragged tab slides: the others
+ * part as the pointer crosses their middle, leaving an outlined slot where it will land; only a
+ * pause on a tab's near half joins that tab, which then takes a ring while the dragged tab shrinks
+ * toward it, and moving on lets go of it again. Tabs share one width, as wide as
  * Chrome's while there's room, and shrink together once more tabs don't fit, never wrapping: the
  * closer goes first, then the name, down to the tab's icon alone, while the open tab and a tab with
  * no icon keep room for their name. Every tab names itself in a tooltip. Past that, the tabs and
@@ -498,9 +505,7 @@ export function TabStrip(props: TabStripProps) {
           if (event.button === 1 && closable) props.onClose?.(tab.id);
         }}
       >
-        <div
-          className="relative flex h-full min-w-0 flex-1 items-center overflow-hidden rounded-md"
-        >
+        <div className="relative flex h-full min-w-0 flex-1 items-center overflow-hidden rounded-md">
           <Tooltip content={tab.full ?? tab.label} side="bottom">
             <Pressable
               role="tab"
@@ -583,8 +588,10 @@ export function TabStrip(props: TabStripProps) {
   return (
     <div
       className={cn(
-        "flex h-(--ui-header) flex-none items-center gap-1 border-b pl-3",
-        props.windowEdge ? "pr-3" : "pr-4",
+        "flex h-(--ui-header) flex-none items-center gap-1",
+        props.windowEdge
+          ? "pr-[var(--pane-seam-right,0px)] pl-[var(--pane-seam-left,0px)]"
+          : "border-b pr-4 pl-3",
       )}
     >
       <SidewaysScroll

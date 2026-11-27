@@ -49,6 +49,7 @@ export * from "./overlays/RowActions";
 export * from "./overlays/SearchablePicker";
 export * from "./overlays/Sheet";
 export * from "./overlays/SuggestionList";
+export * from "./overlays/TextCaret";
 export * from "./overlays/Tooltip";
 export * from "./overlays/Tour";
 export * from "./overlays/ViewportLayer";
@@ -82,9 +83,11 @@ export * from "./layout/PaneFrame";
 export * from "./layout/window_toolbar";
 
 export * from "./display/Avatar";
+export * from "./display/Emoji";
 export * from "./display/AgentFace";
 export * from "./display/RoleName";
 export * from "./display/LivePointer";
+export * from "./display/pointer_motion";
 export * from "./display/Badge";
 export * from "./display/Card";
 export * from "./display/CodeBlock";
@@ -134,9 +137,12 @@ export * from "./navigation/TabStrip";
 export * from "./navigation/TabGroup";
 export * from "./navigation/NavRow";
 export * from "./navigation/VoicePerson";
-export * from "./navigation/SpaceRail";
-export { rowShape, rowShapeTwoLine, rowShapeWrap } from "./display/row_shape";
+export * from "./navigation/SpaceDock";
+export * from "./navigation/PlaceSwitch";
+export * from "./navigation/PlaceTiles";
+export { rowShape, rowShapeFace, rowShapeTwoLine, rowShapeWrap } from "./display/row_shape";
 
+export * from "./icons/LetterTile";
 export * from "./icons/Mark";
 export * from "./icons/LogoFallbacks";
 export * from "./icons/MistyMark";
@@ -147,7 +153,8 @@ export * from "./icons/PersonaLogo";
 export * from "./icons/item_tones";
 
 export * from "./patterns/CatalogCard";
-export * from "./patterns/ProductPage";
+export * from "./patterns/Store";
+export * from "./patterns/StoreSheet";
 export * from "./patterns/Shelf";
 export * from "./patterns/FeatureCard";
 export * from "./patterns/CustomizableBar";
@@ -191,6 +198,7 @@ export * from "./class_names";
 export {
   ComposerAttachment,
   ComposerStatusRow,
+  composerDockClass,
   MessageComposer,
   MessageComposerAction,
   MessageComposerSend,

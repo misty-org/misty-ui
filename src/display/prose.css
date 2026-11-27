@@ -3,10 +3,12 @@
   white-space: normal;
   line-height: 1.65;
 
-  & > :first-child {
+  & > :first-child,
+  & > :first-child > :first-child {
     margin-top: 0;
   }
-  & > :last-child {
+  & > :last-child,
+  & > :last-child > :last-child {
     margin-bottom: 0;
   }
 

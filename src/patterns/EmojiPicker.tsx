@@ -1,15 +1,18 @@
 import {
+  useEffect,
   useMemo,
   useRef,
   useState,
   type ReactElement,
   type ReactNode,
+  type RefObject,
 } from "react";
 import type { LucideIcon } from "lucide-react";
 
 import { cn } from "../class_names";
 import { Pressable } from "../controls/Pressable";
 import { IconButton } from "../controls/IconButton";
+import { Emoji } from "../display/Emoji";
 import { Text } from "../display/Text";
 import { Skeleton } from "../feedback/Skeleton";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
@@ -51,7 +54,9 @@ export type EmojiSkinTones = {
  * grid under their headings, and the one under the pointer named along the bottom. It brings no
  * emoji of its own: the caller hands in its `sections` (empty while they load, drawn as a
  * skeleton) and its `search`, and remembers what was picked. Shift-click picks without closing. Open it from its child (the trigger), or, with
- * `anchor`, from anything that sets `open`, such as a menu's "Add reaction".
+ * `anchor`, from anything that sets `open`, such as a menu's "Add reaction". It opens at once: a
+ * section's emoji are drawn only as it nears the view, in a space already their height, so the
+ * jump buttons and scrolling land where they would.
  */
 export function EmojiPicker(props: {
   /** The button that opens it. Leave it out to open the picker by `open` over `anchor`. */
@@ -140,7 +145,7 @@ function EmojiPickerBody(props: {
           onClick={(event) => props.onPick(choice.emoji, event.shiftKey)}
           className="grid size-9 place-items-center rounded-md text-display leading-none"
         >
-          {choice.emoji}
+          <Emoji emoji={choice.emoji} />
         </Pressable>
       ))}
     </div>
@@ -170,7 +175,9 @@ function EmojiPickerBody(props: {
             <DropdownMenuTrigger asChild>
               <IconButton label="Skin tone" size="sm" className="mr-2">
                 <span aria-hidden="true" className="text-control leading-none">
-                  {tone.options[tone.value]?.sample}
+                  {tone.options[tone.value] ? (
+                    <Emoji emoji={tone.options[tone.value]!.sample} />
+                  ) : null}
                 </span>
               </IconButton>
             </DropdownMenuTrigger>
@@ -232,12 +239,11 @@ function EmojiPickerBody(props: {
             </Text>
           )
         ) : (
-          props.sections.map((section) => (
+          props.sections.map((section, index) => (
             <section
               key={section.id}
               data-emoji-section={section.id}
               aria-label={section.title}
-              className="[content-visibility:auto]"
             >
               <Text
                 as="h3"
@@ -248,7 +254,13 @@ function EmojiPickerBody(props: {
               >
                 {section.title}
               </Text>
-              {cells(section.emojis)}
+              <WhenNear
+                root={grid}
+                at={index < 2}
+                count={section.emojis.length}
+              >
+                {() => cells(section.emojis)}
+              </WhenNear>
             </section>
           ))
         )}
@@ -260,11 +272,50 @@ function EmojiPickerBody(props: {
         )}
         aria-hidden="true"
       >
-        <span className="text-title leading-none">{hovered?.emoji}</span>
+        <span className="text-title leading-none">
+          {hovered ? <Emoji emoji={hovered.emoji} /> : null}
+        </span>
         <OverflowFadeText className="min-w-0 text-meta text-cream-muted">
           {hovered?.name ?? ""}
         </OverflowFadeText>
       </div>
     </div>
+  );
+}
+
+const COLUMNS = 8;
+
+function WhenNear(props: {
+  root: RefObject<HTMLDivElement | null>;
+  at: boolean;
+  count: number;
+  children(): ReactNode;
+}) {
+  const [near, setNear] = useState(props.at);
+  const place = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (near || !place.current || typeof IntersectionObserver !== "function") {
+      if (!near) setNear(true);
+      return;
+    }
+    const watcher = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) setNear(true);
+      },
+      { root: props.root.current, rootMargin: "320px 0px" },
+    );
+    watcher.observe(place.current);
+    return () => watcher.disconnect();
+  }, [near, props.root]);
+  if (near) return <>{props.children()}</>;
+  const rows = Math.ceil(props.count / COLUMNS);
+  return (
+    <div
+      ref={place}
+      aria-hidden="true"
+      style={{
+        height: `calc(var(--spacing) * ${rows * 9 + Math.max(0, rows - 1) * 0.5})`,
+      }}
+    />
   );
 }

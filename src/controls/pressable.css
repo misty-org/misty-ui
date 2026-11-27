@@ -35,6 +35,24 @@
   background-color: var(--color-charcoal-hover);
 }
 
+[data-slot="row-tools-cover"] {
+  border-start-end-radius: var(--radius-md);
+  border-end-end-radius: var(--radius-md);
+}
+[data-face] ~ [data-slot="row-tools"] > [data-slot="row-tools-cover"] {
+  border-start-end-radius: var(--radius-lg);
+  border-end-end-radius: var(--radius-lg);
+}
+
+[data-row-fill]:has(~ [data-slot="row-tools"]:is(:hover, :focus-within)):not(
+    :disabled,
+    [aria-current="page"],
+    [aria-current="true"],
+    [data-selected]
+  ) {
+  background-color: var(--color-row-hover);
+}
+
 [data-wash="row"]:has(~ [data-slot="row-tools"]:is(:hover, :focus-within)):not(
     :disabled,
     [aria-current="page"],

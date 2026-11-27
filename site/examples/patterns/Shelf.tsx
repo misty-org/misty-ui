@@ -4,7 +4,7 @@ import { AppLogoImage, Button, MenuItem, Shelf, ShelfItem } from "../../../src";
 export const meta = {
   name: "Shelf · ShelfItem",
   file: "patterns/Shelf.tsx",
-  about: "Explore's rows, as the App Store's: a heading with See all, then items in up to three columns, each ending in its one action.",
+  about: "Rows of things to connect, as the App Store's: a heading with See all, then items in up to three columns, each ending in its one action.",
   wide: true,
   order: 0,
 };
@@ -13,7 +13,7 @@ export default function Example() {
   return (
     <Shelf title="Open-source apps" action={<Button variant="quiet" size="sm">See all</Button>}>
       <ShelfItem logo={<AppLogoImage name="Sketch" size="tile" />} title="Sketch" line="Draw together"
-        action={<Button size="sm">Manage</Button>} onOpen={() => undefined} />
+        action={<Button size="sm">Open</Button>} onOpen={() => undefined} />
       <ShelfItem logo={<AppLogoImage name="Decks" size="tile" />} title="Decks" line="Slides from layouts"
         action={<Button variant="get" size="sm">Get</Button>} menu={<MenuItem icon={Eye} label="Details" />}
         onOpen={() => undefined} />

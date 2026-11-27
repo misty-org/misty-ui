@@ -1,5 +1,9 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { reorderLayoutRect, settleReorderMotion, startReorderMotion } from "./pointer_reorder_motion";
+import {
+  reorderLayoutRect,
+  settleReorderMotion,
+  startReorderMotion,
+} from "./pointer_reorder_motion";
 
 afterEach(() => {
   settleReorderMotion();
@@ -119,4 +123,24 @@ it("allows a wide tab to reach the first slot and a narrow tab to reach the last
   settleReorderMotion();
   const right = startReorderMotion(items[0], ["0"], "x")!;
   expect(right.placement({ x: 312, y: 16 }, { x: 40, y: 16 })?.hitX).toBe(312);
+});
+it("slides past a tab while moving and joins it only after a pause on its near half", () => {
+  vi.useFakeTimers();
+  try {
+    const { items } = fixture();
+    const motion = startReorderMotion(items[2], ["2"], "x")!;
+    motion.follow("1", false, { x: 140, y: 16 });
+    expect(items[1].style.transform).toBe("translateX(106px)");
+    expect(motion.dropAt()?.onto).toBeUndefined();
+    motion.follow("0", false, { x: 60, y: 16 });
+    vi.advanceTimersByTime(450);
+    expect(motion.dropAt()).toEqual({ target: "0", after: false, onto: true });
+    expect(items[0].dataset.reorderTarget).toBe("true");
+    expect(document.documentElement.dataset.pointerJoining).toBe("true");
+    motion.follow("0", false, { x: 260, y: 16 });
+    expect(motion.dropAt()?.onto).toBeUndefined();
+    expect(items[0].dataset.reorderTarget).toBeUndefined();
+  } finally {
+    vi.useRealTimers();
+  }
 });

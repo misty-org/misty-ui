@@ -258,6 +258,13 @@
     "wide": false,
     "order": 8
   },
+  "display/Emoji": {
+    "name": "Emoji",
+    "file": "display/Emoji.tsx",
+    "about": "Emoji drawn from the bundled Twemoji set, the same on every system, sized to the text around them.",
+    "wide": false,
+    "order": 12
+  },
   "display/IndicatorDot": {
     "name": "IndicatorDot",
     "file": "display/IndicatorDot.tsx",
@@ -278,6 +285,13 @@
     "about": "",
     "wide": false,
     "order": 13
+  },
+  "display/LetterTile": {
+    "name": "LetterTile",
+    "file": "icons/LetterTile.tsx",
+    "about": "",
+    "wide": false,
+    "order": 40
   },
   "display/ListCard": {
     "name": "ListCard",
@@ -475,6 +489,20 @@
     "wide": false,
     "order": 4
   },
+  "feedback/PlaceSwitch": {
+    "name": "PlaceSwitch",
+    "file": "navigation/PlaceSwitch.tsx",
+    "about": "",
+    "wide": false,
+    "order": 17
+  },
+  "feedback/PlaceTiles": {
+    "name": "PlaceTiles",
+    "file": "navigation/PlaceTiles.tsx",
+    "about": "",
+    "wide": false,
+    "order": 18
+  },
   "feedback/Progress": {
     "name": "Progress · Meter",
     "file": "feedback/Progress.tsx",
@@ -524,9 +552,9 @@
     "wide": false,
     "order": 4
   },
-  "feedback/SpaceRail": {
-    "name": "SpaceRail",
-    "file": "navigation/SpaceRail.tsx",
+  "feedback/SpaceDock": {
+    "name": "SpaceDock",
+    "file": "navigation/SpaceDock.tsx",
     "about": "",
     "wide": false,
     "order": 16
@@ -852,6 +880,13 @@
     "wide": false,
     "order": 7
   },
+  "overlays/TextCaret": {
+    "name": "TextCaret",
+    "file": "overlays/TextCaret.tsx",
+    "about": "Type in the field: the caret is the thin line the site's root draws.",
+    "wide": false,
+    "order": 18
+  },
   "overlays/Tooltip": {
     "name": "Tooltip",
     "file": "overlays/Tooltip.tsx",
@@ -1087,13 +1122,6 @@
     "wide": false,
     "order": 6
   },
-  "patterns/ProductPage": {
-    "name": "ProductPage · ProductBar · ProductSection",
-    "file": "patterns/ProductPage.tsx",
-    "about": "A store item's own page, as the App Store's: hero, facts, Manage, About, what's inside and information.",
-    "wide": true,
-    "order": 0
-  },
   "patterns/ProfileCard": {
     "name": "ProfileCardBanner · ProfileCardHeader · ProfileCardStatus · ProfileCardName · ProfileCardGroup",
     "file": "patterns/people/ProfileCard.tsx",
@@ -1131,7 +1159,7 @@
   "patterns/Shelf": {
     "name": "Shelf · ShelfItem",
     "file": "patterns/Shelf.tsx",
-    "about": "Explore's rows, as the App Store's: a heading with See all, then items in up to three columns, each ending in its one action.",
+    "about": "Rows of things to connect, as the App Store's: a heading with See all, then items in up to three columns, each ending in its one action.",
     "wide": true,
     "order": 0
   },
@@ -1148,6 +1176,20 @@
     "about": "",
     "wide": true,
     "order": 22
+  },
+  "patterns/Store": {
+    "name": "StoreSection · StoreList · StoreTiles · StoreCards",
+    "file": "patterns/Store.tsx",
+    "about": "Explore's sections: apps as big tiles, things to add as compact rows with their maker, engines and speech as cards with their state in words.",
+    "wide": true,
+    "order": 0
+  },
+  "patterns/StoreSheet": {
+    "name": "StoreSheet · StoreSheetSection",
+    "file": "patterns/StoreSheet.tsx",
+    "about": "A store item's details in one card dialog: the hero with its one action, a strip of facts, then its description, what's inside and what is set up here.",
+    "wide": false,
+    "order": 0
   },
   "patterns/TurnFold": {
     "name": "TurnFold · TurnPictures · ToolList · ToolRow · ToolPath · ToolLines · ToolBody · ToolNote · TurnTasks · TurnStatus · TurnChanges",

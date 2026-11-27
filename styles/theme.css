@@ -1,20 +1,20 @@
 :root {
-  --misty-theme-workspace: #131313;
-  --workspace-tab-surface-top: #1c1c1c;
-  --workspace-tab-surface: #171717;
-  --workspace-tab-text: #c5c5c5;
-  --workspace-tab-muted: #ababab;
-  --misty-theme-bg: #131313;
-  --misty-theme-sidebar: #161616;
-  --misty-theme-card: #1b1b1b;
-  --misty-theme-border: #252525;
-  --misty-theme-border-strong: #3c3c3c;
-  --misty-theme-hover: #282828;
-  --misty-theme-active: #3e3e3e;
-  --misty-theme-text: #e0e0e0;
-  --misty-theme-text-bright: #e2e2e2;
-  --misty-theme-text-muted: #8c8c8c;
-  --misty-theme-danger: #d89c8a;
+  --misty-theme-workspace: #0f0f11;
+  --workspace-tab-surface-top: #1a1a1d;
+  --workspace-tab-surface: #151517;
+  --workspace-tab-text: #c8c8cd;
+  --workspace-tab-muted: #a2a2aa;
+  --misty-theme-bg: #151517;
+  --misty-theme-sidebar: #151517;
+  --misty-theme-card: #1b1b1e;
+  --misty-theme-border: #242428;
+  --misty-theme-border-strong: #36363c;
+  --misty-theme-hover: #26262a;
+  --misty-theme-active: #3a3a40;
+  --misty-theme-text: #e6e6e9;
+  --misty-theme-text-bright: #f7f7f8;
+  --misty-theme-text-muted: #8a8a93;
+  --misty-theme-danger: #e2806e;
   --ui-header: calc(var(--spacing) * 12);
   --ui-bottom-bar: calc(var(--spacing) * 8);
   --ui-bottom-bar-standard: calc(var(--spacing) * 10);
@@ -32,22 +32,22 @@
 }
 :root[data-theme="light"] {
   color-scheme: light;
-  --misty-theme-workspace: #F6F6F6;
-  --misty-theme-bg: #F6F6F6;
-  --misty-theme-sidebar: #EEEEEE;
-  --misty-theme-card: #E6E6E6;
-  --misty-theme-border: #D8D8D8;
-  --misty-theme-border-strong: #C0C0C0;
-  --misty-theme-hover: #D9D9D9;
-  --misty-theme-active: #D9D9D9;
-  --misty-theme-text: #1F1F1F;
-  --misty-theme-text-bright: #1D1D1D;
-  --misty-theme-text-muted: #6B6B6B;
-  --misty-theme-danger: #9A4E45;
-  --workspace-tab-surface-top: #FFFFFF;
-  --workspace-tab-surface: #FAFAFA;
-  --workspace-tab-text: #2B2B2B;
-  --workspace-tab-muted: #5F5F5F;
+  --misty-theme-workspace: #ececee;
+  --misty-theme-bg: #fbfbfc;
+  --misty-theme-sidebar: #fbfbfc;
+  --misty-theme-card: #f2f2f4;
+  --misty-theme-border: #e0e0e5;
+  --misty-theme-border-strong: #cdcdd4;
+  --misty-theme-hover: #e4e4e8;
+  --misty-theme-active: #d8d8de;
+  --misty-theme-text: #26262a;
+  --misty-theme-text-bright: #111114;
+  --misty-theme-text-muted: #6f6f78;
+  --misty-theme-danger: #b4483a;
+  --workspace-tab-surface-top: #ffffff;
+  --workspace-tab-surface: #fbfbfc;
+  --workspace-tab-text: #2b2b30;
+  --workspace-tab-muted: #5f5f68;
   --tone-group-grey: #5f6368;
   --tone-group-blue: #1a73e8;
   --tone-group-red: #d93025;
@@ -241,6 +241,11 @@
   --layer-drag-shield: 2147483400;
   --layer-drag-preview: 2147483500;
   --layer-drag-indicator: 2147483501;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::highlight(misty-md-search) {

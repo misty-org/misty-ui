@@ -153,7 +153,7 @@ const MenuTrigger = React.forwardRef<HTMLButtonElement, MenuTriggerProps>(
       if (!mark) return trigger;
       return (
         <span className="flex max-w-full min-w-0 items-center gap-1 pl-2">
-          <span className="relative grid size-10 flex-none place-items-center">
+          <span className="relative grid size-10 flex-none items-center justify-items-start">
             {mark}
             {markEdit ? (
               <FaceEdit onEdit={markEdit.onEdit} label={markEdit.label} shape={markEdit.shape} />

@@ -4,7 +4,6 @@ import { useState, type ReactNode } from "react";
 import { Pressable } from "../controls/Pressable";
 import { cn } from "../class_names";
 import { OverflowFadeText } from "../layout/OverflowFadeText";
-import { Spinner } from "../feedback/Spinner";
 import { StateMark } from "../display/StateMark";
 import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle } from "../overlays/Dialog";
 import "./tool_timeline.css";
@@ -132,12 +131,15 @@ export function ToolList(props: { label: string; children: ReactNode; id?: strin
 }
 
 /**
- * One step on one 36px line: what it did (muted, in a column as wide as the table's longest
+ * One step on one line, 36px in a table: what it did (muted, in a column as wide as the table's longest
  * verb), what it acted on (full color, fading at the edge), and its end (a duration, a count,
  * line changes). Rows carry no icon. A row that opens shows a chevron at its end on hover and while open. A running step's verb
  * moves with a highlight, a failed one is red, one waiting on the person amber. Outside a ToolList
- * it stands alone as a bare line as wide as its words, with its chevron right after them, such as
- * the turn's thinking or a run of one step between two notes ("Edited workers.rs +23").
+ * it stands alone as a bare 27px line as wide as its words, with its chevron right after them, such
+ * as the turn's thinking or a run of one step between two notes ("Edited workers.rs +23"). The
+ * turn's quiet lines (this one, a `TurnFold` and the `TurnStatus`) are 27px, so a run of them reads
+ * close together. While a row is open, nothing in it is cut: what it acted on wraps onto as many
+ * lines as it needs, and the row grows to hold them.
  */
 export function ToolRow(props: {
   name: string;
@@ -155,7 +157,13 @@ export function ToolRow(props: {
   const content = (
     <>
       <span className="misty-tool-row-name">{props.name}</span>
-      <OverflowFadeText className="misty-tool-row-target">{props.target}</OverflowFadeText>
+      {props.open ? (
+        <span className="misty-tool-row-target" data-whole="">
+          {props.target}
+        </span>
+      ) : (
+        <OverflowFadeText className="misty-tool-row-target">{props.target}</OverflowFadeText>
+      )}
       {props.state === "failed" ? <span className="sr-only">, failed</span> : null}
       {props.state === "waiting" ? <span className="sr-only">, waiting for you</span> : null}
       <span className="misty-tool-row-meta">
@@ -237,10 +245,10 @@ export function ToolNote({ children }: { children: ReactNode }) {
  * The one line under a live turn that says what it is doing now ("Running npm test", "Waiting for
  * you", "Retrying, attempt 2 of 5"), with a moving highlight, and how long the turn has worked. It
  * keeps its height, so the turn never jumps as it changes. Rows above it only record what happened;
- * nothing else in the turn spins. `waiting` turns the phrase amber and stills it. It starts with
- * the turn's state mark (the muted spinner while it works, the amber dot while it waits on the
- * person). With `onToggle` the line opens what is running now (its live output), with the
- * chevron after the time.
+ * nothing else in the turn spins. `waiting` turns the phrase amber and stills it. The phrase
+ * leads the line with no mark before it: its moving highlight already says the turn is working.
+ * With `onToggle` the line opens what is running now (its live output), with the chevron after
+ * the time.
  */
 export function TurnStatus(props: {
   phrase: string;
@@ -257,10 +265,6 @@ export function TurnStatus(props: {
 }) {
   const content = (
     <>
-      <StateMark
-        kind={props.waiting ? "waiting" : "working"}
-        label={props.waiting ? "Waiting for you" : "Working"}
-      />
       <OverflowFadeText
         className={cn("misty-turn-status-phrase", !props.waiting && "misty-turn-fold-live")}
         data-waiting={props.waiting || undefined}
@@ -368,7 +372,7 @@ export type TurnTask = {
 
 const taskMarks: Record<TurnTaskState, ReactNode> = {
   pending: <CircleDashed aria-hidden="true" />,
-  working: <Spinner label={false} />,
+  working: <StateMark kind="working" label="In progress" />,
   waiting: <StateMark kind="waiting" />,
   done: <CircleCheck aria-hidden="true" />,
   failed: <CircleX aria-hidden="true" />,
@@ -387,8 +391,8 @@ const taskWords: Record<TurnTaskState, string> = {
 /**
  * The one task list every agent keeps while it works (an engine's todos and Misty's checklist
  * alike), as one card with a hairline edge near the end of the turn, just above its `TurnStatus`:
- * each task on its own line after its mark, a dashed ring before it starts, the one loader while
- * it is worked on (in the text color, the rest muted), the amber dot while it waits on the person,
+ * each task on its own line after its mark, a dashed ring before it starts, the working state's
+ * breathing blue dot while it is worked on (in the text color, the rest muted), the amber dot while it waits on the person,
  * a check once done, a cross when it failed. A task may carry a muted `note` under it and sit in a
  * step (`depth`) under the task that handed it on. The titles wrap rather than fade. `head` is one
  * muted line over the tasks (a lesson's goal and how far it got) and `foot` what closes the card

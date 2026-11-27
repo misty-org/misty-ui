@@ -58,7 +58,10 @@ function isIconComponent(icon: unknown): boolean {
 function MenuIconSlot({ icon }: { icon?: MenuIcon | React.ReactNode }) {
   if (icon === null || icon === undefined || icon === false) return null;
   if (!isIconComponent(icon)) return <>{icon as React.ReactNode}</>;
-  const Icon = icon as React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  const Icon = icon as React.ComponentType<{
+    className?: string;
+    "aria-hidden"?: boolean;
+  }>;
   return <Icon aria-hidden className={menuIconClass} />;
 }
 
@@ -107,6 +110,8 @@ type MenuItemProps = RadixItemProps & {
   danger?: boolean;
   /** Why a disabled row can't be used, shown in a tooltip while it is hovered. */
   reason?: string;
+  /** A mark at the row's end, such as the `CountMark` of what waits behind it (Friends' requests). */
+  count?: React.ReactNode;
   ref?: React.Ref<HTMLDivElement>;
 };
 
@@ -125,6 +130,7 @@ function MenuItem({
   shortcut,
   danger,
   reason,
+  count,
   disabled,
   className,
   ref,
@@ -142,7 +148,7 @@ function MenuItem({
         className={cn(explained && menuItemExplainedClass, className)}
         {...props}
       >
-        <MenuRowBody icon={icon} label={label} shortcut={shortcut} />
+        <MenuRowBody icon={icon} label={label} shortcut={shortcut} state={count} />
       </Item>
     </Explained>
   );
@@ -228,7 +234,11 @@ function rowIcons(children: React.ReactNode): unknown[] {
   const icons: unknown[] = [];
   React.Children.forEach(children, (child) => {
     if (!React.isValidElement(child)) return;
-    const props = child.props as { value?: unknown; icon?: unknown; children?: React.ReactNode };
+    const props = child.props as {
+      value?: unknown;
+      icon?: unknown;
+      children?: React.ReactNode;
+    };
     if (child.type === React.Fragment) icons.push(...rowIcons(props.children));
     else if (props.value !== undefined) icons.push(props.icon);
   });

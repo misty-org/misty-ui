@@ -31,6 +31,7 @@ import {
   TableRow,
   Text,
   Textarea,
+  TextCaret,
   TooltipProvider,
   notify,
 } from "../src";
@@ -586,5 +587,6 @@ createRoot(document.getElementById("root")!).render(
   <TooltipProvider>
     <Docs />
     <NoticeViewport />
+    <TextCaret />
   </TooltipProvider>,
 );

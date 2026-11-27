@@ -1,7 +1,8 @@
 import type { ComponentProps, ReactNode } from "react";
-import { CornerUpLeft, MessagesSquare, Plus } from "lucide-react";
+import { CornerUpLeft, MessagesSquare, SmilePlus } from "lucide-react";
 
 import { cn } from "../../class_names";
+import { Emoji } from "../../display/Emoji";
 import { Pressable } from "../../controls/Pressable";
 import { IconButton } from "../../controls/IconButton";
 import { CompactControls } from "../../controls/RowContext";
@@ -272,7 +273,7 @@ export function ReactionChip(props: {
   onToggle(): void;
 }) {
   const label = `${props.emoji}, ${props.count} ${props.count === 1 ? "reaction" : "reactions"}`;
-  return (
+  const chip = (
     <Pressable
       type="button"
       aria-pressed={props.mine === true}
@@ -282,15 +283,23 @@ export function ReactionChip(props: {
       className={cn(
         "flex h-7 items-center gap-1.5 rounded-md px-2 hairline-outline",
         props.mine
-          ? "bg-control-active outline-cream-muted text-cream-bright"
-          : "bg-row-hover outline-transparent text-cream hover:outline-charcoal-border-strong",
+          ? "bg-control-active outline-cream-muted text-cream-bright hover:bg-control-hover"
+          : "bg-row-hover outline-transparent text-cream hover:bg-control-hover hover:outline-charcoal-border-strong",
       )}
     >
       <span aria-hidden="true" className="text-control leading-none">
-        {props.emoji}
+        <Emoji emoji={props.emoji} />
       </span>
       <span className="text-meta font-medium tabular-nums">{props.count}</span>
     </Pressable>
+  );
+  if (props.disabled) return chip;
+  return (
+    <Tooltip
+      content={props.mine ? "Remove your reaction" : "Add your reaction"}
+    >
+      {chip}
+    </Tooltip>
   );
 }
 
@@ -300,7 +309,7 @@ export function AddReactionButton(
 ) {
   return (
     <IconButton label="Add reaction" size="sm" {...props}>
-      <Plus />
+      <SmilePlus />
     </IconButton>
   );
 }

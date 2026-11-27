@@ -10,14 +10,18 @@ export function settleReorderMotion() {
 }
 
 /**
- * The tab a dragged tab's pointer is over: the one a pause opens and a drop goes into. It wears
- * `data-reorder-target` while it is, so the row can show it.
+ * The tab a dragged tab will go into: the one its pointer has rested on for a moment. While the
+ * pointer moves, tabs only slide apart to show where the drag will land; a pause on a tab's near
+ * half joins it instead. It wears `data-reorder-target` while it is, and the page's root wears
+ * `data-pointer-joining`, so the row and the dragged preview can show it.
  */
 export function reorderHoveredItem(): string | null {
   return hoveredItem;
 }
 
 const timing = { duration: 180, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" };
+const joinDelay = 450;
+const joinSlack = 8;
 const reduceMotion = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 export function reorderLayoutRect(element: HTMLElement): DOMRect {
@@ -48,6 +52,10 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
   let finishFrame = 0;
   let settlingPreview: HTMLElement | undefined;
   let settlingAnimation: Animation | undefined;
+  let joinTimer = 0;
+  let joinCandidate: string | null = null;
+  let joinPoint = { x: 0, y: 0 };
+  let joined: string | null = null;
   const restore = () => {
     for (const item of items) {
       animations.get(item)?.cancel();
@@ -64,8 +72,22 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
       else delete item.dataset.reorderTarget;
     }
   };
+  const setJoined = (next: string | null) => {
+    joined = next;
+    hoveredItem = next;
+    markTarget();
+    if (next) document.documentElement.dataset.pointerJoining = "true";
+    else delete document.documentElement.dataset.pointerJoining;
+  };
+  const stopJoining = () => {
+    window.clearTimeout(joinTimer);
+    joinCandidate = null;
+    if (joined) setJoined(null);
+  };
   const cleanup = () => {
     cancelAnimationFrame(finishFrame);
+    window.clearTimeout(joinTimer);
+    delete document.documentElement.dataset.pointerJoining;
     settlingAnimation?.cancel();
     settlingPreview?.remove();
     restore();
@@ -164,12 +186,10 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
       const rect = reorderLayoutRect(item);
       const delta = cursor - start(rect);
       offsets.set(item, delta);
-      if (!moving.includes(item)) {
-        const painted = getComputedStyle(item).transform;
-        const next = transform(delta);
-        item.style.transform = next;
-        animate(item, painted === "none" ? transform(0) : painted, next);
-      }
+      const painted = getComputedStyle(item).transform;
+      const next = transform(delta);
+      item.style.transform = next;
+      animate(item, painted === "none" ? transform(0) : painted, next);
       cursor += size(rect) + trailing + gap;
     }
   };
@@ -223,23 +243,37 @@ export function startReorderMotion(surface: HTMLElement, ids: string[], axis: "x
         const from = start(rect) + (offsets.get(item) ?? 0);
         return { from, to: from + size(rect), rect };
       };
-      hoveredItem = null;
+      const over = (item: HTMLElement) => {
+        const { from, to, rect } = shownAt(item);
+        const [low, high] = axis === "x" ? [rect.top, rect.bottom] : [rect.left, rect.right];
+        return along >= from && along <= to && across >= low - 40 && across <= high + 40;
+      };
       if (target === undefined) {
-        markTarget();
+        stopJoining();
         paint(items);
         return;
       }
-      for (const item of rest) {
-        const { from, to, rect } = shownAt(item);
-        const [low, high] = axis === "x" ? [rect.top, rect.bottom] : [rect.left, rect.right];
-        if (along >= from && along <= to && across >= low - 40 && across <= high + 40)
-          hoveredItem = item.dataset.reorderItem ?? null;
+      if (joined) {
+        const held = rest.find((item) => id(item) === joined);
+        if (held && over(held)) return;
+        setJoined(null);
       }
-      markTarget();
+      const middle = (item: HTMLElement) => {
+        const { from, to } = shownAt(item);
+        return (from + to) / 2;
+      };
       let at = lastOrder.indexOf(moving[0]);
-      while (at < rest.length && along > shownAt(rest[at]).to) at++;
-      while (at > 0 && along < shownAt(rest[at - 1]).from) at--;
+      while (at < rest.length && along > middle(rest[at])) at++;
+      while (at > 0 && along < middle(rest[at - 1])) at--;
       paint([...rest.slice(0, at), ...moving, ...rest.slice(at)]);
+      const candidate = id(rest.find(over)) ?? null;
+      const moved = Math.hypot(point.x - joinPoint.x, point.y - joinPoint.y) > joinSlack;
+      if (candidate !== joinCandidate || moved) {
+        window.clearTimeout(joinTimer);
+        joinCandidate = candidate;
+        joinPoint = point;
+        if (candidate) joinTimer = window.setTimeout(() => setJoined(candidate), joinDelay);
+      }
     },
     dropAt(): { target: string; after: boolean; onto?: boolean } | undefined {
       return hoveredItem ? { target: hoveredItem, after: false, onto: true } : shown;

@@ -13,8 +13,12 @@ const tileSize = {
   md: "size-8 [&>*]:max-h-6 [&>*]:max-w-6",
   /** A store shelf's 72px slot (`ShelfItem`): a mark sits inset, a picture fills it with the tile's corners. */
   tile: "size-16 [&>*]:max-h-10 [&>*]:max-w-10",
-  /** A product page's hero (`ProductPage`): the same, twice as large. */
+  /** A larger 126px slot: the same, twice as large. */
   hero: "size-28 [&>*]:max-h-20 [&>*]:max-w-20",
+  /** A store row's or card's 45px slot (`StoreRow`, `StoreCard`): a letter tile fills it, a mark sits a step in. */
+  item: "size-10 [&>*]:max-h-10 [&>*]:max-w-10",
+  /** A store item's details (`StoreSheet`): its 72px hero slot. */
+  sheet: "size-16 [&>*]:max-h-16 [&>*]:max-w-16",
 } as const;
 
 /**
@@ -42,7 +46,7 @@ export function LogoTile({
         cover &&
           (size === "hero"
             ? "rounded-[calc(var(--spacing)*6.5)]"
-            : size === "tile"
+            : size === "tile" || size === "sheet"
               ? "rounded-[calc(var(--spacing)*3.75)]"
               : "rounded-md"),
       )}

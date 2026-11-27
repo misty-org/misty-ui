@@ -19,7 +19,9 @@ export function RowControls({ children }: { children: ReactNode }) {
 export function OutOfRow({ children }: { children: ReactNode }) {
   return (
     <OnRow.Provider value={false}>
-      <Compact.Provider value={false}>{children}</Compact.Provider>
+      <Compact.Provider value={false}>
+        <InFooter.Provider value={false}>{children}</InFooter.Provider>
+      </Compact.Provider>
     </OnRow.Provider>
   );
 }
@@ -42,4 +44,20 @@ export function CompactControls({ on = true, children }: { on?: boolean; childre
 /** Whether the control sits in a compact bar, so it takes the small size. */
 export function useCompactControls(): boolean {
   return useContext(Compact);
+}
+
+const InFooter = createContext(false);
+
+/**
+ * Makes every button in a dialog's footer one size, 40.5px (lg): Cancel, the action and any other
+ * button the feature adds, whatever size it asks for, so a footer never shows buttons of different
+ * heights. DialogFooter and AlertDialogFooter give it; features never do.
+ */
+export function FooterControls({ children }: { children: ReactNode }) {
+  return <InFooter.Provider value>{children}</InFooter.Provider>;
+}
+
+/** Whether the control sits in a dialog's footer, so it takes the footer's size. */
+export function useFooterControls(): boolean {
+  return useContext(InFooter);
 }

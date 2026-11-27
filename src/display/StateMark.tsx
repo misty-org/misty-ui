@@ -15,13 +15,7 @@ export type DriveSyncState = "online-only" | "downloading" | "uploading" | "not-
  * that is up (`online`), or a drive file's sync state.
  */
 export type StateMarkKind =
-  | "working"
-  | "waiting"
-  | "unread"
-  | "done"
-  | "failed"
-  | "online"
-  | DriveSyncState;
+  "working" | "waiting" | "results" | "unread" | "done" | "failed" | "online" | DriveSyncState;
 
 export type StateMarkProps = {
   kind: StateMarkKind;
@@ -37,6 +31,7 @@ export type StateMarkProps = {
 const defaultLabel: Record<StateMarkKind, string> = {
   working: "Working",
   waiting: "Waiting for you",
+  results: "New results",
   unread: "Unread",
   done: "Done",
   failed: "Failed",
@@ -48,8 +43,9 @@ const defaultLabel: Record<StateMarkKind, string> = {
 };
 
 /**
- * The one mark for an item's state, the same wherever it shows: a muted spinner while an agent
- * works, an amber dot while it waits on the person, a neutral dot for unread, a green check when
+ * The one mark for an item's state, the same wherever it shows: a blue dot that breathes while an
+ * agent works (never a spinner), an amber dot while it waits on the person, a green dot while it
+ * has results the person hasn't seen (`results`), a neutral dot for unread, a green check when
  * done, a red cross when it failed, and a green dot while a connection is up. A file in a synced
  * drive has muted kinds of its own: a cloud while it is only on the server, the spinner while it
  * downloads or uploads, and a crossed-out cloud while it stays on this computer alone. Each names
@@ -59,6 +55,10 @@ const defaultLabel: Record<StateMarkKind, string> = {
  * file that is downloaded and in step shows no mark, and a conflicting copy is an ordinary file with
  * no color of its own. Don't use the drive kinds for anything but a file's sync, and don't use
  * `online` (a connection that is up) for a file.
+ *
+ * A mark is a state, never a number: how many messages wait is a `CountMark`, and the two never
+ * stand in for each other. A row that rolls up several things (an agent over its threads) shows the
+ * most pressing state among them: waiting, then working, then results.
  *
  * `<StateMark kind="failed" label="Failed: out of credits" />`
  */
@@ -73,10 +73,14 @@ export function StateMark({ kind, label, className }: StateMarkProps) {
         data-state={kind}
         className={cn("grid size-4 shrink-0 place-items-center", markTone[kind], className)}
       >
-        {kind === "working" || kind === "downloading" || kind === "uploading" ? (
+        {kind === "downloading" || kind === "uploading" ? (
           <Spinner size="sm" label={false} />
         ) : null}
-        {kind === "waiting" || kind === "unread" || kind === "online" ? (
+        {kind === "working" ||
+        kind === "waiting" ||
+        kind === "results" ||
+        kind === "unread" ||
+        kind === "online" ? (
           <span aria-hidden="true" className={cn("size-2 rounded-full", dotTone[kind])} />
         ) : null}
         {kind === "done" ? <Check aria-hidden="true" className="size-4" /> : null}
@@ -89,8 +93,9 @@ export function StateMark({ kind, label, className }: StateMarkProps) {
 }
 
 const markTone: Record<StateMarkKind, string> = {
-  working: "text-cream-muted",
+  working: "",
   waiting: "",
+  results: "",
   unread: "",
   done: "text-state-done",
   failed: "text-state-failed",
@@ -102,7 +107,10 @@ const markTone: Record<StateMarkKind, string> = {
 };
 
 const dotTone = {
+  working:
+    "bg-[var(--tone-working)] animate-[misty-breathe_1.6s_ease-in-out_infinite] motion-reduce:animate-none",
   waiting: "bg-state-waiting",
+  results: "bg-state-done",
   unread: "bg-cream",
   online: "bg-state-done",
 } as const;

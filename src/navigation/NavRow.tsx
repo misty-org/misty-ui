@@ -8,7 +8,7 @@ import {
 } from "react";
 
 import { cn } from "../class_names";
-import { rowShape, rowShapeTwoLine } from "../display/row_shape";
+import { rowShape, rowShapeFace, rowShapeTwoLine } from "../display/row_shape";
 import { Pressable } from "../controls/Pressable";
 import { OverflowFadeText, type OverflowFadeTextProps } from "../layout/OverflowFadeText";
 import { FoldChevron } from "../overlays/MenuChevron";
@@ -42,7 +42,7 @@ export type NavRowProps = Omit<ComponentPropsWithoutRef<"button">, "ref"> & {
    */
   still?: boolean;
   /**
-   * A part of the row above it, such as a section of the open Settings page, inside a NavBranch:
+   * A part of the row above it that opens a page of its own, such as a thread under its agent, inside a NavBranch:
    * no mark of its own, its label lined up with the label of the row it belongs to. The row and
    * its fill start past the branch's lines, so the open row's fill never covers them. Never a row
    * of chips.
@@ -55,6 +55,11 @@ export type NavRowProps = Omit<ComponentPropsWithoutRef<"button">, "ref"> & {
    * capacity and a Meter (Kura's Devices). The caller stacks the lines beside the mark.
    */
   tall?: boolean;
+  /**
+   * The row leads with a face (a direct message, an agent) rather than a glyph: 45px tall, so the
+   * face has room around it. Rows of glyphs and the rows nested under a face stay 36px.
+   */
+  face?: boolean;
   /**
    * Its notifications are off (a muted channel or conversation): the row dims, as Discord greys a
    * muted channel, and comes back to full strength under the pointer and while open. A muted row
@@ -89,6 +94,7 @@ export function NavRow({
   still,
   nested,
   tall,
+  face,
   muted,
   className,
   ref,
@@ -98,7 +104,7 @@ export function NavRow({
   const classes = cn(
     "group/nav-row flex-none",
     nested === "face" ? "ms-9 w-auto" : nested ? "ms-6 w-auto" : "w-full",
-    tall ? rowShapeTwoLine : rowShape,
+    tall ? rowShapeTwoLine : face ? rowShapeFace : rowShape,
     "text-left text-control",
     hover === "wash" && current ? toneText[tone].bright : toneText[tone].quiet,
     filled && "bg-row-active",
@@ -122,7 +128,10 @@ export function NavRow({
       ref={ref}
       type="button"
       wash={hover === "wash" ? "row" : undefined}
+      selected={selected}
       aria-current={current ? "page" : undefined}
+      data-face={face || undefined}
+      data-row-fill={hover === "fill" || undefined}
       {...props}
       className={classes}
     />
@@ -163,8 +172,9 @@ export function NavList({ className, ...props }: HTMLAttributes<HTMLDivElement>)
  * sidebar's pages sit under their section: the line runs down from under the parent's mark, past
  * every row, ending with the last one, with no elbows or branches. Put it right after the parent
  * row, and give each child `NavRow` `nested` (or `nested="face"`, matching `under`). `under="face"`
- * runs the line under a face (a thread under its agent) rather than a glyph (a section of the open
- * Settings page). The rows keep NavList's 6.75px between them.
+ * runs the line under a face (a thread under its agent) rather than a glyph. Each row opens a page of
+ * its own; a section of the open page is never one, since the page scrolls. The rows keep NavList's
+ * 6.75px between them.
  */
 export function NavBranch({
   under = "glyph",

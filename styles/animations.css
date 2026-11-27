@@ -46,6 +46,15 @@
   }
 }
 
+@keyframes misty-caret-blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @keyframes misty-breathe {
   50% {
     opacity: 0.35;
@@ -108,4 +117,10 @@
   transition-duration: 0.01ms !important;
   transition-delay: 0s !important;
   scroll-behavior: auto !important;
+}
+
+[data-tab-kept] *,
+[data-tab-kept] *::before,
+[data-tab-kept] *::after {
+  animation-play-state: paused !important;
 }

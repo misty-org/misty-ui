@@ -8,14 +8,30 @@
 .misty-pane-frame::before {
   z-index: var(--layer-pane-corners);
   background:
-    radial-gradient(circle at 100% 100%, transparent 0.7188rem, var(--pane-chrome) 0.75rem) top
-      left / var(--pane-corner-top-left) var(--pane-corner-top-left) no-repeat,
-    radial-gradient(circle at 0 100%, transparent 0.7188rem, var(--pane-chrome) 0.75rem) top right /
-      var(--pane-corner-top-right) var(--pane-corner-top-right) no-repeat,
-    radial-gradient(circle at 100% 0, transparent 0.7188rem, var(--pane-chrome) 0.75rem) bottom
-      left / var(--pane-corner-bottom-left) var(--pane-corner-bottom-left) no-repeat,
-    radial-gradient(circle at 0 0, transparent 0.7188rem, var(--pane-chrome) 0.75rem) bottom right /
-      var(--pane-corner-bottom-right) var(--pane-corner-bottom-right) no-repeat;
+    radial-gradient(
+        circle at 100% 100%,
+        transparent calc(var(--pane-radius, 0.75rem) - 0.5px),
+        var(--pane-chrome) var(--pane-radius, 0.75rem)
+      )
+      top left / var(--pane-corner-top-left) var(--pane-corner-top-left) no-repeat,
+    radial-gradient(
+        circle at 0 100%,
+        transparent calc(var(--pane-radius, 0.75rem) - 0.5px),
+        var(--pane-chrome) var(--pane-radius, 0.75rem)
+      )
+      top right / var(--pane-corner-top-right) var(--pane-corner-top-right) no-repeat,
+    radial-gradient(
+        circle at 100% 0,
+        transparent calc(var(--pane-radius, 0.75rem) - 0.5px),
+        var(--pane-chrome) var(--pane-radius, 0.75rem)
+      )
+      bottom left / var(--pane-corner-bottom-left) var(--pane-corner-bottom-left) no-repeat,
+    radial-gradient(
+        circle at 0 0,
+        transparent calc(var(--pane-radius, 0.75rem) - 0.5px),
+        var(--pane-chrome) var(--pane-radius, 0.75rem)
+      )
+      bottom right / var(--pane-corner-bottom-right) var(--pane-corner-bottom-right) no-repeat;
   box-shadow:
     inset var(--pane-seam-left, 0px) var(--pane-seam-top, 0px) 0 0 var(--pane-chrome),
     inset calc(-1 * var(--pane-seam-right, 0px)) calc(-1 * var(--pane-seam-bottom, 0px)) 0 0
@@ -29,6 +45,7 @@
     var(--pane-seam-left);
   border-radius: var(--pane-corner-top-left) var(--pane-corner-top-right)
     var(--pane-corner-bottom-right) var(--pane-corner-bottom-left);
+  box-shadow: inset 0 0 0 var(--hairline) var(--pane-edge, transparent);
 }
 .misty-pane-frame[data-tab-kept]::before,
 .misty-pane-frame[data-tab-kept]::after {

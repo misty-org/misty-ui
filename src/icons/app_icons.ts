@@ -3,11 +3,11 @@ import {
   Bot,
   Brain,
   CircleUserRound,
+  Contact,
   FlaskConical,
   Galaxy,
   Hash,
   Package,
-  Users,
   Volume2,
   CalendarClock,
   ListTodo,
@@ -74,8 +74,8 @@ export const spaceIcons = {
   channel: Hash,
   /** A voice channel. */
   voice: Volume2,
-  /** Personal's Friends page. */
-  friends: Users,
+  /** Personal's Friends page: a contact card, never the shared Spaces' two people. */
+  friends: Contact,
 } satisfies Record<string, LucideIcon>;
 
 /**
